@@ -1,0 +1,54 @@
+Zenomania\CoreBundle\Entity\PromoAction:
+    type: entity
+    table: promo_action
+    indexes:
+        FK_promo_action_club:
+            columns:
+                - club_owner
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+        displayname:
+            type: string
+            nullable: false
+            length: 1024
+            options:
+                fixed: false
+        active:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+        dtStart:
+            type: date
+            nullable: true
+            column: dt_start
+        dtEnd:
+            type: date
+            nullable: true
+            column: dt_end
+    manyToOne:
+        clubOwner:
+            targetEntity: Club
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                club_owner:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,81 @@
+Zenomania\CoreBundle\Entity\SmsOut:
+    type: entity
+    table: sms_out
+    indexes:
+        to_mobile:
+            columns:
+                - to_mobile
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        fromMobile:
+            type: string
+            nullable: false
+            length: 11
+            options:
+                fixed: false
+            column: from_mobile
+        toMobile:
+            type: string
+            nullable: false
+            length: 11
+            options:
+                fixed: false
+            column: to_mobile
+        personId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: person_id
+        dt:
+            type: datetime
+            nullable: false
+        text:
+            type: string
+            nullable: false
+            length: 512
+            options:
+                fixed: false
+        type:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+        numberSms:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+            column: number_sms
+        outerId:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                default: ''
+            column: outer_id
+        status:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                default: ''
+        smsIn:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: sms_in
+    lifecycleCallbacks: {  }

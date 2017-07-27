@@ -1,0 +1,132 @@
+Zenomania\CoreBundle\Entity\Event:
+    type: entity
+    table: event
+    indexes:
+        FK_event_club:
+            columns:
+                - club_home
+        FK_event_club_2:
+            columns:
+                - club_guest
+        FK_event_place:
+            columns:
+                - place_id
+        FK_event_sport:
+            columns:
+                - sport_id
+        FK_event_promo_action:
+            columns:
+                - promo_action
+        date:
+            columns:
+                - date
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+        date:
+            type: datetime
+            nullable: false
+        purchasable:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+        chship:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: NA
+        scoreHome:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+            column: score_home
+        scoreGuest:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+            column: score_guest
+        scoreSaved:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+            column: score_saved
+    manyToOne:
+        clubHome:
+            targetEntity: Club
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                club_home:
+                    referencedColumnName: id
+            orphanRemoval: false
+        clubGuest:
+            targetEntity: Club
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                club_guest:
+                    referencedColumnName: id
+            orphanRemoval: false
+        place:
+            targetEntity: Place
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                place_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        promoAction:
+            targetEntity: PromoAction
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                promo_action:
+                    referencedColumnName: id
+            orphanRemoval: false
+        sport:
+            targetEntity: Sport
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                sport_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        personPoint:
+            targetEntity: PersonPoints
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: event
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

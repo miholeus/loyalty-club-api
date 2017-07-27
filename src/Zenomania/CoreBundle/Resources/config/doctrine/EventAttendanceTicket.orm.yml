@@ -1,0 +1,69 @@
+Zenomania\CoreBundle\Entity\EventAttendanceTicket:
+    type: entity
+    table: event_attendance_ticket
+    indexes:
+        FK_event_attendance_ticket_person:
+            columns:
+                - person_id
+    uniqueConstraints:
+        barcode:
+            columns:
+                - barcode
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                default: '0'
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        mobile:
+            type: string
+            nullable: false
+            length: 11
+            options:
+                fixed: true
+        firstName:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: first_name
+        lastName:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: last_name
+        barcode:
+            type: string
+            nullable: false
+            length: 13
+            options:
+                fixed: true
+        dt:
+            type: datetime
+            nullable: false
+        noProcess:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+            column: no_process
+    manyToOne:
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

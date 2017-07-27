@@ -1,0 +1,106 @@
+Zenomania\CoreBundle\Entity\EventAttendanceImport:
+    type: entity
+    table: event_attendance_import
+    indexes:
+        ticket_number:
+            columns:
+                - ticket_number
+        FK_event_attendance_import_person:
+            columns:
+                - person_id
+        event_id:
+            columns:
+                - event_id
+    uniqueConstraints:
+        event_id_ticket_number:
+            columns:
+                - event_id
+                - ticket_number
+        event_id_subscription_number:
+            columns:
+                - event_id
+                - subscription_number
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        price:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+        ticketNumber:
+            type: bigint
+            nullable: true
+            options:
+                unsigned: true
+            column: ticket_number
+        subscriptionNumber:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: subscription_number
+        fanCardNumber:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: fan_card_number
+        enterDt:
+            type: datetime
+            nullable: false
+            column: enter_dt
+        electronic:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+        placeBuy:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+            column: place_buy
+        timeBuy:
+            type: datetime
+            nullable: true
+            column: time_buy
+        fio:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+    manyToOne:
+        event:
+            targetEntity: Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

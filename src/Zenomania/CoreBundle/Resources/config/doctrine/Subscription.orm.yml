@@ -1,0 +1,134 @@
+Zenomania\CoreBundle\Entity\Subscription:
+    type: entity
+    table: subscription
+    indexes:
+        FK_subscription_fan_card:
+            columns:
+                - fan_card_id
+        FK_subscription_person:
+            columns:
+                - person_id
+        FK_subscription_promo_action:
+            columns:
+                - season
+    uniqueConstraints:
+        stand_sector_row_seat:
+            columns:
+                - stand
+                - sector
+                - row
+                - seat
+        serial_number:
+            columns:
+                - serial
+                - number
+        person_id_fan_card_id:
+            columns:
+                - person_id
+                - fan_card_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        mifare:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+        serial:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+        number:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        stand:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        sector:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        row:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        seat:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        price:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        note:
+            type: string
+            nullable: false
+            length: 512
+            options:
+                fixed: false
+                default: ''
+    manyToOne:
+        fanCard:
+            targetEntity: FanCard
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                fan_card_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        season:
+            targetEntity: PromoAction
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                season:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        personPoint:
+            targetEntity: PersonPoints
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: subscription
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

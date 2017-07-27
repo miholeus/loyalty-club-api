@@ -1,0 +1,65 @@
+Zenomania\CoreBundle\Entity\PromoEmailIn:
+    type: entity
+    table: promo_email_in
+    indexes:
+        email:
+            columns:
+                - email
+        token:
+            columns:
+                - token
+        FK_promo_email_in_person:
+            columns:
+                - person
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        email:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                default: '0'
+        token:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                default: ''''''
+        datetime:
+            type: datetime
+            nullable: false
+        content:
+            type: text
+            nullable: false
+            length: 65535
+            options:
+                fixed: false
+        special:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: NONE
+    manyToOne:
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

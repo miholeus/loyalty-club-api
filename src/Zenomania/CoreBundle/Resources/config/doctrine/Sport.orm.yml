@@ -1,0 +1,34 @@
+Zenomania\CoreBundle\Entity\Sport:
+    type: entity
+    table: sport
+    uniqueConstraints:
+        name:
+            columns:
+                - name
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                default: '0'
+    manyToMany:
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: sport
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

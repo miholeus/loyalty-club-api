@@ -1,0 +1,45 @@
+Zenomania\CoreBundle\Entity\News:
+    type: entity
+    table: news
+    indexes:
+        dt_start_dt_end:
+            columns:
+                - dt_start
+                - dt_end
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        text:
+            type: text
+            nullable: false
+            length: 65535
+            options:
+                fixed: false
+        hide:
+            type: boolean
+            nullable: false
+        dt:
+            type: datetime
+            nullable: false
+        dtStart:
+            type: datetime
+            nullable: false
+            column: dt_start
+        dtEnd:
+            type: datetime
+            nullable: false
+            column: dt_end
+        actorId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: actor_id
+    lifecycleCallbacks: {  }

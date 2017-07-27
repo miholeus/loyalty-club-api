@@ -1,0 +1,58 @@
+Zenomania\CoreBundle\Entity\PromoCoupon:
+    type: entity
+    table: promo_coupon
+    indexes:
+        FK_promo_coupon_promo_coupon_action:
+            columns:
+                - pcaction
+    uniqueConstraints:
+        code:
+            columns:
+                - code
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        code:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+        points:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+        activated:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+    manyToOne:
+        pcaction:
+            targetEntity: PromoCouponAction
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pcaction:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        personPoint:
+            targetEntity: PersonPoints
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: promoCoupon
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

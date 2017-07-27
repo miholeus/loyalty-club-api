@@ -1,0 +1,76 @@
+Zenomania\CoreBundle\Entity\SocialPostAttachments:
+    type: entity
+    table: social_post_attachments
+    indexes:
+        FK_social_post_attachments_social_post:
+            columns:
+                - post_id
+    uniqueConstraints:
+        post_id_outer_id:
+            columns:
+                - post_id
+                - outer_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        type:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: video
+        outerId:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: outer_id
+        innerLink:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: inner_link
+        outerLink:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: outer_link
+        picSmall:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: pic_small
+        picBig:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: pic_big
+    manyToOne:
+        post:
+            targetEntity: SocialPost
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                post_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,59 @@
+Zenomania\CoreBundle\Entity\EventMap:
+    type: entity
+    table: event_map
+    indexes:
+        FK_event_map_event:
+            columns:
+                - event_id
+        IDX_82626F687987212D:
+            columns:
+                - app_id
+    uniqueConstraints:
+        app_id_event_id_outer_id:
+            columns:
+                - app_id
+                - event_id
+                - outer_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        outerId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            column: outer_id
+        use4promo:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+    manyToOne:
+        app:
+            targetEntity: ClientApplication
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                app_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        event:
+            targetEntity: Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

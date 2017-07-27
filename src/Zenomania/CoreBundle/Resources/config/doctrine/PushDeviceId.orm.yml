@@ -1,0 +1,35 @@
+Zenomania\CoreBundle\Entity\PushDeviceId:
+    type: entity
+    table: push_device_id
+    indexes:
+        FK_push_device_id_person:
+            columns:
+                - person_id
+    id:
+        os:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+            id: true
+    fields:
+        deviceId:
+            type: text
+            nullable: false
+            length: 65535
+            options:
+                fixed: false
+            column: device_id
+    oneToOne:
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

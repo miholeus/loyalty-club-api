@@ -1,0 +1,76 @@
+Zenomania\CoreBundle\Entity\EmailDispatchTo:
+    type: entity
+    table: email_dispatch_to
+    indexes:
+        FK_email_dispatch_to_person:
+            columns:
+                - person_id
+        IDX_B90A1A9ABAB47356:
+            columns:
+                - ed_id
+    uniqueConstraints:
+        ed_id_person_email:
+            columns:
+                - ed_id
+                - person_email
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        personId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            column: person_id
+        personEmail:
+            type: string
+            nullable: false
+            length: 200
+            options:
+                fixed: false
+            column: person_email
+        body:
+            type: text
+            nullable: false
+            length: 65535
+            options:
+                fixed: false
+        sent:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+        unsubscribeToken:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: true
+                default: ''
+            column: unsubscribe_token
+        state:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: queued
+    manyToOne:
+        ed:
+            targetEntity: EmailDispatchDone
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                ed_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

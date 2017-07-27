@@ -1,0 +1,21 @@
+Zenomania\CoreBundle\Entity\District:
+    type: entity
+    table: district
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+                default: ''
+    lifecycleCallbacks: {  }

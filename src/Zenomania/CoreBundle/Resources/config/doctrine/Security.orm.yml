@@ -1,0 +1,45 @@
+Zenomania\CoreBundle\Entity\Security:
+    type: entity
+    table: security
+    indexes:
+        FK_security_person:
+            columns:
+                - person_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        personId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+            column: person_id
+        type:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+        offenceCount:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+            column: offence_count
+        comment:
+            type: string
+            nullable: true
+            length: 1024
+            options:
+                fixed: false
+                default: '0'
+    lifecycleCallbacks: {  }

@@ -1,0 +1,66 @@
+Zenomania\CoreBundle\Entity\GiveawayAction:
+    type: entity
+    table: giveaway_action
+    indexes:
+        FK_giveaway_action_actor:
+            columns:
+                - actor_id
+        name:
+            columns:
+                - name
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+                default: 'Free zens to everyone'
+        occasion:
+            type: string
+            nullable: false
+            length: 1024
+            options:
+                fixed: false
+                default: ''
+        dt:
+            type: datetime
+            nullable: false
+        points:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: false
+        progress:
+            type: boolean
+            nullable: false
+    manyToOne:
+        actor:
+            targetEntity: Actor
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                actor_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        personPoint:
+            targetEntity: PersonPoints
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: giveaway
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

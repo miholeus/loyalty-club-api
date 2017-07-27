@@ -1,0 +1,61 @@
+Zenomania\CoreBundle\Entity\ClientApplication:
+    type: entity
+    table: client_application
+    indexes:
+        FK_client_application_club:
+            columns:
+                - club_owner
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        outerService:
+            type: string
+            nullable: false
+            length: 25
+            options:
+                fixed: false
+            column: outer_service
+        name:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        password:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        authKey:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: auth_key
+        url:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+    manyToOne:
+        clubOwner:
+            targetEntity: Club
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                club_owner:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

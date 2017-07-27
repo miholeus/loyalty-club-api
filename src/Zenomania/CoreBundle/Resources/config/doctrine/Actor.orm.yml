@@ -1,0 +1,125 @@
+Zenomania\CoreBundle\Entity\Actor:
+    type: entity
+    table: actor
+    indexes:
+        IDX_447556F96F0ECCCE:
+            columns:
+                - club_owner
+    uniqueConstraints:
+        club_owner_username:
+            columns:
+                - club_owner
+                - username
+        person:
+            columns:
+                - person
+        club_owner_vk_id:
+            columns:
+                - club_owner
+                - vk_id
+        club_owner_fb_id:
+            columns:
+                - club_owner
+                - fb_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        username:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        password:
+            type: string
+            nullable: false
+            length: 512
+            options:
+                fixed: false
+        token:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        refrr:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+        shouldChangePwd:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+            column: should_change_pwd
+        authToken:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: auth_token
+        vkId:
+            type: string
+            nullable: true
+            length: 128
+            options:
+                fixed: false
+            column: vk_id
+        fbId:
+            type: string
+            nullable: true
+            length: 128
+            options:
+                fixed: false
+            column: fb_id
+        resetToken:
+            type: string
+            nullable: true
+            length: 6
+            options:
+                fixed: true
+            column: reset_token
+        regDate:
+            type: datetime
+            nullable: true
+            options:
+                comment: 'Дата регистрации'
+            column: reg_date
+        regSource:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+            column: reg_source
+    manyToOne:
+        clubOwner:
+            targetEntity: Club
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                club_owner:
+                    referencedColumnName: id
+            orphanRemoval: false
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

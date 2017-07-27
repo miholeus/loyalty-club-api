@@ -1,0 +1,72 @@
+Zenomania\CoreBundle\Entity\PromoSmsIn:
+    type: entity
+    table: promo_sms_in
+    indexes:
+        frommobile:
+            columns:
+                - frommobile
+        FK_promo_sms_in_person:
+            columns:
+                - person_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        frommobile:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+        tomobile:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+        outerid:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+        datetime:
+            type: datetime
+            nullable: false
+        prefix:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+        content:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+        special:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: NONE
+    manyToOne:
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

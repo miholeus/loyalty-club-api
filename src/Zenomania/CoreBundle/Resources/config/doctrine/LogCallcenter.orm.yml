@@ -1,0 +1,43 @@
+Zenomania\CoreBundle\Entity\LogCallcenter:
+    type: entity
+    table: log_callcenter
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        actorId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+            column: actor_id
+        personId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+            column: person_id
+        dt:
+            type: datetime
+            nullable: false
+        old:
+            type: text
+            nullable: false
+            length: 65535
+            options:
+                fixed: false
+        new:
+            type: text
+            nullable: false
+            length: 65535
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

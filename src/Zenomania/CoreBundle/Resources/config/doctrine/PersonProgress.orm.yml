@@ -1,0 +1,36 @@
+Zenomania\CoreBundle\Entity\PersonProgress:
+    type: entity
+    table: person_progress
+    indexes:
+        FK_person_progress_progress_items:
+            columns:
+                - progress_id
+    uniqueConstraints:
+        person_id_progress_item_id:
+            columns:
+                - person_id
+                - progress_id
+    id:
+        personId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: person_id
+    fields:
+        dt:
+            type: datetime
+            nullable: false
+    oneToOne:
+        progress:
+            targetEntity: ProgressItems
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                progress_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

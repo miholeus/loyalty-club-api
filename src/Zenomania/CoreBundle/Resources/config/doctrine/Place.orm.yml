@@ -1,0 +1,51 @@
+Zenomania\CoreBundle\Entity\Place:
+    type: entity
+    table: place
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+        country:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                default: '1'
+        city:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                default: '1'
+        street:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+        number:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+                comment: 'номер строения'
+        description:
+            type: string
+            nullable: true
+            length: 1024
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

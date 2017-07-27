@@ -1,0 +1,47 @@
+Zenomania\CoreBundle\Entity\Sportomat:
+    type: entity
+    table: sportomat
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        email:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        fname:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        lname:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        testresult:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+        favsport:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+        dt:
+            type: datetime
+            nullable: true
+    lifecycleCallbacks: {  }

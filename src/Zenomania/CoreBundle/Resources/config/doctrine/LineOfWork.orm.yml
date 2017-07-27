@@ -1,0 +1,20 @@
+Zenomania\CoreBundle\Entity\LineOfWork:
+    type: entity
+    table: line_of_work
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

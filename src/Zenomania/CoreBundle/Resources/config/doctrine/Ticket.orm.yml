@@ -1,0 +1,127 @@
+Zenomania\CoreBundle\Entity\Ticket:
+    type: entity
+    table: ticket
+    indexes:
+        FK_ticket_event:
+            columns:
+                - event_id
+        FK_ticket_fan_card:
+            columns:
+                - fan_card_id
+        state:
+            columns:
+                - state
+        number:
+            columns:
+                - number
+        IDX_97A0ADA3217BBB47:
+            columns:
+                - person_id
+    uniqueConstraints:
+        stand_sector_row_seat:
+            columns:
+                - event_id
+                - stand
+                - sector
+                - row
+                - seat
+        event_id_number:
+            columns:
+                - event_id
+                - number
+        person_id_event_id:
+            columns:
+                - person_id
+                - event_id
+                - number
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        fanCardId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: fan_card_id
+        serial:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: false
+                default: ''
+        number:
+            type: bigint
+            nullable: false
+            options:
+                unsigned: true
+        stand:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                default: ''
+        sector:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                default: ''
+        row:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+                default: ''
+        seat:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        price:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 0
+            options:
+                default: '0'
+        state:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: idle
+    manyToOne:
+        event:
+            targetEntity: Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

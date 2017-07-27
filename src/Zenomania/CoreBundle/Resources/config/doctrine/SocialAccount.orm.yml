@@ -1,0 +1,170 @@
+Zenomania\CoreBundle\Entity\SocialAccount:
+    type: entity
+    table: social_account
+    indexes:
+        FK_social_account_person:
+            columns:
+                - person_id
+        sex:
+            columns:
+                - sex
+        bdate:
+            columns:
+                - bdate
+        country:
+            columns:
+                - country
+        city:
+            columns:
+                - city
+        mobile_phone:
+            columns:
+                - mobile_phone
+        home_phone:
+            columns:
+                - home_phone
+        club_id:
+            columns:
+                - club_id
+    uniqueConstraints:
+        network_group_id_club_id_outer_id:
+            columns:
+                - network
+                - group_id
+                - club_id
+                - outer_id
+        network_club_person_outerid:
+            columns:
+                - network
+                - club_id
+                - person_id
+                - outer_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        network:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+        groupId:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: group_id
+        clubId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: club_id
+        outerId:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+            column: outer_id
+        deleted:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+        firstName:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+            column: first_name
+        lastName:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+            column: last_name
+        sex:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        bdate:
+            type: date
+            nullable: true
+        country:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+        city:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        mobilePhone:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: mobile_phone
+        homePhone:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: home_phone
+        photo:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+        accessToken:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: access_token
+        link:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+    manyToOne:
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        personPoint:
+            targetEntity: PersonPoints
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: socialAccount
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

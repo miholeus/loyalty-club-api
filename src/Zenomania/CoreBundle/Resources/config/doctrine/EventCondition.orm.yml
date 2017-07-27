@@ -1,0 +1,38 @@
+Zenomania\CoreBundle\Entity\EventCondition:
+    type: entity
+    table: event_condition
+    indexes:
+        FK__event:
+            columns:
+                - event_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        temperature:
+            type: boolean
+            nullable: false
+        weather:
+            type: text
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+    manyToOne:
+        event:
+            targetEntity: Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

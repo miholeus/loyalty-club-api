@@ -1,0 +1,29 @@
+Zenomania\CoreBundle\Entity\Role:
+    type: entity
+    table: role
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        role:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+    manyToMany:
+        user:
+            targetEntity: Actor
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: role
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

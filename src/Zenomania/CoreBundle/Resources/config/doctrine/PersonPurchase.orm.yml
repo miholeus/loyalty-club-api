@@ -1,0 +1,104 @@
+Zenomania\CoreBundle\Entity\PersonPurchase:
+    type: entity
+    table: person_purchase
+    indexes:
+        FK_person_purchase_item:
+            columns:
+                - item_id
+        FK_person_purchase_person:
+            columns:
+                - person_id
+        FK_person_purchase_item_how2get:
+            columns:
+                - how2get
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        appId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            column: app_id
+        pricePoints:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+            column: price_points
+        urlCalled:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+            column: url_called
+        queryString:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+            column: query_string
+        checksum:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        datetime:
+            type: datetime
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+        updated:
+            type: datetime
+            nullable: true
+        shipTo:
+            type: string
+            nullable: true
+            length: 300
+            options:
+                fixed: false
+            column: ship_to
+    manyToOne:
+        item:
+            targetEntity: Item
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                item_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        how2get:
+            targetEntity: ItemHow2get
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                how2get:
+                    referencedColumnName: id
+            orphanRemoval: false
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

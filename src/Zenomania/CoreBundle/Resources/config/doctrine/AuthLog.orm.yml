@@ -1,0 +1,47 @@
+Zenomania\CoreBundle\Entity\AuthLog:
+    type: entity
+    table: auth_log
+    indexes:
+        dt:
+            columns:
+                - dt
+        FK1_person_id:
+            columns:
+                - person_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        login:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        status:
+            type: simple_array
+            nullable: false
+            length: null
+            options:
+                fixed: false
+        dt:
+            type: datetime
+            nullable: false
+    manyToOne:
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

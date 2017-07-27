@@ -1,0 +1,55 @@
+Zenomania\CoreBundle\Entity\Player:
+    type: entity
+    table: player
+    indexes:
+        FK_player_club:
+            columns:
+                - club
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 200
+            options:
+                fixed: false
+                default: нет
+        active:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+        bdate:
+            type: date
+            nullable: true
+            options:
+                comment: 'Дата рождения игрока'
+    manyToOne:
+        club:
+            targetEntity: Club
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                club:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: player
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

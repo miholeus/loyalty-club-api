@@ -1,0 +1,81 @@
+Zenomania\CoreBundle\Entity\PromoCodeDistribution:
+    type: entity
+    table: promo_code_distribution
+    indexes:
+        promo_action_id:
+            columns:
+                - promo_action_id
+        number_start:
+            columns:
+                - number_start
+        number_end:
+            columns:
+                - number_end
+        area_id:
+            columns:
+                - area_id
+        FK_promo_code_distribution_event:
+            columns:
+                - event_id
+    uniqueConstraints:
+        event_id_number_start_number_end:
+            columns:
+                - event_id
+                - number_start
+                - number_end
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        numberStart:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+            column: number_start
+        numberEnd:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+            column: number_end
+    manyToOne:
+        event:
+            targetEntity: Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        promoAction:
+            targetEntity: PromoAction
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                promo_action_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        area:
+            targetEntity: PromoCodeDistributionArea
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                area_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

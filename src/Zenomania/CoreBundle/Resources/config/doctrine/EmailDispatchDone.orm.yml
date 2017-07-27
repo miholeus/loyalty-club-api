@@ -1,0 +1,60 @@
+Zenomania\CoreBundle\Entity\EmailDispatchDone:
+    type: entity
+    table: email_dispatch_done
+    indexes:
+        FK_email_dispatch_done_actor:
+            columns:
+                - actor
+        FK_email_dispatch_done_email_dispatch:
+            columns:
+                - email_dispatch
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        recipientCode:
+            type: string
+            nullable: false
+            length: 20000
+            options:
+                fixed: false
+            column: recipient_code
+        date:
+            type: datetime
+            nullable: false
+            options:
+                default: '0000-00-00 00:00:00'
+        state:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+    manyToOne:
+        actor:
+            targetEntity: Actor
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                actor:
+                    referencedColumnName: id
+            orphanRemoval: false
+        emailDispatch:
+            targetEntity: EmailDispatch
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                email_dispatch:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

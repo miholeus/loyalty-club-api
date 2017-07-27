@@ -1,0 +1,31 @@
+Zenomania\CoreBundle\Entity\PointsStatus:
+    type: entity
+    table: points_status
+    uniqueConstraints:
+        points:
+            columns:
+                - points
+                - title
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        points:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+        title:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

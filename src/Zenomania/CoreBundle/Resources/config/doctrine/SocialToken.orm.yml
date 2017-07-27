@@ -1,0 +1,48 @@
+Zenomania\CoreBundle\Entity\SocialToken:
+    type: entity
+    table: social_token
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        network:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+        userOuterId:
+            type: string
+            nullable: false
+            length: 64
+            options:
+                fixed: false
+                default: ''
+            column: user_outer_id
+        token:
+            type: string
+            nullable: false
+            length: 512
+            options:
+                fixed: false
+                default: ''
+        permissions:
+            type: string
+            nullable: false
+            length: 1024
+            options:
+                fixed: false
+                default: ''
+        secret:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

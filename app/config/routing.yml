@@ -1,3 +1,7 @@
+zenomania_core:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation

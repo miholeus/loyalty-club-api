@@ -1,0 +1,111 @@
+Zenomania\CoreBundle\Entity\Club:
+    type: entity
+    table: club
+    indexes:
+        FK_club_sport:
+            columns:
+                - sport
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: true
+            length: 128
+            options:
+                fixed: false
+        site:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+        vkGroup:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+                default: ''
+            column: vk_group
+        fbGroup:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+                default: ''
+            column: fb_group
+        twitterGroup:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+                default: ''
+            column: twitter_group
+        instagramGroup:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+                default: ''
+            column: instagram_group
+        youtubeGroup:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+                default: ''
+            column: youtube_group
+        ytUploadPlaylist:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+                default: ''
+            column: yt_upload_playlist
+        indexEnabled:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+            column: index_enabled
+        logoImg:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: logo_img
+    manyToOne:
+        sport:
+            targetEntity: Zenomania\CoreBundle\Entity\Sport
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                sport:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        person:
+            targetEntity: Zenomania\CoreBundle\Entity\Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: club
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

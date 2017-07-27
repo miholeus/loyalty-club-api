@@ -1,0 +1,34 @@
+Zenomania\CoreBundle\Entity\ProgressItems:
+    type: entity
+    table: progress_items
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        progressClass:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: true
+            column: progress_class
+        progressKey:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: true
+            column: progress_key
+        title:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,77 @@
+Zenomania\CoreBundle\Entity\Video:
+    type: entity
+    table: video
+    indexes:
+        name:
+            columns:
+                - name
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+        depiction:
+            type: string
+            nullable: false
+            length: 250
+            options:
+                fixed: false
+        file:
+            type: string
+            nullable: false
+            length: 250
+            options:
+                fixed: false
+        img:
+            type: string
+            nullable: false
+            length: 250
+            options:
+                fixed: false
+                default: /static/img/video.jpg
+        viewCond:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+            column: view_cond
+        dt:
+            type: datetime
+            nullable: false
+        actorId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: actor_id
+    manyToMany:
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: video
+            joinTable:
+                name: video_view
+                joinColumns:
+                    -
+                        name: video_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: person_id
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

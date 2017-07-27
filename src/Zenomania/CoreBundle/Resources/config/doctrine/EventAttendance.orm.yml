@@ -1,0 +1,73 @@
+Zenomania\CoreBundle\Entity\EventAttendance:
+    type: entity
+    table: event_attendance
+    indexes:
+        FK_event_attendance_event:
+            columns:
+                - event_id
+        FK_event_attendance_person:
+            columns:
+                - person_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        ticketId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: ticket_id
+        subscriptionId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: subscription_id
+        fanCard:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: fan_card
+        enterDate:
+            type: datetime
+            nullable: false
+            column: enter_date
+    manyToOne:
+        event:
+            targetEntity: Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        personPoint:
+            targetEntity: PersonPoints
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: eventAttendance
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

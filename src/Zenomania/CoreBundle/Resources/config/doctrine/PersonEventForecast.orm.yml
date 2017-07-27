@@ -1,0 +1,65 @@
+Zenomania\CoreBundle\Entity\PersonEventForecast:
+    type: entity
+    table: person_event_forecast
+    indexes:
+        FK_person_event_forecast_event:
+            columns:
+                - event_id
+        dt:
+            columns:
+                - dt
+        IDX_89ADA1AA217BBB47:
+            columns:
+                - person_id
+    uniqueConstraints:
+        person_event:
+            columns:
+                - person_id
+                - event_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        scoreHome:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: score_home
+        scoreGuest:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: score_guest
+        dt:
+            type: datetime
+            nullable: false
+    manyToOne:
+        event:
+            targetEntity: Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

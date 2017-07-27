@@ -1,0 +1,67 @@
+Zenomania\CoreBundle\Entity\PersonPoints:
+    type: entity
+    table: person_points
+    indexes:
+        person_id:
+            columns:
+                - person_id
+        type:
+            columns:
+                - type
+        FK_person_points_promo_action:
+            columns:
+                - season_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        points:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: false
+                default: '0'
+        type:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+        state:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: none
+        dt:
+            type: datetime
+            nullable: false
+    manyToOne:
+        season:
+            targetEntity: PromoAction
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                season_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        person:
+            targetEntity: Person
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                person_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

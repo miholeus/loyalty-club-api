@@ -1,0 +1,291 @@
+Zenomania\CoreBundle\Entity\Person:
+    type: entity
+    table: person
+    indexes:
+        FK_person_line_of_work:
+            columns:
+                - line_of_work
+        FK_person_education:
+            columns:
+                - education
+        FK_person_city:
+            columns:
+                - city
+        FK_person_district:
+            columns:
+                - district
+        email:
+            columns:
+                - email
+        FK_person_club:
+            columns:
+                - club_owner
+        reg_type_name_ix:
+            columns:
+                - reg_type_name
+    uniqueConstraints:
+        promo_code:
+            columns:
+                - promo_code
+        club_owner_mobile:
+            columns:
+                - club_owner
+                - mobile
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        promoCode:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: promo_code
+        avatar:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+        firstName:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: first_name
+        lastName:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: last_name
+        middleName:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: middle_name
+        sex:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        familystatus:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        bdate:
+            type: date
+            nullable: true
+        comesBy:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: comes_by
+        address:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+        mobile:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        mobileAvailable:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: mobile_available
+        email:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        mobileAdd:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: mobile_add
+        emailAdd:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: email_add
+        notes:
+            type: text
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+        workAt:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+                comment: 'место работы'
+                default: ''
+            column: work_at
+        studyAt:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+                comment: 'место учёбы'
+                default: ''
+            column: study_at
+        emailAllowed:
+            type: boolean
+            nullable: false
+            options:
+                default: '1'
+            column: email_allowed
+        smsAllowed:
+            type: boolean
+            nullable: false
+            options:
+                default: '1'
+            column: sms_allowed
+        regDate:
+            type: datetime
+            nullable: true
+            column: reg_date
+        regActor:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: reg_actor
+        regType:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+                default: other
+            column: reg_type
+        regTypeName:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: reg_type_name
+        emailConfirmed:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+            column: email_confirmed
+        eventsInfo:
+            type: simple_array
+            nullable: false
+            length: null
+            options:
+                fixed: false
+                default: ''
+            column: events_info
+    manyToOne:
+        city:
+            targetEntity: City
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                city:
+                    referencedColumnName: id
+            orphanRemoval: false
+        clubOwner:
+            targetEntity: Zenomania\CoreBundle\Entity\Club
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: person
+            joinColumns:
+                club_owner:
+                    referencedColumnName: id
+            orphanRemoval: false
+        district:
+            targetEntity: District
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                district:
+                    referencedColumnName: id
+            orphanRemoval: false
+        education:
+            targetEntity: Education
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                education:
+                    referencedColumnName: id
+            orphanRemoval: false
+        lineOfWork:
+            targetEntity: LineOfWork
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                line_of_work:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        fancard:
+            targetEntity: FanCard
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: person
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+        activity:
+            targetEntity: Activity
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: person
+            joinTable:
+                name: person_activity
+                joinColumns:
+                    -
+                        name: person_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: activity_id
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

@@ -1,0 +1,53 @@
+Zenomania\CoreBundle\Entity\EventOutSpot:
+    type: entity
+    table: event_out_spot
+    indexes:
+        FK_event_out_spot_event:
+            columns:
+                - event_id
+        FK_event_out_spot_person_purchase:
+            columns:
+                - purchase_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        code:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: true
+        reserved:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+    manyToOne:
+        event:
+            targetEntity: Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        purchase:
+            targetEntity: PersonPurchase
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                purchase_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

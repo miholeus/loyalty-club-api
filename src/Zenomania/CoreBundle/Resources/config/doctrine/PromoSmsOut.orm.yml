@@ -1,0 +1,51 @@
+Zenomania\CoreBundle\Entity\PromoSmsOut:
+    type: entity
+    table: promo_sms_out
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        tomobile:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+        personId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            column: person_id
+        queuedAt:
+            type: datetime
+            nullable: false
+            column: queued_at
+        sentAt:
+            type: datetime
+            nullable: false
+            column: sent_at
+        content:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+        sent:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+        smsIn:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: sms_in
+    lifecycleCallbacks: {  }
