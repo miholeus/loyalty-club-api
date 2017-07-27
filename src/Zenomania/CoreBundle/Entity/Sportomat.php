@@ -197,4 +197,3 @@ class Sportomat
         return $this->dt;
     }
 }
-

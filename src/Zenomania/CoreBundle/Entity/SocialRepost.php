@@ -197,4 +197,3 @@ class SocialRepost
         return $this->post;
     }
 }
-

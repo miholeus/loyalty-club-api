@@ -1008,4 +1008,3 @@ class Person
         return $this->activity;
     }
 }
-

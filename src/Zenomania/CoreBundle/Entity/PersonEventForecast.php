@@ -168,4 +168,3 @@ class PersonEventForecast
         return $this->person;
     }
 }
-

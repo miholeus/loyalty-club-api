@@ -52,4 +52,3 @@ class PromoCodeDistributionArea
         return $this->name;
     }
 }
-

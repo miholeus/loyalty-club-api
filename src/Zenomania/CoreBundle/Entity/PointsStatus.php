@@ -81,4 +81,3 @@ class PointsStatus
         return $this->title;
     }
 }
-

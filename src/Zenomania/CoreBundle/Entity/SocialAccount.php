@@ -562,4 +562,3 @@ class SocialAccount
         return $this->personPoint;
     }
 }
-

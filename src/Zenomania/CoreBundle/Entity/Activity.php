@@ -127,4 +127,3 @@ class Activity
         return $this->person;
     }
 }
-

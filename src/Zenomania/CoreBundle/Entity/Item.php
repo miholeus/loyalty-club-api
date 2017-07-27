@@ -371,4 +371,3 @@ class Item
         return $this->how2get;
     }
 }
-

@@ -110,4 +110,3 @@ class ItemHow2get
         return $this->purchaseText;
     }
 }
-

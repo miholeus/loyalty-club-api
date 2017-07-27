@@ -342,4 +342,3 @@ class EventAttendanceImport
         return $this->person;
     }
 }
-

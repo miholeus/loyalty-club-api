@@ -371,4 +371,3 @@ class PersonPurchase
         return $this->person;
     }
 }
-

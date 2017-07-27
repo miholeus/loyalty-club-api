@@ -197,4 +197,3 @@ class News
         return $this->actorId;
     }
 }
-

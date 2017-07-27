@@ -98,4 +98,3 @@ class Sport
         return $this->person;
     }
 }
-

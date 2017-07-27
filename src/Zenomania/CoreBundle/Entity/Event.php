@@ -417,4 +417,3 @@ class Event
         return $this->personPoint;
     }
 }
-

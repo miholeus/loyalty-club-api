@@ -110,4 +110,3 @@ class ProgressItems
         return $this->title;
     }
 }
-

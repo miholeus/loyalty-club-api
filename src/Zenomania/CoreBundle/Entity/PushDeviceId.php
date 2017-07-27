@@ -95,4 +95,3 @@ class PushDeviceId
         return $this->person;
     }
 }
-

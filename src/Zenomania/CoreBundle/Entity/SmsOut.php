@@ -313,4 +313,3 @@ class SmsOut
         return $this->smsIn;
     }
 }
-

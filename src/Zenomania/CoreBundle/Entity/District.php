@@ -52,4 +52,3 @@ class District
         return $this->name;
     }
 }
-

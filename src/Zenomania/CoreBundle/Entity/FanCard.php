@@ -330,4 +330,3 @@ class FanCard
         return $this->person;
     }
 }
-

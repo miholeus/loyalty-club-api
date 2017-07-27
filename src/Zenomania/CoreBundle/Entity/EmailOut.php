@@ -284,4 +284,3 @@ class EmailOut
         return $this->toPerson;
     }
 }
-

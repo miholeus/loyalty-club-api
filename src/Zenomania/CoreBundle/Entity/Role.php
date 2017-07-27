@@ -98,4 +98,3 @@ class Role
         return $this->user;
     }
 }
-

@@ -95,4 +95,3 @@ class PersonProgress
         return $this->progress;
     }
 }
-

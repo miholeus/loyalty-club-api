@@ -226,4 +226,3 @@ class EmailDispatchTo
         return $this->ed;
     }
 }
-

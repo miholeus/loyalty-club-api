@@ -226,4 +226,3 @@ class Document
         return $this->given;
     }
 }
-

@@ -197,4 +197,3 @@ class ClientApplication
         return $this->clubOwner;
     }
 }
-

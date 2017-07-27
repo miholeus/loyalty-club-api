@@ -226,4 +226,3 @@ class PromoSmsOut
         return $this->smsIn;
     }
 }
-

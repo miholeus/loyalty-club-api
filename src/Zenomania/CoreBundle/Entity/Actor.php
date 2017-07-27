@@ -400,4 +400,3 @@ class Actor
         return $this->person;
     }
 }
-

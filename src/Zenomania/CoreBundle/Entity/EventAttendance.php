@@ -243,4 +243,3 @@ class EventAttendance
         return $this->personPoint;
     }
 }
-

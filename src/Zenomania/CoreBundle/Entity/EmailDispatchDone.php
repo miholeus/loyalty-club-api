@@ -168,4 +168,3 @@ class EmailDispatchDone
         return $this->emailDispatch;
     }
 }
-

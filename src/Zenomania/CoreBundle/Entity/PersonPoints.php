@@ -197,4 +197,3 @@ class PersonPoints
         return $this->person;
     }
 }
-

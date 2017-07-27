@@ -417,4 +417,3 @@ class Subscription
         return $this->personPoint;
     }
 }
-

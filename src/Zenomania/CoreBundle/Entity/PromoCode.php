@@ -313,4 +313,3 @@ class PromoCode
         return $this->ticket;
     }
 }
-

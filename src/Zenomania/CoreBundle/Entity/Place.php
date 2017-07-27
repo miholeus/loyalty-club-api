@@ -197,4 +197,3 @@ class Place
         return $this->description;
     }
 }
-

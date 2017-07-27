@@ -226,4 +226,3 @@ class EventAttendanceTicket
         return $this->person;
     }
 }
-

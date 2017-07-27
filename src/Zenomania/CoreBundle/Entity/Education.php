@@ -52,4 +52,3 @@ class Education
         return $this->name;
     }
 }
-

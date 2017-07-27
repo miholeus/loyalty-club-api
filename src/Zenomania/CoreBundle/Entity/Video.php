@@ -272,4 +272,3 @@ class Video
         return $this->person;
     }
 }
-

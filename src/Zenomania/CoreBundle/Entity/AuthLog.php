@@ -139,4 +139,3 @@ class AuthLog
         return $this->person;
     }
 }
-

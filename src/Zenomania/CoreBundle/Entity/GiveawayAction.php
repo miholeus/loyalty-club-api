@@ -243,4 +243,3 @@ class GiveawayAction
         return $this->personPoint;
     }
 }
-

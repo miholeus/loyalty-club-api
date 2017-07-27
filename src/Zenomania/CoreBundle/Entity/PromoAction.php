@@ -197,4 +197,3 @@ class PromoAction
         return $this->clubOwner;
     }
 }
-

@@ -139,4 +139,3 @@ class EventOutSpot
         return $this->purchase;
     }
 }
-

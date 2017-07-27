@@ -197,4 +197,3 @@ class PromoEmailIn
         return $this->person;
     }
 }
-

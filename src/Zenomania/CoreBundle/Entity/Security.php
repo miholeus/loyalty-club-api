@@ -139,4 +139,3 @@ class Security
         return $this->comment;
     }
 }
-

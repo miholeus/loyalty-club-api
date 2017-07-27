@@ -342,4 +342,3 @@ class Ticket
         return $this->person;
     }
 }
-

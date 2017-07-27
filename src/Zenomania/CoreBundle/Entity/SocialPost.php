@@ -458,4 +458,3 @@ class SocialPost
         return $this->moder;
     }
 }
-

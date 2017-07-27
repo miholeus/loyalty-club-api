@@ -52,4 +52,3 @@ class EventAttendancePlacebuy
         return $this->name;
     }
 }
-

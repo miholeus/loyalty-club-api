@@ -255,4 +255,3 @@ class EmailDispatch
         return $this->createdActor;
     }
 }
-

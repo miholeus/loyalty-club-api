@@ -185,4 +185,3 @@ class PromoCoupon
         return $this->personPoint;
     }
 }
-

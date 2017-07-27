@@ -168,4 +168,3 @@ class SocialToken
         return $this->secret;
     }
 }
-

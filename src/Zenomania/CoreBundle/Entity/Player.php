@@ -185,4 +185,3 @@ class Player
         return $this->person;
     }
 }
-

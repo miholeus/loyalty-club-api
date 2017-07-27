@@ -168,4 +168,3 @@ class PromoCodeDistribution
         return $this->area;
     }
 }
-

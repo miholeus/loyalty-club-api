@@ -110,4 +110,3 @@ class EventCondition
         return $this->event;
     }
 }
-

@@ -139,4 +139,3 @@ class EventMap
         return $this->event;
     }
 }
-

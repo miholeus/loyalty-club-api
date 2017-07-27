@@ -255,4 +255,3 @@ class PromoSmsIn
         return $this->person;
     }
 }
-

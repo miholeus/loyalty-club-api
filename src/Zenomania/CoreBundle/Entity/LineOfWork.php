@@ -52,4 +52,3 @@ class LineOfWork
         return $this->name;
     }
 }
-

@@ -168,4 +168,3 @@ class LogCallcenter
         return $this->new;
     }
 }
-

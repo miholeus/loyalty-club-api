@@ -388,4 +388,3 @@ class Club
         return $this->person;
     }
 }
-

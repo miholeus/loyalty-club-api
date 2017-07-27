@@ -226,4 +226,3 @@ class SocialPostAttachments
         return $this->post;
     }
 }
-
