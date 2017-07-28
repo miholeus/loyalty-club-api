@@ -42,5 +42,6 @@ Zenomania\CoreBundle\Entity\Player:
             joinColumns:
                 club:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

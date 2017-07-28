@@ -2,7 +2,7 @@ Zenomania\CoreBundle\Entity\Sport:
     type: entity
     table: sport
     uniqueConstraints:
-        name:
+        sport__name__unique:
             columns:
                 - name
     id:

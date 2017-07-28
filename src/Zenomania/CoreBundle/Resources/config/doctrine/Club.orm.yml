@@ -98,6 +98,7 @@ Zenomania\CoreBundle\Entity\Club:
             joinColumns:
                 sport:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     oneToMany:
         person:

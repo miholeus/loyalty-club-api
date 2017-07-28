@@ -2,13 +2,13 @@ Zenomania\CoreBundle\Entity\PromoEmailIn:
     type: entity
     table: promo_email_in
     indexes:
-        email:
+        promo_email_in__email:
             columns:
                 - email
-        token:
+        promo_email_in__token:
             columns:
                 - token
-        FK_promo_email_in_person:
+        promo_email_in__person:
             columns:
                 - person
     id:
@@ -61,5 +61,6 @@ Zenomania\CoreBundle\Entity\PromoEmailIn:
             joinColumns:
                 person:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

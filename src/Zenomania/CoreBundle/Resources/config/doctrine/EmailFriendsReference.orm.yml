@@ -2,10 +2,10 @@ Zenomania\CoreBundle\Entity\EmailFriendsReference:
     type: entity
     table: email_friends_reference
     indexes:
-        email:
+        email_friends_reference__email:
             columns:
                 - email
-        person_id:
+        email_friends_reference__person_id:
             columns:
                 - person_id
     id:
@@ -51,5 +51,6 @@ Zenomania\CoreBundle\Entity\EmailFriendsReference:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

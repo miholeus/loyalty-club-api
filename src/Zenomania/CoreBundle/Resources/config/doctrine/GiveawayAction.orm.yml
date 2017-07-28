@@ -5,7 +5,7 @@ Zenomania\CoreBundle\Entity\GiveawayAction:
         FK_giveaway_action_actor:
             columns:
                 - actor_id
-        name:
+        giveaway_action__name:
             columns:
                 - name
     id:
@@ -53,5 +53,6 @@ Zenomania\CoreBundle\Entity\GiveawayAction:
             joinColumns:
                 actor_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

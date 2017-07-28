@@ -31,5 +31,6 @@ Zenomania\CoreBundle\Entity\PushDeviceId:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

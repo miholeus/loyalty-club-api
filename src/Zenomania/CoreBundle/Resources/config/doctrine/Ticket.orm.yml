@@ -2,34 +2,34 @@ Zenomania\CoreBundle\Entity\Ticket:
     type: entity
     table: ticket
     indexes:
-        FK_ticket_event:
+        ticket__event:
             columns:
                 - event_id
-        FK_ticket_fan_card:
+        ticket__fan_card:
             columns:
                 - fan_card_id
-        state:
+        ticket__state:
             columns:
                 - state
-        number:
+        ticket__number:
             columns:
                 - number
-        IDX_97A0ADA3217BBB47:
+        ticket__person_id:
             columns:
                 - person_id
     uniqueConstraints:
-        stand_sector_row_seat:
+        ticket__stand_sector_row_seat:
             columns:
                 - event_id
                 - stand
                 - sector
                 - row
                 - seat
-        event_id_number:
+        ticket__event_id_number:
             columns:
                 - event_id
                 - number
-        person_id_event_id:
+        ticket__event_id_by_person:
             columns:
                 - person_id
                 - event_id
@@ -113,6 +113,7 @@ Zenomania\CoreBundle\Entity\Ticket:
             joinColumns:
                 event_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         person:
             targetEntity: Person
@@ -123,5 +124,6 @@ Zenomania\CoreBundle\Entity\Ticket:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

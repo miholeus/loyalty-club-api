@@ -2,7 +2,7 @@ Zenomania\CoreBundle\Entity\PointsStatus:
     type: entity
     table: points_status
     uniqueConstraints:
-        points:
+        point_status__points:
             columns:
                 - points
                 - title

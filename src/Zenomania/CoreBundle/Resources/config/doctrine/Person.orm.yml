@@ -14,20 +14,20 @@ Zenomania\CoreBundle\Entity\Person:
         FK_person_district:
             columns:
                 - district
-        email:
+        person__email:
             columns:
                 - email
-        FK_person_club:
+        person__club:
             columns:
                 - club_owner
-        reg_type_name_ix:
+        person__reg_type_name:
             columns:
                 - reg_type_name
     uniqueConstraints:
-        promo_code:
+        person__promo_code:
             columns:
                 - promo_code
-        club_owner_mobile:
+        person__club_owner_mobile:
             columns:
                 - club_owner
                 - mobile
@@ -221,6 +221,7 @@ Zenomania\CoreBundle\Entity\Person:
             joinColumns:
                 city:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         clubOwner:
             targetEntity: Zenomania\CoreBundle\Entity\Club
@@ -231,6 +232,7 @@ Zenomania\CoreBundle\Entity\Person:
             joinColumns:
                 club_owner:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         district:
             targetEntity: District
@@ -241,6 +243,7 @@ Zenomania\CoreBundle\Entity\Person:
             joinColumns:
                 district:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         education:
             targetEntity: Education
@@ -251,6 +254,7 @@ Zenomania\CoreBundle\Entity\Person:
             joinColumns:
                 education:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         lineOfWork:
             targetEntity: LineOfWork
@@ -261,6 +265,7 @@ Zenomania\CoreBundle\Entity\Person:
             joinColumns:
                 line_of_work:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     manyToMany:
         fancard:
@@ -283,10 +288,12 @@ Zenomania\CoreBundle\Entity\Person:
                     -
                         name: person_id
                         referencedColumnName: id
+                        onDelete: CASCADE
                 inverseJoinColumns:
                     -
                         name: activity_id
                         referencedColumnName: id
+                        onDelete: CASCADE
             orderBy: null
         video:
             targetEntity: Zenomania\CoreBundle\Entity\Video
@@ -300,9 +307,11 @@ Zenomania\CoreBundle\Entity\Person:
                     -
                         name: person_id
                         referencedColumnName: id
+                        onDelete: CASCADE
                 inverseJoinColumns:
                     -
                         name: video_id
                         referencedColumnName: id
+                        onDelete: CASCADE
             orderBy: null
     lifecycleCallbacks: {  }

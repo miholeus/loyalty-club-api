@@ -12,17 +12,17 @@ Zenomania\CoreBundle\Entity\Subscription:
             columns:
                 - season
     uniqueConstraints:
-        stand_sector_row_seat:
+        subscription__stand_sector_row_seat:
             columns:
                 - stand
                 - sector
                 - row
                 - seat
-        serial_number:
+        subscription__serial_number:
             columns:
                 - serial
                 - number
-        person_id_fan_card_id:
+        subscription__person_id_fan_card_id:
             columns:
                 - person_id
                 - fan_card_id
@@ -101,6 +101,7 @@ Zenomania\CoreBundle\Entity\Subscription:
             joinColumns:
                 fan_card_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         person:
             targetEntity: Person
@@ -111,6 +112,7 @@ Zenomania\CoreBundle\Entity\Subscription:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         season:
             targetEntity: PromoAction
@@ -121,5 +123,6 @@ Zenomania\CoreBundle\Entity\Subscription:
             joinColumns:
                 season:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -72,5 +72,6 @@ Zenomania\CoreBundle\Entity\SocialPostAttachments:
             joinColumns:
                 post_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

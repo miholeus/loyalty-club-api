@@ -80,6 +80,7 @@ Zenomania\CoreBundle\Entity\PersonPurchase:
             joinColumns:
                 item_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         how2get:
             targetEntity: ItemHow2get
@@ -90,6 +91,7 @@ Zenomania\CoreBundle\Entity\PersonPurchase:
             joinColumns:
                 how2get:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         person:
             targetEntity: Person
@@ -100,5 +102,6 @@ Zenomania\CoreBundle\Entity\PersonPurchase:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

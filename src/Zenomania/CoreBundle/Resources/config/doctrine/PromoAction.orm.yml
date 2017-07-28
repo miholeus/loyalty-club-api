@@ -2,7 +2,7 @@ Zenomania\CoreBundle\Entity\PromoAction:
     type: entity
     table: promo_action
     indexes:
-        FK_promo_action_club:
+        promo_action__club:
             columns:
                 - club_owner
     id:
@@ -50,5 +50,6 @@ Zenomania\CoreBundle\Entity\PromoAction:
             joinColumns:
                 club_owner:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -2,7 +2,7 @@ Zenomania\CoreBundle\Entity\EventCondition:
     type: entity
     table: event_condition
     indexes:
-        FK__event:
+        event_condition__event_id:
             columns:
                 - event_id
     id:
@@ -34,5 +34,6 @@ Zenomania\CoreBundle\Entity\EventCondition:
             joinColumns:
                 event_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

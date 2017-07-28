@@ -2,7 +2,7 @@ Zenomania\CoreBundle\Entity\SmsOut:
     type: entity
     table: sms_out
     indexes:
-        to_mobile:
+        sms_out__to_mobile:
             columns:
                 - to_mobile
     id:

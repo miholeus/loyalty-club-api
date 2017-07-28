@@ -2,7 +2,7 @@ Zenomania\CoreBundle\Entity\EventMap:
     type: entity
     table: event_map
     indexes:
-        FK_event_map_event:
+        event_map_event:
             columns:
                 - event_id
         IDX_82626F687987212D:
@@ -45,6 +45,7 @@ Zenomania\CoreBundle\Entity\EventMap:
             joinColumns:
                 app_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         event:
             targetEntity: Event
@@ -55,5 +56,6 @@ Zenomania\CoreBundle\Entity\EventMap:
             joinColumns:
                 event_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

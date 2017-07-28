@@ -2,31 +2,31 @@ Zenomania\CoreBundle\Entity\PromoCode:
     type: entity
     table: promo_code
     indexes:
-        promo_used:
+        promo_code__promo_used:
             columns:
                 - used
-        promo_action:
+        promo_code__promo_action:
             columns:
                 - action
-        ticket:
+        promo_code__ticket:
             columns:
                 - ticket
-        code:
+        promo_code__code:
             columns:
                 - code
-        barcode:
+        promo_code__barcode:
             columns:
                 - barcode
-        electronic:
+        promo_code__electronic:
             columns:
                 - electronic
-        email:
+        promo_code__email:
             columns:
                 - email
-        outer_id:
+        promo_code__outer_id:
             columns:
                 - outer_id
-        activated_dt:
+        promo_code__activated_dt:
             columns:
                 - activated_dt
     uniqueConstraints:
@@ -94,6 +94,7 @@ Zenomania\CoreBundle\Entity\PromoCode:
             joinColumns:
                 action:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         sms:
             targetEntity: PromoSmsIn
@@ -104,6 +105,7 @@ Zenomania\CoreBundle\Entity\PromoCode:
             joinColumns:
                 sms:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         ticket:
             targetEntity: Ticket
@@ -114,5 +116,6 @@ Zenomania\CoreBundle\Entity\PromoCode:
             joinColumns:
                 ticket:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

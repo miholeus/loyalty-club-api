@@ -39,6 +39,7 @@ Zenomania\CoreBundle\Entity\EventOutSpot:
             joinColumns:
                 event_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         purchase:
             targetEntity: PersonPurchase
@@ -49,5 +50,6 @@ Zenomania\CoreBundle\Entity\EventOutSpot:
             joinColumns:
                 purchase_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -55,5 +55,6 @@ Zenomania\CoreBundle\Entity\PromoCouponAction:
             joinColumns:
                 club_owner:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -2,13 +2,13 @@ Zenomania\CoreBundle\Entity\PersonPoints:
     type: entity
     table: person_points
     indexes:
-        person_id:
+        person_points__person_id:
             columns:
                 - person_id
-        type:
+        person_points__type:
             columns:
                 - type
-        FK_person_points_promo_action:
+        person_points__season_id:
             columns:
                 - season_id
     id:
@@ -53,6 +53,7 @@ Zenomania\CoreBundle\Entity\PersonPoints:
             joinColumns:
                 season_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         person:
             targetEntity: Person
@@ -63,5 +64,6 @@ Zenomania\CoreBundle\Entity\PersonPoints:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

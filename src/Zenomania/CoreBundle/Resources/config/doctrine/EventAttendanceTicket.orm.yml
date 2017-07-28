@@ -6,7 +6,7 @@ Zenomania\CoreBundle\Entity\EventAttendanceTicket:
             columns:
                 - person_id
     uniqueConstraints:
-        barcode:
+        event_attance_ticket__barcode:
             columns:
                 - barcode
     id:
@@ -14,8 +14,7 @@ Zenomania\CoreBundle\Entity\EventAttendanceTicket:
             type: integer
             nullable: false
             options:
-                unsigned: false
-                default: '0'
+                unsigned: true
             id: true
             generator:
                 strategy: IDENTITY
@@ -65,5 +64,6 @@ Zenomania\CoreBundle\Entity\EventAttendanceTicket:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

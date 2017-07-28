@@ -59,6 +59,7 @@ Zenomania\CoreBundle\Entity\SocialRepost:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         post:
             targetEntity: SocialPost
@@ -69,5 +70,6 @@ Zenomania\CoreBundle\Entity\SocialRepost:
             joinColumns:
                 post_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

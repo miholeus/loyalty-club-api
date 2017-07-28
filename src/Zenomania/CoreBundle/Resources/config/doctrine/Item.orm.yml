@@ -8,7 +8,7 @@ Zenomania\CoreBundle\Entity\Item:
         FK_item_event:
             columns:
                 - event_id
-        sortorder_ix:
+        item__sortorder_ix:
             columns:
                 - sortorder
     id:
@@ -97,6 +97,7 @@ Zenomania\CoreBundle\Entity\Item:
             joinColumns:
                 event_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         how2get:
             targetEntity: ItemHow2get
@@ -107,5 +108,6 @@ Zenomania\CoreBundle\Entity\Item:
             joinColumns:
                 how2get:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

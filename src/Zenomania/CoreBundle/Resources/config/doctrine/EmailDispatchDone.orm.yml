@@ -28,8 +28,6 @@ Zenomania\CoreBundle\Entity\EmailDispatchDone:
         date:
             type: datetime
             nullable: false
-            options:
-                default: '0000-00-00 00:00:00'
         state:
             type: string
             nullable: true
@@ -46,6 +44,7 @@ Zenomania\CoreBundle\Entity\EmailDispatchDone:
             joinColumns:
                 actor:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         emailDispatch:
             targetEntity: EmailDispatch
@@ -56,5 +55,6 @@ Zenomania\CoreBundle\Entity\EmailDispatchDone:
             joinColumns:
                 email_dispatch:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

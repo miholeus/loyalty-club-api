@@ -2,25 +2,25 @@ Zenomania\CoreBundle\Entity\SocialPost:
     type: entity
     table: social_post
     indexes:
-        moder:
+        social_post__moder:
             columns:
                 - moder
-        group_id:
+        social_post__group_id:
             columns:
                 - group_id
-        likes:
+        social_post__likes:
             columns:
                 - likes
-        views:
+        social_post__views:
             columns:
                 - views
-        club_id:
+        social_post__club_id:
             columns:
                 - club_id
-        date:
+        social_post__date:
             columns:
                 - date
-        network:
+        social_post__network:
             columns:
                 - network
     uniqueConstraints:

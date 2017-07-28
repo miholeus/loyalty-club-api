@@ -5,7 +5,7 @@ Zenomania\CoreBundle\Entity\PersonEventForecast:
         FK_person_event_forecast_event:
             columns:
                 - event_id
-        dt:
+        person_event_forecast__dt:
             columns:
                 - dt
         IDX_89ADA1AA217BBB47:
@@ -51,6 +51,7 @@ Zenomania\CoreBundle\Entity\PersonEventForecast:
             joinColumns:
                 event_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         person:
             targetEntity: Person
@@ -61,5 +62,6 @@ Zenomania\CoreBundle\Entity\PersonEventForecast:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

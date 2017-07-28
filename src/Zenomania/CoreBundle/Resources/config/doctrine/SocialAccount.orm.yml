@@ -2,28 +2,28 @@ Zenomania\CoreBundle\Entity\SocialAccount:
     type: entity
     table: social_account
     indexes:
-        FK_social_account_person:
+        social_account__person:
             columns:
                 - person_id
-        sex:
+        social_account__sex:
             columns:
                 - sex
-        bdate:
+        social_account__bdate:
             columns:
                 - bdate
-        country:
+        social_account__country:
             columns:
                 - country
-        city:
+        social_account__city:
             columns:
                 - city
-        mobile_phone:
+        social_account__mobile_phone:
             columns:
                 - mobile_phone
-        home_phone:
+        social_account__home_phone:
             columns:
                 - home_phone
-        club_id:
+        social_account__club_id:
             columns:
                 - club_id
     uniqueConstraints:
@@ -157,5 +157,6 @@ Zenomania\CoreBundle\Entity\SocialAccount:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -72,5 +72,6 @@ Zenomania\CoreBundle\Entity\EmailDispatchTo:
             joinColumns:
                 ed_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

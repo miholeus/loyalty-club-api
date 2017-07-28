@@ -2,7 +2,7 @@ Zenomania\CoreBundle\Entity\News:
     type: entity
     table: news
     indexes:
-        dt_start_dt_end:
+        news__date__indx:
             columns:
                 - dt_start
                 - dt_end

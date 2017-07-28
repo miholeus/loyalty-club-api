@@ -2,7 +2,7 @@ Zenomania\CoreBundle\Entity\EventAttendanceImport:
     type: entity
     table: event_attendance_import
     indexes:
-        ticket_number:
+        event_attendance_import__ticket_number:
             columns:
                 - ticket_number
         FK_event_attendance_import_person:
@@ -92,6 +92,7 @@ Zenomania\CoreBundle\Entity\EventAttendanceImport:
             joinColumns:
                 event_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         person:
             targetEntity: Person
@@ -102,5 +103,6 @@ Zenomania\CoreBundle\Entity\EventAttendanceImport:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

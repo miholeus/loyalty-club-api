@@ -68,6 +68,7 @@ Zenomania\CoreBundle\Entity\EmailOut:
             joinColumns:
                 from_person:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         toPerson:
             targetEntity: Person
@@ -78,5 +79,6 @@ Zenomania\CoreBundle\Entity\EmailOut:
             joinColumns:
                 to_person:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

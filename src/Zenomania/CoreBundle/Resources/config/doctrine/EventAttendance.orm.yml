@@ -50,6 +50,7 @@ Zenomania\CoreBundle\Entity\EventAttendance:
             joinColumns:
                 event_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         person:
             targetEntity: Person
@@ -60,5 +61,6 @@ Zenomania\CoreBundle\Entity\EventAttendance:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

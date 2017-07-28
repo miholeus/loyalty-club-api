@@ -2,7 +2,7 @@ Zenomania\CoreBundle\Entity\Document:
     type: entity
     table: document
     uniqueConstraints:
-        person_id_type:
+        document__person_id_type:
             columns:
                 - person_id
                 - type

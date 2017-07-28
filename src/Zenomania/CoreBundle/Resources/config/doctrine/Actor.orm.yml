@@ -6,18 +6,18 @@ Zenomania\CoreBundle\Entity\Actor:
             columns:
                 - club_owner
     uniqueConstraints:
-        club_owner_username:
+        actor__club_owner_username:
             columns:
                 - club_owner
                 - username
-        person:
+        actor__person:
             columns:
                 - person
-        club_owner_vk_id:
+        actor__club_owner_vk_id:
             columns:
                 - club_owner
                 - vk_id
-        club_owner_fb_id:
+        actor__club_owner_fb_id:
             columns:
                 - club_owner
                 - fb_id
@@ -119,6 +119,7 @@ Zenomania\CoreBundle\Entity\Actor:
             joinColumns:
                 club_owner:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         person:
             targetEntity: Person
@@ -129,5 +130,6 @@ Zenomania\CoreBundle\Entity\Actor:
             joinColumns:
                 person:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

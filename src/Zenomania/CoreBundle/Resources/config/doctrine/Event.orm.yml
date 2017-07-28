@@ -17,7 +17,7 @@ Zenomania\CoreBundle\Entity\Event:
         FK_event_promo_action:
             columns:
                 - promo_action
-        date:
+        event__date:
             columns:
                 - date
     id:
@@ -79,6 +79,7 @@ Zenomania\CoreBundle\Entity\Event:
             joinColumns:
                 club_home:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         clubGuest:
             targetEntity: Club
@@ -89,6 +90,7 @@ Zenomania\CoreBundle\Entity\Event:
             joinColumns:
                 club_guest:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         place:
             targetEntity: Place
@@ -99,6 +101,7 @@ Zenomania\CoreBundle\Entity\Event:
             joinColumns:
                 place_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         promoAction:
             targetEntity: PromoAction
@@ -109,6 +112,7 @@ Zenomania\CoreBundle\Entity\Event:
             joinColumns:
                 promo_action:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         sport:
             targetEntity: Sport
@@ -119,5 +123,6 @@ Zenomania\CoreBundle\Entity\Event:
             joinColumns:
                 sport_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

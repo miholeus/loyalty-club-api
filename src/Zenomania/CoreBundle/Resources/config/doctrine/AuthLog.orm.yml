@@ -2,10 +2,10 @@ Zenomania\CoreBundle\Entity\AuthLog:
     type: entity
     table: auth_log
     indexes:
-        dt:
+        auth_log__dt:
             columns:
                 - dt
-        FK1_person_id:
+        auth_log__person_id:
             columns:
                 - person_id
     id:
@@ -43,5 +43,6 @@ Zenomania\CoreBundle\Entity\AuthLog:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

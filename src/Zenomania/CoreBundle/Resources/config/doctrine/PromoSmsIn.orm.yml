@@ -2,10 +2,10 @@ Zenomania\CoreBundle\Entity\PromoSmsIn:
     type: entity
     table: promo_sms_in
     indexes:
-        frommobile:
+        promo_sms_in__frommobile:
             columns:
                 - frommobile
-        FK_promo_sms_in_person:
+        promo_sms_in__person_id:
             columns:
                 - person_id
     id:
@@ -68,5 +68,6 @@ Zenomania\CoreBundle\Entity\PromoSmsIn:
             joinColumns:
                 person_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

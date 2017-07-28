@@ -32,5 +32,6 @@ Zenomania\CoreBundle\Entity\PersonProgress:
             joinColumns:
                 progress_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

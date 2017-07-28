@@ -2,19 +2,19 @@ Zenomania\CoreBundle\Entity\PromoCodeDistribution:
     type: entity
     table: promo_code_distribution
     indexes:
-        promo_action_id:
+        promo_code_distribution__promo_action_id:
             columns:
                 - promo_action_id
-        number_start:
+        promo_code_distribution__number_start:
             columns:
                 - number_start
-        number_end:
+        promo_code_distribution__number_end:
             columns:
                 - number_end
-        area_id:
+        promo_code_distribution__area_id:
             columns:
                 - area_id
-        FK_promo_code_distribution_event:
+        promo_code_distribution__event_id:
             columns:
                 - event_id
     uniqueConstraints:
@@ -57,6 +57,7 @@ Zenomania\CoreBundle\Entity\PromoCodeDistribution:
             joinColumns:
                 event_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
         promoAction:
             targetEntity: PromoAction
@@ -70,6 +71,7 @@ Zenomania\CoreBundle\Entity\PromoCodeDistribution:
             orphanRemoval: false
         area:
             targetEntity: PromoCodeDistributionArea
+            onDelete: CASCADE
             cascade: {  }
             fetch: LAZY
             mappedBy: null
@@ -77,5 +79,6 @@ Zenomania\CoreBundle\Entity\PromoCodeDistribution:
             joinColumns:
                 area_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }

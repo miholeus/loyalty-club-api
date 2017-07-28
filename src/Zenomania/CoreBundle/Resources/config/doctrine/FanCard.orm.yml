@@ -85,9 +85,11 @@ Zenomania\CoreBundle\Entity\FanCard:
                     -
                         name: fancard_id
                         referencedColumnName: id
+                        onDelete: CASCADE
                 inverseJoinColumns:
                     -
                         name: person_id
                         referencedColumnName: id
+                        onDelete: CASCADE
             orderBy: null
     lifecycleCallbacks: {  }
