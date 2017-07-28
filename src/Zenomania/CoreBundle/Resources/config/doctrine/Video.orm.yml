@@ -57,12 +57,12 @@ Zenomania\CoreBundle\Entity\Video:
                 unsigned: false
             column: actor_id
     manyToMany:
-        person:
-            targetEntity: Person
+        persons:
+            targetEntity: Zenomania\CoreBundle\Entity\Person
             cascade: {  }
             fetch: LAZY
-            mappedBy: null
-            inversedBy: video
+            mappedBy: video
+            inversedBy: null
             joinTable:
                 name: video_view
                 joinColumns:

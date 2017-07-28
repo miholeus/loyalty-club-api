@@ -99,12 +99,12 @@ Zenomania\CoreBundle\Entity\Club:
                 sport:
                     referencedColumnName: id
             orphanRemoval: false
-    manyToMany:
+    oneToMany:
         person:
             targetEntity: Zenomania\CoreBundle\Entity\Person
             cascade: {  }
             fetch: LAZY
-            mappedBy: club
+            mappedBy: clubOwner
             inversedBy: null
             joinTable: null
             orderBy: null

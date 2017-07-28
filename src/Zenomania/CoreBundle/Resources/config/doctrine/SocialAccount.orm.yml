@@ -158,13 +158,4 @@ Zenomania\CoreBundle\Entity\SocialAccount:
                 person_id:
                     referencedColumnName: id
             orphanRemoval: false
-    manyToMany:
-        personPoint:
-            targetEntity: PersonPoints
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: socialAccount
-            inversedBy: null
-            joinTable: null
-            orderBy: null
     lifecycleCallbacks: {  }

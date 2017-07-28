@@ -288,4 +288,21 @@ Zenomania\CoreBundle\Entity\Person:
                         name: activity_id
                         referencedColumnName: id
             orderBy: null
+        video:
+            targetEntity: Zenomania\CoreBundle\Entity\Video
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: persons
+            joinTable:
+                name: video_view
+                joinColumns:
+                    -
+                        name: person_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: video_id
+                        referencedColumnName: id
+            orderBy: null
     lifecycleCallbacks: {  }

@@ -122,13 +122,4 @@ Zenomania\CoreBundle\Entity\Subscription:
                 season:
                     referencedColumnName: id
             orphanRemoval: false
-    manyToMany:
-        personPoint:
-            targetEntity: PersonPoints
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: subscription
-            inversedBy: null
-            joinTable: null
-            orderBy: null
     lifecycleCallbacks: {  }

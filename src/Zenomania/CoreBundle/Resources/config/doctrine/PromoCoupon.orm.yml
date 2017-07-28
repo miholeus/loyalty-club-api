@@ -46,13 +46,4 @@ Zenomania\CoreBundle\Entity\PromoCoupon:
                 pcaction:
                     referencedColumnName: id
             orphanRemoval: false
-    manyToMany:
-        personPoint:
-            targetEntity: PersonPoints
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: promoCoupon
-            inversedBy: null
-            joinTable: null
-            orderBy: null
     lifecycleCallbacks: {  }

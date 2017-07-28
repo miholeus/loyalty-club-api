@@ -22,13 +22,4 @@ Zenomania\CoreBundle\Entity\Sport:
             options:
                 fixed: false
                 default: '0'
-    manyToMany:
-        person:
-            targetEntity: Person
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: sport
-            inversedBy: null
-            joinTable: null
-            orderBy: null
     lifecycleCallbacks: {  }

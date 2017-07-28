@@ -77,7 +77,18 @@ class Actor
      */
     private $person;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $roles;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     /**
      * Get id
      *
@@ -398,5 +409,39 @@ class Actor
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Add role
+     *
+     * @param \Zenomania\CoreBundle\Entity\Role $role
+     *
+     * @return Actor
+     */
+    public function addRole(\Zenomania\CoreBundle\Entity\Role $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * Remove role
+     *
+     * @param \Zenomania\CoreBundle\Entity\Role $role
+     */
+    public function removeRole(\Zenomania\CoreBundle\Entity\Role $role)
+    {
+        $this->roles->removeElement($role);
+    }
+
+    /**
+     * Get roles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRoles()
+    {
+        return $this->roles;
     }
 }

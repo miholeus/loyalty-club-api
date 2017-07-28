@@ -20,14 +20,14 @@ class Role
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $user;
+    private $users;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -73,7 +73,7 @@ class Role
      */
     public function addUser(\Zenomania\CoreBundle\Entity\Actor $user)
     {
-        $this->user[] = $user;
+        $this->users[] = $user;
 
         return $this;
     }
@@ -85,16 +85,17 @@ class Role
      */
     public function removeUser(\Zenomania\CoreBundle\Entity\Actor $user)
     {
-        $this->user->removeElement($user);
+        $this->users->removeElement($user);
     }
 
+
     /**
-     * Get user
+     * Get users
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUser()
+    public function getUsers()
     {
-        return $this->user;
+        return $this->users;
     }
 }

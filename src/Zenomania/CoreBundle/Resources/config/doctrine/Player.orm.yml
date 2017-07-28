@@ -43,13 +43,4 @@ Zenomania\CoreBundle\Entity\Player:
                 club:
                     referencedColumnName: id
             orphanRemoval: false
-    manyToMany:
-        person:
-            targetEntity: Person
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: player
-            inversedBy: null
-            joinTable: null
-            orderBy: null
     lifecycleCallbacks: {  }

@@ -54,13 +54,4 @@ Zenomania\CoreBundle\Entity\GiveawayAction:
                 actor_id:
                     referencedColumnName: id
             orphanRemoval: false
-    manyToMany:
-        personPoint:
-            targetEntity: PersonPoints
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: giveaway
-            inversedBy: null
-            joinTable: null
-            orderBy: null
     lifecycleCallbacks: {  }

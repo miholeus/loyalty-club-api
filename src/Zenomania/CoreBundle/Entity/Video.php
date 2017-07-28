@@ -50,14 +50,14 @@ class Video
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $person;
+    private $persons;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->person = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->persons = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -247,7 +247,7 @@ class Video
      */
     public function addPerson(\Zenomania\CoreBundle\Entity\Person $person)
     {
-        $this->person[] = $person;
+        $this->persons[] = $person;
 
         return $this;
     }
@@ -259,16 +259,16 @@ class Video
      */
     public function removePerson(\Zenomania\CoreBundle\Entity\Person $person)
     {
-        $this->person->removeElement($person);
+        $this->persons->removeElement($person);
     }
 
     /**
-     * Get person
+     * Get persons
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPerson()
+    public function getPersons()
     {
-        return $this->person;
+        return $this->persons;
     }
 }

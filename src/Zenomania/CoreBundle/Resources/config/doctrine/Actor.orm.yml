@@ -101,6 +101,14 @@ Zenomania\CoreBundle\Entity\Actor:
             options:
                 fixed: false
             column: reg_source
+    manyToMany:
+        roles:
+            targetEntity: Zenomania\CoreBundle\Entity\Role
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: users
+            inversedBy: null
+            orphanRemoval: false
     manyToOne:
         clubOwner:
             targetEntity: Club

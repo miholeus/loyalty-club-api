@@ -18,12 +18,12 @@ Zenomania\CoreBundle\Entity\Role:
             options:
                 fixed: false
     manyToMany:
-        user:
-            targetEntity: Actor
+        users:
+            targetEntity: Zenomania\CoreBundle\Entity\Actor
             cascade: {  }
             fetch: LAZY
-            mappedBy: role
-            inversedBy: null
+            mappedBy: null
+            inversedBy: roles
             joinTable: null
             orderBy: null
     lifecycleCallbacks: {  }
