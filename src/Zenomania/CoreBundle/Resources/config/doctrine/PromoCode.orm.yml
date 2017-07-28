@@ -1,34 +1,19 @@
 Zenomania\CoreBundle\Entity\PromoCode:
     type: entity
-    table: promo_code
+    table: promo_codes
     indexes:
-        promo_code__promo_used:
-            columns:
-                - used
         promo_code__promo_action:
             columns:
                 - action
         promo_code__ticket:
             columns:
                 - ticket
-        promo_code__code:
-            columns:
-                - code
         promo_code__barcode:
             columns:
                 - barcode
-        promo_code__electronic:
-            columns:
-                - electronic
         promo_code__email:
             columns:
                 - email
-        promo_code__outer_id:
-            columns:
-                - outer_id
-        promo_code__activated_dt:
-            columns:
-                - activated_dt
     uniqueConstraints:
         code_ticket:
             columns:
