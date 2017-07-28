@@ -1,6 +1,6 @@
 Zenomania\CoreBundle\Entity\PromoCode:
     type: entity
-    table: promo_codes
+    table: promo_code
     indexes:
         promo_code__promo_action:
             columns:

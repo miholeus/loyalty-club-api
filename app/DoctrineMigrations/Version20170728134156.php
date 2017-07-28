@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20170728133154 extends AbstractMigration
+class Version20170728134156 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -158,13 +158,13 @@ class Version20170728133154 extends AbstractMigration
         $this->addSql('CREATE TABLE progress_items (id SERIAL NOT NULL, progress_class CHAR(50) NOT NULL, progress_key CHAR(50) NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE promo_action (id SERIAL NOT NULL, club_owner INT DEFAULT NULL, name VARCHAR(256) NOT NULL, displayname VARCHAR(1024) NOT NULL, active BOOLEAN DEFAULT \'false\' NOT NULL, dt_start DATE DEFAULT NULL, dt_end DATE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX promo_action__club ON promo_action (club_owner)');
-        $this->addSql('CREATE TABLE promo_codes (id SERIAL NOT NULL, action INT DEFAULT NULL, sms INT DEFAULT NULL, ticket INT DEFAULT NULL, code VARCHAR(10) DEFAULT NULL, used INT DEFAULT 0 NOT NULL, electronic BOOLEAN DEFAULT \'false\' NOT NULL, email INT DEFAULT NULL, barcode BIGINT DEFAULT NULL, outer_id INT DEFAULT NULL, activated_dt TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE INDEX promo_code__promo_action ON promo_codes (action)');
-        $this->addSql('CREATE INDEX promo_code__ticket ON promo_codes (ticket)');
-        $this->addSql('CREATE INDEX promo_code__barcode ON promo_codes (barcode)');
-        $this->addSql('CREATE INDEX promo_code__email ON promo_codes (email)');
-        $this->addSql('CREATE UNIQUE INDEX code_ticket ON promo_codes (code, ticket)');
-        $this->addSql('CREATE UNIQUE INDEX sms ON promo_codes (sms)');
+        $this->addSql('CREATE TABLE promo_code (id SERIAL NOT NULL, action INT DEFAULT NULL, sms INT DEFAULT NULL, ticket INT DEFAULT NULL, code VARCHAR(10) DEFAULT NULL, used INT DEFAULT 0 NOT NULL, electronic BOOLEAN DEFAULT \'false\' NOT NULL, email INT DEFAULT NULL, barcode BIGINT DEFAULT NULL, outer_id INT DEFAULT NULL, activated_dt TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX promo_code__promo_action ON promo_code (action)');
+        $this->addSql('CREATE INDEX promo_code__ticket ON promo_code (ticket)');
+        $this->addSql('CREATE INDEX promo_code__barcode ON promo_code (barcode)');
+        $this->addSql('CREATE INDEX promo_code__email ON promo_code (email)');
+        $this->addSql('CREATE UNIQUE INDEX code_ticket ON promo_code (code, ticket)');
+        $this->addSql('CREATE UNIQUE INDEX sms ON promo_code (sms)');
         $this->addSql('CREATE TABLE promo_code_distribution (id SERIAL NOT NULL, event_id INT DEFAULT NULL, promo_action_id INT DEFAULT NULL, area_id INT DEFAULT NULL, number_start VARCHAR(50) NOT NULL, number_end VARCHAR(50) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX promo_code_distribution__promo_action_id ON promo_code_distribution (promo_action_id)');
         $this->addSql('CREATE INDEX promo_code_distribution__number_start ON promo_code_distribution (number_start)');
@@ -299,9 +299,9 @@ class Version20170728133154 extends AbstractMigration
         $this->addSql('ALTER TABLE person_purchase ADD CONSTRAINT FK_F551740C217BBB47 FOREIGN KEY (person_id) REFERENCES person (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE player ADD CONSTRAINT FK_98197A65B8EE3872 FOREIGN KEY (club) REFERENCES club (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE promo_action ADD CONSTRAINT FK_5E4993DF6F0ECCCE FOREIGN KEY (club_owner) REFERENCES club (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE promo_codes ADD CONSTRAINT FK_C84FDDB47CC8C92 FOREIGN KEY (action) REFERENCES promo_action (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE promo_codes ADD CONSTRAINT FK_C84FDDBB0A93A77 FOREIGN KEY (sms) REFERENCES promo_sms_in (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE promo_codes ADD CONSTRAINT FK_C84FDDB97A0ADA3 FOREIGN KEY (ticket) REFERENCES ticket (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE promo_code ADD CONSTRAINT FK_3D8C939E47CC8C92 FOREIGN KEY (action) REFERENCES promo_action (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE promo_code ADD CONSTRAINT FK_3D8C939EB0A93A77 FOREIGN KEY (sms) REFERENCES promo_sms_in (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE promo_code ADD CONSTRAINT FK_3D8C939E97A0ADA3 FOREIGN KEY (ticket) REFERENCES ticket (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE promo_code_distribution ADD CONSTRAINT FK_EB2F246971F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE promo_code_distribution ADD CONSTRAINT FK_EB2F2469B5F8978E FOREIGN KEY (promo_action_id) REFERENCES promo_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE promo_code_distribution ADD CONSTRAINT FK_EB2F2469BD0F409C FOREIGN KEY (area_id) REFERENCES promo_code_distribution_area (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -391,18 +391,18 @@ class Version20170728133154 extends AbstractMigration
         $this->addSql('ALTER TABLE person_progress DROP CONSTRAINT FK_B647577143DB87C9');
         $this->addSql('ALTER TABLE event DROP CONSTRAINT FK_3BAE0AA75E4993DF');
         $this->addSql('ALTER TABLE person_points DROP CONSTRAINT FK_BB1FBE9F4EC001D1');
-        $this->addSql('ALTER TABLE promo_codes DROP CONSTRAINT FK_C84FDDB47CC8C92');
+        $this->addSql('ALTER TABLE promo_code DROP CONSTRAINT FK_3D8C939E47CC8C92');
         $this->addSql('ALTER TABLE promo_code_distribution DROP CONSTRAINT FK_EB2F2469B5F8978E');
         $this->addSql('ALTER TABLE subscription DROP CONSTRAINT FK_A3C664D3F0E45BA9');
         $this->addSql('ALTER TABLE promo_code_distribution DROP CONSTRAINT FK_EB2F2469BD0F409C');
         $this->addSql('ALTER TABLE promo_coupon DROP CONSTRAINT FK_7D3A204F852235B0');
-        $this->addSql('ALTER TABLE promo_codes DROP CONSTRAINT FK_C84FDDBB0A93A77');
+        $this->addSql('ALTER TABLE promo_code DROP CONSTRAINT FK_3D8C939EB0A93A77');
         $this->addSql('ALTER TABLE role_actor DROP CONSTRAINT FK_B3A9BED6D60322AC');
         $this->addSql('ALTER TABLE social_post_attachments DROP CONSTRAINT FK_DF2A8F344B89032C');
         $this->addSql('ALTER TABLE social_repost DROP CONSTRAINT FK_C37F24194B89032C');
         $this->addSql('ALTER TABLE club DROP CONSTRAINT FK_B8EE38721A85EFD2');
         $this->addSql('ALTER TABLE event DROP CONSTRAINT FK_3BAE0AA7AC78BCF8');
-        $this->addSql('ALTER TABLE promo_codes DROP CONSTRAINT FK_C84FDDB97A0ADA3');
+        $this->addSql('ALTER TABLE promo_code DROP CONSTRAINT FK_3D8C939E97A0ADA3');
         $this->addSql('ALTER TABLE video_view DROP CONSTRAINT FK_F96AF65229C1004E');
         $this->addSql('DROP TABLE activity');
         $this->addSql('DROP TABLE actor');
@@ -448,7 +448,7 @@ class Version20170728133154 extends AbstractMigration
         $this->addSql('DROP TABLE points_status');
         $this->addSql('DROP TABLE progress_items');
         $this->addSql('DROP TABLE promo_action');
-        $this->addSql('DROP TABLE promo_codes');
+        $this->addSql('DROP TABLE promo_code');
         $this->addSql('DROP TABLE promo_code_distribution');
         $this->addSql('DROP TABLE promo_code_distribution_area');
         $this->addSql('DROP TABLE promo_coupon');
