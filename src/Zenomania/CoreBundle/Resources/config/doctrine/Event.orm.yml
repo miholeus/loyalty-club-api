@@ -52,22 +52,22 @@ Zenomania\CoreBundle\Entity\Event:
                 fixed: false
                 default: NA
         scoreHome:
-            type: boolean
-            nullable: false
+            type: smallint
+            nullable: true
             options:
-                default: '0'
+                default: 0
             column: score_home
         scoreGuest:
-            type: boolean
-            nullable: false
+            type: smallint
+            nullable: true
             options:
-                default: '0'
+                default: 0
             column: score_guest
         scoreSaved:
-            type: boolean
-            nullable: false
+            type: smallint
+            nullable: true
             options:
-                default: '0'
+                default: 0
             column: score_saved
     manyToOne:
         clubHome:

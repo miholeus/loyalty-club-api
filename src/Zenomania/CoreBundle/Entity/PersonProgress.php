@@ -17,12 +17,12 @@ class PersonProgress
      */
     private $dt;
 
-    /**
-     * @var \Zenomania\CoreBundle\Entity\ProgressItems
-     */
-    private $progress;
 
-
+    public function __construct(Person $person, ProgressItems $progress)
+    {
+        $this->personId = $person->getId();
+        $this->progressId = $progress->getId();
+    }
     /**
      * Set personId
      *
@@ -72,26 +72,31 @@ class PersonProgress
     }
 
     /**
-     * Set progress
-     *
-     * @param \Zenomania\CoreBundle\Entity\ProgressItems $progress
-     *
-     * @return PersonProgress
+     * @var integer
      */
-    public function setProgress(\Zenomania\CoreBundle\Entity\ProgressItems $progress = null)
-    {
-        $this->progress = $progress;
+    private $progressId;
 
-        return $this;
+    /**
+     * Get progressId
+     *
+     * @return integer
+     */
+    public function getProgressId()
+    {
+        return $this->progressId;
     }
 
     /**
-     * Get progress
+     * Set progressId
      *
-     * @return \Zenomania\CoreBundle\Entity\ProgressItems
+     * @param integer $progressId
+     *
+     * @return PersonProgress
      */
-    public function getProgress()
+    public function setProgressId($progressId)
     {
-        return $this->progress;
+        $this->progressId = $progressId;
+
+        return $this;
     }
 }

@@ -6,13 +6,14 @@ Zenomania\CoreBundle\Entity\PushDeviceId:
             columns:
                 - person_id
     id:
-        os:
-            type: string
+        id:
+            type: integer
             nullable: false
-            length: null
             options:
-                fixed: false
+                unsigned: true
             id: true
+            generator:
+                strategy: IDENTITY
     fields:
         deviceId:
             type: text
@@ -21,7 +22,13 @@ Zenomania\CoreBundle\Entity\PushDeviceId:
             options:
                 fixed: false
             column: device_id
-    oneToOne:
+        os:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: false
+    manyToOne:
         person:
             targetEntity: Person
             cascade: {  }

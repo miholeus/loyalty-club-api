@@ -8,6 +8,11 @@ namespace Zenomania\CoreBundle\Entity;
 class PushDeviceId
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $os;
@@ -93,5 +98,15 @@ class PushDeviceId
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

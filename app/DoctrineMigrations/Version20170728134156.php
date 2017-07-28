@@ -61,7 +61,7 @@ class Version20170728134156 extends AbstractMigration
         $this->addSql('CREATE TABLE email_out (id SERIAL NOT NULL, from_person INT DEFAULT NULL, to_person INT DEFAULT NULL, dt TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, from_email VARCHAR(100) NOT NULL, to_email VARCHAR(100) NOT NULL, subject VARCHAR(100) NOT NULL, body TEXT NOT NULL, type VARCHAR(25) NOT NULL, sended BOOLEAN DEFAULT \'false\' NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX FK_email_out_to_person ON email_out (to_person)');
         $this->addSql('CREATE INDEX FK_email_out_from_person ON email_out (from_person)');
-        $this->addSql('CREATE TABLE event (id SERIAL NOT NULL, club_home INT DEFAULT NULL, club_guest INT DEFAULT NULL, place_id INT DEFAULT NULL, promo_action INT DEFAULT NULL, sport_id INT DEFAULT NULL, name VARCHAR(256) NOT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, purchasable BOOLEAN DEFAULT \'false\' NOT NULL, chship VARCHAR(255) DEFAULT \'NA\' NOT NULL, score_home BOOLEAN DEFAULT \'false\' NOT NULL, score_guest BOOLEAN DEFAULT \'false\' NOT NULL, score_saved BOOLEAN DEFAULT \'false\' NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE event (id SERIAL NOT NULL, club_home INT DEFAULT NULL, club_guest INT DEFAULT NULL, place_id INT DEFAULT NULL, promo_action INT DEFAULT NULL, sport_id INT DEFAULT NULL, name VARCHAR(256) NOT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, purchasable BOOLEAN DEFAULT \'false\' NOT NULL, chship VARCHAR(255) DEFAULT \'NA\' NOT NULL, score_home SMALLINT DEFAULT 0, score_guest SMALLINT DEFAULT 0, score_saved SMALLINT DEFAULT 0, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX FK_event_club ON event (club_home)');
         $this->addSql('CREATE INDEX FK_event_club_2 ON event (club_guest)');
         $this->addSql('CREATE INDEX FK_event_place ON event (place_id)');
@@ -331,7 +331,6 @@ class Version20170728134156 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE person_activity DROP CONSTRAINT FK_3832AC6D81C06096');
         $this->addSql('ALTER TABLE email_dispatch_done DROP CONSTRAINT FK_A1AAB47E447556F9');
         $this->addSql('ALTER TABLE giveaway_action DROP CONSTRAINT FK_D8DCFD1C10DAF24A');
