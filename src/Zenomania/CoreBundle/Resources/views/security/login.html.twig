@@ -1,0 +1,62 @@
+{% extends '::welcome.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/task/system/plugins/iCheck/square/blue.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="login-box">
+    <div class="login-logo">
+        <a href="#"><b>Project</b>Management</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Войти</p>
+
+        {{ form_start(form) }}
+            <div class="form-group has-feedback">
+                {{ form_widget(form.username) }}
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                {{ form_widget(form.password) }}
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            {% if error %}
+                <div class="alert alert-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <div class="row">
+                <div class="col-xs-8">
+                    {{ form_widget(form.remember_me) }}
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    {{ form_row(form.submit) }}
+                </div>
+                <!-- /.col -->
+            </div>
+        {{ form_end(form) }}
+
+        <a href="{{ path('recover') }}">Я забыл свой пароль</a><br>
+        <a href="{{ path('register') }}" class="text-center">Зарегистрироваться</a>
+
+    </div>
+    <!-- /.login-box-body -->
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/task/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('bundles/task/system/plugins/iCheck/icheck.min.js') }}"></script>
+    <script>
+        (function($) {
+            $(function(){
+                $('#login_remember_me').iCheck({
+                    checkboxClass: 'icheckbox_square-blue'
+                });
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

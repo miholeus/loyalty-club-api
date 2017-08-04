@@ -1,0 +1,20 @@
+{# @var paginator \TaskBundle\Doctrine\CustomPaginator #}
+{% if paginator.TotalPages() > 1 %}
+    <ul class="pagination">
+        {% set isFirstPage = paginator.CurrentPage() == 1 %}
+        <li {{ isFirstPage ? 'class="disabled"' }}>
+            <a {% if not isFirstPage %}href="{{ path(paginator.Route(), 1 == paginator.CurrentPage()
+                ? paginator.pageParameters(1) : paginator.pageParameters(paginator.CurrentPage()-1)) }}"{% endif %}>«</a>
+        </li>
+        {% for i in 1..paginator.TotalPages() %}
+            <li {{ paginator.CurrentPage() == i ? 'class="active"' }}>
+                <a href="{{ path(paginator.Route(), paginator.pageParameters(i)) }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+        {% set isLastPage = paginator.CurrentPage() == paginator.TotalPages() %}
+        <li {{ isLastPage ? 'class="disabled"' }}>
+            <a {% if not isLastPage %}href="{{ path(paginator.Route(), paginator.CurrentPage()+1 <= paginator.TotalPages()
+                ? paginator.pageParameters(paginator.CurrentPage()+1) : paginator.pageParameters(paginator.CurrentPage())) }}"{% endif %}>»</a>
+        </li>
+    </ul>
+{% endif %}

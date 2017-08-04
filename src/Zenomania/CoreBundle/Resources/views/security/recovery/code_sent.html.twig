@@ -1,0 +1,14 @@
+{% extends '::welcome.html.twig' %}
+
+{% block body %}
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="#"><b>Project</b>Management</a>
+        </div>
+        <div class="login-box-body">
+            <h3 class="login-box-msg">Восстановление пароля</h3>
+            <p>Сообщение с ссылкой для смены пароля отправлено на адрес <strong>{{ email }}</strong>.</p>
+            <p>Это окно можно закрыть.</p>
+        </div>
+    </div>
+{% endblock %}
