@@ -1,0 +1,11 @@
+services:
+    file.upload:
+        class: Zenomania\CoreBundle\Service\UploadFile
+        arguments: ['@service_container']
+    file.upload_photo_abstract:
+        class: Zenomania\CoreBundle\Service\UploadPhoto
+        arguments: ['@file.upload']
+        abstract: true
+    file.upload_profile_photo:
+        class: Zenomania\CoreBundle\Service\UploadProfilePhoto
+        parent: file.upload_photo_abstract

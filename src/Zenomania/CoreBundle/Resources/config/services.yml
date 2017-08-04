@@ -4,6 +4,7 @@ imports:
    - { resource: "services/events.yml" }
    - { resource: "services/forms.yml" }
    - { resource: "services/menu.yml" }
+   - { resource: "services/upload.yml" }
 
 services:
     twig.extension.dialog:
@@ -32,6 +33,9 @@ services:
     security.email_password_recovery:
         class: Zenomania\CoreBundle\Service\EmailPasswordRecoveryService
         arguments: ['@swiftmailer.mailer', '@templating.engine.twig', '%mailer_user%']
+    images.service:
+        class: Zenomania\CoreBundle\Service\Images
+        parent: task.user_aware_service
     utils.host_based_url:
         class: Zenomania\CoreBundle\Service\Utils\HostBasedUrl
         arguments: ['@request_stack']
