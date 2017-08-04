@@ -76,6 +76,17 @@ swiftmailer:
     password: '%mailer_password%'
     spool: { type: memory }
 
+assetic:
+    debug: '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    node: '%node_bin%'
+    filters:
+        cssrewrite: ~
+        uglifyjs2:
+            bin: '%uglifyjs_bin%'
+        uglifycss:
+            bin: '%uglifycss_bin%'
+
 snc_redis:
     clients:
         default:

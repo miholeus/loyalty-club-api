@@ -5,13 +5,13 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('bundles/task/css/users.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/zenomaniacore/css/users.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('bundles/task/system/plugins/input-mask/jquery.inputmask.js') }}"></script>
-    <script src="{{ asset('bundles/task/system/plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
-    <script src="{{ asset('bundles/task/system/plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
+    <script src="{{ asset('bundles/zenomaniacore/system/plugins/input-mask/jquery.inputmask.js') }}"></script>
+    <script src="{{ asset('bundles/zenomaniacore/system/plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
+    <script src="{{ asset('bundles/zenomaniacore/system/plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
 
     <script>
         $(function(){
@@ -75,7 +75,7 @@
                                                             {% if form.avatar.vars.value %}
                                                                 src="{{form.avatar.vars.value }}"
                                                             {% else %}
-                                                                src="{{ asset('bundles/task/img/anonymous-160x160.gif') }}"
+                                                                src="{{ asset('bundles/zenomaniacore/img/anonymous-160x160.gif') }}"
                                                             {% endif %}
                                                          alt="User profile picture" width="140" height="140">
                                                     <div class="opacity_btn img-circle">

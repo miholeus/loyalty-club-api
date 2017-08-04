@@ -1,4 +1,4 @@
-{# @var paginator \TaskBundle\Doctrine\CustomPaginator #}
+{# @var paginator \Zenomania\CoreBundle\Doctrine\CustomPaginator #}
 {% if paginator.TotalPages() > 1 %}
     <ul class="pagination">
         {% set isFirstPage = paginator.CurrentPage() == 1 %}

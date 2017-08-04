@@ -1,3 +1,17 @@
 zenomania_core_homepage:
     path:     /
     defaults: { _controller: ZenomaniaCoreBundle:Default:index }
+login:
+    path: /login
+    defaults: {_controller: ZenomaniaCoreBundle:Security:login}
+register:
+    path: /register
+    defaults: {_controller: ZenomaniaCoreBundle:Security:register}
+recover:
+    path: /recover
+    defaults: {_controller: ZenomaniaCoreBundle:Security:recoverySendMessage}
+recover_code:
+    path: /recover/{code}
+    defaults: {_controller: ZenomaniaCoreBundle:Security:recoveryChangePassword}
+logout:
+    path: /logout

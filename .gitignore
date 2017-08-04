@@ -15,6 +15,12 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/web/css
+/web/js
+/web/uploads/*
+!web/uploads/.gitkeep
+/web/media/*
+!web/media/.gitkeep
 
 # Idea settings
 *.iml

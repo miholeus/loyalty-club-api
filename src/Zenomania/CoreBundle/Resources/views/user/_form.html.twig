@@ -3,13 +3,13 @@
 
 {% block javascripts %}
     {% javascripts
-    'bundles/task/system/plugins/datepicker/bootstrap-datepicker.js'
-    'bundles/task/system/plugins/datepicker/locales/bootstrap-datepicker.ru.js'
-    'bundles/task/plugins/datepicker/settings.js'
-	'bundles/task/system/plugins/select2/select2.js'
-	'bundles/task/system/plugins/select2/i18n/ru.js'
+    'bundles/zenomaniacore/system/plugins/datepicker/bootstrap-datepicker.js'
+    'bundles/zenomaniacore/system/plugins/datepicker/locales/bootstrap-datepicker.ru.js'
+    'bundles/zenomaniacore/plugins/datepicker/settings.js'
+	'bundles/zenomaniacore/system/plugins/select2/select2.js'
+	'bundles/zenomaniacore/system/plugins/select2/i18n/ru.js'
 	'bundles/tetranzselect2entity/js/select2entity.js'
-	'bundles/task/js/collection.js'
+	'bundles/zenomaniacore/js/collection.js'
 	%}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -17,8 +17,8 @@
 
 {% block stylesheets %}
     {% stylesheets
-    'bundles/task/system/plugins/datepicker/datepicker3.css'
-    'bundles/task/plugins/datepicker/style.css'
+    'bundles/zenomaniacore/system/plugins/datepicker/datepicker3.css'
+    'bundles/zenomaniacore/plugins/datepicker/style.css'
     filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
@@ -47,40 +47,6 @@
                     {{ form_row(form.password) }}
                     {{ form_row(form.email) }}
                     {{ form_row(form.phone) }}
-                    <div class="form-group">
-                        {{ form_label(form.NonDefaultContacts,'Contacts') }}
-                        <div class="col-sm-9">
-                            <div class="collection_widget_prototype"
-                                 data-prototype="
-								 {% filter escape %}
-									 {{ include('TaskBundle:user:prototype.html.twig', { 'form': form.NonDefaultContacts.vars.prototype }) }}
-								 {% endfilter %}">
-                                {% for contact in form.NonDefaultContacts %}
-                                    <div class="collection_widget_element">
-                                        {{ form_row(contact.type) }}
-                                        {{ form_row(contact.value) }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.NonDefaultOrganizations,'Organizations') }}
-                        <div class="col-sm-9">
-                            <div class="collection_widget_prototype"
-                                 data-prototype="
-								 {% filter escape %}
-									{{ include('TaskBundle:organization:prototype.html.twig', { 'form': form.NonDefaultOrganizations.vars.prototype }) }}
-								 {% endfilter %}">
-								{% for organization in form.NonDefaultOrganizations %}
-									<div class="collection_widget_element">
-										{{ form_widget(organization) }}
-									</div>
-								{% endfor %}
-							</div>
-						</div>
-					</div>
-					{% do form.NonDefaultContacts.setRendered %}
 					{{ form_widget(form) }}
 				</div>
 				<div class="box-footer">

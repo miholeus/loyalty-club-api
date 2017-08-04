@@ -18,6 +18,10 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
 
+    uglifyjs_bin:      /usr/local/bin/uglifyjs
+    uglifycss_bin:     /usr/local/bin/uglifycss
+    node_bin: /usr/local/bin/node
+
     # Project name used to store sessions with prefix
     project_name: zenomania
     # Redis server host

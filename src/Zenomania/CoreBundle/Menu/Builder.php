@@ -27,7 +27,7 @@ class Builder
     public function createMainMenu(RequestStack $requestStack)
     {
         /** @var ItemInterface $menu */
-        $menu = $this->factory->createItem('Project management', ['route' => 'task_homepage']);
+        $menu = $this->factory->createItem('Zenomania', ['route' => 'task_homepage']);
         $menu->addChild('Home', ['route' => 'task_homepage']);
         $menu->addChild('User Roles', self::makeResourceRoutes('user_role'));
         $menu->addChild('User statuses', self::makeResourceRoutes('user_status'));

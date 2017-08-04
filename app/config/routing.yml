@@ -1,6 +1,6 @@
 zenomania_api:
     resource: "@ZenomaniaApiBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /api/v1
 
 zenomania_core:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing.yml"

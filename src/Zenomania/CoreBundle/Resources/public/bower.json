@@ -3,11 +3,11 @@
   "authors": [
     "miholeus <me@miholeus.com>"
   ],
-  "description": "project management system",
+  "description": "zenomania management system",
   "main": "",
   "moduleType": [],
   "keywords": [
-    "project", "task", "management"
+    "project", "zenomania", "management", "crm"
   ],
   "license": "MIT",
   "homepage": "",
