@@ -1,0 +1,11 @@
+services:
+    task.menu_builder:
+        class: Zenomania\CoreBundle\Menu\Builder
+        arguments: ["@knp_menu.factory"]
+
+    task.main_menu:
+        class: Knp\Menu\MenuItem # the service definition requires setting the class
+        factory: ["@task.menu_builder", createMainMenu]
+        arguments: ["@request_stack"]
+        tags:
+            - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu

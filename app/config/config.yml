@@ -37,6 +37,11 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    form_themes:
+        - '@ZenomaniaCoreBundle/Resources/views/form/theme/bootstrap_3_horizontal_layout.html.twig'
+#        - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
+    globals:
+        breadcrumbs_service: "@breadcrumbs.service"
 
 # Doctrine Configuration
 doctrine:
@@ -76,6 +81,23 @@ swiftmailer:
     password: '%mailer_password%'
     spool: { type: memory }
 
+liip_imagine:
+    resolvers:
+       default:
+          web_path: ~
+
+    filter_sets:
+        cache: ~
+        user_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [200, 200], mode: outbound }
+                auto_rotate: ~
+    loaders:
+        upload_files:
+            filesystem:
+                data_root: "%kernel.root_dir%/../web"
+
 assetic:
     debug: '%kernel.debug%'
     use_controller: '%kernel.debug%'
@@ -86,6 +108,21 @@ assetic:
             bin: '%uglifyjs_bin%'
         uglifycss:
             bin: '%uglifycss_bin%'
+
+gregwar_captcha:
+    width: 200
+    height: 50
+    length: 6,
+    background_color: [255, 255, 255]
+    as_url: true
+    reload: true
+    invalid_message: 'Введен неверный код картинки'
+
+knp_menu:
+    twig:
+        template: knp_menu.html.twig
+    templating: false
+    default_renderer: twig
 
 snc_redis:
     clients:

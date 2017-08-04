@@ -33,7 +33,7 @@
             <input type="text" value="{{ value }}" {% if attr['class'] %}class="{{ attr['class'] }}"{% endif %}
                    data-mask
                 {% if attr['data-inputmask'] %}
-                    {% set inputmask=attr['data-inputmask']|replace("\"", "'") %}
+                    {% set inputmask=attr['data-inputmask']|replace(["\""], "'") %}
                     data-inputmask="{{ inputmask }}"
                 {% endif %} />
             {% endspaceless %}
