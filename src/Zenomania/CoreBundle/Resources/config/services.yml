@@ -23,3 +23,11 @@ services:
     entity.serializer:
         class: Zenomania\CoreBundle\Service\EntitySerializer
         arguments: ['@doctrine.orm.entity_manager']
+    breadcrumbs.service:
+        class: Zenomania\CoreBundle\Service\BreadcrumbsService
+        arguments: ['@knp_menu.helper', '@knp_menu.matcher']
+    breadcrumb.annotation_listener:
+        class: Zenomania\CoreBundle\Event\Listener\BreadcrumbAnnotationListener
+        arguments: ['@annotation_reader', '@breadcrumbs.service']
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
