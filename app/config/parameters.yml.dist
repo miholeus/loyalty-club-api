@@ -24,3 +24,4 @@ parameters:
     redis_server: localhost
     # time to live for authenticated user's key
     auth_key_ttl: 3600 # 1 hour
+    profile_upload_photo_dir: uploads/profiles

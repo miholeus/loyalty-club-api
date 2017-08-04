@@ -4,7 +4,6 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "AppBundle\\": "src/AppBundle",
             "Zenomania\\": "src/Zenomania"
         },
         "classmap": [
@@ -44,6 +43,13 @@
         "symfony/phpunit-bridge": "^3.0",
         "doctrine/doctrine-fixtures-bundle": "dev-master"
     },
+    "repositories" : [
+        {
+            "type" : "git",
+            "url"  : "https://github.com/miholeus/DoctrineFixturesBundle.git",
+            "name" : "doctrine/doctrine-fixtures-bundle"
+        }
+    ],
     "scripts": {
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",

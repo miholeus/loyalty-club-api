@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "04513cd9e9b2ddf1faeec6bac5daab80",
+    "content-hash": "6210a6d39159805c16c8184974e4c3dd",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -3250,14 +3250,8 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "561fb64d1d3b47673bdb13a0ac76f0003cf0eeef"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/561fb64d1d3b47673bdb13a0ac76f0003cf0eeef",
-                "reference": "561fb64d1d3b47673bdb13a0ac76f0003cf0eeef",
-                "shasum": ""
+                "url": "https://github.com/miholeus/DoctrineFixturesBundle.git",
+                "reference": "71c6c720639c24f49b65537f036e06ec3f9aaa7d"
             },
             "require": {
                 "doctrine/data-fixtures": "~1.0",
@@ -3276,31 +3270,30 @@
                     "Doctrine\\Bundle\\FixturesBundle\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 },
                 {
                     "name": "Doctrine Project",
                     "homepage": "http://www.doctrine-project.org"
                 },
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
                 }
             ],
             "description": "Symfony DoctrineFixturesBundle",
             "homepage": "http://www.doctrine-project.org",
             "keywords": [
                 "Fixture",
-                "persistence"
+                "Persistence"
             ],
-            "time": "2017-05-23T11:55:00+00:00"
+            "time": "2016-06-01T10:17:07+00:00"
         },
         {
             "name": "sensio/generator-bundle",

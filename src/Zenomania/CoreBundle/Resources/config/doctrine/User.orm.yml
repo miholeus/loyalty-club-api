@@ -1,6 +1,6 @@
 Zenomania\CoreBundle\Entity\User:
     type: entity
-    table: user
+    table: users
     repositoryClass: Zenomania\CoreBundle\Repository\UserRepository
     entityListeners:
         Zenomania\CoreBundle\Entity\Listener\UserListener: ~
