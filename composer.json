@@ -28,6 +28,7 @@
         "gregwar/captcha-bundle": "^2.0",
         "incenteev/composer-parameter-handler": "^2.0",
         "knplabs/knp-menu-bundle": "^2.1",
+        "liip/imagine-bundle": "^1.8",
         "nelmio/api-doc-bundle": "dev-master",
         "predis/predis": "^1.0",
         "ramsey/uuid": "^3.6",

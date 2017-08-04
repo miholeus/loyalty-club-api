@@ -1,6 +1,15 @@
 zenomania_core_homepage:
     path:     /
     defaults: { _controller: ZenomaniaCoreBundle:Default:index }
+task_user_role:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/userrole.yml"
+    prefix:   /user/role
+task_user_status:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/userstatus.yml"
+    prefix:   /user/status
+task_user:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/user.yml"
+    prefix:   /user
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}
