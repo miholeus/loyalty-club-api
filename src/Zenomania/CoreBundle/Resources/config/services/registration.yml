@@ -1,0 +1,21 @@
+services:
+    task.service.token_management:
+        class: Zenomania\CoreBundle\Service\Token\TokenManagementService
+        arguments: ['@service_container']
+        abstract: true
+    task.service.registration:
+        class: Zenomania\CoreBundle\Service\RegistrationService
+        parent: task.service.token_management
+    task.service.update_phone:
+        class: Zenomania\CoreBundle\Service\UpdatePhoneService
+        parent: task.service.token_management
+    task.service.password_recovery:
+        class: Zenomania\CoreBundle\Service\PasswordRecoveryService
+        parent: task.service.token_management
+    task.service.token.storage:
+        class: Zenomania\CoreBundle\Service\Token\Storage
+        calls:
+            - ['setClient', ['@snc_redis.session']]
+    task.service.authenticate:
+        class: Zenomania\CoreBundle\Service\AuthenticateService
+        arguments: ['@service_container']

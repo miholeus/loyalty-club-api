@@ -1,3 +1,7 @@
+imports:
+   - { resource: "services/repositories.yml" }
+   - { resource: "services/registration.yml" }
+
 services:
 #    zenomania_core.example:
 #        class: Zenomania\CoreBundle\Example

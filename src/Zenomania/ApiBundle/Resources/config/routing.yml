@@ -1,0 +1,7 @@
+zenomania_api_homepage:
+    path:     /
+    defaults: { _controller: ZenomaniaApiBundle:Default:index }
+zenomania_api.swagger:
+    path: /api/v1/doc.json
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger }

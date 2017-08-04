@@ -17,3 +17,10 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    # Project name used to store sessions with prefix
+    project_name: zenomania
+    # Redis server host
+    redis_server: localhost
+    # time to live for authenticated user's key
+    auth_key_ttl: 3600 # 1 hour

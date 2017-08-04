@@ -1,24 +1,74 @@
 # To get started with security, check out the documentation:
-# https://symfony.com/doc/current/security.html
+# http://symfony.com/doc/current/book/security.html
 security:
 
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+      in_memory:
+          memory: ~
+      db_provider:
+          entity:
+              class: Zenomania\CoreBundle\Entity\User
+      api_token_user_provider:
+          id: api_token_user_provider
+      api_key_user_provider:
+          id: api_key_user_provider
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
+        api_auth:
+            pattern: ^/api/v1/auth
+            simple_preauth:
+                authenticator: apikey_authenticator
+            provider: api_key_user_provider
+        api_doc:
+            pattern: ^/api/v1/doc
+            security: false
+        api:
+            anonymous: ~
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: apitoken_authenticator
+            provider: api_token_user_provider
         main:
             anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+                username_parameter: login[username]
+                password_parameter: login[password]
+            logout:
+                path: /logout
+                target: /
+            provider: db_provider
+            remember_me:
+                secret:   '%secret%'
+                lifetime: 604800
+                remember_me_parameter: login[remember_me]
             # activate different ways to authenticate
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
+            # http_basic: ~
+            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
 
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+            # form_login: ~
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/recover, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/generate-captcha, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_SUPER_ADMIN }
+    encoders:
+        Zenomania\CoreBundle\Entity\User:
+            algorithm: bcrypt
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_API:         ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+    access_decision_manager:
+        strategy: affirmative
