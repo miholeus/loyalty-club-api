@@ -39,7 +39,7 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes:
         - '@ZenomaniaCoreBundle/Resources/views/form/theme/bootstrap_3_horizontal_layout.html.twig'
-#        - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
+        - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
     globals:
         breadcrumbs_service: "@breadcrumbs.service"
 

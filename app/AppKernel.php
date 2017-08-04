@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Snc\RedisBundle\SncRedisBundle(),
             new Zenomania\ApiBundle\ZenomaniaApiBundle(),
