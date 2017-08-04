@@ -1,8 +1,25 @@
 imports:
    - { resource: "services/repositories.yml" }
    - { resource: "services/registration.yml" }
+   - { resource: "services/events.yml" }
 
 services:
-#    zenomania_core.example:
-#        class: Zenomania\CoreBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    user.listener:
+        class: Zenomania\CoreBundle\Entity\Listener\UserListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+    task.user_aware_service:
+        class: Zenomania\CoreBundle\Service\UserAwareService
+        arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@event.notification_manager']
+    user.service:
+        class:  Zenomania\CoreBundle\Service\User
+        parent: task.user_aware_service
+        calls:
+          - ['setPasswordEncoder', ['@security.password_encoder']]
+    utils.host_based_url:
+        class: Zenomania\CoreBundle\Service\Utils\HostBasedUrl
+        arguments: ['@request_stack']
+    entity.serializer:
+        class: Zenomania\CoreBundle\Service\EntitySerializer
+        arguments: ['@doctrine.orm.entity_manager']
