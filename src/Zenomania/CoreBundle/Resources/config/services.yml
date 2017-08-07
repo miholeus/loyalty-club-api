@@ -12,6 +12,9 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    task.doctrine.entity_listener_resolver:
+        class: Zenomania\CoreBundle\Doctrine\EntityListenerResolver
+        arguments: [ "@service_container" ]
     user.listener:
         class: Zenomania\CoreBundle\Entity\Listener\UserListener
         arguments: ['@service_container']

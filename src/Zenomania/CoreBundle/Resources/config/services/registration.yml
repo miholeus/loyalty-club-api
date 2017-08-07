@@ -1,4 +1,8 @@
 services:
+    task.form.flow.registration:
+        class: Zenomania\CoreBundle\Form\Wizard\RegistrationFlow
+        arguments: ['@task.service.registration']
+        parent: craue.form.flow
     task.service.token_management:
         class: Zenomania\CoreBundle\Service\Token\TokenManagementService
         arguments: ['@service_container']

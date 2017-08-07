@@ -20,10 +20,10 @@ class UserStatusType extends AbstractType
             ->add('name')
             ->add('code', ChoiceType::class, [
                 'choices' => [
-                    UserStatus::STATUS_ACTIVE => 'Активен',
-                    UserStatus::STATUS_BLOCKED => 'Заблокирован',
-                    UserStatus::STATUS_DELETED => 'Удален',
-                    UserStatus::STATUS_REGISTERED => 'Зарегистрирован'
+                    'Активен' => UserStatus::STATUS_ACTIVE,
+                    'Заблокирован' => UserStatus::STATUS_BLOCKED,
+                    'Удален' => UserStatus::STATUS_DELETED,
+                    'Зарегистрирован' => UserStatus::STATUS_REGISTERED
                 ]
             ]);
     }

@@ -204,3 +204,32 @@ fos_rest:
 #    versioning: true
 
 nelmio_api_doc: ~
+
+sms_service:
+    enabled: true
+    clients:
+        default:
+            alias: sms16
+        infobip:
+            alias: infobip
+        smstraffic:
+            alias: smstraffic
+    channels:
+        infobip:
+            class: Zenomania\CoreBundle\Service\Sms\Gateway\Infobip
+            gateway_url: https://api.infobip.com/sms/1/text/single
+            originator: "%sms_infobip_originator%"
+            login: "%sms_infobip_login%"
+            password: "%sms_infobip_password%"
+        smstraffic:
+            class: Zenomania\CoreBundle\Service\Sms\Gateway\Smstraffic
+            gateway_url: https://api.smstraffic.ru/multi.php
+            originator: "%sms_smstraffic_originator%"
+            login: "%sms_smstraffic_login%"
+            password: "%sms_smstraffic_password%"
+        sms16:
+            class: Zenomania\CoreBundle\Service\Sms\Gateway\Sms16
+            gateway_url: https://new.sms16.ru/get/send.php
+            originator: "%sms_sms16_originator%"
+            login: "%sms_sms16_login%"
+            password: "%sms_sms16_password%"

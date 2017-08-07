@@ -31,3 +31,14 @@ parameters:
     profile_upload_photo_dir: uploads/profiles
     upload_dir: '%kernel.root_dir%/../web'
 
+    # Sms settings
+    sms_infobip_login: test
+    sms_infobip_password: test
+    sms_infobip_originator: test
+    sms_smstraffic_login: test
+    sms_smstraffic_password: test
+    sms_smstraffic_originator: test
+    sms_sms16_login: test
+    sms_sms16_password: test
+    sms_sms16_originator: test
+

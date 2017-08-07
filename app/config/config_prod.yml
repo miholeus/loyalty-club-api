@@ -36,3 +36,6 @@ snc_redis:
         second_level_cache:
             client: cache
             entity_manager: default
+
+sms_service:
+    enabled: true

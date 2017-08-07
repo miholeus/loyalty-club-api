@@ -14,3 +14,30 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+doctrine:
+    dbal:
+        host: localhost
+        dbname: zenomania_test
+        user: zenomania_test
+        password: GfzDn9pS
+
+security:
+    firewalls:
+        main:
+            http_basic: ~
+            provider: db_provider
+        api:
+            stateless: false
+
+snc_redis:
+    clients:
+        default:
+            dsn: "redis://%redis_server%/8"
+        cache:
+            dsn: "redis://%redis_server%/8"
+        session:
+            dsn: "redis://%redis_server%/8"
+
+sms_service:
+    enabled: false

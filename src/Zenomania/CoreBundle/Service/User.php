@@ -177,7 +177,7 @@ class User extends UserAwareService
     protected function getUserStatus($code)
     {
         $em = $this->getEntityManager();
-        $status = $em->getRepository('Zenomania\CoreBundle:UserStatus')->findOneBy(['code' => $code]);
+        $status = $em->getRepository('ZenomaniaCoreBundle:UserStatus')->findOneBy(['code' => $code]);
         return $status;
     }
 
