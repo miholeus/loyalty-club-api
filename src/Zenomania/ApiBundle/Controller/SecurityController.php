@@ -90,6 +90,44 @@ class SecurityController extends RestController
     }
 
     /**
+     * @ApiDoc(
+     *  section="Аутентификация",
+     *  resource=true,
+     *  description="Выход пользователя",
+     *  statusCodes={
+     *         201="При успешном выходе",
+     *         403="Доступ запрещён",
+     *         400="Не указаны необходимые параметры запроса"
+     *     },
+     *  responseMap={
+     *         401={
+     *           "class"="ApiBundle\Service\Exception\AuthenticateException",
+     *           "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *         }
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access token header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postLogoutAction(Request $request)
+    {
+        $keyProvider = $this->get('api.key_provider');
+
+        $keyProvider->deleteUserToken($request->headers->get('X-AUTHORIZE-TOKEN'));
+
+        $view = $this->view(null, 204);
+        return $this->handleView($view);
+    }
+
+    /**
      * ### Minimal Response (e.g. anonymous) ###
      *
      *     {

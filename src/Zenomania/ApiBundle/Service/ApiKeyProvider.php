@@ -92,6 +92,18 @@ class ApiKeyProvider
     }
 
     /**
+     * Deletes token
+     *
+     * @param string $token
+     * @return int
+     */
+    public function deleteUserToken(string $token)
+    {
+        $key = $this->getTokenKey($token);
+        return $this->getStorage()->delete($key);
+    }
+
+    /**
      * Gets api tokens
      *
      * @return array

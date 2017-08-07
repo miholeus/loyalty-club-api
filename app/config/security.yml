@@ -19,6 +19,12 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api_logout:
+            pattern: ^/api/v1/auth/logouts
+            stateless: true
+            simple_preauth:
+                authenticator: apitoken_authenticator
+            provider: api_token_user_provider
         api_auth:
             pattern: ^/api/v1/auth
             simple_preauth:
