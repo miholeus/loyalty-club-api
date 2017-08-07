@@ -6,7 +6,7 @@ A Symfony project created on July 27, 2017, 9:19 am.
 Testing
 ===
 
-* createuser `zenomania_test`
+* Create user `createuser zenomania_test`
 * Set permissions to user
 `psql -c "alter role zenomania_test with createdb" -d test`
 * Run command 
