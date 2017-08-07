@@ -3,6 +3,7 @@
 namespace Zenomania\ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\View\View;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -198,5 +199,21 @@ class RestController extends FOSRestController
             }
         }
         return $errors;
+    }
+
+    /**
+     * Creates a view.
+     *
+     * Convenience method to allow for a fluent interface.
+     *
+     * @param mixed $data
+     * @param int   $statusCode
+     * @param array $headers
+     *
+     * @return View
+     */
+    protected function view($data = null, $statusCode = 200, array $headers = [])
+    {
+        return View::create($data, $statusCode, $headers);
     }
 }

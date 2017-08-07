@@ -182,7 +182,8 @@ class Registration extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Zenomania\CoreBundle\Form\Model\Registration'
+            'data_class' => 'Zenomania\CoreBundle\Form\Model\Registration',
+            'password_text' => null
         ));
     }
 }

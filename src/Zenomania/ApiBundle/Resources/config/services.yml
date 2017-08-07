@@ -15,8 +15,9 @@ services:
         public: false
     api.response_handler:
         class: Zenomania\ApiBundle\View\ResponseViewHandler
+    api.exception_handler:
+        class: Zenomania\ApiBundle\Handler\ApiExceptionWrapperHandler
     api.view_handler:
-        parent: fos_rest.view_handler.default
         parent: fos_rest.view_handler.default
         calls:
             - ['registerHandler', [ 'json', ['@api.response_handler', 'createResponse'] ] ]

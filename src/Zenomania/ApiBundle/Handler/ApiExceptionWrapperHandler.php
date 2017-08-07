@@ -9,14 +9,13 @@ namespace Zenomania\ApiBundle\Handler;
 
 class ApiExceptionWrapperHandler
 {
-
     public function wrap($data)
     {
         /** @var \Symfony\Component\Debug\Exception\FlattenException $exception */
         $exception = $data['exception'];
         $errors = null;
         if (in_array(
-                $exception->getClass(), [
+                get_class($exception), [
                 'Zenomania\ApiBundle\Service\Exception\FormValidateException',
                 'Zenomania\ApiBundle\Service\Exception\ParameterValidateException'
             ])) {

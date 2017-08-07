@@ -1,6 +1,12 @@
 zenomania_api:
     resource: "@ZenomaniaApiBundle/Resources/config/routing.yml"
     prefix:   /api/v1
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/v1/doc
+nelmio_api_swagger:
+    resource: "@NelmioApiDocBundle/Resources/config/swagger_routing.yml"
+    prefix: /api/v1/doc/swagger
 zenomania_core:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing.yml"
     prefix:   /

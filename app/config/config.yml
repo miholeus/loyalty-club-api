@@ -33,6 +33,10 @@ framework:
     php_errors:
         log: true
 
+sensio_framework_extra:
+    view:
+        annotations: true
+
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
@@ -131,18 +135,23 @@ snc_redis:
             alias: default
             dsn: "redis://%redis_server%"
             logging: "%kernel.debug%"
+            options:
+                prefix: "%project_name%:"
         cache:
             type: predis
             alias: cache
             dsn: "redis://%redis_server%/1"
             options:
                 profile: 2.2
+                prefix: "%project_name%:"
                 connection_timeout: 10
                 read_write_timeout: 30
         session:
             type: predis
             alias: session
             dsn: "redis://%redis_server%/2"
+            options:
+                prefix: "%project_name%:"
         cluster:
             type: predis
             alias: cluster
@@ -150,9 +159,10 @@ snc_redis:
                 - "redis://%redis_server%/3?weight=10"
                 - "redis://%redis_server%/4?weight=5"
                 - "redis://%redis_server%/5?weight=1"
+            options:
+                prefix: "%project_name%:"
     session:
         client: session
-        prefix: "%project_name%"
         locking: false
         ttl: "%auth_key_ttl%"
 
@@ -170,13 +180,10 @@ fos_rest:
         failed_validation: HTTP_BAD_REQUEST
         default_engine: twig
         empty_content: 204
-#        exception_wrapper_handler: Zenomania\ApiBundle\Handler\ApiExceptionWrapperHandler
 #        view_response_listener: force
     service:
         view_handler: api.view_handler
     disable_csrf_role: ROLE_API
-    body_listener:
-        array_normalizer: fos_rest.normalizer.camel_keys
 #    body_converter:
 #        enabled: true
 #        validate: true
@@ -188,22 +195,34 @@ fos_rest:
           - { path: '^/api/v1', fallback_format: 'json' }
           - { path: '^/', fallback_format: 'html' }
 #    unauthorized_challenge: "Basic realm=\"Restricted Area\""
+    allowed_methods_listener: true
     access_denied_listener:
         json: true
+    body_listener:
+        array_normalizer: fos_rest.normalizer.camel_keys
     exception:
-        codes:
-            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
-            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
-            'Zenomania\ApiBundle\Security\BadCredentialsException': 403
-        messages:
-            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
-    allowed_methods_listener: true
+        enabled: true
+        exception_controller: 'Zenomania\ApiBundle\Controller\ExceptionController::showAction'
+#        codes:
+#            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+#            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+#            'Zenomania\ApiBundle\Security\BadCredentialsException': 403
+#        messages:
+#            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
     # these options are available in 2nd version of bundle
 #    zone:
 #        - { path: ^/api/* }
 #    versioning: true
 
-nelmio_api_doc: ~
+nelmio_api_doc:
+    name: Zenomania API
+    swagger:
+        info:
+            title: API
+            description: Zenomania API
+        api_version:  1
+        api_base_path: /api/v1
+        swagger_version: '2.0'
 
 sms_service:
     enabled: true

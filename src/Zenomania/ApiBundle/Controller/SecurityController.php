@@ -251,8 +251,9 @@ class SecurityController extends RestController
     public function postRegisterAction(Request $request)
     {
         $registration = new Registration();
-        
-        $form = $this->createForm(new \Zenomania\CoreBundle\Form\Registration(['password_text' => true]), $registration, [
+
+        $form = $this->createForm('\Zenomania\CoreBundle\Form\Registration', $registration, [
+            'password_text' => true,
             'flow_step' => 3,
             'allow_extra_fields' => true,
             'validation_groups' => ['flow_registration_step3']
