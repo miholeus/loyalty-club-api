@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zenomania\CoreBundle\Entity\Validator\Constraints\ContainsDateBirthday;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
 
 /**
  * Users
@@ -30,7 +31,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     message = "This login is already in use"
  * )
  */
-class User implements UserInterface, \Serializable, AdvancedUserInterface
+class User implements UserInterface, \Serializable, AdvancedUserInterface, IdentifiableInterface
 {
     /**
      * @var integer

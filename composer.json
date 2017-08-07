@@ -21,6 +21,7 @@
     },
     "require": {
         "php": ">=7.0",
+        "craue/formflow-bundle": "~3.0@dev",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/orm": "^2.5",
@@ -42,13 +43,13 @@
         "symfony/symfony": "3.3.*",
         "tetranz/select2entity-bundle": "dev-master",
         "twig/twig": "^1.0||^2.0",
-        "zendframework/zend-http": "^2.6",
-        "craue/formflow-bundle": "~3.0@dev"
+        "zendframework/zend-http": "^2.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
-        "doctrine/doctrine-fixtures-bundle": "dev-master"
+        "doctrine/doctrine-fixtures-bundle": "dev-master",
+        "mikey179/vfsStream": "^1.6"
     },
     "repositories" : [
         {
@@ -72,7 +73,7 @@
         "post-update-cmd": [
             "@symfony-scripts"
         ],
-        "test": "phpunit -c app",
+        "test": "phpunit -c .",
         "lint": "phpcs -p --colors --ignore=vendor ."
     },
     "config": {
