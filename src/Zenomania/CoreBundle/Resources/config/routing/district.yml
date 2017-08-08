@@ -1,0 +1,24 @@
+district_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:District:index" }
+    methods:  GET
+
+district_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:District:show" }
+    methods:  GET
+
+district_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:District:new" }
+    methods:  [GET, POST]
+
+district_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:District:edit" }
+    methods:  [GET, POST]
+
+district_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZenomaniaCoreBundle:District:delete" }
+    methods:  DELETE

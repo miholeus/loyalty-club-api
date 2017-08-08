@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Countries list</h1>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for country in countries %}
+            <tr>
+                <td><a href="{{ path('country_show', { 'id': country.id }) }}">{{ country.id }}</a></td>
+                <td>{{ country.name }}</td>
+                <td>
+                    <a href="{{ path('country_show', { 'id': country.id }) }}" class="btn btn-default">show</a>
+                    <a href="{{ path('country_edit', { 'id': country.id }) }}" class="btn btn-default">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('country_new') }}">Create a new country</a>
+        </li>
+    </ul>
+{% endblock %}

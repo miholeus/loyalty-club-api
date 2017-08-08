@@ -32,6 +32,9 @@ class Builder
         $menu->addChild('User Roles', self::makeResourceRoutes('user_role'));
         $menu->addChild('User statuses', self::makeResourceRoutes('user_status'));
         $menu->addChild('Users', self::makeResourceRoutes('user'));
+        $menu->addChild('Countries', self::makeResourceRoutes('country'));
+        $menu->addChild('Cities', self::makeResourceRoutes('city'));
+        $menu->addChild('Districts', self::makeResourceRoutes('district'));
 
         $this->fillBranchRoutes($menu->getChildren());
 
