@@ -10,6 +10,15 @@ task_user_status:
 task_user:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/user.yml"
     prefix:   /user
+zenomania_core_country:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/country.yml"
+    prefix:   /country
+zenomania_core_district:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/district.yml"
+    prefix:   /district
+zenomania_core_city:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/city.yml"
+    prefix:   /city
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}
