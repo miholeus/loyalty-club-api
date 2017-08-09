@@ -391,4 +391,9 @@ class Club
     {
         return $this->person;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

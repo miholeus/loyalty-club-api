@@ -36,6 +36,7 @@ class Builder
         $menu->addChild('Cities', self::makeResourceRoutes('city'));
         $menu->addChild('Districts', self::makeResourceRoutes('district'));
         $menu->addChild('Clubs', self::makeResourceRoutes('club'));
+        $menu->addChild('Actors', self::makeResourceRoutes('actor'));
 
         $this->fillBranchRoutes($menu->getChildren());
 

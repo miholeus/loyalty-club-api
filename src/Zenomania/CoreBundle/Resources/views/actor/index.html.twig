@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Actors list</h1>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Token</th>
+            <th>Refrr</th>
+            <th>Shouldchangepwd</th>
+            <th>Authtoken</th>
+            <th>Vkid</th>
+            <th>Fbid</th>
+            <th>Resettoken</th>
+            <th>Regdate</th>
+            <th>Regsource</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for actor in actors %}
+            <tr>
+                <td><a href="{{ path('actor_show', { 'id': actor.id }) }}">{{ actor.id }}</a></td>
+                <td>{{ actor.username }}</td>
+                <td>{{ actor.password }}</td>
+                <td>{{ actor.token }}</td>
+                <td>{{ actor.refrr }}</td>
+                <td>{% if actor.shouldChangePwd %}Yes{% else %}No{% endif %}</td>
+                <td>{{ actor.authToken }}</td>
+                <td>{{ actor.vkId }}</td>
+                <td>{{ actor.fbId }}</td>
+                <td>{{ actor.resetToken }}</td>
+                <td>{% if actor.regDate %}{{ actor.regDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ actor.regSource }}</td>
+                <td>
+                    <a href="{{ path('actor_show', { 'id': actor.id }) }}" class="btn btn-default">show</a>
+                    <a href="{{ path('actor_edit', { 'id': actor.id }) }}" class="btn btn-default">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('actor_new') }}">Create a new actor</a>
+        </li>
+    </ul>
+{% endblock %}

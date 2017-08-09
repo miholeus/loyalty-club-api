@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Actor</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ actor.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Username</th>
+                            <td>{{ actor.username }}</td>
+                        </tr>
+                        <tr>
+                            <th>Password</th>
+                            <td>{{ actor.password }}</td>
+                        </tr>
+                        <tr>
+                            <th>Token</th>
+                            <td>{{ actor.token }}</td>
+                        </tr>
+                        <tr>
+                            <th>Refrr</th>
+                            <td>{{ actor.refrr }}</td>
+                        </tr>
+                        <tr>
+                            <th>Shouldchangepwd</th>
+                            <td>{% if actor.shouldChangePwd %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Authtoken</th>
+                            <td>{{ actor.authToken }}</td>
+                        </tr>
+                        <tr>
+                            <th>Vkid</th>
+                            <td>{{ actor.vkId }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fbid</th>
+                            <td>{{ actor.fbId }}</td>
+                        </tr>
+                        <tr>
+                            <th>Resettoken</th>
+                            <td>{{ actor.resetToken }}</td>
+                        </tr>
+                        <tr>
+                            <th>Regdate</th>
+                            <td>{% if actor.regDate %}{{ actor.regDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Regsource</th>
+                            <td>{{ actor.regSource }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <ul class="pull-right">
+                        <a class="btn btn-default" href="{{ path('actor_index') }}">Back to the list</a>
+                        <a class="btn btn-primary" href="{{ path('actor_edit', { 'id': actor.id }) }}">Edit</a>
+                    </ul>
+                    {{ form_start(delete_form) }}
+                    <input id="actor_delete_button" class="btn btn-danger pull-left" type="submit" value="Delete">
+                    {{ form_end(delete_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ confirm('#actor_delete_button') }}
+{% endblock %}
