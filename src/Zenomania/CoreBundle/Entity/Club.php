@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Club
  */
@@ -54,8 +56,10 @@ class Club
 
     /**
      * @var boolean
+     *
+     * @ORM\Column(name="index_enabled", type="boolean", nullable=true)
      */
-    private $indexEnabled = '0';
+    private $indexEnabled;
 
     /**
      * @var string

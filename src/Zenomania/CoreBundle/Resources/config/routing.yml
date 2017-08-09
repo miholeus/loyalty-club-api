@@ -19,6 +19,9 @@ zenomania_core_district:
 zenomania_core_city:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/city.yml"
     prefix:   /city
+zenomania_core_club:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/club.yml"
+    prefix:   /club
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}
