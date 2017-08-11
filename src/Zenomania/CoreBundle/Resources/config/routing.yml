@@ -19,6 +19,9 @@ zenomania_core_district:
 zenomania_core_city:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/city.yml"
     prefix:   /city
+zenomania_core_education:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/education.yml"
+    prefix:   /education
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}
