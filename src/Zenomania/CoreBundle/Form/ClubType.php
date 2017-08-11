@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,7 +24,10 @@ class ClubType extends AbstractType
             ->add('instagramGroup')
             ->add('youtubeGroup')
             ->add('ytUploadPlaylist')
-            ->add('sport')
+            ->add('sport', EntityType::class, [
+                'class' => 'Zenomania\CoreBundle\Entity\Sport',
+                'choice_label' => 'name',
+            ])
             ->add('logoImg', FileType::class, ['required' => false, 'data_class' => null, 'label' => 'Логотип'])
             ->add('indexEnabled', null, ['label' => 'Индексировать']);
     }
