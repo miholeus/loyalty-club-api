@@ -2,8 +2,6 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Actor
  */
@@ -36,8 +34,6 @@ class Actor
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="should_change_pwd", type="boolean", nullable=true)
      */
     private $shouldChangePwd;
 
@@ -73,8 +69,6 @@ class Actor
 
     /**
      * @var \Zenomania\CoreBundle\Entity\Club
-     *
-     * @ORM\Column(name="club_owner", type="integer", nullable=true)
      */
     private $clubOwner;
 

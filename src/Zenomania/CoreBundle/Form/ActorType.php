@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +26,10 @@ class ActorType extends AbstractType
             ->add('resetToken')
             ->add('regDate')
             ->add('regSource')
-            ->add('clubOwner')
+            ->add('clubOwner', EntityType::class, [
+                'class' => 'Zenomania\CoreBundle\Entity\Club',
+                'choice_label' => 'name',
+            ])
             ->add('person')->add('roles');
     }
     

@@ -53,11 +53,6 @@ class Club
     private $ytUploadPlaylist = '';
 
     /**
-     * @var boolean
-     */
-    private $indexEnabled;
-
-    /**
      * @var string
      */
     private $logoImg;
@@ -280,30 +275,6 @@ class Club
     public function getYtUploadPlaylist()
     {
         return $this->ytUploadPlaylist;
-    }
-
-    /**
-     * Set indexEnabled
-     *
-     * @param boolean $indexEnabled
-     *
-     * @return Club
-     */
-    public function setIndexEnabled($indexEnabled)
-    {
-        $this->indexEnabled = $indexEnabled;
-
-        return $this;
-    }
-
-    /**
-     * Get indexEnabled
-     *
-     * @return boolean
-     */
-    public function getIndexEnabled()
-    {
-        return $this->indexEnabled;
     }
 
     /**
