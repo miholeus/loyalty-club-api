@@ -21,6 +21,7 @@
 !web/uploads/.gitkeep
 /web/media/*
 !web/media/.gitkeep
+/composer.phar
 
 # Idea settings
 *.iml

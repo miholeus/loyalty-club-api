@@ -1,7 +1,15 @@
-api
+Zenomania
 ===
+Zenomania API
 
-A Symfony project created on July 27, 2017, 9:19 am.
+Installation
+===
+Run docker
+* `docker-compose up -d`
+* Apply migrations
+`bin/console doctrine:migrations:migrate`
+* Run fixtures command
+`bin/console doctrine:fixtures:load`
 
 Testing
 ===
@@ -11,7 +19,7 @@ Testing
 `psql -c "alter role zenomania_test with createdb" -d test`
 * Run command 
 `bin/console doctrine:database:create --env=test`
-* Run migrations
+* Apply migrations
 `bin/console doctrine:migrations:migrate --env=test`
 * Run fixtures command
 `bin/console doctrine:fixtures:load --env=test`
