@@ -55,7 +55,7 @@ class Club
     /**
      * @var boolean
      */
-    private $indexEnabled = '0';
+    private $indexEnabled;
 
     /**
      * @var string
