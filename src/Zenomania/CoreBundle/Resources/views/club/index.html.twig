@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Clubs list</h1>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Site</th>
+            <th>Vkgroup</th>
+            <th>Fbgroup</th>
+            <th>Twittergroup</th>
+            <th>Instagramgroup</th>
+            <th>Youtubegroup</th>
+            <th>Ytuploadplaylist</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for club in clubs %}
+            <tr>
+                <td><a href="{{ path('club_show', { 'id': club.id }) }}">{{ club.id }}</a></td>
+                <td>{{ club.name }}</td>
+                <td>{{ club.site }}</td>
+                <td>{{ club.vkGroup }}</td>
+                <td>{{ club.fbGroup }}</td>
+                <td>{{ club.twitterGroup }}</td>
+                <td>{{ club.instagramGroup }}</td>
+                <td>{{ club.youtubeGroup }}</td>
+                <td>{{ club.ytUploadPlaylist }}</td>
+                <td>
+                    <a href="{{ path('club_show', { 'id': club.id }) }}" class="btn btn-default">show</a>
+                    <a href="{{ path('club_edit', { 'id': club.id }) }}" class="btn btn-default">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('club_new') }}">Create a new club</a>
+        </li>
+    </ul>
+{% endblock %}

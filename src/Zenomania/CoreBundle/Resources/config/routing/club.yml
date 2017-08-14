@@ -1,0 +1,24 @@
+club_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:Club:index" }
+    methods:  GET
+
+club_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:Club:show" }
+    methods:  GET
+
+club_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:Club:new" }
+    methods:  [GET, POST]
+
+club_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:Club:edit" }
+    methods:  [GET, POST]
+
+club_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZenomaniaCoreBundle:Club:delete" }
+    methods:  DELETE

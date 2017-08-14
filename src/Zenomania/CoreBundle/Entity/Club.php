@@ -53,11 +53,6 @@ class Club
     private $ytUploadPlaylist = '';
 
     /**
-     * @var boolean
-     */
-    private $indexEnabled = '0';
-
-    /**
      * @var string
      */
     private $logoImg;
@@ -283,30 +278,6 @@ class Club
     }
 
     /**
-     * Set indexEnabled
-     *
-     * @param boolean $indexEnabled
-     *
-     * @return Club
-     */
-    public function setIndexEnabled($indexEnabled)
-    {
-        $this->indexEnabled = $indexEnabled;
-
-        return $this;
-    }
-
-    /**
-     * Get indexEnabled
-     *
-     * @return boolean
-     */
-    public function getIndexEnabled()
-    {
-        return $this->indexEnabled;
-    }
-
-    /**
      * Set logoImg
      *
      * @param string $logoImg
@@ -386,5 +357,10 @@ class Club
     public function getPerson()
     {
         return $this->person;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

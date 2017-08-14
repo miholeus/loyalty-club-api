@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1> list</h1>
+
+    <table>
+        <thead>
+            <tr>
+            </tr>
+        </thead>
+        <tbody>
+        {%  %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="">show</a>
+                        </li>
+                        <li>
+                            <a href="">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('sport_new') }}">Create a new </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <h1>Sports list</h1>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sport in sports %}
+            <tr>
+                <td><a href="{{ path('sport_show', { 'id': sport.id }) }}">{{ sport.id }}</a></td>
+                <td>{{ sport.name }}</td>
+                <td>
+                    <a href="{{ path('sport_show', { 'id': sport.id }) }}" class="btn btn-default">show</a>
+                    <a href="{{ path('sport_edit', { 'id': sport.id }) }}" class="btn btn-default">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('sport_new') }}">Create a new sport</a>
+        </li>
+    </ul>
+{% endblock %}

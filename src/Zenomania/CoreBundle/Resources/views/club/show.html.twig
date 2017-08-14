@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Club</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ club.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td>{{ club.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Site</th>
+                            <td>{{ club.site }}</td>
+                        </tr>
+                        <tr>
+                            <th>Vkgroup</th>
+                            <td>{{ club.vkGroup }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fbgroup</th>
+                            <td>{{ club.fbGroup }}</td>
+                        </tr>
+                        <tr>
+                            <th>Twittergroup</th>
+                            <td>{{ club.twitterGroup }}</td>
+                        </tr>
+                        <tr>
+                            <th>Instagramgroup</th>
+                            <td>{{ club.instagramGroup }}</td>
+                        </tr>
+                        <tr>
+                            <th>Youtubegroup</th>
+                            <td>{{ club.youtubeGroup }}</td>
+                        </tr>
+                        <tr>
+                            <th>Ytuploadplaylist</th>
+                            <td>{{ club.ytUploadPlaylist }}</td>
+                        </tr>
+                        <tr>
+                            <th>Logoimg</th>
+                            <td>{{ club.logoImg }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <ul class="pull-right">
+                        <a class="btn btn-default" href="{{ path('club_index') }}">Back to the list</a>
+                        <a class="btn btn-primary" href="{{ path('club_edit', { 'id': club.id }) }}">Edit</a>
+                    </ul>
+                    {{ form_start(delete_form) }}
+                    <input id="club_delete_button" class="btn btn-danger pull-left" type="submit" value="Delete">
+                    {{ form_end(delete_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ confirm('#club_delete_button') }}
+{% endblock %}

@@ -35,7 +35,7 @@ class Actor
     /**
      * @var boolean
      */
-    private $shouldChangePwd = '0';
+    private $shouldChangePwd;
 
     /**
      * @var string

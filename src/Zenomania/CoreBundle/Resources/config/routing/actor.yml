@@ -1,0 +1,24 @@
+actor_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:Actor:index" }
+    methods:  GET
+
+actor_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:Actor:show" }
+    methods:  GET
+
+actor_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:Actor:new" }
+    methods:  [GET, POST]
+
+actor_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:Actor:edit" }
+    methods:  [GET, POST]
+
+actor_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZenomaniaCoreBundle:Actor:delete" }
+    methods:  DELETE
