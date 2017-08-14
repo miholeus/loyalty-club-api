@@ -30,7 +30,6 @@ class Version20170811114654 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('CREATE UNIQUE INDEX uniq_b647577143db87c9 ON person_progress (progress_id)');
         $this->addSql('ALTER TABLE club ADD index_enabled BOOLEAN DEFAULT \'false\' NOT NULL');
     }
