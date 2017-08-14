@@ -75,12 +75,6 @@ Zenomania\CoreBundle\Entity\Club:
                 fixed: false
                 default: ''
             column: yt_upload_playlist
-        indexEnabled:
-            type: boolean
-            nullable: false
-            options:
-                default: '0'
-            column: index_enabled
         logoImg:
             type: string
             nullable: true

@@ -28,8 +28,7 @@ class ClubType extends AbstractType
                 'class' => 'Zenomania\CoreBundle\Entity\Sport',
                 'choice_label' => 'name',
             ])
-            ->add('logoImg', FileType::class, ['required' => false, 'data_class' => null, 'label' => 'Логотип'])
-            ->add('indexEnabled', null, ['label' => 'Индексировать']);
+            ->add('logoImg', FileType::class, ['required' => false, 'data_class' => null, 'label' => 'Логотип']);
     }
     
     /**
