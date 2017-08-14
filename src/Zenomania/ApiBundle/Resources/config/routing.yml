@@ -2,3 +2,6 @@ api_security:
     type: rest
     prefix: 'auth'
     resource: "Zenomania\\ApiBundle\\Controller\\SecurityController"
+api_profile:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\ProfileController"

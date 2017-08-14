@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\Form\FormInterface;
 use Zenomania\ApiBundle\Service\Exception\ParameterValidateException;
+use Zenomania\ApiBundle\Service\Transformer\ScopeManager;
+use Zenomania\ApiBundle\Service\Transformer\TransformerAbstract;
 
 class RestController extends FOSRestController
 {
@@ -21,6 +23,59 @@ class RestController extends FOSRestController
     protected function getArrayNormalizer()
     {
         return $this->get('fos_rest.normalizer.camel_keys');
+    }
+
+    /**
+     * Get manager for handling transformations
+     *
+     * @param TransformerAbstract $transformer
+     * @param array $includes
+     * @return ScopeManager
+     */
+    protected function getManager(TransformerAbstract $transformer, $includes = [])
+    {
+        $manager = $this->get('api.data.transformer.manager');
+
+        $manager = $manager->getManager();
+        if ($includes) {
+            $manager->parseIncludes($includes);
+        } else if ($transformer->getAvailableIncludes()) {
+            $manager->parseIncludes($transformer->getAvailableIncludes());
+        }
+        return $manager;
+    }
+
+    /**
+     * Apply transformation to resource
+     *
+     * @param $item
+     * @param TransformerAbstract $transformer
+     * @param array $includes
+     * @return array
+     */
+    protected function getResourceItem($item, TransformerAbstract $transformer, $includes = [])
+    {
+        $resource = new \League\Fractal\Resource\Item($item, $transformer);
+        $manager = $this->getManager($transformer, $includes);
+        $data = $manager->createData($resource)->toArray();
+        return $data;
+    }
+
+    /**
+     * Apply transformation to collection
+     *
+     * @param $collection
+     * @param TransformerAbstract $transformer
+     * @param array $includes
+     * @return array
+     */
+    protected function getResourceCollection($collection, TransformerAbstract $transformer, $includes = [])
+    {
+        $resource = new \League\Fractal\Resource\Collection($collection, $transformer);
+        $manager = $this->getManager($transformer, $includes);
+
+        $data = $manager->createData($resource)->toArray();
+        return $data;
     }
 
     /**

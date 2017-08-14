@@ -1,3 +1,6 @@
+imports:
+    - {resource: "services/transformers.yml" }
+
 services:
     apitoken_authenticator:
         class:  Zenomania\ApiBundle\Security\ApiTokenAuthenticator

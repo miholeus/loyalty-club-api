@@ -1,0 +1,19 @@
+parameters:
+    api.data.transformer.manager_class: 'Zenomania\ApiBundle\Service\Transformer\Manager'
+    api.data.transformer.scope_class: 'Zenomania\ApiBundle\Service\Scope'
+    api.data.serializer_class: 'Zenomania\ApiBundle\Service\Serializer\ArraySerializer'
+
+services:
+    api.data.serializer:
+        class: "%api.data.serializer_class%"
+    api.data.transformer.scope_manager:
+        class: Zenomania\ApiBundle\Service\Transformer\ScopeManager
+        calls:
+          - [setScopeClass, ['%api.data.transformer.scope_class%']]
+          - [setSerializer, ['@api.data.serializer']]
+    api.data.transformer.manager:
+        class: "%api.data.transformer.manager_class%"
+        arguments: ['@api.data.transformer.scope_manager']
+    api.data.transformer.user.profile_transformer:
+        class: Zenomania\ApiBundle\Service\Transformer\User\UserProfileTransformer
+        arguments: ['@utils.host_based_url']
