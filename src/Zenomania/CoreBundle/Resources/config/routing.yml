@@ -25,6 +25,9 @@ zenomania_core_club:
 zenomania_core_actor:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/actor.yml"
     prefix:   /actor
+zenomania_core_sport:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/sport.yml"
+    prefix:   /sport
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}
