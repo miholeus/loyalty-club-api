@@ -9,6 +9,7 @@
 namespace Zenomania\ApiBundle\Service;
 
 
+use Doctrine\ORM\EntityManager;
 use Zenomania\CoreBundle\Repository\TicketRepository;
 
 class Tickets
@@ -34,7 +35,7 @@ class Tickets
 
     public function chargePointForTicketRegistration($barcode)
     {
-        $charge = 100; //Сколько начислить баллов за регистрацию билета
+        $charge = 200; //Сколько начислить баллов за регистрацию билета
 
         return $charge;
     }
@@ -47,10 +48,10 @@ class Tickets
      */
     public function isValidBarcode($barcode)
     {
-        /*$ticket = $this->getTicketRepository()->findOneBy(['ticket_number' => $barcode]);
-        if (null === $ticket) {
-            return false;
-        }*/
+//        $ticket = $this->getTicketRepository()->findOneBy(['ticket_number' => $barcode]);
+//        if (null === $ticket) {
+//            return false;
+//        }
         return true;
     }
 }

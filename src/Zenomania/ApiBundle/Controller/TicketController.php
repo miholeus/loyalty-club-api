@@ -69,9 +69,9 @@ class TicketController extends RestController
         /** @var Tickets $ticketsService */
         $ticketsService = $this->get('api.tickets');
 
-        /*if (!$ticketsService->isValidBarcode($barcode)) {
+        if (!$ticketsService->isValidBarcode($barcode)) {
             throw new HttpException(400, "По данному билету посещение мероприятия не зафиксировано.");
-        }*/
+        }
 
         $zen = $ticketsService->chargePointForTicketRegistration($barcode);
 
