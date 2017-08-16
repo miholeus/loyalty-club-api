@@ -4,3 +4,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\User
+    repository.ticket_repository:
+        class: Zenomania\CoreBundle\Repository\TicketRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\Ticket
