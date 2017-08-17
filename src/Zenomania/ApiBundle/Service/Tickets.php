@@ -8,8 +8,6 @@
 
 namespace Zenomania\ApiBundle\Service;
 
-
-use Doctrine\ORM\EntityManager;
 use Zenomania\CoreBundle\Repository\TicketRepository;
 
 class Tickets
@@ -19,10 +17,10 @@ class Tickets
      */
     private $ticketRepository;
 
-    /*public function __construct(TicketRepository $ticketRepository)
+    public function __construct(TicketRepository $ticketRepository)
     {
         $this->ticketRepository = $ticketRepository;
-    }*/
+    }
 
     /**
      * @return TicketRepository
