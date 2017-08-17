@@ -41,11 +41,9 @@ class TicketController extends RestController
      *  resource=true,
      *  description="Регистрация билетов",
      *  statusCodes={
-     *         200="При успешной аутентификации",
-     *         401="Неверные данные для аутентификации",
-     *         403="Доступ запрещён",
-     *         404="Пользователь не найден",
-     *         400="Не указаны необходимые параметры запроса"
+     *         200="При успешной регистрации билетам",
+     *         400="Не указаны необходимые параметры запроса",
+     *         401="По данному билету посещение мероприятия не зафиксировано"
      *     },
      *  headers={
      *      {
@@ -70,10 +68,15 @@ class TicketController extends RestController
         $ticketsService = $this->get('api.tickets');
 
         if (!$ticketsService->isValidBarcode($barcode)) {
-            throw new HttpException(400, "По данному билету посещение мероприятия не зафиксировано.");
+            throw new HttpException(401, "По данному билету посещение мероприятия не зафиксировано.");
         }
 
-        $zen = $ticketsService->chargePointForTicketRegistration($barcode);
+        $user = $this->getUser();
+
+        // Начисляем баллы пользователю User за билет barcode
+        $zen = $ticketsService->chargePointForTicketRegistration($user, $barcode);
+
+        // Заносим регистрацию билета barcode в активность для пользователя User
 
         $data = [
             'message' => sprintf("Вам было начислено %s ZEN", $zen)

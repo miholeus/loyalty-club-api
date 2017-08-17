@@ -8,6 +8,7 @@
 
 namespace Zenomania\ApiBundle\Service;
 
+use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Repository\TicketRepository;
 
 class Tickets
@@ -31,9 +32,25 @@ class Tickets
     }
 
 
-    public function chargePointForTicketRegistration($barcode)
+    /**
+     * Начисляем пользователю User баллы лояльности за регистрацию билета barcode
+     *
+     * @param User $user
+     * @param string $barcode
+     * @return int
+     */
+    public function chargePointForTicketRegistration($user, $barcode)
     {
         $charge = 200; //Сколько начислить баллов за регистрацию билета
+
+        /*
+         * person_points
+         * season_id = 11;
+        person_id = 1;
+        points = 100;
+        type = 'ticket_register';
+        state = 'none';
+        dt = '2017-06-01 13:41:22';*/
 
         return $charge;
     }
@@ -46,10 +63,10 @@ class Tickets
      */
     public function isValidBarcode($barcode)
     {
-//        $ticket = $this->getTicketRepository()->findOneBy(['ticket_number' => $barcode]);
-//        if (null === $ticket) {
-//            return false;
-//        }
+        $ticket = $this->getTicketRepository()->findTicketByBarcode($barcode);
+        if (null === $ticket) {
+            return false;
+        }
         return true;
     }
 }
