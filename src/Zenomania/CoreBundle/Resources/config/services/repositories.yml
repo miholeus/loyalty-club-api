@@ -9,3 +9,13 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Ticket
+    repository.person_points_repository:
+        class: Zenomania\CoreBundle\Repository\PersonPointsRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\PersonPoints
+    repository.event_attendance_repository:
+        class: Zenomania\CoreBundle\Repository\EventAttendanceRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\EventAttendance

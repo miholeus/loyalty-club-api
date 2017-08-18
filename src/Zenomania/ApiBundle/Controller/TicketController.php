@@ -68,15 +68,20 @@ class TicketController extends RestController
         $ticketsService = $this->get('api.tickets');
 
         if (!$ticketsService->isValidBarcode($barcode)) {
-            throw new HttpException(401, "По данному билету посещение мероприятия не зафиксировано.");
+            throw new HttpException(401, "По данному билету {$barcode} посещение мероприятия не зафиксировано.");
+        }
+
+        if ($ticketsService->isTicketRegistered($barcode)) {
+            throw new HttpException(401, "Данный билет {$barcode} уже был зарегистрирован ранее.");
         }
 
         $user = $this->getUser();
 
         // Начисляем баллы пользователю User за билет barcode
-        $zen = $ticketsService->chargePointForTicketRegistration($user, $barcode);
+        $zen = $ticketsService->chargePointForTicketRegistration($user);
 
         // Заносим регистрацию билета barcode в активность для пользователя User
+        $ticketsService->ticketRegistration($user, $barcode);
 
         $data = [
             'message' => sprintf("Вам было начислено %s ZEN", $zen)

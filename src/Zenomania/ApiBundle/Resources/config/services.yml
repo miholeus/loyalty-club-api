@@ -29,7 +29,7 @@ services:
         arguments: ['@repository.user_repository', '@security.password_encoder']
     api.tickets:
         class: Zenomania\ApiBundle\Service\Tickets
-        arguments: ['@repository.ticket_repository']
+        arguments: ['@repository.ticket_repository', '@repository.person_points_repository', '@repository.event_attendance_repository']
     api.auth_options:
         class: Zenomania\ApiBundle\Service\AuthenticateOptions
         arguments: [{'auth_key_ttl': "%auth_key_ttl%"}]
