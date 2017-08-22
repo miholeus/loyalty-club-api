@@ -325,6 +325,11 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
     private $role;
 
     /**
+     * @var \Zenomania\CoreBundle\Entity\Person
+     */
+    private $person;
+
+    /**
      * @var string
      * @Assert\Regex("/^[0-9]{11}$/")
      * @Assert\NotBlank()
@@ -909,5 +914,21 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
     public function getIsDeleted()
     {
         return $this->isDeleted;
+    }
+
+    /**
+     * @return Person
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param Person $person
+     */
+    public function setPerson($person)
+    {
+        $this->person = $person;
     }
 }

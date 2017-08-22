@@ -314,4 +314,11 @@ Zenomania\CoreBundle\Entity\Person:
                         referencedColumnName: id
                         onDelete: CASCADE
             orderBy: null
+    oneToOne:
+        user:
+            targetEntity: Zenomania\CoreBundle\Entity\User
+            inversedBy: person
+            joinColumn:
+              name: user_id
+              referencedColumnName: id
     lifecycleCallbacks: {  }

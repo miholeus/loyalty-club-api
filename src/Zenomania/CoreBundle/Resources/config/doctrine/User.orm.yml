@@ -180,4 +180,8 @@ Zenomania\CoreBundle\Entity\User:
                     referencedColumnName: id
                     onDelete: RESTRICT
             orphanRemoval: false
+    oneToOne:
+        person:
+          targetEntity: Zenomania\CoreBundle\Entity\Person
+          mappedBy: user
     lifecycleCallbacks: {  }
