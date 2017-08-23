@@ -42,8 +42,7 @@ class TicketController extends RestController
      *  description="Регистрация билетов",
      *  statusCodes={
      *         200="При успешной регистрации билетам",
-     *         400="Не указаны необходимые параметры запроса",
-     *         401="По данному билету посещение мероприятия не зафиксировано"
+     *         400="По данному билету посещение мероприятия не зафиксировано"
      *     },
      *  headers={
      *      {
@@ -68,23 +67,29 @@ class TicketController extends RestController
         $ticketsService = $this->get('api.tickets');
 
         if (!$ticketsService->isValidBarcode($barcode)) {
-            throw new HttpException(401, "По данному билету {$barcode} посещение мероприятия не зафиксировано.");
+            throw new HttpException(400, "По данному билету {$barcode} посещение мероприятия не зафиксировано.");
         }
 
         if ($ticketsService->isTicketRegistered($barcode)) {
-            throw new HttpException(401, "Данный билет {$barcode} уже был зарегистрирован ранее.");
+            throw new HttpException(400, "Данный билет {$barcode} уже был зарегистрирован ранее.");
         }
 
         $user = $this->getUser();
 
+        $personRepository = $this->get('repository.person_repository');
+        $person = $personRepository->findPersonByUser($user);
+
+        $promoActionRepository = $this->get('repository.promo_action_repository');
+        $season = $promoActionRepository->findCurrentSeason();
+
         // Начисляем баллы пользователю User за билет barcode
-        $zen = $ticketsService->chargePointForTicketRegistration($user);
+        $zen = $ticketsService->chargePointForTicketRegistration($person, $season);
 
         // Заносим регистрацию билета barcode в активность для пользователя User
-        $ticketsService->ticketRegistration($user, $barcode);
+        $ticketsService->ticketRegistration($person, $barcode);
 
         $data = [
-            'message' => sprintf("Вам было начислено %s ZEN", $zen)
+            'points' => $zen
         ];
 
         $view = $this->view($data);

@@ -8,9 +8,11 @@
 
 namespace Zenomania\ApiBundle\Service;
 
+
 use Zenomania\CoreBundle\Entity\EventAttendance;
+use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\PersonPoints;
-use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Entity\PromoAction;
 use Zenomania\CoreBundle\Repository\EventAttendanceRepository;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\TicketRepository;
@@ -53,23 +55,17 @@ class Tickets
     /**
      * Начисляем пользователю User баллы лояльности за регистрацию билета barcode
      *
-     * @param User $user
+     * @param Person $person
+     * @param PromoAction $promoAction
      * @return int
      */
-    public function chargePointForTicketRegistration($user)
+    public function chargePointForTicketRegistration(Person $person, PromoAction $promoAction)
     {
         $charge = 200; // Сколько начислить баллов за регистрацию билета
-        $season = null; // В данный момент season_id берётся из promo_action
-
-        /**
-         * @todo создать в таблице Person связь с таблицей User, прописать всё в
-         * настройках orm.yml, создать миграции
-         */
-        $user = null;
 
         $params = [
-            'season' => $season,
-            'person' => $user,
+            'season' => $promoAction,
+            'person' => $person,
             'points' => $charge,
             'type' => 'ticket_register',
             'state' => 'none',
@@ -85,20 +81,18 @@ class Tickets
     /**
      * Регистрация билета определенным пользователем
      *
-     * @param User $user
+     * @param Person $person
      * @param string $barcode
      * @return EventAttendance|null
      */
-    public function ticketRegistration(User $user, $barcode)
+    public function ticketRegistration(Person $person, $barcode)
     {
         $ticket = $this->getTicketRepository()->findTicketByBarcode($barcode);
         $attendance = $this->getTicketRepository()->findAttendanceByBarcode($barcode);
 
-        $user = null;
-
         $params = [
             'event' => $attendance->getEvent(),
-            'person' => $user,
+            'person' => $person,
             'ticketId' => $ticket->getId(),
             'enterDate' => $attendance->getEnterDt()
         ];
@@ -113,7 +107,7 @@ class Tickets
      * @param string $barcode
      * @return bool
      */
-    public function isValidBarcode($barcode)
+    public function isValidBarcode(string $barcode)
     {
         $ticket = $this->getTicketRepository()->findAttendanceByBarcode($barcode);
         if (null === $ticket) {
@@ -128,7 +122,7 @@ class Tickets
      * @param string $barcode
      * @return bool
      */
-    public function isTicketRegistered($barcode)
+    public function isTicketRegistered(string $barcode)
     {
         $ticket = $this->getTicketRepository()->findTicketRegistration($barcode);
         if (null === $ticket) {

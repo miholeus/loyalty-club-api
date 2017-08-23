@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\Person:
     type: entity
     table: person
+    repositoryClass: Zenomania\CoreBundle\Repository\PersonRepository
     indexes:
         FK_person_line_of_work:
             columns:

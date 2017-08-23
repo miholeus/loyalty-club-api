@@ -14,6 +14,16 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\PersonPoints
+    repository.person_repository:
+        class: Zenomania\CoreBundle\Repository\PersonRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\Person
+    repository.promo_action_repository:
+        class: Zenomania\CoreBundle\Repository\PromoActionRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\PromoAction
     repository.event_attendance_repository:
         class: Zenomania\CoreBundle\Repository\EventAttendanceRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
