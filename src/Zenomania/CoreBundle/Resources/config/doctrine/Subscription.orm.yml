@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\Subscription:
     type: entity
     table: subscription
+    repositoryClass: Zenomania\CoreBundle\Repository\SubscriptionRepository
     indexes:
         FK_subscription_fan_card:
             columns:

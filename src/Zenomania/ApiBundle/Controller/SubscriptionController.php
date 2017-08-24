@@ -1,0 +1,112 @@
+<?php
+
+namespace Zenomania\ApiBundle\Controller;
+
+
+use FOS\RestBundle\Request\ParamFetcher;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Zenomania\ApiBundle\Service\Subscriptions;
+use Zenomania\CoreBundle\Form\SubscriptionNumberType;
+
+class SubscriptionController extends RestController
+{
+
+    /**
+     * ### Failed Response ###
+     *
+     *     {
+     *       "success": false
+     *       "exception": {
+     *         "code": <code>,
+     *         "message": <message>
+     *       }
+     *     }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "id":<amount ZEN>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Абонементы",
+     *  resource=true,
+     *  description="Регистрация абонементов",
+     *  statusCodes={
+     *         200="При успешной регистрации абонемента",
+     *         400="Данный абонемент в системе не зарегистрирован"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     *
+     * @RequestParam(name="cardcode", description="Cardcode Subscription")
+     * @RequestParam(name="sector", description="Number Sector Subscription")
+     * @RequestParam(name="row", description="Number Row Subscription")
+     * @RequestParam(name="seat", description="Number Seat Subscription")
+     *
+     * @param ParamFetcher $paramFetcher
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postSubscriptionRegistrationAction(ParamFetcher $paramFetcher)
+    {
+        $cardcode = $paramFetcher->get('cardcode');
+        $sector = $paramFetcher->get('sector');
+        $row = $paramFetcher->get('row');
+        $seat = $paramFetcher->get('seat');
+
+        /*$paramsSubs = [
+            'cardcode' => $paramFetcher->get('cardcode'),
+            'sector' => $paramFetcher->get('sector'),
+            'row' => $paramFetcher->get('row'),
+            'seat' => $paramFetcher->get('seat')
+        ];
+
+        $form = $this->createForm(SubscriptionNumberType::class);*/
+
+        /** @var Subscriptions $subService */
+        $subService = $this->get('api.subscriptions');
+
+        if (!$subService->isValidCardcode($cardcode, $sector, $row, $seat)) {
+            throw new HttpException(400, "Данный абонемент #{$cardcode} не найден.");
+        }
+
+        if ($subService->isSubscriptionRegistered($cardcode, $sector, $row, $seat)) {
+            throw new HttpException(400, "Данный абонемент #{$cardcode} уже был зарегистрирован ранее.");
+        }
+
+        $user = $this->getUser();
+
+        $personRepository = $this->get('repository.person_repository');
+        $person = $personRepository->findPersonByUser($user);
+
+        $promoActionRepository = $this->get('repository.promo_action_repository');
+        $season = $promoActionRepository->findCurrentSeason();
+
+        // Начисляем баллы пользователю User за билет barcode
+        $zen = $subService->chargePointForSubsRegistration($person, $season);
+
+        // Заносим регистрацию абонемента cardcode в активность для пользователя User
+        $subService->subsRegistration($person, $cardcode, $sector, $row, $seat);
+
+
+        $data = [
+            'points' => $zen
+        ];
+
+        $view = $this->view($data);
+
+        return $this->handleView($view);
+    }
+
+}
