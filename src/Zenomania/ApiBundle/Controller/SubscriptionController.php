@@ -3,11 +3,12 @@
 namespace Zenomania\ApiBundle\Controller;
 
 
-use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Zenomania\ApiBundle\Service\Subscriptions;
+use Zenomania\CoreBundle\Entity\SubscriptionNumber;
 use Zenomania\CoreBundle\Form\SubscriptionNumberType;
 
 class SubscriptionController extends RestController
@@ -55,34 +56,29 @@ class SubscriptionController extends RestController
      * @RequestParam(name="row", description="Number Row Subscription")
      * @RequestParam(name="seat", description="Number Seat Subscription")
      *
-     * @param ParamFetcher $paramFetcher
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function postSubscriptionRegistrationAction(ParamFetcher $paramFetcher)
+    public function postSubscriptionRegistrationAction(Request $request)
     {
-        $cardcode = $paramFetcher->get('cardcode');
-        $sector = $paramFetcher->get('sector');
-        $row = $paramFetcher->get('row');
-        $seat = $paramFetcher->get('seat');
+        $form = $this->createForm(SubscriptionNumberType::class);
+        $this->processForm($request, $form);
+        if (!$form->isValid()) {
+            $this->createFormValidationException($form);
+        }
 
-        /*$paramsSubs = [
-            'cardcode' => $paramFetcher->get('cardcode'),
-            'sector' => $paramFetcher->get('sector'),
-            'row' => $paramFetcher->get('row'),
-            'seat' => $paramFetcher->get('seat')
-        ];
-
-        $form = $this->createForm(SubscriptionNumberType::class);*/
+        /** @var SubscriptionNumber $subNumber */
+        $subNumber = SubscriptionNumber::fromArray($form->getData());
 
         /** @var Subscriptions $subService */
         $subService = $this->get('api.subscriptions');
 
-        if (!$subService->isValidCardcode($cardcode, $sector, $row, $seat)) {
-            throw new HttpException(400, "Данный абонемент #{$cardcode} не найден.");
+        if (!$subService->isValidCardcode($subNumber)) {
+            throw new HttpException(400, "Данный абонемент #{$subNumber->getCardcode()} не найден.");
         }
 
-        if ($subService->isSubscriptionRegistered($cardcode, $sector, $row, $seat)) {
-            throw new HttpException(400, "Данный абонемент #{$cardcode} уже был зарегистрирован ранее.");
+        if ($subService->isSubscriptionRegistered($subNumber)) {
+            throw new HttpException(400, "Данный абонемент #{$subNumber->getCardcode()} уже был зарегистрирован ранее.");
         }
 
         $user = $this->getUser();
@@ -97,7 +93,7 @@ class SubscriptionController extends RestController
         $zen = $subService->chargePointForSubsRegistration($person, $season);
 
         // Заносим регистрацию абонемента cardcode в активность для пользователя User
-        $subService->subsRegistration($person, $cardcode, $sector, $row, $seat);
+        $subService->subsRegistration($person, $subNumber);
 
 
         $data = [

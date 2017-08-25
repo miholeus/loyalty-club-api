@@ -11,20 +11,18 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Entity\Subscription;
+use Zenomania\CoreBundle\Entity\SubscriptionNumber;
 
 class SubscriptionRepository extends EntityRepository
 {
 
     /**
-     * Возвращает данные абонемента по его данные
+     * Возвращает данные абонемента по его номеру
      *
-     * @param string $cardcode
-     * @param string $sector
-     * @param string $row
-     * @param string $seat
+     * @param SubscriptionNumber $subNumber
      * @return Subscription
      */
-    public function findSubsByNumber(string $cardcode, string $sector, string $row, string $seat)
+    public function findSubsByNumber(SubscriptionNumber $subNumber)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('u')
@@ -33,10 +31,10 @@ class SubscriptionRepository extends EntityRepository
             ->andWhere('u.sector = :sector')
             ->andWhere('u.row = :row')
             ->andWhere('u.seat = :seat')
-            ->setParameter('cardcode', $cardcode)
-            ->setParameter('sector', $sector)
-            ->setParameter('row', $row)
-            ->setParameter('seat', $seat)
+            ->setParameter('cardcode', $subNumber->getCardcode())
+            ->setParameter('sector', $subNumber->getSector())
+            ->setParameter('row', $subNumber->getRow())
+            ->setParameter('seat', $subNumber->getSeat())
             ->getQuery();
 
         return $query->getOneOrNullResult();

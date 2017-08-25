@@ -14,10 +14,10 @@ class SubscriptionNumberType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('cardcode', TextType::class);
-        $builder->add('sector', TextType::class);
-        $builder->add('row', TextType::class);
-        $builder->add('seat', TextType::class);
+        $builder->add('cardcode', TextType::class, ['required' => true]);
+        $builder->add('sector', TextType::class, ['required' => true]);
+        $builder->add('row', TextType::class, ['required' => true]);
+        $builder->add('seat', TextType::class, ['required' => true]);
     }
 
     /**
@@ -25,13 +25,13 @@ class SubscriptionNumberType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Zenomania\CoreBundle\Entity\Subscription'
-        ));
+        /*$resolver->setDefaults(array(
+            'data_class' => 'Zenomania\CoreBundle\Entity\SubscriptionNumber'
+        ));*/
     }
 
     public function getBlockPrefix()
     {
-        return 'zenomania_core_bundle_subscription_number';
+        /*return 'zenomania_core_bundle_subscription_number';*/
     }
 }

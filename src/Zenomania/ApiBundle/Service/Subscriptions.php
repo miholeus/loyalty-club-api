@@ -13,6 +13,7 @@ use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\PromoAction;
 use Zenomania\CoreBundle\Entity\Subscription;
+use Zenomania\CoreBundle\Entity\SubscriptionNumber;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\SubscriptionRepository;
 
@@ -33,15 +34,12 @@ class Subscriptions
     /**
      * Проверяет, есть ли абонемент с указанным номером, сектором, рядом и местом
      *
-     * @param string $cardcode
-     * @param string $sector
-     * @param string $row
-     * @param string $seat
+     * @param SubscriptionNumber $subNumber
      * @return bool
      */
-    public function isValidCardcode(string $cardcode, string $sector, string $row, string $seat)
+    public function isValidCardcode(SubscriptionNumber $subNumber)
     {
-        $subs = $this->getSubscriptionRepository()->findSubsByNumber($cardcode, $sector, $row, $seat);
+        $subs = $this->getSubscriptionRepository()->findSubsByNumber($subNumber);
 
         if (null === $subs) {
             return false;
@@ -52,15 +50,12 @@ class Subscriptions
     /**
      * Проверяет, был ли зарегистрирован абонемент ранее
      *
-     * @param string $cardcode
-     * @param string $sector
-     * @param string $row
-     * @param string $seat
+     * @param SubscriptionNumber $subNumber
      * @return bool
      */
-    public function isSubscriptionRegistered(string $cardcode, string $sector, string $row, string $seat)
+    public function isSubscriptionRegistered(SubscriptionNumber $subNumber)
     {
-        $subs = $this->getSubscriptionRepository()->findSubsByNumber($cardcode, $sector, $row, $seat);
+        $subs = $this->getSubscriptionRepository()->findSubsByNumber($subNumber);
 
         if (null === $subs || null === $subs->getPerson()) {
             return false;
@@ -98,15 +93,12 @@ class Subscriptions
      * Регистрация абонемента определенным пользователем
      *
      * @param Person $person
-     * @param string $cardcode
-     * @param string $sector
-     * @param string $row
-     * @param string $seat
+     * @param SubscriptionNumber $subNumber
      * @return null|Subscription
      */
-    public function subsRegistration(Person $person, string $cardcode, string $sector, string $row, string $seat)
+    public function subsRegistration(Person $person, SubscriptionNumber $subNumber)
     {
-        $subs = $this->getSubscriptionRepository()->findSubsByNumber($cardcode, $sector, $row, $seat);
+        $subs = $this->getSubscriptionRepository()->findSubsByNumber($subNumber);
         $subs->setPerson($person);
 
         return $this->getSubscriptionRepository()->save($subs);
