@@ -13,7 +13,7 @@ use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\PromoAction;
 use Zenomania\CoreBundle\Entity\Subscription;
-use Zenomania\CoreBundle\Entity\SubscriptionNumber;
+use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\SubscriptionRepository;
 

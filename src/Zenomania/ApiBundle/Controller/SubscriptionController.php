@@ -8,7 +8,7 @@ use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Zenomania\ApiBundle\Service\Subscriptions;
-use Zenomania\CoreBundle\Entity\SubscriptionNumber;
+use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
 use Zenomania\CoreBundle\Form\SubscriptionNumberType;
 
 class SubscriptionController extends RestController

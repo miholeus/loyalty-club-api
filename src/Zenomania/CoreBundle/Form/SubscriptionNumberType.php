@@ -26,7 +26,7 @@ class SubscriptionNumberType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         /*$resolver->setDefaults(array(
-            'data_class' => 'Zenomania\CoreBundle\Entity\SubscriptionNumber'
+            'data_class' => 'Zenomania\CoreBundle\Form\Model\SubscriptionNumber;'
         ));*/
     }
 

@@ -6,7 +6,7 @@
  * Time: 15:13
  */
 
-namespace Zenomania\CoreBundle\Entity;
+namespace Zenomania\CoreBundle\Form\Model;
 
 
 class SubscriptionNumber

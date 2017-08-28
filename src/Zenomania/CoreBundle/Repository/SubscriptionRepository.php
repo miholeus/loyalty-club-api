@@ -11,7 +11,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Entity\Subscription;
-use Zenomania\CoreBundle\Entity\SubscriptionNumber;
+use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
 
 class SubscriptionRepository extends EntityRepository
 {
@@ -28,13 +28,7 @@ class SubscriptionRepository extends EntityRepository
         $query = $qb->select('u')
             ->from('ZenomaniaCoreBundle:Subscription', 'u')
             ->where('u.number = :cardcode')
-            ->andWhere('u.sector = :sector')
-            ->andWhere('u.row = :row')
-            ->andWhere('u.seat = :seat')
             ->setParameter('cardcode', $subNumber->getCardcode())
-            ->setParameter('sector', $subNumber->getSector())
-            ->setParameter('row', $subNumber->getRow())
-            ->setParameter('seat', $subNumber->getSeat())
             ->getQuery();
 
         return $query->getOneOrNullResult();
