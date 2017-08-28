@@ -183,6 +183,11 @@ class Person
     private $video;
 
     /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $user;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -1047,5 +1052,21 @@ class Person
     public function getVideo()
     {
         return $this->video;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 }

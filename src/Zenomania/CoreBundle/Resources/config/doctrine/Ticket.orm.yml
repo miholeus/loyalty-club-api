@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\Ticket:
     type: entity
     table: ticket
+    repositoryClass: Zenomania\CoreBundle\Repository\TicketRepository
     indexes:
         ticket__event:
             columns:

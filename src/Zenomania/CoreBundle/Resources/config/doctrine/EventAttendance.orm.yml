@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\EventAttendance:
     type: entity
     table: event_attendance
+    repositoryClass: Zenomania\CoreBundle\Repository\EventAttendanceRepository
     indexes:
         FK_event_attendance_event:
             columns:

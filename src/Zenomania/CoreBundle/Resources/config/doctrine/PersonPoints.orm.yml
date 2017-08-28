@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\PersonPoints:
     type: entity
     table: person_points
+    repositoryClass: Zenomania\CoreBundle\Repository\PersonPointsRepository
     indexes:
         person_points__person_id:
             columns:

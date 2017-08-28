@@ -42,6 +42,19 @@ class PersonPoints
      */
     private $person;
 
+    /**
+     * @param array $data
+     * @return PersonPoints
+     */
+    public static function fromArray(array $data) : PersonPoints
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set".ucfirst($key)}($value);
+        }
+        return $self;
+    }
+
 
     /**
      * Get id
