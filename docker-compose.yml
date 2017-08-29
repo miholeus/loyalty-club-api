@@ -23,7 +23,7 @@ services:
             - ./support/php/log.conf:/usr/local/etc/php-fpm.d/zz-log.conf
         environment:
             - SYMFONY_ENV=dev
-            - SYMFONY_DEBUG=true
+            - SYMFONY_DEBUG=1
             - SYMFONY__DATABASE__USER=${DB_USER}
             - SYMFONY__DATABASE__NAME=${DB_NAME}
             - SYMFONY__DATABASE__PASS=${DB_PASS}

@@ -26,3 +26,6 @@
 # Idea settings
 *.iml
 .idea
+
+# deploy scripts
+.rocketeer
