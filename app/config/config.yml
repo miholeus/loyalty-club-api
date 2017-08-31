@@ -193,7 +193,7 @@ fos_rest:
         enabled: true
         rules:
           - { path: '^/api/v1', fallback_format: 'json' }
-          - { path: '^/', fallback_format: 'html' }
+          - { path: '^/', stop: true }
 #    unauthorized_challenge: "Basic realm=\"Restricted Area\""
     allowed_methods_listener: true
     access_denied_listener:
@@ -202,13 +202,12 @@ fos_rest:
         array_normalizer: fos_rest.normalizer.camel_keys
     exception:
         enabled: true
-        exception_controller: 'Zenomania\ApiBundle\Controller\ExceptionController::showAction'
-#        codes:
-#            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
-#            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
-#            'Zenomania\ApiBundle\Security\BadCredentialsException': 403
-#        messages:
-#            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+            'Zenomania\ApiBundle\Security\BadCredentialsException': 403
+        messages:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
     # these options are available in 2nd version of bundle
 #    zone:
 #        - { path: ^/api/* }

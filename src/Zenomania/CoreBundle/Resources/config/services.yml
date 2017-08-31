@@ -7,6 +7,15 @@ imports:
    - { resource: "services/upload.yml" }
 
 services:
+    core.encoder.json:
+        class: Symfony\Component\Serializer\Encoder\JsonEncoder
+    core.serializer.default:
+        class: Symfony\Component\Serializer\Serializer
+        arguments:
+            0:
+                - '@serializer.normalizer.object'
+            1:
+                - '@core.encoder.json'
     twig.extension.dialog:
         class: Zenomania\CoreBundle\Twig\Extension\Dialog\Confirm
         public: false

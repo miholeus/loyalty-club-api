@@ -18,8 +18,16 @@ services:
         public: false
     api.response_handler:
         class: Zenomania\ApiBundle\View\ResponseViewHandler
-    api.exception_handler:
-        class: Zenomania\ApiBundle\Handler\ApiExceptionWrapperHandler
+    api.exception_normalizer:
+        class: Zenomania\ApiBundle\Normalizer\ExceptionNormalizer
+        public: false
+        tags: [api.normalizer]
+    api.exception_subscriber:
+        class: Zenomania\ApiBundle\EventSubscriber\ExceptionListener
+        arguments:
+            - '@core.serializer.default'
+        tags:
+            - { name: kernel.event_subscriber }
     api.view_handler:
         parent: fos_rest.view_handler.default
         calls:
