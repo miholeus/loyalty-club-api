@@ -8,3 +8,6 @@ api_profile:
 api_ticket:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\TicketController"
+api_subscription:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\SubscriptionController"
