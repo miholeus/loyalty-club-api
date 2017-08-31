@@ -21,7 +21,7 @@ services:
         public: false
         tags:
             - { name: twig.extension }
-    task.doctrine.entity_listener_resolver:
+    core.doctrine.entity_listener_resolver:
         class: Zenomania\CoreBundle\Doctrine\EntityListenerResolver
         arguments: [ "@service_container" ]
     user.listener:
@@ -29,12 +29,12 @@ services:
         arguments: ['@service_container']
         tags:
             - { name: doctrine.orm.entity_listener }
-    task.user_aware_service:
+    core.user_aware_service:
         class: Zenomania\CoreBundle\Service\UserAwareService
         arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@event.notification_manager']
     user.service:
         class:  Zenomania\CoreBundle\Service\User
-        parent: task.user_aware_service
+        parent: core.user_aware_service
         calls:
           - ['setPasswordEncoder', ['@security.password_encoder']]
     security.authentication.success_handler:
@@ -47,7 +47,7 @@ services:
         arguments: ['@swiftmailer.mailer', '@templating.engine.twig', '%mailer_user%']
     images.service:
         class: Zenomania\CoreBundle\Service\Images
-        parent: task.user_aware_service
+        parent: core.user_aware_service
     utils.host_based_url:
         class: Zenomania\CoreBundle\Service\Utils\HostBasedUrl
         arguments: ['@request_stack']

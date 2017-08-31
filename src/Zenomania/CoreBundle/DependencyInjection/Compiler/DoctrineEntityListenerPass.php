@@ -21,7 +21,7 @@ class DoctrineEntityListenerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->getDefinition('task.doctrine.entity_listener_resolver');
+        $definition = $container->getDefinition('core.doctrine.entity_listener_resolver');
         $services = $container->findTaggedServiceIds('doctrine.orm.entity_listener');
 
         foreach ($services as $service => $attributes) {

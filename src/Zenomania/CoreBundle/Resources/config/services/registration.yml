@@ -1,25 +1,25 @@
 services:
-    task.form.flow.registration:
+    core.form.flow.registration:
         class: Zenomania\CoreBundle\Form\Wizard\RegistrationFlow
-        arguments: ['@task.service.registration']
+        arguments: ['@core.service.registration']
         parent: craue.form.flow
-    task.service.token_management:
+    core.service.token_management:
         class: Zenomania\CoreBundle\Service\Token\TokenManagementService
         arguments: ['@service_container']
         abstract: true
-    task.service.registration:
+    core.service.registration:
         class: Zenomania\CoreBundle\Service\RegistrationService
-        parent: task.service.token_management
-    task.service.update_phone:
+        parent: core.service.token_management
+    core.service.update_phone:
         class: Zenomania\CoreBundle\Service\UpdatePhoneService
-        parent: task.service.token_management
-    task.service.password_recovery:
+        parent: core.service.token_management
+    core.service.password_recovery:
         class: Zenomania\CoreBundle\Service\PasswordRecoveryService
-        parent: task.service.token_management
-    task.service.token.storage:
+        parent: core.service.token_management
+    core.service.token.storage:
         class: Zenomania\CoreBundle\Service\Token\Storage
         calls:
             - ['setClient', ['@snc_redis.session']]
-    task.service.authenticate:
+    core.service.authenticate:
         class: Zenomania\CoreBundle\Service\AuthenticateService
         arguments: ['@service_container']

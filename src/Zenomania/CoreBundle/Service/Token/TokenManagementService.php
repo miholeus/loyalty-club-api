@@ -40,7 +40,7 @@ abstract class TokenManagementService
      */
     public function getTokenStorage()
     {
-        return $this->getContainer()->get('task.service.token.storage');
+        return $this->getContainer()->get('core.service.token.storage');
     }
 
     /**

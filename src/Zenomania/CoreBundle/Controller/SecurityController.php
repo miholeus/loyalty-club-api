@@ -46,7 +46,7 @@ class SecurityController extends Controller
         }
         $registration = new Registration();
 
-        $flow = $this->get('task.form.flow.registration');
+        $flow = $this->get('core.form.flow.registration');
 
         $flow->bind($registration);
 
@@ -65,7 +65,7 @@ class SecurityController extends Controller
 
                     $user = $flow->getService()->registerUser($registration);
                     $flow->getService()->clear($registration);
-                    $this->get('task.service.authenticate')->authenticate($request, $user);
+                    $this->get('core.service.authenticate')->authenticate($request, $user);
 
                     return $this->redirectToRoute('zenomania_core_homepage');
                 }

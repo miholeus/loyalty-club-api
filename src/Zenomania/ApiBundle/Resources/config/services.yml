@@ -46,7 +46,7 @@ services:
         arguments: [{'auth_key_ttl': "%auth_key_ttl%"}]
     api.key_provider:
         class: Zenomania\ApiBundle\Service\ApiKeyProvider
-        arguments: ['@task.service.token.storage', '@api.auth_options']
+        arguments: ['@core.service.token.storage', '@api.auth_options']
     test_entity_factory:
         class: Zenomania\ApiBundle\Tests\TestEntityFactory
         arguments: ['@doctrine.orm.entity_manager', '@user.service', '@service_container']
