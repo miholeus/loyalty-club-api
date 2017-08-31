@@ -11,3 +11,6 @@ api_ticket:
 api_subscription:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\SubscriptionController"
+api_invite:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\InviteController"

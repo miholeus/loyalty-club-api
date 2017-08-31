@@ -1,0 +1,64 @@
+Zenomania\CoreBundle\Entity\UserReferralActivation:
+    type: entity
+    table: user_referral_activation
+    indexes:
+        user_referral_activation__ref_code_id:
+            columns:
+                - ref_code_id
+    uniqueConstraints:
+        user_referral_activation__ref_code_id_user:
+            columns:
+                - ref_code_id
+                - created_by_user
+                - used_by_user
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        date:
+            type: datetime
+            nullable: true
+            options:
+                comment: 'Дата активации кода'
+            column: date
+    manyToOne:
+        refCode:
+            targetEntity: UserReferralCode
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                ref_code_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        createdByUser:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                created_by_user:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        usedByUser:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                used_by_user:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
