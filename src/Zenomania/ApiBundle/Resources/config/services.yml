@@ -18,8 +18,16 @@ services:
         public: false
     api.response_handler:
         class: Zenomania\ApiBundle\View\ResponseViewHandler
-    api.exception_handler:
-        class: Zenomania\ApiBundle\Handler\ApiExceptionWrapperHandler
+    api.exception_normalizer:
+        class: Zenomania\ApiBundle\Normalizer\ExceptionNormalizer
+        public: false
+        tags: [api.normalizer]
+    api.exception_subscriber:
+        class: Zenomania\ApiBundle\EventSubscriber\ExceptionListener
+        arguments:
+            - '@core.serializer.default'
+        tags:
+            - { name: kernel.event_subscriber }
     api.view_handler:
         parent: fos_rest.view_handler.default
         calls:
@@ -41,7 +49,7 @@ services:
         arguments: ['@repository.user_referral_code_repository']
     api.key_provider:
         class: Zenomania\ApiBundle\Service\ApiKeyProvider
-        arguments: ['@task.service.token.storage', '@api.auth_options']
+        arguments: ['@core.service.token.storage', '@api.auth_options']
     test_entity_factory:
         class: Zenomania\ApiBundle\Tests\TestEntityFactory
         arguments: ['@doctrine.orm.entity_manager', '@user.service', '@service_container']

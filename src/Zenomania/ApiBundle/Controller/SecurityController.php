@@ -173,7 +173,7 @@ class SecurityController extends RestController
             throw new HttpException(400, "Phone is already registered. Try to recover your password.");
         }
 
-        $service = $this->get('task.service.registration');
+        $service = $this->get('core.service.registration');
         $token = $service->getTokenStorage()->getToken(RegistrationService::TOKEN_REGISTER_SESSION);
         $service->makeRequest($phone, $token, ['refcode' => $refcode]);
 
@@ -228,7 +228,7 @@ class SecurityController extends RestController
         $token = $paramFetcher->get('token');
         $code  = $paramFetcher->get('code');
 
-        $service = $this->get('task.service.registration');
+        $service = $this->get('core.service.registration');
 
         if (!$service->isTokenValid($token, $code)) {
             throw new AuthenticateException(403, "Not Valid code");
@@ -305,7 +305,7 @@ class SecurityController extends RestController
             throw $this->createFormValidationException($form);
         }
 
-        $service = $this->get('task.service.registration');
+        $service = $this->get('core.service.registration');
 
         if (!$service->getSessionToken($registration->getToken())) {
             throw new AuthenticateException(403, "Not valid token provided");
@@ -396,7 +396,7 @@ class SecurityController extends RestController
             throw new AuthenticateException(400, "Unknown phone");
         }
 
-        $service = $this->get('task.service.password_recovery');
+        $service = $this->get('core.service.password_recovery');
         $token = $service->getTokenStorage()->getToken(PasswordRecoveryService::TOKEN_RECOVERY_SESSION);
         $service->makeRequest($phone, $token);
 
@@ -451,7 +451,7 @@ class SecurityController extends RestController
         $token = $paramFetcher->get('token');
         $code  = $paramFetcher->get('code');
 
-        $service = $this->get('task.service.password_recovery');
+        $service = $this->get('core.service.password_recovery');
 
         if (!$service->isTokenValid($token, $code)) {
             throw new AuthenticateException(403, "Not Valid code");
@@ -513,7 +513,7 @@ class SecurityController extends RestController
         $token = $paramFetcher->get('token');
         $password = $paramFetcher->get('password');
 
-        $service = $this->get('task.service.password_recovery');
+        $service = $this->get('core.service.password_recovery');
 
         if (!$service->getSessionToken($token)) {
             throw new AuthenticateException(403, "Not valid token provided");
@@ -522,7 +522,7 @@ class SecurityController extends RestController
         $user = $this->get('api.auth_service')->findUserByPhone($sessionData['phone']);
 
         // we need to authenticate user to change password
-        $this->get('task.service.authenticate')->authenticate($request, $user);
+        $this->get('core.service.authenticate')->authenticate($request, $user);
 
         $recovery = new PasswordRecovery([
             'password' => $password,

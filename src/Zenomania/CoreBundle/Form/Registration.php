@@ -92,42 +92,40 @@ class Registration extends AbstractType
                 break;
 
             case 3:
-                $builder->add('first_name', TextType::class, [
-                    'property_path' => 'firstName',
+                $builder->add('firstName', TextType::class, [
+//                    'property_path' => 'firstName',
                     'attr' => [
                         'class' => 'form-control'
                     ]
                 ])
-                    ->add('last_name', TextType::class, [
-                        'property_path' => 'lastName',
-                        'attr' => [
-                            'class' => 'form-control'
-                        ]
-                    ])
-                    ->add('middle_name', TextType::class, [
-                        'property_path' => 'middleName',
-                        'attr' => [
-                            'class' => 'form-control'
-                        ]
-                    ])
-                    ->add('login', TextType::class, [
-                        'attr' => [
-                            'class' => 'form-control'
-                        ]
-                    ])
-                    ->add('reset', ResetType::class, [
-                        'label' => 'Отмена',
-                        'attr' => [
-                            'class' => 'btn btn-primary btn-flat',
-                        ]
-                    ])
-                    ->add('submit', SubmitType::class, [
-                        'label' => 'Сохранить',
-                        'attr' => [
-                            'class' => 'btn btn-primary btn-flat',
-                        ]
-                    ])->add('token', HiddenType::class);
-                if (!$this->getOption('password_text')) {
+                ->add('lastName', TextType::class, [
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
+                ])
+                ->add('middleName', TextType::class, [
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
+                ])
+                ->add('login', TextType::class, [
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
+                ])
+                ->add('reset', ResetType::class, [
+                    'label' => 'Отмена',
+                    'attr' => [
+                        'class' => 'btn btn-primary btn-flat',
+                    ]
+                ])
+                ->add('submit', SubmitType::class, [
+                    'label' => 'Сохранить',
+                    'attr' => [
+                        'class' => 'btn btn-primary btn-flat',
+                    ]
+                ])->add('token', HiddenType::class);
+                if (!$options['password_text']) {
                     $builder->add('password', RepeatedType::class, [
                         'type' => PasswordType::class,
                         'invalid_message' => 'Пароли не совпадают',
