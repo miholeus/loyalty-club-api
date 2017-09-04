@@ -34,3 +34,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\EventAttendance
+    repository.user_referral_code_repository:
+        class: Zenomania\CoreBundle\Repository\UserReferralCodeRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\UserReferralCode

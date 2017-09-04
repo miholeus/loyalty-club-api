@@ -38,6 +38,7 @@ services:
         arguments: [{'auth_key_ttl': "%auth_key_ttl%"}]
     api.invite:
         class: Zenomania\ApiBundle\Service\Invite
+        arguments: ['@repository.user_referral_code_repository']
     api.key_provider:
         class: Zenomania\ApiBundle\Service\ApiKeyProvider
         arguments: ['@task.service.token.storage', '@api.auth_options']

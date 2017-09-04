@@ -158,4 +158,17 @@ class UserReferralCode
     {
         $this->user = $user;
     }
+
+    /**
+     * @param array $data
+     * @return UserReferralCode
+     */
+    public static function fromArray(array $data) : UserReferralCode
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set".ucfirst($key)}($value);
+        }
+        return $self;
+    }
 }
