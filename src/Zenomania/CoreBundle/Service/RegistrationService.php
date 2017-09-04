@@ -56,15 +56,16 @@ class RegistrationService extends TokenManagementService implements TokenConfirm
      *
      * @param string $phone phone number to send key
      * @param string $token token saved in storage to identify user's requests
+     * @param array $context additional context for request
      * @return string key to register new user
      */
-    public function makeRequest($phone, $token)
+    public function makeRequest($phone, $token, $context = [])
     {
         $key = $this->getRequestTokenName($token);
         $smsKey = $this->getRandomNumber(6, true);
 
         $storage = $this->getTokenStorage();
-        $storage->set($key, json_encode(['code' => $smsKey, 'phone' => $phone]), self::REGISTRATION_REQUEST_TTL);
+        $storage->set($key, json_encode(array_merge($context, ['code' => $smsKey, 'phone' => $phone])), self::REGISTRATION_REQUEST_TTL);
 
         $messageText = $this->getMessage($smsKey);
         $messageService = $this->getMessageService();

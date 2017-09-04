@@ -157,6 +157,7 @@ class SecurityController extends RestController
      *
      *
      * @RequestParam(name="phone", description="Phone")
+     * @RequestParam(name="refcode", description="Refcode", nullable=true, allowBlank=true)
      *
      * @param Request $request
      * @param ParamFetcher $paramFetcher
@@ -165,6 +166,7 @@ class SecurityController extends RestController
     public function postRegisterTokenAction(Request $request, ParamFetcher $paramFetcher)
     {
         $phone = $paramFetcher->get('phone');
+        $refcode = $paramFetcher->get('refcode');
         $authService = $this->get('api.auth_service');
 
         if ($authService->validPhone($phone)) {
@@ -173,7 +175,7 @@ class SecurityController extends RestController
 
         $service = $this->get('task.service.registration');
         $token = $service->getTokenStorage()->getToken(RegistrationService::TOKEN_REGISTER_SESSION);
-        $service->makeRequest($phone, $token);
+        $service->makeRequest($phone, $token, ['refcode' => $refcode]);
 
         $data = [
             'token' => $token,
@@ -317,6 +319,12 @@ class SecurityController extends RestController
             $service->clear($registration);
         } catch (\Zenomania\CoreBundle\Entity\Exception\ValidatorException $e) {
             throw new HttpException(400, $e->getMessage());
+        }
+
+        if (!empty($sessionData['refcode'])) {
+            /**
+             * @todo Начислить пользователю баллы за refcode
+             */
         }
 
         $data = [
