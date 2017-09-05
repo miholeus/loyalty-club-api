@@ -28,6 +28,19 @@ class UserReferralActivation
     private $usedByUser;
 
     /**
+     * @param array $data
+     * @return UserReferralActivation
+     */
+    public static function fromArray(array $data) : UserReferralActivation
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set".ucfirst($key)}($value);
+        }
+        return $self;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()

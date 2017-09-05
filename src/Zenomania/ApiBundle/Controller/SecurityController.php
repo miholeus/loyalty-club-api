@@ -8,6 +8,7 @@ use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Zenomania\CoreBundle\Entity\UserReferralActivation;
 use Zenomania\CoreBundle\Form\Model\PasswordRecovery;
 use Zenomania\CoreBundle\Form\Model\Registration;
 use Zenomania\CoreBundle\Service\PasswordRecoveryService;
@@ -322,9 +323,39 @@ class SecurityController extends RestController
         }
 
         if (!empty($sessionData['refcode'])) {
-            /**
-             * @todo Начислить пользователю баллы за refcode
-             */
+            // Определяем пользователя, которому принадлежит реферальный код
+            $userRepository = $this->get('repository.user_repository');
+            $userRef = $userRepository->findUserByRefcode($sessionData['refcode']);
+
+            if (!empty($userRef)) {
+                // Подключаем сервис для приглашений
+                $inviteService = $this->get('api.invite');
+
+                $personRepository = $this->get('repository.person_repository');
+                $person = $personRepository->findPersonByUser($userRef);
+
+                $promoActionRepository = $this->get('repository.promo_action_repository');
+                $season = $promoActionRepository->findCurrentSeason();
+
+                // Начисляем баллы пользователю User за билет barcode
+                $inviteService->chargePointForTicketRegistration($person, $season);
+
+                // Увеличиваем счетчик активаций для данного реферального кода
+                $userRefCodeRepository = $this->get('repository.user_referral_code_repository');
+                $refCode = $userRefCodeRepository->findCodeByRefcode($sessionData['refcode']);
+                $userRefCodeRepository->addActivations($refCode);
+
+                // Сохраняем данные у какого пользователя появился новый реферал
+                $userRefActivationRepository = $this->get('repository.user_referral_activation_repository');
+                $params = [
+                    'refCode' => $refCode,
+                    'createdByUser' => $userRef,
+                    'usedByUser' => $user,
+                    'date' => new \DateTime()
+                ];
+                $userReferralActivation = UserReferralActivation::fromArray($params);
+                $userRefActivationRepository->save($userReferralActivation);
+            }
         }
 
         $data = [

@@ -10,8 +10,12 @@ namespace Zenomania\ApiBundle\Service;
 
 
 use Hashids\Hashids;
+use Zenomania\CoreBundle\Entity\Person;
+use Zenomania\CoreBundle\Entity\PersonPoints;
+use Zenomania\CoreBundle\Entity\PromoAction;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
+use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\UserReferralCodeRepository;
 
 class Invite
@@ -20,9 +24,13 @@ class Invite
     /** @var UserReferralCodeRepository */
     private $userReferralCodeRepository;
 
-    public function __construct(UserReferralCodeRepository $userReferralCodeRepository)
+    /** @var PersonPointsRepository */
+    private $personPointsRepository;
+
+    public function __construct(UserReferralCodeRepository $userReferralCodeRepository, PersonPointsRepository $personPointsRepository)
     {
         $this->userReferralCodeRepository = $userReferralCodeRepository;
+        $this->personPointsRepository = $personPointsRepository;
     }
     /**
      * @return string
@@ -88,6 +96,33 @@ class Invite
     }
 
     /**
+     * Начисляем пользователю User баллы лояльности за регистрацию по рефреальному коду
+     *
+     * @param Person $person
+     * @param PromoAction $promoAction
+     *
+     * @return int
+     */
+    public function chargePointForInvite(Person $person, PromoAction $promoAction)
+    {
+        $charge = 500; // Сколько начислить баллов за регистрацию по реферальному коду
+
+        $params = [
+            'season' => $promoAction,
+            'person' => $person,
+            'points' => $charge,
+            'type' => 'reference',
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+
+        $personPoints = PersonPoints::fromArray($params);
+        $this->getPersonPointsRepository()->save($personPoints);
+
+        return $charge;
+    }
+
+    /**
      * @return UserReferralCodeRepository
      */
     public function getUserReferralCodeRepository(): UserReferralCodeRepository
@@ -117,11 +152,19 @@ class Invite
 
             $userReferralCode = UserReferralCode::fromArray($params);
             $this->getUserReferralCodeRepository()->save($userReferralCode);
-            return $code;
         } else {
             /** @var UserReferralCode $userReferralCode */
             $code = $userReferralCode->getRefCode();
-            return $code;
         }
+
+        return $code;
+    }
+
+    /**
+     * @return PersonPointsRepository
+     */
+    public function getPersonPointsRepository(): PersonPointsRepository
+    {
+        return $this->personPointsRepository;
     }
 }

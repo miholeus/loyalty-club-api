@@ -36,4 +36,41 @@ class UserReferralCodeRepository extends EntityRepository
 
         return $query->getOneOrNullResult();
     }
+
+    /**
+     * @param string $refcode
+     * @return mixed
+     */
+    public function findCodeByRefcode(string $refcode)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('urc')
+            ->from('ZenomaniaCoreBundle:UserReferralCode', 'urc')
+            ->where('urc.refCode = :refcode')
+            ->setParameter('refcode', $refcode)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
+    /**
+     * @param UserReferralCode $userReferralCode
+     * @return mixed
+     */
+    public function addActivations(UserReferralCode $userReferralCode)
+    {
+        $activations = $userReferralCode->getActivations() + 1;
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->update('ZenomaniaCoreBundle:UserReferralCode', 'urc')
+            ->set('urc.activations', ':activations')
+            ->set('urc.activated', ':activated')
+            ->where('urc.refCode = :refcode')
+            ->setParameter('activations', $activations)
+            ->setParameter('activated', true)
+            ->setParameter('refcode', $userReferralCode->getRefCode())
+            ->getQuery();
+
+        return $query->execute();
+    }
 }

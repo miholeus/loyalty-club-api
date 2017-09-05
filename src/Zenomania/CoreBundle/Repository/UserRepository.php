@@ -5,6 +5,7 @@ namespace Zenomania\CoreBundle\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Entity\UserReferralCode;
 
 /**
  * UserRepository
@@ -51,6 +52,25 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
         $query = $qb->getQuery();
         $userList = $query->getResult();
         return $userList;
+    }
+
+    /**
+     * Возвращает пользователя по реферальному коду
+     *
+     * @param string $refcode
+     * @return mixed
+     */
+    public function findUserByRefcode($refcode)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('u')
+            ->from('ZenomaniaCoreBundle:User', 'u')
+            ->innerJoin('ZenomaniaCoreBundle:UserReferralCode', 'urc', 'WITH', 'u.id = urc.user')
+            ->where('urc.refCode = :refcode')
+            ->setParameter('refcode', $refcode)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
     }
 
     /**

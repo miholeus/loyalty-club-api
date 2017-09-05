@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\UserReferralActivation:
     type: entity
     table: user_referral_activation
+    repositoryClass: Zenomania\CoreBundle\Repository\UserReferralActivationRepository
     indexes:
         user_referral_activation__ref_code_id:
             columns:
