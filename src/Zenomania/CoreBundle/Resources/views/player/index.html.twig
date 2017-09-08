@@ -13,8 +13,6 @@
             <th>Bdate</th>
             <th>Foto</th>
             <th>Isactive</th>
-            <th>Createdon</th>
-            <th>Updatedon</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -28,8 +26,6 @@
                 <td>{% if player.bdate %}{{ player.bdate|date('Y-m-d') }}{% endif %}</td>
                 <td>{{ player.foto }}</td>
                 <td>{% if player.isActive %}Yes{% else %}No{% endif %}</td>
-                <td>{% if player.createdOn %}{{ player.createdOn|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if player.updatedOn %}{{ player.updatedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ sport.name }}</td>
                 <td>
                     <a href="{{ path('player_show', { 'id': player.id }) }}" class="btn btn-default">show</a>

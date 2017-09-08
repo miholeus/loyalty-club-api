@@ -123,7 +123,7 @@ class Player
     /**
      * @return string
      */
-    public function getFirstname(): string
+    public function getFirstname()
     {
         return $this->firstname;
     }
@@ -143,7 +143,7 @@ class Player
     /**
      * @return string
      */
-    public function getLastname(): string
+    public function getLastname()
     {
         return $this->lastname;
     }
@@ -163,7 +163,7 @@ class Player
     /**
      * @return string
      */
-    public function getMiddlename(): string
+    public function getMiddlename()
     {
         return $this->middlename;
     }
@@ -183,7 +183,7 @@ class Player
     /**
      * @return string
      */
-    public function getFoto(): string
+    public function getFoto()
     {
         return $this->foto;
     }
@@ -203,7 +203,7 @@ class Player
     /**
      * @return \DateTime
      */
-    public function getCreatedOn(): \DateTime
+    public function getCreatedOn()
     {
         return $this->createdOn;
     }
@@ -213,7 +213,7 @@ class Player
      *
      * @return Player
      */
-    public function setCreatedOn(\DateTime $createdOn)
+    public function setCreatedOn($createdOn)
     {
         $this->createdOn = $createdOn;
 
@@ -223,7 +223,7 @@ class Player
     /**
      * @return \DateTime
      */
-    public function getUpdatedOn(): \DateTime
+    public function getUpdatedOn()
     {
         return $this->updatedOn;
     }
@@ -233,7 +233,7 @@ class Player
      *
      * @return Player
      */
-    public function setUpdatedOn(\DateTime $updatedOn)
+    public function setUpdatedOn($updatedOn)
     {
         $this->updatedOn = $updatedOn;
 
@@ -243,7 +243,7 @@ class Player
     /**
      * @return bool
      */
-    public function getIsActive(): bool
+    public function getIsActive()
     {
         return $this->isActive;
     }

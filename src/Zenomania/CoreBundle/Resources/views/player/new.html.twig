@@ -1,4 +1,28 @@
 {% extends 'base.html.twig' %}
+{% form_theme form _self %}
+
+{% block javascripts %}
+    {% javascripts
+    'bundles/zenomaniacore/system/plugins/datepicker/bootstrap-datepicker.js'
+    'bundles/zenomaniacore/system/plugins/datepicker/locales/bootstrap-datepicker.ru.js'
+    'bundles/zenomaniacore/plugins/datepicker/settings.js'
+    'bundles/zenomaniacore/system/plugins/select2/select2.js'
+    'bundles/zenomaniacore/system/plugins/select2/i18n/ru.js'
+    'bundles/tetranzselect2entity/js/select2entity.js'
+    'bundles/zenomaniacore/js/collection.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets
+    'bundles/zenomaniacore/system/plugins/datepicker/datepicker3.css'
+    'bundles/zenomaniacore/plugins/datepicker/style.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
 
 {% block body %}
     <div class="row">
@@ -9,6 +33,9 @@
                     <h3 class="box-title">Создание игрока</h3>
                 </div>
                 <div class="box-body">
+                    {{ form_row(form.firstname) }}
+                    {{ form_row(form.lastname) }}
+                    {{ form_row(form.middlename) }}
                     {{ form_widget(form) }}
                 </div>
                 <div class="box-footer">
