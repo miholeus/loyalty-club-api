@@ -8,7 +8,6 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
-
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
@@ -23,9 +22,9 @@ class UserReferralCodeRepository extends EntityRepository
 
     /**
      * @param User $user
-     * @return mixed
+     * @return UserReferralCode|null
      */
-    public function findCodeByUser(User $user)
+    public function findByUser(User $user)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('urc')
@@ -38,16 +37,16 @@ class UserReferralCodeRepository extends EntityRepository
     }
 
     /**
-     * @param string $refcode
-     * @return mixed
+     * @param string $referralCode
+     * @return UserReferralCode|null
      */
-    public function findCodeByRefcode(string $refcode)
+    public function findByReferralCode(string $referralCode)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('urc')
             ->from('ZenomaniaCoreBundle:UserReferralCode', 'urc')
-            ->where('urc.refCode = :refcode')
-            ->setParameter('refcode', $refcode)
+            ->where('urc.refCode = :refCode')
+            ->setParameter('refCode', $referralCode)
             ->getQuery();
 
         return $query->getOneOrNullResult();
@@ -57,20 +56,11 @@ class UserReferralCodeRepository extends EntityRepository
      * @param UserReferralCode $userReferralCode
      * @return mixed
      */
-    public function addActivations(UserReferralCode $userReferralCode)
+    public function addActivation(UserReferralCode $userReferralCode)
     {
-        $activations = $userReferralCode->getActivations() + 1;
+        $userReferralCode->addActivation();
 
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $query = $qb->update('ZenomaniaCoreBundle:UserReferralCode', 'urc')
-            ->set('urc.activations', ':activations')
-            ->set('urc.activated', ':activated')
-            ->where('urc.refCode = :refcode')
-            ->setParameter('activations', $activations)
-            ->setParameter('activated', true)
-            ->setParameter('refcode', $userReferralCode->getRefCode())
-            ->getQuery();
-
-        return $query->execute();
+        $this->_em->persist($userReferralCode);
+        $this->_em->flush();
     }
 }

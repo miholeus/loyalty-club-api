@@ -329,7 +329,7 @@ class SecurityController extends RestController
 
             if (!empty($userRef)) {
                 // Подключаем сервис для приглашений
-                $inviteService = $this->get('api.invite');
+                $inviteService = $this->get('api.invite_service');
 
                 $personRepository = $this->get('repository.person_repository');
                 $person = $personRepository->findPersonByUser($userRef);
@@ -342,8 +342,8 @@ class SecurityController extends RestController
 
                 // Увеличиваем счетчик активаций для данного реферального кода
                 $userRefCodeRepository = $this->get('repository.user_referral_code_repository');
-                $refCode = $userRefCodeRepository->findCodeByRefcode($sessionData['refcode']);
-                $userRefCodeRepository->addActivations($refCode);
+                $refCode = $userRefCodeRepository->findByReferralCode($sessionData['refcode']);
+                $userRefCodeRepository->addActivation($refCode);
 
                 // Сохраняем данные у какого пользователя появился новый реферал
                 $userRefActivationRepository = $this->get('repository.user_referral_activation_repository');

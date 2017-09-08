@@ -8,10 +8,8 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
-
 class UserReferralCode
 {
-
     /**
      * @var integer
      */
@@ -47,6 +45,13 @@ class UserReferralCode
      */
     private $user;
 
+    public function __construct()
+    {
+        $this->activations = 0;
+        $this->activated = false;
+        $this->dateCreated = new \DateTime();
+        $this->dateUpdated = new \DateTime();
+    }
     /**
      * @return int
      */
@@ -170,5 +175,14 @@ class UserReferralCode
             $self->{"set".ucfirst($key)}($value);
         }
         return $self;
+    }
+
+    /**
+     * Adds activation
+     */
+    public function addActivation()
+    {
+        $this->activations++;
+        $this->activated = true;
     }
 }
