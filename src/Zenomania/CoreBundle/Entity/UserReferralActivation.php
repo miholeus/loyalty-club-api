@@ -27,6 +27,10 @@ class UserReferralActivation
     /** @var \Zenomania\CoreBundle\Entity\User */
     private $usedByUser;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
     /**
      * @param array $data
      * @return UserReferralActivation
@@ -86,6 +90,7 @@ class UserReferralActivation
     public function setRefCode(UserReferralCode $refCode)
     {
         $this->refCode = $refCode;
+        $this->createdByUser = $refCode->getUser();
     }
 
     /**

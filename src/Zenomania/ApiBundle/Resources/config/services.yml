@@ -49,7 +49,9 @@ services:
         arguments: ['@mailer', '%mailer_from%', '@templating']
     api.invite_bonus_service:
         class: Zenomania\ApiBundle\Service\Invite\BonusPoints
-        arguments: ['@repository.user_referral_code_repository', '@repository.person_points_repository']
+        arguments:
+            - '@repository.user_referral_code_repository'
+            - '@repository.person_points_repository'
     api.key_provider:
         class: Zenomania\ApiBundle\Service\ApiKeyProvider
         arguments: ['@core.service.token.storage', '@api.auth_options']

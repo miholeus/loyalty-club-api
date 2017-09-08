@@ -300,7 +300,7 @@ class SecurityController extends RestController
             'validation_groups' => ['flow_registration_step3']
         ]);
 
-        $this->processForm($request, $form, false);
+        $this->processForm($request, $form, true);
         // @todo get actual form errors
         if (!$form->isValid()) {
             throw $this->createFormValidationException($form);
@@ -314,48 +314,15 @@ class SecurityController extends RestController
         $sessionData = $service->getSessionToken($registration->getToken());
 
         $registration->setPhone($sessionData['phone']);
+        if (!empty($sessionData['refcode'])) {
+            $registration->setReferralCode($sessionData['refcode']);
+        }
 
         try {
             $user = $service->registerUser($registration);
             $service->clear($registration);
         } catch (\Zenomania\CoreBundle\Entity\Exception\ValidatorException $e) {
             throw new HttpException(400, $e->getMessage());
-        }
-
-        if (!empty($sessionData['refcode'])) {
-            // Определяем пользователя, которому принадлежит реферальный код
-            $userRepository = $this->get('repository.user_repository');
-            $userRef = $userRepository->findUserByRefcode($sessionData['refcode']);
-
-            if (!empty($userRef)) {
-                // Подключаем сервис для приглашений
-                $inviteService = $this->get('api.invite_service');
-
-                $personRepository = $this->get('repository.person_repository');
-                $person = $personRepository->findPersonByUser($userRef);
-
-                $promoActionRepository = $this->get('repository.promo_action_repository');
-                $season = $promoActionRepository->findCurrentSeason();
-
-                // Начисляем баллы пользователю User за билет barcode
-                $inviteService->chargePointForTicketRegistration($person, $season);
-
-                // Увеличиваем счетчик активаций для данного реферального кода
-                $userRefCodeRepository = $this->get('repository.user_referral_code_repository');
-                $refCode = $userRefCodeRepository->findByReferralCode($sessionData['refcode']);
-                $userRefCodeRepository->addActivation($refCode);
-
-                // Сохраняем данные у какого пользователя появился новый реферал
-                $userRefActivationRepository = $this->get('repository.user_referral_activation_repository');
-                $params = [
-                    'refCode' => $refCode,
-                    'createdByUser' => $userRef,
-                    'usedByUser' => $user,
-                    'date' => new \DateTime()
-                ];
-                $userReferralActivation = UserReferralActivation::fromArray($params);
-                $userRefActivationRepository->save($userReferralActivation);
-            }
         }
 
         $data = [

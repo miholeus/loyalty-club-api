@@ -55,25 +55,6 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
     }
 
     /**
-     * Возвращает пользователя по реферальному коду
-     *
-     * @param string $refcode
-     * @return mixed
-     */
-    public function findUserByRefcode($refcode)
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $query = $qb->select('u')
-            ->from('ZenomaniaCoreBundle:User', 'u')
-            ->innerJoin('ZenomaniaCoreBundle:UserReferralCode', 'urc', 'WITH', 'u.id = urc.user')
-            ->where('urc.refCode = :refcode')
-            ->setParameter('refcode', $refcode)
-            ->getQuery();
-
-        return $query->getOneOrNullResult();
-    }
-
-    /**
      * Get user status
      *
      * @param $code

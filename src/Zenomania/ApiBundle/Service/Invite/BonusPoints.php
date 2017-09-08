@@ -6,9 +6,6 @@
 
 namespace Zenomania\ApiBundle\Service\Invite;
 
-use Zenomania\CoreBundle\Entity\Person;
-use Zenomania\CoreBundle\Entity\PersonPoints;
-use Zenomania\CoreBundle\Entity\PromoAction;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
@@ -16,6 +13,8 @@ use Zenomania\CoreBundle\Repository\UserReferralCodeRepository;
 
 class BonusPoints
 {
+    const POINTS_FOR_INVITE = 500;// Сколько начислить баллов за регистрацию по реферальному коду
+
     /**
      * @var UserReferralCodeRepository
      */
@@ -29,36 +28,37 @@ class BonusPoints
         UserReferralCodeRepository $referralCodeRepository,
         PersonPointsRepository $personPointsRepository
     ) {
-
         $this->referralCodeRepository = $referralCodeRepository;
         $this->personPointsRepository = $personPointsRepository;
     }
 
     /**
-     * Начисляем пользователю User баллы лояльности за регистрацию по рефреальному коду
+     * Finds user by referral code
      *
-     * @param Person $person
-     * @param PromoAction $promoAction
+     * @param string $code
+     * @return UserReferralCode
+     */
+    public function getReferralCode(string $code)
+    {
+        $referralCode = $this->getReferralCodeRepository()->findByReferralCode($code);
+        if (null === $referralCode) {
+            throw new \InvalidArgumentException(sprintf("User by referral code %s not found", $code));
+        }
+        return $referralCode;
+    }
+
+    /**
+     * Начисляем пользователю баллы лояльности за регистрацию по реферальному коду
      *
+     * @param UserReferralCode $referralCode реферальный код при регистрации
+     * @param User $user пользователь который воспользовался кодом при регистрации
      * @return int
      */
-    public function chargePointForInvite(Person $person, PromoAction $promoAction)
+    public function givePointsForInvite(UserReferralCode $referralCode, User $user)
     {
-        $charge = 500; // Сколько начислить баллов за регистрацию по реферальному коду
+        $this->getPersonPointsRepository()->givePointsForInvite($referralCode, $user, self::POINTS_FOR_INVITE);
 
-        $params = [
-            'season' => $promoAction,
-            'person' => $person,
-            'points' => $charge,
-            'type' => 'reference',
-            'state' => 'none',
-            'dt' => new \DateTime()
-        ];
-
-        $personPoints = PersonPoints::fromArray($params);
-        $this->getPersonPointsRepository()->save($personPoints);
-
-        return $charge;
+        return self::POINTS_FOR_INVITE;
     }
 
     /**

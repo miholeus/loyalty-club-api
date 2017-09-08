@@ -43,7 +43,12 @@ class Registration extends BaseModel implements TokenInterface
     private $login;
 
     private $token;
-
+    /**
+     * Referral code
+     *
+     * @var string
+     */
+    private $referralCode;
     /**
      * @return mixed
      */
@@ -171,5 +176,21 @@ class Registration extends BaseModel implements TokenInterface
     public function setToken($token)
     {
         $this->token = $token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReferralCode()
+    {
+        return $this->referralCode;
+    }
+
+    /**
+     * @param string $referralCode
+     */
+    public function setReferralCode(string $referralCode)
+    {
+        $this->referralCode = $referralCode;
     }
 }

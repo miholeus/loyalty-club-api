@@ -10,6 +10,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Entity\UserReferralActivation;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
 
 class UserReferralCodeRepository extends EntityRepository
@@ -54,13 +55,26 @@ class UserReferralCodeRepository extends EntityRepository
 
     /**
      * @param UserReferralCode $userReferralCode
+     * @param User $user user that activated code
+     * @param bool $flush
      * @return mixed
      */
-    public function addActivation(UserReferralCode $userReferralCode)
+    public function addActivation(UserReferralCode $userReferralCode, User $user, $flush = true)
     {
         $userReferralCode->addActivation();
 
+        // Сохраняем данные у какого пользователя появился новый реферал
+        $params = [
+            'refCode' => $userReferralCode,
+            'usedByUser' => $user,
+        ];
+        $userReferralActivation = UserReferralActivation::fromArray($params);
+
         $this->_em->persist($userReferralCode);
-        $this->_em->flush();
+        $this->_em->persist($userReferralActivation);
+
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
 }
