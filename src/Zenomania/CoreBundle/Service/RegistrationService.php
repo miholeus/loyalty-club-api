@@ -64,6 +64,11 @@ class RegistrationService extends TokenManagementService implements TokenConfirm
         $key = $this->getRequestTokenName($token);
         $smsKey = $this->getRandomNumber(6, true);
 
+        if (!empty($context['refcode'])) {
+            if (!$this->isReferralCodeValid($context['refcode'])) {
+                throw new \RuntimeException(sprintf("Referral code %s is not valid", $context['refcode']));
+            }
+        }
         $storage = $this->getTokenStorage();
         $storage->set($key, json_encode(array_merge($context, ['code' => $smsKey, 'phone' => $phone])), self::REGISTRATION_REQUEST_TTL);
 
@@ -154,5 +159,18 @@ class RegistrationService extends TokenManagementService implements TokenConfirm
     protected function getMessage($value)
     {
         return sprintf('Для регистрации введите код %s', $value);
+    }
+
+    /**
+     * Checks if referral code exists
+     *
+     * @param $code
+     * @return bool
+     */
+    protected function isReferralCodeValid($code)
+    {
+        $repo = $this->getContainer()->get('repository.user_referral_code_repository');
+        $referralCode = $repo->findByReferralCode($code);
+        return null !== $referralCode;
     }
 }
