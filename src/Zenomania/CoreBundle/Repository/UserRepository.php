@@ -5,6 +5,7 @@ namespace Zenomania\CoreBundle\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Entity\UserReferralCode;
 
 /**
  * UserRepository

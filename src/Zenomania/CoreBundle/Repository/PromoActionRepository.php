@@ -8,12 +8,16 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
-
 use Doctrine\ORM\EntityRepository;
+use Zenomania\CoreBundle\Entity\PromoAction;
 
 class PromoActionRepository extends EntityRepository
 {
-
+    /**
+     * Finds current promo action
+     *
+     * @return PromoAction|null
+     */
     public function findCurrentSeason()
     {
         $qb = $this->getEntityManager()->createQueryBuilder();

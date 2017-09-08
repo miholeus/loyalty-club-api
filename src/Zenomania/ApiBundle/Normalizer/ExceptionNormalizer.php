@@ -6,6 +6,7 @@
 
 namespace Zenomania\ApiBundle\Normalizer;
 
+use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ExceptionNormalizer implements NormalizerInterface
@@ -22,6 +23,9 @@ class ExceptionNormalizer implements NormalizerInterface
         ])) {
             $errors = $exception->getHeaders();
             $exception->setHeaders([]);
+        }
+        if (!$exception instanceof FlattenException) {
+            $exception = FlattenException::create($exception);
         }
         $newException = array(
             'success' => false,

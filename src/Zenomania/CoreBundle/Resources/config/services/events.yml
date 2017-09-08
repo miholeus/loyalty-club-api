@@ -5,3 +5,8 @@ services:
     event.notification_manager:
         class: Zenomania\CoreBundle\Event\NotificationManager
         arguments: ['@event.event_dispatcher']
+    event.listener.registration:
+        class: Zenomania\CoreBundle\Event\Listener\RegistrationListener
+        arguments: ['@api.invite_bonus_service']
+        tags:
+            - {name: "kernel.event_listener", event: "user.registration.referral", method: "onReferralCodeAppliedEvent"}

@@ -7,22 +7,39 @@
 
 namespace Zenomania\CoreBundle\Service;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zenomania\CoreBundle\Entity\Exception\ValidatorException;
 use Zenomania\CoreBundle\Entity\UserRole;
 use Zenomania\CoreBundle\Entity\UserStatus;
+use Zenomania\CoreBundle\Event\NotificationInterface;
+use Zenomania\CoreBundle\Event\User\ReferralCodeAppliedEvent;
 use Zenomania\CoreBundle\Form\Model\Registration;
 use Zenomania\CoreBundle\Service\Sms\Message;
 use Zenomania\CoreBundle\Entity\User as EntityUser;
 use Zenomania\CoreBundle\Service\Token\InvalidTokenException;
 use Zenomania\CoreBundle\Service\Token\TokenConfirmRequestInterface;
 use Zenomania\CoreBundle\Service\Token\TokenManagementService;
+use Zenomania\CoreBundle\Service\Traits\EventsAwareTrait;
 
 class RegistrationService extends TokenManagementService implements TokenConfirmRequestInterface
 {
+    use EventsAwareTrait;
+
     const TOKEN_REGISTER_SESSION = 'token:register:session';// token created to identify user requests
     const TOKEN_REGISTER_REQUEST = 'token:register:request';
     const REGISTRATION_REQUEST_TTL = 3600;// time to life for registration key @todo use config for ttl settings
 
+    /**
+     * @var NotificationInterface
+     */
+    protected $notificationManager;
+
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+        $this->notificationManager = $container->get('event.notification_manager');
+
+    }
     /**
      * Support function that returns request token name
      *
@@ -56,15 +73,21 @@ class RegistrationService extends TokenManagementService implements TokenConfirm
      *
      * @param string $phone phone number to send key
      * @param string $token token saved in storage to identify user's requests
+     * @param array $context additional context for request
      * @return string key to register new user
      */
-    public function makeRequest($phone, $token)
+    public function makeRequest($phone, $token, $context = [])
     {
         $key = $this->getRequestTokenName($token);
         $smsKey = $this->getRandomNumber(6, true);
 
+        if (!empty($context['refcode'])) {
+            if (!$this->isReferralCodeValid($context['refcode'])) {
+                throw new \RuntimeException(sprintf("Referral code %s is not valid", $context['refcode']));
+            }
+        }
         $storage = $this->getTokenStorage();
-        $storage->set($key, json_encode(['code' => $smsKey, 'phone' => $phone]), self::REGISTRATION_REQUEST_TTL);
+        $storage->set($key, json_encode(array_merge($context, ['code' => $smsKey, 'phone' => $phone])), self::REGISTRATION_REQUEST_TTL);
 
         $messageText = $this->getMessage($smsKey);
         $messageService = $this->getMessageService();
@@ -139,7 +162,17 @@ class RegistrationService extends TokenManagementService implements TokenConfirm
         $user->setRole($role);
         $user->setStatus($status);
 
+        if (null !== $registration->getReferralCode()) {
+            $event = new ReferralCodeAppliedEvent();
+            $event->setArgument('code', $registration->getReferralCode());
+            $event->setArgument('user', $user);
+            $this->attachEvent($event);
+        }
+
         $service->save($user);
+
+        // Update events
+        $this->updateEvents();
 
         return $user;
     }
@@ -153,5 +186,18 @@ class RegistrationService extends TokenManagementService implements TokenConfirm
     protected function getMessage($value)
     {
         return sprintf('Для регистрации введите код %s', $value);
+    }
+
+    /**
+     * Checks if referral code exists
+     *
+     * @param $code
+     * @return bool
+     */
+    protected function isReferralCodeValid($code)
+    {
+        $repo = $this->getContainer()->get('repository.user_referral_code_repository');
+        $referralCode = $repo->findByReferralCode($code);
+        return null !== $referralCode;
     }
 }
