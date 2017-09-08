@@ -46,7 +46,6 @@ class VkontakteClient implements ClientInterface
         $userInfo = \GuzzleHttp\json_decode($response->getBody()->getContents());
         if (isset($userInfo->response)) {
             $userInfo = $userInfo->response;
-            var_dump($userInfo);
             return $userInfo;
         }
         return false;
