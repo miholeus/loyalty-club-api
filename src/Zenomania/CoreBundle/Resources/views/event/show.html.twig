@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Event</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ event.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td>{{ event.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>{% if event.date %}{{ event.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Purchasable</th>
+                            <td>{% if event.purchasable %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Chship</th>
+                            <td>{{ event.chship }}</td>
+                        </tr>
+                        <tr>
+                            <th>Scorehome</th>
+                            <td>{{ event.scoreHome }}</td>
+                        </tr>
+                        <tr>
+                            <th>Scoreguest</th>
+                            <td>{{ event.scoreGuest }}</td>
+                        </tr>
+                        <tr>
+                            <th>Scoresaved</th>
+                            <td>{{ event.scoreSaved }}</td>
+                        </tr>
+                        <tr>
+                            <th>Islineup</th>
+                            <td>{% if event.isLineUp %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Scoreinrounds</th>
+                            <td>{{ event.scoreInRounds }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <ul class="pull-right">
+                        <a class="btn btn-default" href="{{ path('event_index') }}">Back to the list</a>
+                        <a class="btn btn-primary" href="{{ path('event_edit', { 'id': event.id }) }}">Edit</a>
+                    </ul>
+                    {{ form_start(delete_form) }}
+                    <input id="event_delete_button" class="btn btn-danger pull-left" type="submit" value="Delete">
+                    {{ form_end(delete_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ confirm('#event_delete_button') }}
+{% endblock %}

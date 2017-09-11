@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Event list</h1>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Purchasable</th>
+            <th>Chship</th>
+            <th>Scorehome</th>
+            <th>Scoreguest</th>
+            <th>Scoresaved</th>
+            <th>Islineup</th>
+            <th>Scoreinrounds</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td>
+                <td>{{ event.name }}</td>
+                <td>{% if event.date %}{{ event.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if event.purchasable %}Yes{% else %}No{% endif %}</td>
+                <td>{{ event.chship }}</td>
+                <td>{{ event.scoreHome }}</td>
+                <td>{{ event.scoreGuest }}</td>
+                <td>{{ event.scoreSaved }}</td>
+                <td>{% if event.isLineUp %}Yes{% else %}No{% endif %}</td>
+                <td>{{ event.scoreInRounds }}</td>
+                <td>
+                    <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-default">show</a>
+                    <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-default">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('event_new') }}">Create a new event</a>
+        </li>
+    </ul>
+{% endblock %}

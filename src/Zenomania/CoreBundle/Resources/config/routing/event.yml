@@ -1,0 +1,19 @@
+event_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:Event:index" }
+    methods:  GET
+
+event_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:Event:show" }
+    methods:  GET
+
+event_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:Event:new" }
+    methods:  [GET, POST]
+
+event_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:Event:edit" }
+    methods:  [GET, POST]
