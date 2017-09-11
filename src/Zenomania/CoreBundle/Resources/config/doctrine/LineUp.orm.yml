@@ -1,0 +1,43 @@
+Zenomania\CoreBundle\Entity\LineUp:
+    type: entity
+    table: line_up
+    indexes:
+        FK_line_up_event:
+            columns:
+                - event_id
+        FK_line_up_player:
+            columns:
+                - player_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    manyToOne:
+        event:
+            targetEntity: Zenomania\CoreBundle\Entity\Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        player:
+            targetEntity: Zenomania\CoreBundle\Entity\Player
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                player_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
