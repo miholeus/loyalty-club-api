@@ -44,10 +44,14 @@ class LineUp
 
     /**
      * @param \Zenomania\CoreBundle\Entity\Event $event
+     *
+     * @return LineUp
      */
     public function setEvent(\Zenomania\CoreBundle\Entity\Event $event = null)
     {
         $this->event = $event;
+
+        return $this;
     }
 
     /**
@@ -60,9 +64,13 @@ class LineUp
 
     /**
      * @param \Zenomania\CoreBundle\Entity\Player $player
+     *
+     * @return LineUp
      */
     public function setPlayer(\Zenomania\CoreBundle\Entity\Player $player = null)
     {
         $this->player = $player;
+
+        return $this;
     }
 }

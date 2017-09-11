@@ -17,6 +17,9 @@ Zenomania\CoreBundle\Entity\Event:
         FK_event_promo_action:
             columns:
                 - promo_action
+        FK_event_mvp:
+            columns:
+                - mvp
         event__date:
             columns:
                 - date
@@ -69,6 +72,19 @@ Zenomania\CoreBundle\Entity\Event:
             options:
                 default: 0
             column: score_saved
+        isLineUp:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+            column: is_line_up
+        scoreInRounds:
+            type: string
+            nullable: true
+            length: 256
+            options:
+                fixed: false
+            column: score_in_round
     manyToOne:
         clubHome:
             targetEntity: Club
@@ -122,6 +138,17 @@ Zenomania\CoreBundle\Entity\Event:
             inversedBy: null
             joinColumns:
                 sport_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        mvp:
+            targetEntity: Player
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                mvp:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
