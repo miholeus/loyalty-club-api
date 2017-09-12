@@ -10,8 +10,8 @@
             <th>Firstname</th>
             <th>Lastname</th>
             <th>Middlename</th>
-            <th>Bdate</th>
-            <th>Foto</th>
+            <th>Birthdate</th>
+            <th>Photo</th>
             <th>Isactive</th>
             <th>Actions</th>
         </tr>
@@ -23,8 +23,8 @@
                 <td>{{ player.firstname }}</td>
                 <td>{{ player.lastname }}</td>
                 <td>{{ player.middlename }}</td>
-                <td>{% if player.bdate %}{{ player.bdate|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ player.foto }}</td>
+                <td>{% if player.birthdate %}{{ player.birthdate|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ player.photo }}</td>
                 <td>{% if player.isActive %}Yes{% else %}No{% endif %}</td>
                 <td>{{ sport.name }}</td>
                 <td>

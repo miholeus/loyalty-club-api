@@ -20,15 +20,13 @@ class PlayerType extends AbstractType
             ->add('firstname', null, ['label' => 'Имя'])
             ->add('lastname', null, ['label' => 'Фамилия'])
             ->add('middlename', null, ['label' => 'Отчество'])
-            ->add('bdate', Calendar::class, [
+            ->add('birthdate', Calendar::class, [
                 'type' => Calendar::DAY,
                 'label' => 'Дата рождения',
                 'required' => false,
             ])
-            ->add('foto', FileType::class, ['required' => false, 'data_class' => null, 'label' => 'Фото'])
+            ->add('photo', FileType::class, ['required' => false, 'data_class' => null, 'label' => 'Фото'])
             ->add('isActive', null, ['label' => 'Активен'])
-            ->add('createdOn')
-            ->add('updatedOn')
             ->add('club', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Club',
                 'choice_label' => 'name',

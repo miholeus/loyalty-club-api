@@ -38,12 +38,12 @@ Zenomania\CoreBundle\Entity\Player:
             length: 255
             fixed: false
             comment: отчество
-        bdate:
+        birthdate:
             type: date
             nullable: true
             options:
                 comment: 'Дата рождения игрока'
-        foto:
+        photo:
             type: string
             nullable: true
             length: 255

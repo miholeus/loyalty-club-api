@@ -30,7 +30,7 @@ class Player
     /**
      * @var \DateTime
      */
-    private $bdate;
+    private $birthdate;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\Club
@@ -40,7 +40,7 @@ class Player
     /**
      * @var string
      */
-    private $foto;
+    private $photo;
 
     /**
      * @var \DateTime
@@ -72,28 +72,34 @@ class Player
         return sprintf("%s %s", $this->getFirstname(), $this->getLastname());
     }
 
+    public function __construct()
+    {
+        $this->createdOn = new \DateTime();
+        $this->updatedOn = new \DateTime();
+    }
+
     /**
-     * Set bdate
+     * Set birthdate
      *
-     * @param \DateTime $bdate
+     * @param \DateTime $birthdate
      *
      * @return Player
      */
-    public function setBdate($bdate)
+    public function setBirthdate($birthdate)
     {
-        $this->bdate = $bdate;
+        $this->birthdate = $birthdate;
 
         return $this;
     }
 
     /**
-     * Get bdate
+     * Get birthdate
      *
      * @return \DateTime
      */
-    public function getBdate()
+    public function getBirthdate()
     {
-        return $this->bdate;
+        return $this->birthdate;
     }
 
     /**
@@ -183,19 +189,19 @@ class Player
     /**
      * @return string
      */
-    public function getFoto()
+    public function getPhoto()
     {
-        return $this->foto;
+        return $this->photo;
     }
 
     /**
-     * @param string $foto
+     * @param string $photo
      *
      * @return Player
      */
-    public function setFoto(string $foto)
+    public function setPhoto(string $photo)
     {
-        $this->foto = $foto;
+        $this->photo = $photo;
 
         return $this;
     }
