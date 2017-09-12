@@ -34,6 +34,9 @@ zenomania_core_sport:
 zenomania_core_event:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/event.yml"
     prefix:   /event
+zenomania_core_player:
+        resource: "@ZenomaniaCoreBundle/Resources/config/routing/player.yml"
+        prefix:   /player
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}
