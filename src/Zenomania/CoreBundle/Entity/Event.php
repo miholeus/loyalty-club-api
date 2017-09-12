@@ -25,7 +25,7 @@ class Event
     /**
      * @var boolean
      */
-    private $purchasable = '0';
+    private $purchasable;
 
     /**
      * @var string
