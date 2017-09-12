@@ -22,7 +22,7 @@ class EventType extends AbstractType
             ->add('scoreHome')
             ->add('scoreGuest')
             ->add('scoreSaved')
-            ->add('isLineUp', null, ['label' => 'Есть'])
+            ->add('isLineUp', null, ['label' => 'Опубликован состав'])
             ->add('scoreInRounds')
             ->add('clubHome')
             ->add('clubGuest')
@@ -37,7 +37,7 @@ class EventType extends AbstractType
             ])
             ->add('mvp', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Player',
-                'choice_label' => 'name',
+                'choice_label' => 'lastname',
             ]);
     }
     
