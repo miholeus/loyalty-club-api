@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\SocialAccount:
     type: entity
     table: social_account
+    repositoryClass: Zenomania\CoreBundle\Repository\SocialAccountRepository
     indexes:
         social_account__person:
             columns:

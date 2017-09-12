@@ -1,5 +1,6 @@
 imports:
     - {resource: "services/transformers.yml" }
+    - {resource: "services/clients.yml" }
 
 services:
     apitoken_authenticator:
@@ -50,3 +51,6 @@ services:
     test_entity_factory:
         class: Zenomania\ApiBundle\Tests\TestEntityFactory
         arguments: ['@doctrine.orm.entity_manager', '@user.service', '@service_container']
+    api.profile_social_update:
+        class: Zenomania\ApiBundle\Service\Social\UpdateSocialInfo
+        arguments: ['@repository.social_account_repository']
