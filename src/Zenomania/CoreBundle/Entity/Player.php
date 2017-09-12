@@ -2,10 +2,12 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
+
 /**
  * Player
  */
-class Player
+class Player implements IdentifiableInterface
 {
     /**
      * @var integer
@@ -199,7 +201,7 @@ class Player
      *
      * @return Player
      */
-    public function setPhoto(string $photo)
+    public function setPhoto($photo)
     {
         $this->photo = $photo;
 
