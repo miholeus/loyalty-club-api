@@ -2,9 +2,17 @@
 
 namespace Zenomania\CoreBundle\Controller;
 
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Zenomania\CoreBundle\Entity\Image;
 use Zenomania\CoreBundle\Entity\Player;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Zenomania\CoreBundle\Service\Images;
+use Zenomania\CoreBundle\Service\Upload\FilePathStrategy;
+use Zenomania\CoreBundle\Service\UploadProfilePhoto;
 
 /**
  * Player controller.
@@ -72,13 +80,53 @@ class PlayerController extends Controller
     public function editAction(Request $request, Player $player)
     {
         $deleteForm = $this->createDeleteForm($player);
+        $photo = $player->getPhoto();
+
+        /** @var Form $editForm */
         $editForm = $this->createForm('Zenomania\CoreBundle\Form\PlayerType', $player);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            /**
+             * Загружаем фото
+             */
+            $uploadedFile = $player->getPhoto();
 
-            return $this->redirectToRoute('player_edit', array('id' => $player->getId()));
+            if ($uploadedFile instanceof UploadedFile) {
+                $player->setPhoto(null);
+                $strategy = new FilePathStrategy();
+                $strategy->setEntity($player);
+                /** @var UploadProfilePhoto $uploadService */
+                $uploadService = $this->get('file.upload_profile_photo');
+                $uploadService->setUploadStrategy($strategy);
+                $uploadedOriginalPathArray = $uploadService->upload($uploadedFile);
+
+                // сохраняем фото в БД
+                /** @var Images $imageService */
+                $imageService = $this->get('images.service');
+                /** @var Image $originalImage */
+                $originalImage = $imageService->createImageFromFile($uploadedFile);
+                $originalImage->setPath($uploadedOriginalPathArray['path']);
+                $originalImage->setSize($uploadedFile->getClientSize());
+                $imageService->save($originalImage);
+
+                $player->setPhoto(new File($uploadedOriginalPathArray['full_path']));
+            } else {
+                $player->setPhoto($photo);// restore avatar
+
+                $rootDirectory = $this->getParameter('upload_dir');
+
+                $photo = $player->getPhoto();
+                $photo = str_replace($rootDirectory, '', $photo);
+                $player->setPhoto($photo);
+            }
+
+            try {
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('player_edit', array('id' => $player->getId()));
+            } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+                $editForm->addError(new FormError($e->getMessage()));
+            }
         }
 
         return $this->render('ZenomaniaCoreBundle:player:edit.html.twig', array(
