@@ -8,8 +8,15 @@
 
 namespace Zenomania\ApiBundle\Service\Social\Client;
 
+use Zenomania\ApiBundle\Form\Model\ProfileSocialData;
 
 interface ClientInterface
 {
-
+    /**
+     * Gets profile information
+     *
+     * @param ProfileSocialData $socialData
+     * @return mixed
+     */
+    public function getProfile(ProfileSocialData $socialData);
 }
