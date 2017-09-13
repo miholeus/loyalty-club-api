@@ -4,6 +4,7 @@ namespace Zenomania\CoreBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,11 +18,26 @@ class EventType extends AbstractType
         $builder
             ->add('name')
             ->add('date')
-            ->add('purchasable', null, ['label' => 'Есть'])
+            ->add('purchasable', null, ['label' => 'Покупка билета ч/з программу лояльности'])
             ->add('chship')
-            ->add('scoreHome')
-            ->add('scoreGuest')
-            ->add('scoreSaved')
+            ->add('scoreHome', IntegerType::class, [
+                'attr' => [
+                    'min' => 0,
+                    'max' => 3
+                ]
+            ])
+            ->add('scoreGuest', IntegerType::class, [
+                'attr' => [
+                    'min' => 0,
+                    'max' => 3
+                ]
+            ])
+            ->add('scoreSaved', IntegerType::class, [
+                'attr' => [
+                    'min' => 0,
+                    'max' => 1
+                ]
+            ])
             ->add('isLineUp', null, ['label' => 'Опубликован состав'])
             ->add('scoreInRounds')
             ->add('clubHome')

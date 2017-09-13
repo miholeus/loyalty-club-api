@@ -7,31 +7,26 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Name</th>
             <th>Date</th>
-            <th>Purchasable</th>
-            <th>Chship</th>
+            <th>Name</th>
+            <th>Scoreinrounds</th>
             <th>Scorehome</th>
             <th>Scoreguest</th>
-            <th>Scoresaved</th>
             <th>Islineup</th>
-            <th>Scoreinrounds</th>
-            <th>Actions</th>
+            <th>Mvp</th>
         </tr>
         </thead>
         <tbody>
         {% for event in events %}
             <tr>
                 <td><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td>
-                <td>{{ event.name }}</td>
                 <td>{% if event.date %}{{ event.date|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if event.purchasable %}Yes{% else %}No{% endif %}</td>
-                <td>{{ event.chship }}</td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.scoreInRounds }}</td>
                 <td>{{ event.scoreHome }}</td>
                 <td>{{ event.scoreGuest }}</td>
-                <td>{{ event.scoreSaved }}</td>
                 <td>{% if event.isLineUp %}Yes{% else %}No{% endif %}</td>
-                <td>{{ event.scoreInRounds }}</td>
+                <td>{{ event.mvp }}</td>
                 <td>
                     <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-default">show</a>
                     <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-default">edit</a>
