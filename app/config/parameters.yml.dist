@@ -41,4 +41,5 @@ parameters:
     sms_sms16_login: test
     sms_sms16_password: test
     sms_sms16_originator: test
-
+    vk_client_id: test
+    vk_access_front_url

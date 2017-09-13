@@ -33,19 +33,27 @@ class VkontakteClient implements ClientInterface
      */
     public function getProfile(ProfileSocialData $socialData)
     {
+        $fields = array(
+            'nickname',
+            'contacts',
+            'bdate',
+            'city',
+            'country',
+            'sex'
+        );
         $queryData = array(
-            'user_id' => $socialData->getUserId(),
+            'fields' => implode(',', $fields),
             'access_token' => $socialData->getAccessToken(),
             'v' => $this->version,
         );
         $response = $this->client->request(
             'GET',
-            'account.getProfileInfo',
+            'users.get',
             array('query' => $queryData)
         );
         $userInfo = \GuzzleHttp\json_decode($response->getBody()->getContents());
         if (isset($userInfo->response)) {
-            $userInfo = $userInfo->response;
+            $userInfo = array_shift($userInfo->response);
             return $userInfo;
         }
         return false;
