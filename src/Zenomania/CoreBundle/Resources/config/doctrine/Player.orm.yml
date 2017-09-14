@@ -5,6 +5,11 @@ Zenomania\CoreBundle\Entity\Player:
         FK_player_club:
             columns:
                 - club
+        player_name__idx:
+            columns:
+                - lastname
+                - firstname
+                - middlename
     id:
         id:
             type: integer
@@ -15,23 +20,50 @@ Zenomania\CoreBundle\Entity\Player:
             generator:
                 strategy: IDENTITY
     fields:
-        name:
+        firstname:
             type: string
             nullable: false
-            length: 200
-            options:
-                fixed: false
-                default: нет
-        active:
-            type: boolean
+            length: 255
+            fixed: false
+            comment: имя
+        lastname:
+            type: string
             nullable: false
-            options:
-                default: '0'
-        bdate:
+            length: 255
+            fixed: false
+            comment: фамилия
+        middlename:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: отчество
+        birthdate:
             type: date
             nullable: true
             options:
                 comment: 'Дата рождения игрока'
+        photo:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: фото
+        isActive:
+            type: boolean
+            nullable: true
+            comment: 'активен ли пользователь'
+            column: is_active
+        createdOn:
+            type: datetime
+            nullable: true
+            column: created_on
+            comment: 'дата создания'
+        updatedOn:
+            type: datetime
+            nullable: true
+            comment: 'дата модификации'
+            column: updated_on
     manyToOne:
         club:
             targetEntity: Club
