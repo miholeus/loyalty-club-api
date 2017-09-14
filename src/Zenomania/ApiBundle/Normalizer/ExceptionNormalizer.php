@@ -24,9 +24,11 @@ class ExceptionNormalizer implements NormalizerInterface
             $errors = $exception->getHeaders();
             $exception->setHeaders([]);
         }
+
         if (!$exception instanceof FlattenException) {
-            $exception = FlattenException::create($exception);
+            $exception = FlattenException::create($exception, 500);
         }
+
         $newException = array(
             'success' => false,
             'exception' => array(
