@@ -12,9 +12,10 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Zenomania\ApiBundle\Form\Model\ProfileSocialData;
 use Zenomania\ApiBundle\Form\ProfileSocialVkType;
-use Zenomania\ApiBundle\Service\UpdateSocialInfo;
+use Zenomania\ApiBundle\Service\Social\Client\ClientException;
 
 class ProfileSocialController extends RestController
 {
@@ -72,23 +73,22 @@ class ProfileSocialController extends RestController
         $form = $this->createForm(ProfileSocialVkType::class);
         $this->processForm($request, $form);
         if (!$form->isValid()) {
-            $this->createFormValidationException($form);
+            throw $this->createFormValidationException($form);
         }
 
         /**
          * @var ProfileSocialData $data
          */
-        $data = ProfileSocialData::fromArray($form->getData());
+        $data = $form->getData();
 
-        /**
-         * @var \Zenomania\ApiBundle\Form\Model\ProfileSocialData $data
-         */
         $serviceSocialInfo = $this->get('api.profile_social_vk');
-        $userInfo = $serviceSocialInfo->getUserInfo($data);
 
-        /**
-         * @var \Zenomania\ApiBundle\Form\Model\ProfileSocialData $data
-         */
+        try {
+            $userInfo = $serviceSocialInfo->getUserInfo($data);
+        } catch (ClientException $e) {
+            throw new HttpException(400, $e->getMessage(), $e);
+        }
+
         $serviceUpdateSocialInfo = $this->get('api.profile_social_update');
         $serviceUpdateSocialInfo->save($userInfo, $this->getUser());
 
@@ -97,7 +97,7 @@ class ProfileSocialController extends RestController
     }
 
     /**
-     *  @ApiDoc(
+     * @ApiDoc(
      *  section="Соц сети",
      *  resource=true,
      *  description="Вконтакте: получение информации о пользователе / шаг 1 (запрос доступа)",
@@ -119,6 +119,12 @@ class ProfileSocialController extends RestController
     {
         $service = $this->get('api.profile_social_vk');
         $link = $service->getAccess($this->getParameter('vk_access_front_url'), $this->getParameter('vk_client_id'));
-        return $this->redirect($link);
+
+        $data = [
+            'link' => $link
+        ];
+
+        $view = $this->view($data);
+        return $this->handleView($view);
     }
 }

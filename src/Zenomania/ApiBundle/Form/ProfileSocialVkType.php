@@ -23,8 +23,8 @@ class ProfileSocialVkType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-    /*    $resolver->setDefaults(array(
+        $resolver->setDefaults(array(
             'data_class' => 'Zenomania\ApiBundle\Form\Model\ProfileSocialData',
-        ));*/
+        ));
     }
 }

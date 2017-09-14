@@ -8,7 +8,6 @@
 
 namespace Zenomania\ApiBundle\Service\Social\Client;
 
-
 use Zenomania\ApiBundle\Form\Model\ProfileSocialData;
 use GuzzleHttp\Client;
 
@@ -30,6 +29,7 @@ class VkontakteClient implements ClientInterface
      *
      * @param ProfileSocialData $socialData
      * @return mixed
+     * @throws ClientException
      */
     public function getProfile(ProfileSocialData $socialData)
     {
@@ -56,6 +56,6 @@ class VkontakteClient implements ClientInterface
             $userInfo = array_shift($userInfo->response);
             return $userInfo;
         }
-        return false;
+        throw new ClientException($userInfo->error->error_code, $userInfo->error->error_msg);
     }
 }

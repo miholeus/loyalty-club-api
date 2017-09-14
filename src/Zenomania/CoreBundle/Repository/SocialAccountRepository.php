@@ -13,6 +13,12 @@ use Zenomania\CoreBundle\Entity\SocialAccount;
 
 class SocialAccountRepository extends EntityRepository
 {
+    /**
+     * Finds account by external id
+     *
+     * @param SocialAccount $socialAccount
+     * @return mixed
+     */
     public function findAccountByOuterId(SocialAccount $socialAccount)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -26,12 +32,14 @@ class SocialAccountRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function update(SocialAccount $socialAccount){
-        $isExist = $this->findAccountByOuterId($socialAccount);
-        if(!$isExist){
-            $this->_em->persist($socialAccount);
-            $this->_em->flush();
-        }
-        return $isExist;
+    /**
+     * Saves social account
+     *
+     * @param SocialAccount $socialAccount
+     */
+    public function save(SocialAccount $socialAccount)
+    {
+        $this->_em->persist($socialAccount);
+        $this->_em->flush();
     }
 }

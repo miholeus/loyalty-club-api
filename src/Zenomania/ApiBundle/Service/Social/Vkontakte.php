@@ -30,6 +30,8 @@ class Vkontakte implements SocialInterface
     }
 
     /**
+     * Get social account by profile data
+     *
      * @param ProfileSocialData $socialData
      * @return bool|mixed
      */
@@ -49,24 +51,32 @@ class Vkontakte implements SocialInterface
         $socialAccount->setCountry($data->country->id);
         $socialAccount->setCity($data->city->id);
         $socialAccount->setMobilePhone($data->mobile_phone);
+
         return $socialAccount;
     }
 
+    /**
+     * Get access url
+     *
+     * @param $redirectUrl
+     * @param $clientId
+     * @return string
+     */
     public function getAccess($redirectUrl, $clientId)
     {
         $url = 'http://oauth.vk.com/authorize';
         $token = 'token';
-        $scope = array(
+        $scope = [
             'offline',
             'email',
-        );
+        ];
 
-        $params = array(
+        $params = [
             'client_id' => $clientId,
             'redirect_uri' => $redirectUrl,
             'scope' => implode(',', $scope),
             'response_type' => $token,
-        );
+        ];
         $link = $url . '?' . urldecode(http_build_query($params));
         return $link;
     }
