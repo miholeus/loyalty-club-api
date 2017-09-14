@@ -6,6 +6,7 @@
 
 namespace Zenomania\ApiBundle\EventSubscriber;
 
+use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -17,11 +18,16 @@ class ExceptionListener implements EventSubscriberInterface
 {
     private $serializer;
     private $normalizers;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
-    public function __construct(Serializer $serializer)
+    public function __construct(Serializer $serializer, Logger $logger)
     {
         $this->serializer = $serializer;
         $this->normalizers = [];
+        $this->logger = $logger;
     }
 
     public function processException(GetResponseForExceptionEvent $event, $name, $dispatcher)
@@ -43,8 +49,13 @@ class ExceptionListener implements EventSubscriberInterface
         }
 
         if (null !== $result) {
+            $level = $result['exception']['code'] == 500 ? Logger::CRITICAL : Logger::ERROR;
+            $logData = $result['log'];
+            unset($result['log']);
+
             $body = $this->serializer->serialize($result, 'json');
 
+            $this->logger->log($level, $logData['message'], $logData);
             $event->setResponse(new Response($body, $result['exception']['code']));
         }
     }
