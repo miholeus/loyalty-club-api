@@ -27,6 +27,7 @@ services:
         class: Zenomania\ApiBundle\EventSubscriber\ExceptionListener
         arguments:
             - '@core.serializer.default'
+            - '@logger'
         tags:
             - { name: kernel.event_subscriber }
     api.view_handler:

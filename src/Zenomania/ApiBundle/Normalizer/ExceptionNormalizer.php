@@ -31,6 +31,10 @@ class ExceptionNormalizer implements NormalizerInterface
 
         $newException = array(
             'success' => false,
+            'log' => [
+                'message' => $exception->getMessage(),
+                'trace' => $exception->getTrace()
+            ],
             'exception' => array(
                 'code' => $exception->getStatusCode(),
                 'message' => $exception->getStatusCode() !== 500 ? $exception->getMessage() : "Internal Server Error"
