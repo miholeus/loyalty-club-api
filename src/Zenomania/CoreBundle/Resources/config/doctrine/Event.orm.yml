@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\Event:
     type: entity
     table: event
+    repositoryClass: Zenomania\CoreBundle\Repository\EventRepository
     indexes:
         FK_event_club:
             columns:
