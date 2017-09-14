@@ -64,7 +64,7 @@ class SubscriptionController extends RestController
         $form = $this->createForm(SubscriptionNumberType::class);
         $this->processForm($request, $form);
         if (!$form->isValid()) {
-            $this->createFormValidationException($form);
+            throw $this->createFormValidationException($form);
         }
 
         /** @var SubscriptionNumber $subNumber */

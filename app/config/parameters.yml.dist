@@ -44,5 +44,9 @@ parameters:
     sms_sms16_password: test
     sms_sms16_originator: test
 
+    # Social settings
+    vk_client_id: test
+    vk_access_front_url: zenomania.ru/join/vk
+
     # Registration url
     registration_url: zenomania.ru/join
