@@ -47,14 +47,12 @@ class SubscriptionController extends RestController
      *          "description"="access key header",
      *          "required"=true
      *      }
-     *    }
+     *    },
+     *  input={
+     *     "class"="\Zenomania\CoreBundle\Form\SubscriptionNumberType",
+     *     "name"=""
+     *  }
      * )
-     *
-     *
-     * @RequestParam(name="cardcode", description="Cardcode Subscription")
-     * @RequestParam(name="sector", description="Number Sector Subscription")
-     * @RequestParam(name="row", description="Number Row Subscription")
-     * @RequestParam(name="seat", description="Number Seat Subscription")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
