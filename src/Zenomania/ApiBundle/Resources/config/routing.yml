@@ -15,3 +15,6 @@ api_profile_social:
     type: rest
     prefix: 'profile/social'
     resource: "Zenomania\\ApiBundle\\Controller\\ProfileSocialController"
+api_invite:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\InviteController"

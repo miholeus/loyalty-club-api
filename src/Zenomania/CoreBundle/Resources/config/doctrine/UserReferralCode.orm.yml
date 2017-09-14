@@ -1,0 +1,64 @@
+Zenomania\CoreBundle\Entity\UserReferralCode:
+    type: entity
+    table: user_referral_code
+    repositoryClass: Zenomania\CoreBundle\Repository\UserReferralCodeRepository
+    indexes:
+        user_referral_code__ref_code:
+            columns:
+                - ref_code
+    uniqueConstraints:
+        user_referral_code__user_id:
+            columns:
+                - user_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        refCode:
+            type: string
+            nullable: false
+            length: 50
+            options:
+                fixed: false
+            column: ref_code
+        activated:
+            type: boolean
+            nullable: false
+            options:
+                default: '0'
+        activations:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+        dateCreated:
+            type: datetime
+            nullable: true
+            options:
+                comment: 'Дата создания'
+            column: date_created
+        dateUpdated:
+            type: datetime
+            nullable: true
+            options:
+                comment: 'Дата обновления'
+            column: date_updated
+    manyToOne:
+        user:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

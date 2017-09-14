@@ -3,6 +3,7 @@
 namespace Zenomania\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hashids\Hashids;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -930,5 +931,16 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
     public function setPerson($person)
     {
         $this->person = $person;
+    }
+
+    /**
+     * Generates new code for user
+     *
+     * @return string
+     */
+    public function generateCode()
+    {
+        $hash = new Hashids($this->getPhone());
+        return $hash->encode($this->getPhone());
     }
 }

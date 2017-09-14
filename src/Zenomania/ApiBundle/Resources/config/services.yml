@@ -45,6 +45,14 @@ services:
     api.auth_options:
         class: Zenomania\ApiBundle\Service\AuthenticateOptions
         arguments: [{'auth_key_ttl': "%auth_key_ttl%"}]
+    api.invite_service:
+        class: Zenomania\ApiBundle\Service\Invite\InviteByEmail
+        arguments: ['@mailer', '%mailer_from%', '@templating']
+    api.invite_bonus_service:
+        class: Zenomania\ApiBundle\Service\Invite\BonusPoints
+        arguments:
+            - '@repository.user_referral_code_repository'
+            - '@repository.person_points_repository'
     api.key_provider:
         class: Zenomania\ApiBundle\Service\ApiKeyProvider
         arguments: ['@core.service.token.storage', '@api.auth_options']

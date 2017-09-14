@@ -14,6 +14,7 @@ parameters:
     mailer_host: 127.0.0.1
     mailer_user: ~
     mailer_password: ~
+    mailer_from: info@zenomania.ru
 
     # A secret key that's used to generate certain security-related tokens
     secret: '%app.secret%'
@@ -41,5 +42,10 @@ parameters:
     sms_sms16_login: test
     sms_sms16_password: test
     sms_sms16_originator: test
+
+    # Social settings
     vk_client_id: test
     vk_access_front_url
+
+    # Registration url
+    registration_url: zenomania.ru/join

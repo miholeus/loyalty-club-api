@@ -39,3 +39,13 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\SocialAccount
+    repository.user_referral_code_repository:
+        class: Zenomania\CoreBundle\Repository\UserReferralCodeRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\UserReferralCode
+    repository.user_referral_activation_repository:
+        class: Zenomania\CoreBundle\Repository\UserReferralActivationRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\UserReferralActivation
