@@ -1,20 +1,19 @@
 <?php
 /**
- * @package    Zenomania\CoreBundle\Service
+ * @package    Zenomania\CoreBundle\Service\Upload
  * @author     miholeus <me@miholeus.com> {@link http://miholeus.com}
  * @version    $Id: $
  */
 
-namespace Zenomania\CoreBundle\Service;
+namespace Zenomania\CoreBundle\Service\Upload;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Zenomania\CoreBundle\Service\Exception\UploadFileException;
-use Zenomania\CoreBundle\Service\Upload\FilePathStrategyInterface;
 
 /**
  * Uploads photo
  */
-abstract class UploadPhoto implements IUpload
+abstract class UploadPhoto implements UploadInterface
 {
     /**
      * @var UploadFile

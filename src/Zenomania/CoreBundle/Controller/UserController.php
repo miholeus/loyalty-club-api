@@ -16,7 +16,7 @@ use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Form\Model\Search;
 use Zenomania\CoreBundle\Service\Images;
 use Zenomania\CoreBundle\Service\Upload\FilePathStrategy;
-use Zenomania\CoreBundle\Service\UploadProfilePhoto;
+use Zenomania\CoreBundle\Service\Upload\UploadProfilePhoto;
 
 /**
  * User controller.

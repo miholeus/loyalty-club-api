@@ -4,15 +4,9 @@ namespace Zenomania\CoreBundle\Controller;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Zenomania\CoreBundle\Entity\Image;
 use Zenomania\CoreBundle\Entity\Player;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Zenomania\CoreBundle\Service\Images;
-use Zenomania\CoreBundle\Service\Upload\FilePathStrategy;
-use Zenomania\CoreBundle\Service\UploadProfilePhoto;
 
 /**
  * Player controller.
@@ -37,7 +31,8 @@ class PlayerController extends Controller
 
     /**
      * Creates a new player entity.
-     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
@@ -46,11 +41,14 @@ class PlayerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($player);
-            $em->flush();
+            $service = $this->get('player.service');
 
-            return $this->redirectToRoute('player_show', array('id' => $player->getId()));
+            try {
+                $service->save($player);
+                return $this->redirectToRoute('player_show', array('id' => $player->getId()));
+            } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+                $form->addError(new FormError($e->getMessage()));
+            }
         }
 
         return $this->render('ZenomaniaCoreBundle:player:new.html.twig', array(
@@ -75,54 +73,23 @@ class PlayerController extends Controller
 
     /**
      * Displays a form to edit an existing player entity.
-     *
+     * @param Request $request
+     * @param Player $player
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Player $player)
     {
         $deleteForm = $this->createDeleteForm($player);
-        $photo = $player->getPhoto();
 
         /** @var Form $editForm */
         $editForm = $this->createForm('Zenomania\CoreBundle\Form\PlayerType', $player);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            /**
-             * Загружаем фото
-             */
-            $uploadedFile = $player->getPhoto();
-
-            if ($uploadedFile instanceof UploadedFile) {
-                $player->setPhoto(null);
-                $strategy = new FilePathStrategy();
-                $strategy->setEntity($player);
-                /** @var UploadProfilePhoto $uploadService */
-                $uploadService = $this->get('file.upload_profile_photo');
-                $uploadService->setUploadStrategy($strategy);
-                $uploadedOriginalPathArray = $uploadService->upload($uploadedFile);
-
-                // сохраняем фото в БД
-                /** @var Images $imageService */
-                $imageService = $this->get('images.service');
-                /** @var Image $originalImage */
-                $originalImage = $imageService->createImageFromFile($uploadedFile);
-                $originalImage->setPath($uploadedOriginalPathArray['path']);
-                $originalImage->setSize($uploadedFile->getClientSize());
-                $imageService->save($originalImage);
-
-                $player->setPhoto(new File($uploadedOriginalPathArray['full_path']));
-            } else {
-                $player->setPhoto($photo);// restore avatar
-
-                $rootDirectory = $this->getParameter('upload_dir');
-
-                $photo = $player->getPhoto();
-                $photo = str_replace($rootDirectory, '', $photo);
-                $player->setPhoto($photo);
-            }
+            $service = $this->get('player.service');
 
             try {
-                $this->getDoctrine()->getManager()->flush();
+                $service->save($player);
                 return $this->redirectToRoute('player_edit', array('id' => $player->getId()));
             } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
                 $editForm->addError(new FormError($e->getMessage()));

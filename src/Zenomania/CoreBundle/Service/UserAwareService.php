@@ -29,6 +29,10 @@ class UserAwareService
      */
     protected $user;
     /**
+     * @var NotificationInterface
+     */
+    protected $notificationManager;
+    /**
      * @var TokenStorage
      */
     private $tokenStorage;
