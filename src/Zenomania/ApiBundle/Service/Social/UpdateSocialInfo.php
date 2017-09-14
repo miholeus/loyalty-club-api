@@ -3,38 +3,30 @@
 namespace Zenomania\ApiBundle\Service\Social;
 
 use Zenomania\CoreBundle\Entity\SocialAccount;
-use Doctrine\ORM\EntityManager;
+use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Repository\SocialAccountRepository;
-
 class UpdateSocialInfo
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
     protected $repository;
 
-    public function __construct(SocialAccountRepository $accountRepository)
+    protected $bonusPoints;
+
+    public function __construct(SocialAccountRepository $accountRepository, BonusPoints $bonusPoints)
     {
         $this->repository =  $accountRepository;
+        $this->bonusPoints = $bonusPoints;
     }
 
-    public function save(SocialAccount $account)
+    public function save(SocialAccount $account, User $user)
     {
-        $this->repository->update($account);
+       $isExist = $this->repository->update($account);
+       if(!$isExist){
+           $this->bonusPoints->givePointsForSocialBind($user);
+       }
     }
 
     public function find(){
         $this->repository->find();
-    }
 
-    /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->em;
     }
-
 }

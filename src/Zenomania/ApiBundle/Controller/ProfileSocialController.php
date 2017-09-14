@@ -90,7 +90,7 @@ class ProfileSocialController extends RestController
          * @var \Zenomania\ApiBundle\Form\Model\ProfileSocialData $data
          */
         $serviceUpdateSocialInfo = $this->get('api.profile_social_update');
-        $serviceUpdateSocialInfo->save($userInfo);
+        $serviceUpdateSocialInfo->save($userInfo, $this->getUser());
 
         $view = $this->view($data);
         return $this->handleView($view);

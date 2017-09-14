@@ -50,4 +50,21 @@ class PersonPointsRepository extends EntityRepository
 
         $this->_em->flush();
     }
+
+    public function givePointsForSocialBind(User $user, $points){
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
+
+        $params = [
+            'person' => $person,
+            'points' => $points,
+            'type' => 'reference',
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+
+        $personPoints = PersonPoints::fromArray($params);
+
+        $this->_em->persist($personPoints);
+        $this->_em->flush();
+    }
 }

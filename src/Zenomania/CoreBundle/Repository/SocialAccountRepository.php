@@ -32,5 +32,6 @@ class SocialAccountRepository extends EntityRepository
             $this->_em->persist($socialAccount);
             $this->_em->flush();
         }
+        return $isExist;
     }
 }
