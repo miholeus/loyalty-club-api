@@ -12,18 +12,27 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ClubController extends Controller
 {
+    const ITEMS_ON_PAGE = 20;
+
     /**
      * Lists all club entities.
-     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $clubs = $em->getRepository('ZenomaniaCoreBundle:Club')->findAll();
+        $paginator = $em->getRepository('ZenomaniaCoreBundle:Club')->getPaginator();
+
+        $paginator->setPageSize(self::ITEMS_ON_PAGE);
+        $paginator->setCurrentPage($request->get('page', 1));
+        $paginator->setRoute('club_index');
+        $paginator->setRequest($request);
 
         return $this->render('ZenomaniaCoreBundle:club:index.html.twig', array(
-            'clubs' => $clubs,
+            'clubs' => $paginator->getQuery()->getResult(),
+            'paginator' => $paginator
         ));
     }
 

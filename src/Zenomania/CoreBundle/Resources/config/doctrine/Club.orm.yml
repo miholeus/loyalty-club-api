@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\Club:
     type: entity
     table: club
+    repositoryClass: Zenomania\CoreBundle\Repository\ClubRepository
     indexes:
         FK_club_sport:
             columns:
