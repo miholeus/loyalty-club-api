@@ -45,7 +45,7 @@ parameters:
     sms_sms16_originator: test
 
     # Social settings
-    vk_client_id: test
+    vk_client_id: 6185768
     vk_access_front_url: zenomania.ru/join/vk
 
     # Registration url
