@@ -30,6 +30,7 @@ parameters:
     # time to live for authenticated user's key
     auth_key_ttl: 3600 # 1 hour
     profile_upload_photo_dir: uploads/profiles
+    player_upload_photo_dir: uploads/players
     upload_dir: '%kernel.root_dir%/../web'
 
     # Sms settings
@@ -42,6 +43,10 @@ parameters:
     sms_sms16_login: test
     sms_sms16_password: test
     sms_sms16_originator: test
+
+    # Social settings
+    vk_client_id: test
+    vk_access_front_url: zenomania.ru/join/vk
 
     # Registration url
     registration_url: zenomania.ru/join

@@ -24,11 +24,17 @@ class ExceptionNormalizer implements NormalizerInterface
             $errors = $exception->getHeaders();
             $exception->setHeaders([]);
         }
+
         if (!$exception instanceof FlattenException) {
-            $exception = FlattenException::create($exception);
+            $exception = FlattenException::create($exception, 500);
         }
+
         $newException = array(
             'success' => false,
+            'log' => [
+                'message' => $exception->getMessage(),
+                'trace' => $exception->getTrace()
+            ],
             'exception' => array(
                 'code' => $exception->getStatusCode(),
                 'message' => $exception->getStatusCode() !== 500 ? $exception->getMessage() : "Internal Server Error"

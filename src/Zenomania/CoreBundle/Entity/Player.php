@@ -3,6 +3,7 @@
 namespace Zenomania\CoreBundle\Entity;
 
 use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Player
@@ -40,6 +41,13 @@ class Player implements IdentifiableInterface
     private $club;
 
     /**
+     * @Assert\File(mimeTypes={ "image/jpg", "image/jpeg", "image/png" }, groups={"upload"})
+     * @Assert\Image(
+     *    mimeTypesMessage = "Неверный формат картинки",
+     *    maxSize = "5M",
+     *    maxSizeMessage = "Картинка слишком большого размера",
+     *    groups={"upload"}
+     * )
      * @var string
      */
     private $photo;

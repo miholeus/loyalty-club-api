@@ -29,6 +29,11 @@ services:
         arguments: ['@service_container']
         tags:
             - { name: doctrine.orm.entity_listener }
+    player.listener:
+        class: Zenomania\CoreBundle\Entity\Listener\PlayerListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.orm.entity_listener }
     core.user_aware_service:
         class: Zenomania\CoreBundle\Service\UserAwareService
         arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@event.notification_manager']
@@ -62,3 +67,9 @@ services:
         arguments: ['@annotation_reader', '@breadcrumbs.service']
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+    player.service:
+        class: Zenomania\CoreBundle\Service\Player
+        parent: core.user_aware_service
+        calls:
+            - ['setUploadService', ['@file.upload_player_photo']]
+            - ['setImageService', ['@images.service']]

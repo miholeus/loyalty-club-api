@@ -89,4 +89,61 @@ class InviteController extends RestController
         return $this->handleView($view);
 
     }
+
+    /**
+     * ### Failed Response ###
+     *
+     *     {
+     *       "success": false
+     *       "exception": {
+     *         "code": <code>,
+     *         "message": <message>
+     *       }
+     *     }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "link":<registration url>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Приглашения",
+     *  resource=true,
+     *  description="Получить ссылку для отправки приглашения",
+     *  statusCodes={
+     *         200="При успешном ответе",
+     *         400="Ошибка"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getProfileInviteAction(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $bonus = $this->get('api.invite_bonus_service');
+
+        $url = $this->getParameter('registration_url');
+        $code = $bonus->getCodeForUser($user);
+
+        $data = ['link' => sprintf("%s://%s?ref=%s", $request->getScheme(), $url, $code)];
+
+        $view = $this->view($data);
+
+        return $this->handleView($view);
+
+    }
 }

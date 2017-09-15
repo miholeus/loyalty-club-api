@@ -359,4 +359,3 @@ class Image
         return $this->createdBy;
     }
 }
-

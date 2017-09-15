@@ -296,25 +296,6 @@ Zenomania\CoreBundle\Entity\Person:
                         referencedColumnName: id
                         onDelete: CASCADE
             orderBy: null
-        video:
-            targetEntity: Zenomania\CoreBundle\Entity\Video
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: persons
-            joinTable:
-                name: video_view
-                joinColumns:
-                    -
-                        name: person_id
-                        referencedColumnName: id
-                        onDelete: CASCADE
-                inverseJoinColumns:
-                    -
-                        name: video_id
-                        referencedColumnName: id
-                        onDelete: CASCADE
-            orderBy: null
     oneToOne:
         user:
             targetEntity: Zenomania\CoreBundle\Entity\User

@@ -178,11 +178,6 @@ class Person
     private $activity;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $video;
-
-    /**
      * @var \Zenomania\CoreBundle\Entity\User
      */
     private $user;
@@ -194,7 +189,6 @@ class Person
     {
         $this->fancard = new \Doctrine\Common\Collections\ArrayCollection();
         $this->activity = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->video = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1017,41 +1011,6 @@ class Person
     public function getActivity()
     {
         return $this->activity;
-    }
-
-
-    /**
-     * Add video
-     *
-     * @param \Zenomania\CoreBundle\Entity\Person $video
-     *
-     * @return Person
-     */
-    public function addVideo(\Zenomania\CoreBundle\Entity\Person $video)
-    {
-        $this->video[] = $video;
-
-        return $this;
-    }
-
-    /**
-     * Remove video
-     *
-     * @param \Zenomania\CoreBundle\Entity\Person $video
-     */
-    public function removeVideo(\Zenomania\CoreBundle\Entity\Person $video)
-    {
-        $this->video->removeElement($video);
-    }
-
-    /**
-     * Get video
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getVideo()
-    {
-        return $this->video;
     }
 
     /**

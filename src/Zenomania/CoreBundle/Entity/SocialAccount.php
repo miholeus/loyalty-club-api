@@ -103,6 +103,11 @@ class SocialAccount
     private $personPoint;
 
     /**
+     * @var string
+     */
+    private $email;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -560,5 +565,29 @@ class SocialAccount
     public function getPersonPoint()
     {
         return $this->personPoint;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return SocialAccount
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

@@ -61,7 +61,6 @@ class TicketController extends RestController
      */
     public function postTicketRegistrationAction(ParamFetcher $paramFetcher)
     {
-
         $barcode = $paramFetcher->get('barcode');
         /** @var Tickets $ticketsService */
         $ticketsService = $this->get('api.tickets');
