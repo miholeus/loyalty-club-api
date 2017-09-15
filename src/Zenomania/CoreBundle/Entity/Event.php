@@ -25,7 +25,7 @@ class Event
     /**
      * @var boolean
      */
-    private $purchasable = '0';
+    private $purchasable;
 
     /**
      * @var string
@@ -76,6 +76,21 @@ class Event
      * @var \Doctrine\Common\Collections\Collection
      */
     private $personPoint;
+
+    /**
+     * @var boolean
+     */
+    private $isLineUp;
+
+    /**
+     * @var string
+     */
+    private $scoreInRounds;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\Player
+     */
+    private $mvp;
 
     /**
      * Constructor
@@ -415,5 +430,65 @@ class Event
     public function getPersonPoint()
     {
         return $this->personPoint;
+    }
+
+    /**
+     * @return \Zenomania\CoreBundle\Entity\Player
+     */
+    public function getMvp()
+    {
+        return $this->mvp;
+    }
+
+    /**
+     * @param \Zenomania\CoreBundle\Entity\Player $mvp
+     *
+     * @return Event
+     */
+    public function setMvp(\Zenomania\CoreBundle\Entity\Player $mvp)
+    {
+        $this->mvp = $mvp;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsLineUp()
+    {
+        return $this->isLineUp;
+    }
+
+    /**
+     * @param bool $isLineUp
+     *
+     * @return \Zenomania\CoreBundle\Entity\Event
+     */
+    public function setIsLineUp(bool $isLineUp)
+    {
+        $this->isLineUp = $isLineUp;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScoreInRounds()
+    {
+        return $this->scoreInRounds;
+    }
+
+    /**
+     * @param string $scoreInRounds
+     *
+     * @return Event
+     */
+    public function setScoreInRounds(string $scoreInRounds)
+    {
+        $this->scoreInRounds = $scoreInRounds;
+
+        return $this;
     }
 }
