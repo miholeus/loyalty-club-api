@@ -1,5 +1,6 @@
 imports:
     - {resource: "services/transformers.yml" }
+    - {resource: "services/clients.yml" }
 
 services:
     apitoken_authenticator:
@@ -26,6 +27,7 @@ services:
         class: Zenomania\ApiBundle\EventSubscriber\ExceptionListener
         arguments:
             - '@core.serializer.default'
+            - '@logger'
         tags:
             - { name: kernel.event_subscriber }
     api.view_handler:
@@ -58,3 +60,9 @@ services:
     test_entity_factory:
         class: Zenomania\ApiBundle\Tests\TestEntityFactory
         arguments: ['@doctrine.orm.entity_manager', '@user.service', '@service_container']
+    api.profile_social_bind:
+        class: Zenomania\ApiBundle\Service\Social\BonusPoints
+        arguments: ['@repository.person_points_repository']
+    api.profile_social_update:
+        class: Zenomania\ApiBundle\Service\Social\UpdateSocialInfo
+        arguments: ['@repository.social_account_repository', '@api.profile_social_bind']

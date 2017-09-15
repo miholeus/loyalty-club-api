@@ -1,0 +1,24 @@
+player_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:Player:index" }
+    methods:  GET
+
+player_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:Player:show" }
+    methods:  GET
+
+player_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:Player:new" }
+    methods:  [GET, POST]
+
+player_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:Player:edit" }
+    methods:  [GET, POST]
+
+player_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZenomaniaCoreBundle:Player:delete" }
+    methods:  DELETE

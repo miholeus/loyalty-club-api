@@ -8,20 +8,36 @@
 
 namespace Zenomania\CoreBundle\Form\Model;
 
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SubscriptionNumber
 {
-
-    /** @var string */
+    /**
+     * @Assert\NotBlank()
+     *
+     * @var string
+     */
     private $cardcode;
 
-    /** @var string */
+    /**
+     * @Assert\NotBlank()
+     *
+     * @var string
+     */
     private $sector;
 
-    /** @var string */
+    /**
+     * @Assert\NotBlank()
+     *
+     * @var string
+     */
     private $row;
 
-    /** @var string */
+    /**
+     * @Assert\NotBlank()
+     *
+     * @var string
+     */
     private $seat;
 
     /**
@@ -40,7 +56,7 @@ class SubscriptionNumber
     /**
      * @return string
      */
-    public function getCardcode(): string
+    public function getCardcode()
     {
         return $this->cardcode;
     }
@@ -56,7 +72,7 @@ class SubscriptionNumber
     /**
      * @return string
      */
-    public function getSector(): string
+    public function getSector()
     {
         return $this->sector;
     }
@@ -72,7 +88,7 @@ class SubscriptionNumber
     /**
      * @return string
      */
-    public function getRow(): string
+    public function getRow()
     {
         return $this->row;
     }
@@ -88,7 +104,7 @@ class SubscriptionNumber
     /**
      * @return string
      */
-    public function getSeat(): string
+    public function getSeat()
     {
         return $this->seat;
     }

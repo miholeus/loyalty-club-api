@@ -25,13 +25,13 @@ class SubscriptionNumberType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        /*$resolver->setDefaults(array(
-            'data_class' => 'Zenomania\CoreBundle\Form\Model\SubscriptionNumber;'
-        ));*/
+        $resolver->setDefaults(array(
+            'data_class' => 'Zenomania\CoreBundle\Form\Model\SubscriptionNumber'
+        ));
     }
 
     public function getBlockPrefix()
     {
-        /*return 'zenomania_core_bundle_subscription_number';*/
+        return 'subscription';
     }
 }

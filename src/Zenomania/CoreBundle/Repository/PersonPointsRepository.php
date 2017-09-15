@@ -50,4 +50,30 @@ class PersonPointsRepository extends EntityRepository
 
         $this->_em->flush();
     }
+
+    /**
+     * Add points for social network binding
+     *
+     * @param User $user
+     * @param $points
+     */
+    public function givePointsForSocialBind(User $user, $points)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($referralCode->getUser());
+        $promoAction = $this->_em->getRepository('ZenomaniaCoreBundle:PromoAction')->findCurrentSeason();
+
+        $params = [
+            'season' => $promoAction,
+            'person' => $person,
+            'points' => $points,
+            'type' => 'vk_linked',
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+
+        $personPoints = PersonPoints::fromArray($params);
+
+        $this->_em->persist($personPoints);
+        $this->_em->flush();
+    }
 }

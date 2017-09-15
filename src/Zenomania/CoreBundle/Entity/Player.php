@@ -2,10 +2,13 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Player
  */
-class Player
+class Player implements IdentifiableInterface
 {
     /**
      * @var integer
@@ -15,17 +18,22 @@ class Player
     /**
      * @var string
      */
-    private $name = 'нет';
+    private $firstname;
 
     /**
-     * @var boolean
+     * @var string
      */
-    private $active = '0';
+    private $lastname;
+
+    /**
+     * @var string
+     */
+    private $middlename;
 
     /**
      * @var \DateTime
      */
-    private $bdate;
+    private $birthdate;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\Club
@@ -33,17 +41,31 @@ class Player
     private $club;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @Assert\File(mimeTypes={ "image/jpg", "image/jpeg", "image/png" }, groups={"upload"})
+     * @Assert\Image(
+     *    mimeTypesMessage = "Неверный формат картинки",
+     *    maxSize = "5M",
+     *    maxSizeMessage = "Картинка слишком большого размера",
+     *    groups={"upload"}
+     * )
+     * @var string
      */
-    private $person;
+    private $photo;
 
     /**
-     * Constructor
+     * @var \DateTime
      */
-    public function __construct()
-    {
-        $this->person = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    private $createdOn;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedOn;
+
+    /**
+     * @var boolean
+     */
+    private $isActive;
 
     /**
      * Get id
@@ -55,76 +77,39 @@ class Player
         return $this->id;
     }
 
+    public function __toString()
+    {
+        return sprintf("%s %s", $this->getFirstname(), $this->getLastname());
+    }
+
+    public function __construct()
+    {
+        $this->createdOn = new \DateTime();
+        $this->updatedOn = new \DateTime();
+    }
+
     /**
-     * Set name
+     * Set birthdate
      *
-     * @param string $name
+     * @param \DateTime $birthdate
      *
      * @return Player
      */
-    public function setName($name)
+    public function setBirthdate($birthdate)
     {
-        $this->name = $name;
+        $this->birthdate = $birthdate;
 
         return $this;
     }
 
     /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set active
-     *
-     * @param boolean $active
-     *
-     * @return Player
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * Get active
-     *
-     * @return boolean
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * Set bdate
-     *
-     * @param \DateTime $bdate
-     *
-     * @return Player
-     */
-    public function setBdate($bdate)
-    {
-        $this->bdate = $bdate;
-
-        return $this;
-    }
-
-    /**
-     * Get bdate
+     * Get birthdate
      *
      * @return \DateTime
      */
-    public function getBdate()
+    public function getBirthdate()
     {
-        return $this->bdate;
+        return $this->birthdate;
     }
 
     /**
@@ -152,36 +137,143 @@ class Player
     }
 
     /**
-     * Add person
-     *
-     * @param \Zenomania\CoreBundle\Entity\Person $person
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * @param string $firstname
      *
      * @return Player
      */
-    public function addPerson(\Zenomania\CoreBundle\Entity\Person $person)
+    public function setFirstname(string $firstname)
     {
-        $this->person[] = $person;
+        $this->firstname = $firstname;
 
         return $this;
     }
 
     /**
-     * Remove person
-     *
-     * @param \Zenomania\CoreBundle\Entity\Person $person
+     * @return string
      */
-    public function removePerson(\Zenomania\CoreBundle\Entity\Person $person)
+    public function getLastname()
     {
-        $this->person->removeElement($person);
+        return $this->lastname;
     }
 
     /**
-     * Get person
+     * @param string $lastname
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Player
      */
-    public function getPerson()
+    public function setLastname(string $lastname)
     {
-        return $this->person;
+        $this->lastname = $lastname;
+
+        return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getMiddlename()
+    {
+        return $this->middlename;
+    }
+
+    /**
+     * @param string $middlename
+     *
+     * @return Player
+     */
+    public function setMiddlename(string $middlename)
+    {
+        $this->middlename = $middlename;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * @param string $photo
+     *
+     * @return Player
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * @param \DateTime $createdOn
+     *
+     * @return Player
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->createdOn = $createdOn;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedOn()
+    {
+        return $this->updatedOn;
+    }
+
+    /**
+     * @param \DateTime $updatedOn
+     *
+     * @return Player
+     */
+    public function setUpdatedOn($updatedOn)
+    {
+        $this->updatedOn = $updatedOn;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     *
+     * @return Player
+     */
+    public function setIsActive(bool $isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
 }

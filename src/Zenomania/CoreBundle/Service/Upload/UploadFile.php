@@ -1,17 +1,17 @@
 <?php
 /**
- * @package    Zenomania\CoreBundle\Service
+ * @package    Zenomania\CoreBundle\Service\Upload
  * @author     miholeus <me@miholeus.com> {@link http://miholeus.com}
  * @version    $Id: $
  */
 
-namespace Zenomania\CoreBundle\Service;
+namespace Zenomania\CoreBundle\Service\Upload;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Zenomania\CoreBundle\Service\Exception\UploadFileException;
 
-class UploadFile implements IUpload
+class UploadFile implements UploadInterface
 {
     /**
      * @var ContainerInterface
@@ -89,12 +89,12 @@ class UploadFile implements IUpload
 
     /**
      * @return string
-     * @throws Exception\UploadFileException
+     * @throws UploadFileException
      */
     public function getUploadPath()
     {
         if (null === $this->uploadPath) {
-            throw new Exception\UploadFileException("Photo upload path is not set");
+            throw new UploadFileException("Photo upload path is not set");
         }
         return $this->uploadPath;
     }
