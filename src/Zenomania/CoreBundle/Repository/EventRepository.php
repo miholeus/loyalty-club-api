@@ -33,16 +33,18 @@ class EventRepository extends EntityRepository
     }
 
     /**
-     * @param $count
+     *
+     *
+     * @param $limit
      * @return array
      */
-    public function findLastEvents($count)
+    public function findLastEvents($limit)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('e')
             ->from('ZenomaniaCoreBundle:Event', 'e')
-            ->orderBy('e.id', 'DESC')
-            ->setMaxResults($count)
+            ->orderBy('e.date', 'DESC')
+            ->setMaxResults($limit)
             ->getQuery();
 
         return $query->getResult();

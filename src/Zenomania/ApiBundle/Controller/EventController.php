@@ -8,8 +8,8 @@
 
 namespace Zenomania\ApiBundle\Controller;
 
-
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Symfony\Component\HttpFoundation\Request;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -39,7 +39,6 @@ class EventController extends RestController
      *              "score_home":<score home>
      *              "score_guest":<score guest>
      *              "score_in_round":<score in round>
-     *              "mvp":<mvp>
      *          },
      *          "time":<time request>
      *      }
@@ -58,30 +57,17 @@ class EventController extends RestController
      *          "description"="access key header",
      *          "required"=true
      *      }
-     *    },
-     *  output="\ApiBundle\Service\DataTransferObject\Object\UserValueObject"
+     *    }
      * )
      *
-     *
+     * @param Event $event
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getEventAction()
+    public function getEventAction(Event $event = null)
     {
-        $request = Request::createFromGlobals();
-        $eventId = $request->query->get('eventid');
-
-        if (empty($eventId)) {
-            throw new HttpException(400, "Не задан id мероприятия");
+        if (null === $event) {
+            throw new HttpException(400, "Мероприятие не найдено");
         }
-
-        $eventRepository = $this->get('repository.event_repository');
-        /** @var Event $event */
-        $event = $eventRepository->findEventById($eventId);
-
-        if (empty($event)) {
-            throw new HttpException(400, "Не найдены данные для мероприятия с id = {$eventId}");
-        }
-
         $transformer = $this->get('api.data.transformer.event.transformer');
 
         $data = $this->getResourceItem($event, $transformer);
@@ -124,41 +110,29 @@ class EventController extends RestController
      *          "description"="access key header",
      *          "required"=true
      *      }
-     *    },
-     *  output="\ApiBundle\Service\DataTransferObject\Object\UserValueObject"
+     *    }
      * )
      *
+     * @QueryParam(name="limit", description="Количество запрашиваемых мероприятий")
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getEventLastAction()
+    public function getEventsAction(Request $request)
     {
-        $request = Request::createFromGlobals();
-        $count = $request->query->get('count');
-
-        if (empty($count)) {
-            $count = 15;
+        $limit = $request->query->get('count', 15);
+        if ($limit > 100) {
+            $limit = 100;
         }
 
         $eventRepository = $this->get('repository.event_repository');
         /** @var Event $event */
-        $events = $eventRepository->findLastEvents($count);
-
-        if (empty($events)) {
-            throw new HttpException(400, "Не найдены мероприятия в базе");
-        }
+        $events = $eventRepository->findLastEvents($limit);
 
         $transformer = $this->get('api.data.transformer.event.transformer');
-        $dataEvent = [];
-        foreach ($events as $event) {
-            $dataEvent[] = $this->getResourceItem($event, $transformer);
-        }
+        $dataEvent = $this->getResourceCollection($events, $transformer);
 
-        $data = [
-            'events' => $dataEvent
-        ];
-
-        $view = $this->view($data);
+        $view = $this->view($dataEvent);
         return $this->handleView($view);
     }
 }

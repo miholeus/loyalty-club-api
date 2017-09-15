@@ -28,15 +28,14 @@ class EventTransformer extends TransformerAbstract
     public function transform(Event $event)
     {
         return [
-            'club_home' => $event->getClubHome()->getName(),
-            'club_guest' => $event->getClubGuest()->getName(),
-            'place' => $event->getPlace()->getName(),
+            'club_home' => null !== $event->getClubHome() ? $event->getClubHome()->getName() : null,
+            'club_guest' => null !== $event->getClubGuest() ? $event->getClubGuest()->getName() : null,
+            'place' => null !== $event->getPlace() ? $event->getPlace()->getName() : null,
             'name' => $event->getName(),
             'date' => $event->getDate()->format('d-m-Y H:i'),
             'score_home' => $event->getScoreHome(),
             'score_guest' => $event->getScoreGuest(),
             'score_in_round' => $event->getScoreInRounds(),
-            'mvp' => $event->getMvp()->getLastname()
         ];
     }
 }
