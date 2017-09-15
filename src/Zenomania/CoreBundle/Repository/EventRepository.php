@@ -10,6 +10,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 
 use Doctrine\ORM\EntityRepository;
+use Zenomania\CoreBundle\Doctrine\CustomPaginator;
 
 class EventRepository extends EntityRepository
 {
@@ -48,5 +49,19 @@ class EventRepository extends EntityRepository
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * Gets paginator
+     *
+     * @return CustomPaginator
+     */
+    public function getPaginator()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('e')
+            ->from('ZenomaniaCoreBundle:Event', 'e');
+        $paginator = new CustomPaginator($query);
+        return $paginator;
     }
 }

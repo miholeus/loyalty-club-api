@@ -42,18 +42,21 @@ class EventType extends AbstractType
             ->add('scoreInRounds')
             ->add('clubHome')
             ->add('clubGuest')
-            ->add('place')
+            ->add('place', EntityType::class, [
+                'class' => 'Zenomania\CoreBundle\Entity\Place',
+                'choice_label' => 'name'
+            ])
             ->add('promoAction', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\PromoAction',
-                'choice_label' => 'name',
+                'choice_label' => 'name'
             ])
             ->add('sport', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Sport',
-                'choice_label' => 'name',
+                'choice_label' => 'name'
             ])
             ->add('mvp', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Player',
-                'choice_label' => 'lastname',
+                'choice_label' => 'lastname'
             ]);
     }
     

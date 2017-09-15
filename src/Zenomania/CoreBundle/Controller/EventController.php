@@ -12,18 +12,27 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class EventController extends Controller
 {
+    const ITEMS_ON_PAGE = 20;
+
     /**
      * Lists all event entities.
-     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $events = $em->getRepository('ZenomaniaCoreBundle:Event')->findAll();
+        $paginator = $em->getRepository('ZenomaniaCoreBundle:Event')->getPaginator();
+
+        $paginator->setPageSize(self::ITEMS_ON_PAGE);
+        $paginator->setCurrentPage($request->get('page', 1));
+        $paginator->setRoute('event_index');
+        $paginator->setRequest($request);
 
         return $this->render('ZenomaniaCoreBundle:event:index.html.twig', array(
-            'events' => $events,
+            'events' => $paginator->getQuery()->getResult(),
+            'paginator' => $paginator
         ));
     }
 
