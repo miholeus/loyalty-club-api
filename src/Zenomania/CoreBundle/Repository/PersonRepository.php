@@ -31,4 +31,9 @@ class PersonRepository extends EntityRepository
 
         return $query->getOneOrNullResult();
     }
+
+    public function save(Person $person){
+        $this->_em->persist($person);
+        $this->_em->flush($person);
+    }
 }

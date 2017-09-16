@@ -10,6 +10,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Zenomania\ApiBundle\Form\UserProfileType;
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\ApiBundle\Form\Model\UserProfile;
 
 class ProfileController extends RestController
 {
@@ -113,12 +114,12 @@ class ProfileController extends RestController
         if (!$form->isValid()) {
             throw $this->createFormValidationException($form);
         }
+        $data = $form->getData();
 
-        /**
-         * @var ProfileSocialData $data
-         */
-        $data = ProfileSocialData::fromArray($form->getData());
         $service = $this->get('api.user_profile_update');
-        $service->save($data);
+        $data = $service->save($data, $this->getUser());
+
+        $view = $this->view($data);
+        return $this->handleView($view);
     }
 }

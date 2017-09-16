@@ -8,28 +8,22 @@
 
 namespace Zenomania\ApiBundle\Form\Model;
 
-
 class UserProfile
 {
     /**
-     * @var int
+     * @var string
      */
-    private $userId;
+    private $firstName;
 
     /**
      * @var string
      */
-    private $firstname;
+    private $lastName;
 
     /**
      * @var string
      */
-    private $lastname;
-
-    /**
-     * @var string
-     */
-    private $middlename;
+    private $middleName;
 
     /**
      * @var string
@@ -49,81 +43,65 @@ class UserProfile
     /**
      * @var string
      */
-    private $country;
+    private $district;
 
     /**
-     * @var \DateTime
+     * @var string
      */
     private $birthDate;
 
     /**
-     * @return int
+     * @return string
      */
-    public function getUserId(): int
+    public function getFirstName()
     {
-        return $this->userId;
+        return $this->firstName;
     }
 
     /**
-     * @param int $userId
+     * @param string $firstName
      */
-    public function setUserId(int $userId)
+    public function setFirstName(string $firstName)
     {
-        $this->userId = $userId;
+        $this->firstName = $firstName;
     }
 
     /**
      * @return string
      */
-    public function getFirstname(): string
+    public function getLastName()
     {
-        return $this->firstname;
+        return $this->lastName;
     }
 
     /**
-     * @param string $firstname
+     * @param string $lastName
      */
-    public function setFirstname(string $firstname)
+    public function setLastName(string $lastName)
     {
-        $this->firstname = $firstname;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastname(): string
-    {
-        return $this->lastname;
-    }
-
-    /**
-     * @param string $lastname
-     */
-    public function setLastname(string $lastname)
-    {
-        $this->lastname = $lastname;
+        $this->lastName = $lastName;
     }
 
     /**
      * @return string
      */
-    public function getMiddlename(): string
+    public function getMiddleName()
     {
-        return $this->middlename;
+        return $this->middleName;
     }
 
     /**
-     * @param string $middlename
+     * @param string $middleName
      */
-    public function setMiddlename(string $middlename)
+    public function setMiddleName(string $middleName)
     {
-        $this->middlename = $middlename;
+        $this->middleName = $middleName;
     }
 
     /**
      * @return string
      */
-    public function getPhone(): string
+    public function getPhone()
     {
         return $this->phone;
     }
@@ -139,7 +117,7 @@ class UserProfile
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getEmail()
     {
         return $this->email;
     }
@@ -155,7 +133,7 @@ class UserProfile
     /**
      * @return string
      */
-    public function getCity(): string
+    public function getCity()
     {
         return $this->city;
     }
@@ -171,31 +149,31 @@ class UserProfile
     /**
      * @return string
      */
-    public function getCountry(): string
+    public function getDistrict()
     {
-        return $this->country;
+        return $this->district;
     }
 
     /**
-     * @param string $country
+     * @param string $district
      */
-    public function setCountry(string $country)
+    public function setDistrict(string $district)
     {
-        $this->country = $country;
+        $this->district = $district;
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
-    public function getBirthDate(): \DateTime
+    public function getBirthDate()
     {
         return $this->birthDate;
     }
 
     /**
-     * @param \DateTime $birthDate
+     * @param string $birthDate
      */
-    public function setBirthDate(\DateTime $birthDate)
+    public function setBirthDate(string $birthDate)
     {
         $this->birthDate = $birthDate;
     }
