@@ -53,11 +53,9 @@ class UserProfileUpdate
         $this->userService->prepareUserToSave($userEntity);
         $this->userService->save($userEntity);
 
-
         $person = $this->personRepository->findPersonByUser($userEntity);
-        $person->setDistrict($userProfile->get());
         $person->setCity($userProfile->getCity());
-
-        $this->personRepository->save($person);
+        $person->setDistrict($userProfile->getDistrict());
+        $this->personRepository->save($person, $person->getCity(), $person->getDistrict());
     }
 }

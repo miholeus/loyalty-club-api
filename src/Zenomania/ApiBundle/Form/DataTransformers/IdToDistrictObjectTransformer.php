@@ -10,17 +10,31 @@ namespace Zenomania\ApiBundle\Form\DataTransformers;
 
 use \Zenomania\CoreBundle\Entity\District;
 use Symfony\Component\Form\DataTransformerInterface;
+
 class IdToDistrictObjectTransformer implements DataTransformerInterface
 {
     public function transform($value)
     {
-        $city = new District();
-        return $city->setId((int)$value);
+        if (null === $value) {
+            return '';
+        } else if ($value instanceof \Zenomania\CoreBundle\Entity\District) {
+            return $value->getId();
+        } else {
+            throw new TransformationFailedException();
+        }
     }
 
     public function reverseTransform($value)
     {
-        return $value;
+        if (null === $value) {
+            return new District();
+        } else if (is_numeric($value)) {
+            $city = new District();
+            $city->setId($value);
+            return $city;
+        } else {
+            throw new TransformationFailedException();
+        }
     }
 
 }

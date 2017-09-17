@@ -8,6 +8,9 @@
 
 namespace Zenomania\ApiBundle\Form\Model;
 
+use Zenomania\CoreBundle\Entity\City;
+use Zenomania\CoreBundle\Entity\District;
+
 class UserProfile
 {
     /**
@@ -36,12 +39,12 @@ class UserProfile
     private $email;
 
     /**
-     * @var string
+     * @var City
      */
     private $city;
 
     /**
-     * @var string
+     * @var District
      */
     private $district;
 
@@ -131,7 +134,7 @@ class UserProfile
     }
 
     /**
-     * @return string
+     * @return City
      */
     public function getCity()
     {
@@ -139,15 +142,15 @@ class UserProfile
     }
 
     /**
-     * @param string $city
+     * @param City $city
      */
-    public function setCity(string $city)
+    public function setCity(City $city)
     {
         $this->city = $city;
     }
 
     /**
-     * @return string
+     * @return District
      */
     public function getDistrict()
     {
@@ -155,9 +158,9 @@ class UserProfile
     }
 
     /**
-     * @param string $district
+     * @param District $district
      */
-    public function setDistrict(string $district)
+    public function setDistrict(District $district)
     {
         $this->district = $district;
     }

@@ -10,6 +10,8 @@ namespace Zenomania\CoreBundle\Repository;
 
 
 use Doctrine\ORM\EntityRepository;
+use Zenomania\CoreBundle\Entity\District;
+use Zenomania\CoreBundle\Entity\City;
 use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\User;
 
@@ -32,8 +34,11 @@ class PersonRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function save(Person $person){
+    public function save(Person $person, City $city, District $district)
+    {
         $this->_em->persist($person);
+        $this->_em->persist($city);
+        $this->_em->persist($district);
         $this->_em->flush($person);
     }
 }
