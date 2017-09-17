@@ -7,6 +7,10 @@
 namespace Zenomania\ApiBundle\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Request;
+use Zenomania\ApiBundle\Form\UserProfileType;
+use Zenomania\CoreBundle\Entity\User;
+use Zenomania\ApiBundle\Form\Model\UserProfile;
 
 class ProfileController extends RestController
 {
@@ -57,6 +61,64 @@ class ProfileController extends RestController
         $transformer = $this->get('api.data.transformer.user.profile_transformer');
 
         $data = $this->getResourceItem($user, $transformer);
+        $view = $this->view($data);
+        return $this->handleView($view);
+    }
+
+    /**
+     *
+     * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 400,
+     *                  "message": "Bad Request"
+     *              },
+     *              "errors": null
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Профиль",
+     *  resource=true,
+     *  description="Редактирование Профиля пользователя",
+     *  statusCodes={
+     *         200="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    },
+     *  input={
+     *     "class"="\Zenomania\ApiBundle\Form\UserProfileType",
+     *     "name"=""
+     *  }
+     * )
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function putProfileAction(Request $request)
+    {
+        $form = $this->createForm(UserProfileType::class);
+        $this->processForm($request, $form);
+        if (!$form->isValid()) {
+            throw $this->createFormValidationException($form);
+        }
+        $data = $form->getData();
+
+        $service = $this->get('api.user_profile_update');
+        $data = $service->save($data, $this->getUser());
+
         $view = $this->view($data);
         return $this->handleView($view);
     }

@@ -66,3 +66,10 @@ services:
     api.profile_social_update:
         class: Zenomania\ApiBundle\Service\Social\UpdateSocialInfo
         arguments: ['@repository.social_account_repository', '@api.profile_social_bind']
+    user.profile:
+        class: Zenomania\ApiBundle\Form\Model\UserProfile
+    user.entity:
+        class: Zenomania\CoreBundle\Entity\User
+    api.user_profile_update:
+        class: Zenomania\ApiBundle\Service\UserProfileUpdate
+        arguments: ['@user.entity', '@user.service','@repository.person_repository']
