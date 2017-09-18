@@ -50,6 +50,20 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
      */
     private $roles = [];
 
+    /**
+     * @param array $data
+     * @return User
+     */
+    public static function fromArray(array $data)
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set" . ucfirst($key)}($value);
+        }
+
+        return $self;
+    }
+
     public function getEntityIdentifier()
     {
         return $this->getId();
@@ -151,7 +165,11 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
     {
         if (!empty($data)) {
             $this->setFromArray($data);
+        } else {
+            $this->createdOn = new \DateTime();
         }
+
+        $this->updatedOn = new \DateTime();
     }
 
     /**

@@ -4,6 +4,8 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Zenomania\CoreBundle\Entity\Actor;
+use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
 
@@ -154,5 +156,37 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->setParameter('name1', "{$queryData[0]}%")
             ->setParameter('name2', "{$queryData[1]}%");
 
+    }
+
+    /**
+     * Проверяет есть ли пользователь по заданному логину или телефону
+     *
+     * @param string $login
+     * @param string $phone
+     * @return bool
+     */
+    public function existsUserByLoginOrPhone($login, $phone)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('u')
+            ->from('ZenomaniaCoreBundle:User', 'u')
+            ->where('u.login = :login OR u.phone = :phone ')
+            ->setParameter('login', $login)
+            ->setParameter('phone', $phone);
+        $query = $qb->getQuery();
+        $userList = $query->getResult();
+
+        if (empty($userList)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function save(User $user)
+    {
+        $this->_em->persist($user);
+        $this->_em->flush();
     }
 }

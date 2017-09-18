@@ -116,6 +116,20 @@ class SocialAccount
     }
 
     /**
+     * @param array $data
+     * @return SocialAccount
+     */
+    public static function fromArray(array $data)
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set" . ucfirst($key)}($value);
+        }
+
+        return $self;
+    }
+
+    /**
      * Get id
      *
      * @return integer

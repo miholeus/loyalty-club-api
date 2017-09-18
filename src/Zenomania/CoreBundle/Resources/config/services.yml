@@ -73,3 +73,6 @@ services:
         calls:
             - ['setUploadService', ['@file.upload_player_photo']]
             - ['setImageService', ['@images.service']]
+    transfer_actor.service:
+        class: Zenomania\CoreBundle\Service\TransferActorService
+        arguments: ['@doctrine.orm.entity_manager']

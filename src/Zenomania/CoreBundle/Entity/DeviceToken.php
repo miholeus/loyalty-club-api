@@ -43,6 +43,20 @@ class DeviceToken
     }
 
     /**
+     * @param array $data
+     * @return DeviceToken
+     */
+    public static function fromArray(array $data)
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set" . ucfirst($key)}($value);
+        }
+
+        return $self;
+    }
+
+    /**
      * @return int
      */
     public function getId()
