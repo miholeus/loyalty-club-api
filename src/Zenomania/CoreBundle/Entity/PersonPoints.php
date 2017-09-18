@@ -43,6 +43,10 @@ class PersonPoints
     private $person;
 
     /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $user;
+    /**
      * @param array $data
      * @return PersonPoints
      */
@@ -208,5 +212,29 @@ class PersonPoints
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Zenomania\CoreBundle\Entity\User $user
+     *
+     * @return PersonPoints
+     */
+    public function setUser(\Zenomania\CoreBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Zenomania\CoreBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

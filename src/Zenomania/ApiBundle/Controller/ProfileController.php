@@ -26,7 +26,18 @@ class ProfileController extends RestController
      * ### Success Response ###
      *      {
      *          "data":{
-     *              "id":<user id>
+     *              "id":<user id>,
+     *              "avatar": <string>,
+     *              "avatar_small": <string>,
+     *              "birth_date": <string>,
+     *              "email": <string>,
+     *              "first_name": <string>,
+     *              "last_name": <string>,
+     *              "middle_name": <string>,
+     *              "login": <string>,
+     *              "phone": <string>,
+     *              "highest_place": <integer>,
+     *              "rating": <integer>
      *          },
      *          "time":<time request>
      *      }
@@ -46,7 +57,7 @@ class ProfileController extends RestController
      *          "required"=true
      *      }
      *    },
-     *  output="\ApiBundle\Service\DataTransferObject\Object\UserValueObject"
+     *  output="\Zenomania\ApiBundle\Service\Transformer\User\UserProfileTransformer"
      * )
      *
      * @return \Symfony\Component\HttpFoundation\Response
