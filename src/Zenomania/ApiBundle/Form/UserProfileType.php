@@ -14,9 +14,38 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zenomania\ApiBundle\Form\DataTransformers\IdCityObjectTransformer;
 use Zenomania\ApiBundle\Form\DataTransformers\IdToDistrictObjectTransformer;
+use Zenomania\CoreBundle\Repository\CityRepository;
+use Zenomania\CoreBundle\Repository\DistrictRepository;
 
 class UserProfileType extends AbstractType
 {
+
+    protected $cityRepository;
+
+    protected $districtRepository;
+
+    public function __construct(CityRepository $cityRepository, DistrictRepository $districtRepository)
+    {
+        $this->cityRepository = $cityRepository;
+        $this->districtRepository = $districtRepository;
+    }
+
+    /**
+     * @return CityRepository
+     */
+    public function getCityRepository(): CityRepository
+    {
+        return $this->cityRepository;
+    }
+
+    /**
+     * @return DistrictRepository
+     */
+    public function getDistrictRepository(): DistrictRepository
+    {
+        return $this->districtRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,8 +60,8 @@ class UserProfileType extends AbstractType
         $builder->add('district', TextType::class, ['required' => false]);
         $builder->add('birthDate', TextType::class, ['required' => false]);
 
-        $builder->get('city')->addModelTransformer(new IdCityObjectTransformer());
-        $builder->get('district')->addModelTransformer(new IdToDistrictObjectTransformer());
+        $builder->get('city')->addModelTransformer(new IdCityObjectTransformer($this->getCityRepository()));
+        $builder->get('district')->addModelTransformer(new IdToDistrictObjectTransformer($this->getDistrictRepository()));
     }
 
     public function configureOptions(OptionsResolver $resolver)

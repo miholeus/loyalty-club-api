@@ -1,6 +1,7 @@
 imports:
     - {resource: "services/transformers.yml" }
     - {resource: "services/clients.yml" }
+    - {resource: "services/forms.yml" }
 
 services:
     apitoken_authenticator:
@@ -71,5 +72,5 @@ services:
     user.entity:
         class: Zenomania\CoreBundle\Entity\User
     api.user_profile_update:
-        class: Zenomania\ApiBundle\Service\UserProfileUpdate
+        class: Zenomania\ApiBundle\Service\UserProfile
         arguments: ['@user.entity', '@user.service','@repository.person_repository']

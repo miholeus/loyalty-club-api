@@ -18,14 +18,6 @@ class District
     private $name = '';
 
     /**
-     * @param int $id
-     */
-    public function setId(int $id)
-    {
-        $this->id = $id;
-    }
-
-    /**
      * Get id
      *
      * @return integer

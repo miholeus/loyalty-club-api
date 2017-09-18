@@ -20,3 +20,6 @@ services:
     api.data.transformer.event.transformer:
         class: Zenomania\ApiBundle\Service\Transformer\Event\EventTransformer
         arguments: ['@utils.host_based_url']
+    api.data.transformer.event.transformer:
+        class: Zenomania\ApiBundle\Service\Transformer\Event\EventTransformer
+        arguments: ['@utils.host_based_url']

@@ -10,9 +10,28 @@ namespace Zenomania\ApiBundle\Form\DataTransformers;
 
 use \Zenomania\CoreBundle\Entity\District;
 use Symfony\Component\Form\DataTransformerInterface;
+use Zenomania\CoreBundle\Repository\DistrictRepository;
 
 class IdToDistrictObjectTransformer implements DataTransformerInterface
 {
+    /**
+     * @var DistrictRepository
+     */
+    protected $districtRepository;
+
+    public function __construct(DistrictRepository $districtRepository)
+    {
+        $this->districtRepository = $districtRepository;
+    }
+
+    /**
+     * @return DistrictRepository
+     */
+    public function getDistrictRepository(): DistrictRepository
+    {
+        return $this->districtRepository;
+    }
+
     public function transform($value)
     {
         if (null === $value) {
@@ -29,9 +48,8 @@ class IdToDistrictObjectTransformer implements DataTransformerInterface
         if (null === $value) {
             return new District();
         } else if (is_numeric($value)) {
-            $city = new District();
-            $city->setId($value);
-            return $city;
+            $district = $this->getDistrictRepository()->findDistrictById($value);
+            return $district;
         } else {
             throw new TransformationFailedException();
         }
