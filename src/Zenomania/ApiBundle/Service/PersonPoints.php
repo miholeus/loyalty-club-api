@@ -15,6 +15,13 @@ class PersonPoints
     const POINTS_FOR_PROMO_CODE_REGISTRATION = 50;
     const POINTS_FOR_PREDICTION_MAX = 50;
 
+    const POINTS_FOR_PREDICTION_MATCH_RESULT = 3;// исход матча
+    const POINTS_FOR_PREDICTION_ONE_PLAYER = 1;// состав на матч
+    const POINTS_FOR_PREDICTION_MATCH_ROUND_SCORE = 5;// счет в партиях 5 зен за угаданную партию
+    const POINTS_FOR_PREDICTION_MATCH_ROUNDS = 5;// итоговый результат матча по партиям
+    const POINTS_FOR_PREDICTION_MATCH_MVP = 5;// самый результативный игрок
+
+
     public function pointsForActions()
     {
         return [
