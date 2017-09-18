@@ -66,3 +66,5 @@ services:
     api.profile_social_update:
         class: Zenomania\ApiBundle\Service\Social\UpdateSocialInfo
         arguments: ['@repository.social_account_repository', '@api.profile_social_bind']
+    api.person_points:
+        class: Zenomania\ApiBundle\Service\PersonPoints

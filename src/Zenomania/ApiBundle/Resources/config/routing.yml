@@ -21,3 +21,6 @@ api_invite:
 api_event:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\EventController"
+api_points:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\PointsController"
