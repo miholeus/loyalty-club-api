@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\Actor:
     type: entity
     table: actor
+    repositoryClass: Zenomania\CoreBundle\Repository\ActorRepository
     indexes:
         IDX_447556F96F0ECCCE:
             columns:
