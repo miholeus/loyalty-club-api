@@ -3,6 +3,7 @@
 namespace Zenomania\ApiBundle\Service\Transformer\User;
 
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Service\Utils\HostBasedUrl;
 use Zenomania\ApiBundle\Service\Transformer\TransformerAbstract;
 
@@ -12,10 +13,15 @@ class UserProfileTransformer extends TransformerAbstract
      * @var HostBasedUrl
      */
     private $url;
+    /**
+     * @var PersonPointsRepository
+     */
+    private $repository;
 
-    public function __construct(HostBasedUrl $url)
+    public function __construct(HostBasedUrl $url, PersonPointsRepository $repository)
     {
         $this->url = $url;
+        $this->repository = $repository;
     }
 
     public function transform(User $user)
@@ -30,7 +36,17 @@ class UserProfileTransformer extends TransformerAbstract
             'last_name' => $user->getLastName(),
             'middle_name' => $user->getMiddleName(),
             'login' => $user->getLogin(),
-            'phone' => $user->getPhone()
+            'phone' => $user->getPhone(),
+            'rating' => $this->getRepository()->getTotalPoints($user),
+            'highest_place' => $this->getRepository()->getRating($user)
         ];
+    }
+
+    /**
+     * @return PersonPointsRepository
+     */
+    public function getRepository(): PersonPointsRepository
+    {
+        return $this->repository;
     }
 }

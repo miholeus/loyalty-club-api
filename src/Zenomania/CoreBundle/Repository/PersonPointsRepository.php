@@ -59,7 +59,7 @@ class PersonPointsRepository extends EntityRepository
      */
     public function givePointsForSocialBind(User $user, $points)
     {
-        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($referralCode->getUser());
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
         $promoAction = $this->_em->getRepository('ZenomaniaCoreBundle:PromoAction')->findCurrentSeason();
 
         $params = [
@@ -75,5 +75,51 @@ class PersonPointsRepository extends EntityRepository
 
         $this->_em->persist($personPoints);
         $this->_em->flush();
+    }
+
+    public function getTotalPoints(User $user) : int
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $select = $qb->select(['points' => 'SUM(p.points)'])
+            ->from('ZenomaniaCoreBundle:PersonPoints', 'p')
+            ->where('p.user = :user')
+            ->setParameter('user', $user);
+        $result = $select->getQuery()->getSingleScalarResult();
+        return intval($result);
+    }
+
+    /**
+     * Get user's rating
+     *
+     * @param User $user
+     * @return int|null
+     */
+    public function getRating(User $user)
+    {
+        $em = $this->getEntityManager();
+
+        $subQuery = $em->getConnection()->createQueryBuilder()
+            ->select([
+                'SUM(points) AS points',
+                'user_id'
+            ])
+            ->from($this->getClassMetadata()->getTableName())
+            ->where('user_id IS NOT NULL')
+            ->groupBy('user_id');
+
+        $qb = clone $em->getConnection()->createQueryBuilder();
+
+        $select = $qb->select([
+            'RANK() OVER(ORDER BY points desc) AS position',
+            'user_id',
+            'points'
+        ])->from(sprintf("(%s) as s", $subQuery))
+            ->where('user_id = :user')
+            ->setParameter('user', $user->getId());
+        $result = $select->execute()->fetchAll();
+        if (!empty($result)) {
+            return intval($result[0]['position']);
+        }
+        return null;
     }
 }
