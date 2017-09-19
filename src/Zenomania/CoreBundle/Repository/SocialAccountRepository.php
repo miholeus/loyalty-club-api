@@ -32,6 +32,19 @@ class SocialAccountRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
+    public function isNewSocialAccount($socialName, $id)
+    {
+        if (empty($id)) {
+            return false;
+        }
+
+        if (!empty($this->findOneBy(['network' => $socialName, 'outerId' => $id]))) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Saves social account
      *

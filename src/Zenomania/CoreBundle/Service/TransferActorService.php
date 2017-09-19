@@ -22,13 +22,20 @@ class TransferActorService
 
     private $userRole;
 
+    /** @var EntityManager */
     private $em;
 
+    /** @var \Zenomania\CoreBundle\Repository\UserRepository */
     private $userRepository;
 
+    /** @var \Zenomania\CoreBundle\Repository\SocialAccountRepository */
     private $socialAccRepository;
 
+    /** @var \Doctrine\ORM\EntityRepository */
     private $deviceTokenRepository;
+
+    /** @var \Zenomania\CoreBundle\Repository\PersonRepository  */
+    private $personRepository;
 
     public function __construct(EntityManager $em)
     {
@@ -36,6 +43,7 @@ class TransferActorService
         $this->userRepository = $em->getRepository('ZenomaniaCoreBundle:User');
         $this->socialAccRepository = $em->getRepository('ZenomaniaCoreBundle:SocialAccount');
         $this->deviceTokenRepository = $em->getRepository('ZenomaniaCoreBundle:DeviceToken');
+        $this->personRepository = $em->getRepository('ZenomaniaCoreBundle:Person');
     }
 
     public function transfer(Actor $actor, Person $person)
@@ -51,7 +59,7 @@ class TransferActorService
             'password' => $actor->getPassword(),
             'birthDate' => $person->getBdate(),
             'avatar' => $person->getAvatar(),
-            'phone' => $person->getMobile(),
+            'phone' => preg_replace('/\D/', '', $person->getMobile()),
             'mailNotification' => $person->getEmailAllowed(),
             'mustChangePasswd' => true,
             'isActive' => true,
@@ -64,31 +72,16 @@ class TransferActorService
         $this->getUserRepository()->save($user);
 
         $person->setUser($user);
-        $this->getEm()->persist($person);
-        $this->getEm()->flush();
+        $this->getPersonRepository()->save($person);
 
-        if (!empty($actor->getVkId())) {
-            if (empty($this->getSocialAccRepository()->findOneBy(['network' => 'vk', 'outerId' => $actor->getVkId()]))) {
+        $socialAccounts = ['facebook' => $actor->getFbId(), 'vk' => $actor->getVkId()];
+        foreach ($socialAccounts as $network => $networkId) {
+            if ($this->getSocialAccRepository()->isNewSocialAccount($network, $networkId)) {
                 $params = [
                     'person' => $person,
-                    'network' => 'vk',
+                    'network' => $network,
                     'clubId' => $actor->getClubOwner()->getId(),
-                    'outerId' => $actor->getVkId(),
-                    'deleted' => false
-                ];
-
-                $socialAcc = SocialAccount::fromArray($params);
-                $this->getSocialAccRepository()->save($socialAcc);
-            }
-        }
-
-        if (!empty($actor->getFbId())) {
-            if (empty($this->getSocialAccRepository()->findOneBy(['network' => 'facebook', 'outerId' => $actor->getFbId()]))) {
-                $params = [
-                    'person' => $person,
-                    'network' => 'facebook',
-                    'clubId' => $actor->getClubOwner()->getId(),
-                    'outerId' => $actor->getFbId(),
+                    'outerId' => $networkId,
                     'deleted' => false
                 ];
 
@@ -143,7 +136,7 @@ class TransferActorService
     }
 
     /**
-     * @return \Doctrine\ORM\EntityRepository|\Zenomania\CoreBundle\Repository\UserRepository
+     * @return \Zenomania\CoreBundle\Repository\UserRepository
      */
     public function getUserRepository()
     {
@@ -159,7 +152,7 @@ class TransferActorService
     }
 
     /**
-     * @return \Doctrine\ORM\EntityRepository|\Zenomania\CoreBundle\Repository\SocialAccountRepository
+     * @return \Zenomania\CoreBundle\Repository\SocialAccountRepository
      */
     public function getSocialAccRepository()
     {
@@ -169,8 +162,16 @@ class TransferActorService
     /**
      * @return \Doctrine\ORM\EntityRepository
      */
-    public function getDeviceTokenRepository(): \Doctrine\ORM\EntityRepository
+    public function getDeviceTokenRepository()
     {
         return $this->deviceTokenRepository;
+    }
+
+    /**
+     * @return \Zenomania\CoreBundle\Repository\PersonRepository
+     */
+    public function getPersonRepository()
+    {
+        return $this->personRepository;
     }
 }
