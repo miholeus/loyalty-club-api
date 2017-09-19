@@ -18,7 +18,7 @@ Zenomania\CoreBundle\Entity\DeviceToken:
         token:
             type: string
             nullable: true
-            length: 256
+            length: 255
             options:
                 fixed: false
         createdOn:
@@ -34,14 +34,14 @@ Zenomania\CoreBundle\Entity\DeviceToken:
         deviceType:
             type: string
             nullable: true
-            length: 256
+            length: 255
             options:
                 fixed: false
             column: device_type
         deviceName:
             type: string
             nullable: true
-            length: 256
+            length: 255
             options:
                 fixed: false
             column: device_name
