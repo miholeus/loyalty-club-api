@@ -6,6 +6,7 @@
 
 namespace Zenomania\ApiBundle\Controller;
 
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Zenomania\ApiBundle\Form\UserProfileType;
@@ -97,13 +98,17 @@ class ProfileController extends RestController
      *          "description"="access key header",
      *          "required"=true
      *      }
-     *    },
-     *  input={
-     *     "class"="\Zenomania\ApiBundle\Form\UserProfileType",
-     *     "name"=""
-     *  }
+     *    }
      * )
      *
+     * @Rest\RequestParam(name="first_name", description="Имя")
+     * @Rest\RequestParam(name="last_name", description="Фамилия")
+     * @Rest\RequestParam(name="middle_name", description="Отчество")
+     * @Rest\RequestParam(name="phone", description="Номер телефона")
+     * @Rest\RequestParam(name="email", description="Электронная почта")
+     * @Rest\RequestParam(name="city", description="Город")
+     * @Rest\RequestParam(name="district", description="Район")
+     * @Rest\RequestParam(name="birthDate", description="Дата рождения")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -115,8 +120,7 @@ class ProfileController extends RestController
             throw $this->createFormValidationException($form);
         }
         $data = $form->getData();
-
-        $service = $this->get('api.user_profile_update');
+        $service = $this->get('api.user_profile');
         $data = $service->save($data, $this->getUser());
 
         $view = $this->view($data);

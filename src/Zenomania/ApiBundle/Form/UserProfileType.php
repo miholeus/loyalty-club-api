@@ -20,8 +20,14 @@ use Zenomania\CoreBundle\Repository\DistrictRepository;
 class UserProfileType extends AbstractType
 {
 
+    /**
+     * @var CityRepository
+     */
     protected $cityRepository;
 
+    /**
+     * @var DistrictRepository
+     */
     protected $districtRepository;
 
     public function __construct(CityRepository $cityRepository, DistrictRepository $districtRepository)

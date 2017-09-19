@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\City:
     type: entity
     table: city
+    repositoryClass: Zenomania\CoreBundle\Repository\CityRepository
     id:
         id:
             type: integer

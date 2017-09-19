@@ -71,6 +71,6 @@ services:
         class: Zenomania\ApiBundle\Form\Model\UserProfile
     user.entity:
         class: Zenomania\CoreBundle\Entity\User
-    api.user_profile_update:
+    api.user_profile:
         class: Zenomania\ApiBundle\Service\UserProfile
-        arguments: ['@user.entity', '@user.service','@repository.person_repository']
+        arguments: ['@user.service','@repository.person_repository']
