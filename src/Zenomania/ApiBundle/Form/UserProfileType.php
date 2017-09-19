@@ -51,9 +51,9 @@ class UserProfileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('firstName', TextType::class, ['required' => false]);
-        $builder->add('lastName', TextType::class, ['required' => true]);
-        $builder->add('middleName', TextType::class, ['required' => false]);
+        $builder->add('first_name', TextType::class, ['required' => true, 'property_path' => 'firstName']);
+        $builder->add('last_name' , TextType::class, ['required' => true, 'property_path' => 'lastName']);
+        $builder->add('middle_name', TextType::class, ['required' => false, 'property_path' => 'middleName']);
         $builder->add('phone', TextType::class, ['required' => true]);
         $builder->add('email', TextType::class, ['required' => true]);
         $builder->add('city', TextType::class, ['required' => false]);
