@@ -8,13 +8,12 @@
 
 namespace Zenomania\ApiBundle\Service\Social;
 
+use Zenomania\ApiBundle\Service\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 
 class BonusPoints
 {
-    const POINTS_FOR_SOCIAL_BIND = 10;// Сколько начислить баллов за привязку соц сети
-
     /**
      * @var PersonPointsRepository
      */
@@ -33,9 +32,9 @@ class BonusPoints
      */
     public function givePointsForSocialBind(User $user)
     {
-        $this->getPersonPointsRepository()->givePointsForSocialBind($user, self::POINTS_FOR_SOCIAL_BIND);
+        $this->getPersonPointsRepository()->givePointsForSocialBind($user, PersonPoints::POINTS_FOR_SOCIAL_BIND);
 
-        return self::POINTS_FOR_SOCIAL_BIND;
+        return PersonPoints::POINTS_FOR_SOCIAL_BIND;
     }
 
     /**
