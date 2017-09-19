@@ -12,6 +12,13 @@ class Calendar extends AbstractType
     const DAY = 0;
     const MONTH = 1;
     const YEAR = 2;
+    const DATE_TIME = 3;
+    /**
+     * Calendar type
+     *
+     * @var integer
+     */
+    protected $type;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -19,6 +26,7 @@ class Calendar extends AbstractType
         $builder->addViewTransformer(new DateTimeToLocalizedStringTransformer(
             null, null, -1, null, \IntlDateFormatter::GREGORIAN, $pattern
         ));
+        $this->type = $options['type'] ?? self::DAY;
     }
 
     public function buildView(\Symfony\Component\Form\FormView $view, \Symfony\Component\Form\FormInterface $form, array $options)
@@ -33,9 +41,9 @@ class Calendar extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'format' => 'dd.MM.yyyy',
+            'format' => $this->getFormat(),
             'compound' => false,
-            'type' => self::DAY,
+            'type' => $this->type,
         ));
     }
 
@@ -49,6 +57,13 @@ class Calendar extends AbstractType
         return 'calendar';
     }
 
+    protected function getFormat()
+    {
+        if ($this->type == self::DATE_TIME) {
+            return 'dd.mm.yyyy H:i:s';
+        }
+        return 'dd.mm.yyyy';
+    }
     /**
      * Возвращает правильный класс для календаря по типу календаря
      *
@@ -65,6 +80,9 @@ class Calendar extends AbstractType
                 break;
             case self::YEAR :
                 $currentClass .= 'datepicker-year';
+                break;
+            case self::DATE_TIME:
+                $currentClass .= 'datetimepicker';
                 break;
             case self::DAY :
             default:

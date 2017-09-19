@@ -11,6 +11,8 @@ namespace Zenomania\ApiBundle\Controller;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Controller\Annotations\Route;
+use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -60,6 +62,8 @@ class EventController extends RestController
      *    }
      * )
      *
+     * @Route(requirements={"event": "\d+"})
+     *
      * @param Event $event
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -74,7 +78,68 @@ class EventController extends RestController
         $view = $this->view($data);
         return $this->handleView($view);
     }
+    /**
+     *
+     * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 404,
+     *                  "message": "Event Not Found"
+     *              },
+     *              "errors": null
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "club_home":<club home>
+     *              "club_guest":<club guest>
+     *              "place":<place>
+     *              "name":<name>
+     *              "score_home":<score home>
+     *              "score_guest":<score guest>
+     *              "score_in_round":<score in round>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Мероприятия",
+     *  resource=true,
+     *  description="Данные по предстоящему мероприятию",
+     *  statusCodes={
+     *         200="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getEventsNextAction()
+    {
+        $service = $this->get('event.service');
+        try {
+            $event = $service->nextEvent();
+        } catch (EntityNotFoundException $e) {
+            throw new HttpException(404, $e->getMessage(), $e);
+        }
 
+        $transformer = $this->get('api.data.transformer.event.prediction');
+
+        $data = $this->getResourceItem($event, $transformer);
+        $view = $this->view($data);
+
+        return $this->handleView($view);
+    }
     /**
      *
      * ### Failed Response ###

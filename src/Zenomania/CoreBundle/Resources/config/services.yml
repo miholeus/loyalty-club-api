@@ -73,3 +73,6 @@ services:
         calls:
             - ['setUploadService', ['@file.upload_player_photo']]
             - ['setImageService', ['@images.service']]
+    event.service:
+        class: Zenomania\ApiBundle\Service\Events
+        arguments: ['@repository.event_repository']

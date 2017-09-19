@@ -11,6 +11,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Doctrine\CustomPaginator;
+use Zenomania\CoreBundle\Event\Event;
 
 class EventRepository extends EntityRepository
 {
@@ -63,5 +64,21 @@ class EventRepository extends EntityRepository
             ->from('ZenomaniaCoreBundle:Event', 'e');
         $paginator = new CustomPaginator($query);
         return $paginator;
+    }
+
+    /**
+     * @param \DateTimeImmutable $dt
+     * @return Event|null
+     */
+    public function findNextEvent(\DateTimeImmutable $dt)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('e')
+            ->from('ZenomaniaCoreBundle:Event', 'e')
+            ->where('e.date > :date')
+            ->setParameter('date', $dt)
+            ->orderBy('e.date', 'ASC')
+            ->setMaxResults(1);
+        return $query->getQuery()->getOneOrNullResult();
     }
 }

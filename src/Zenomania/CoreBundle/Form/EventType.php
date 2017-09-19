@@ -7,6 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+use Zenomania\CoreBundle\Entity\Player;
+use Zenomania\CoreBundle\Form\Type\Calendar;
 
 class EventType extends AbstractType
 {
@@ -17,7 +20,11 @@ class EventType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('date')
+            ->add('date', Calendar::class, [
+                'type' => Calendar::DATE_TIME,
+                'required' => true,
+                'description' => 'Дата начала мероприятия',
+            ])
             ->add('purchasable', null, ['label' => 'Покупка билета ч/з программу лояльности'])
             ->add('chship')
             ->add('scoreHome', IntegerType::class, [
@@ -44,7 +51,8 @@ class EventType extends AbstractType
             ->add('clubGuest')
             ->add('place', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Place',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'empty_data' => null
             ])
             ->add('promoAction', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\PromoAction',
