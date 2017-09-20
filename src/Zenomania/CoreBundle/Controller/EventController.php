@@ -5,6 +5,7 @@ namespace Zenomania\CoreBundle\Controller;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Zenomania\CoreBundle\Entity\ScoreInRound;
 
 /**
  * Event controller.
@@ -81,6 +82,24 @@ class EventController extends Controller
     public function editAction(Request $request, Event $event)
     {
         $deleteForm = $this->createDeleteForm($event);
+
+        $event = new Event();
+        $round1 = new ScoreInRound();
+        $round1->setNameRound('1-ый раунд');
+        $round1->setHomeScore(0);
+        $round1->setGuestScore(0);
+        $event->getScoreInRounds()->add($round1);
+        $round2 = new ScoreInRound();
+        $round2->setNameRound('2-ой раунд');
+        $round2->setHomeScore(0);
+        $round2->setGuestScore(0);
+        $event->getScoreInRounds()->add($round2);
+        $round3 = new ScoreInRound();
+        $round3->setNameRound('3-ий раунд');
+        $round3->setHomeScore(0);
+        $round3->setGuestScore(0);
+        $event->getScoreInRounds()->add($round3);
+
         $editForm = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
         $editForm->handleRequest($request);
 

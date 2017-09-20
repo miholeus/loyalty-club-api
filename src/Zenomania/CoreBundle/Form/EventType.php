@@ -2,11 +2,15 @@
 
 namespace Zenomania\CoreBundle\Form;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zenomania\CoreBundle\Entity\ScoreInRound;
 
 class EventType extends AbstractType
 {
@@ -39,7 +43,6 @@ class EventType extends AbstractType
                 ]
             ])
             ->add('isLineUp', null, ['label' => 'Опубликован состав'])
-            ->add('scoreInRounds')
             ->add('clubHome')
             ->add('clubGuest')
             ->add('place', EntityType::class, [
@@ -57,9 +60,76 @@ class EventType extends AbstractType
             ->add('mvp', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Player',
                 'choice_label' => 'lastname'
+            ])
+            ->add('scoreInRounds', CollectionType::class, [
+                'entry_type' => ScoreInRoundType::class,
+                'entry_options' => array('label' => false),
             ]);
+//            ->add(
+//                $builder
+//                    ->create('scoreInRounds', CollectionType::class, [
+//                        'entry_type' => ScoreInRoundType::class,
+//                        'entry_options' => array('label' => false),
+//                    ])
+//                    ->addModelTransformer(new CallbackTransformer(
+//                        function ($roundsString) {
+//                            $rounds = explode(', ', $roundsString);
+//                            $array = new ArrayCollection();
+//                            $i = 1;
+//                            foreach ($rounds as $round) {
+//                                $scoreRound = new ScoreInRound();
+//                                $scoreRound->setNameRound($i . ' раунд');
+//                                $score = explode(':', $round);
+//                                $scoreRound->setHomeScore($score[0]);
+//                                $scoreRound->setGuestScore($score[1]);
+//
+//                                $array->add($scoreRound);
+//                                $i++;
+//                            }
+//                            return $array;
+//                        },
+//                        function ($rounds) {
+//                            $array = [];
+//                            /** @var ScoreInRound $round */
+//                            foreach ($rounds as $round) {
+//                                $array[] = $round->getHomeScore() . ":" . $round->getGuestScore();
+//                            }
+//
+//                            return implode(', ', $array);
+//                        }
+//                    ))
+//            );
+
+//        $builder->get('scoreInRounds')
+//            ->addModelTransformer(new CallbackTransformer(
+//                function ($rounds) {
+//                    $array = [];
+//                    /** @var ScoreInRound $round */
+//                    foreach ($rounds as $round) {
+//                        $array[] = $round->getHomeScore() . ":" . $round->getGuestScore();
+//                    }
+//
+//                    return implode(', ', $array);
+//                },
+//                function ($roundsString) {
+//                    $rounds = explode(', ', $roundsString);
+//                    $array = new ArrayCollection();
+//                    $i = 1;
+//                    foreach ($rounds as $round) {
+//                        $scoreRound = new ScoreInRound();
+//                        $scoreRound->setNameRound($i . ' раунд');
+//                        $score = explode(':', $round);
+//                        $scoreRound->setHomeScore($score[0]);
+//                        $scoreRound->setGuestScore($score[1]);
+//
+//                        $array->add($scoreRound);
+//                        $i++;
+//                    }
+//                    return $array;
+//                }
+//            ));
     }
-    
+
     /**
      * {@inheritdoc}
      */

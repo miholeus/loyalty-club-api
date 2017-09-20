@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Event
  */
@@ -83,7 +85,7 @@ class Event
     private $isLineUp;
 
     /**
-     * @var string
+     * @var ArrayCollection
      */
     private $scoreInRounds;
 
@@ -97,7 +99,8 @@ class Event
      */
     public function __construct()
     {
-        $this->personPoint = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->personPoint = new ArrayCollection();
+        $this->scoreInRounds = new ArrayCollection();
     }
 
     /**
@@ -473,22 +476,10 @@ class Event
     }
 
     /**
-     * @return string
+     * @return ArrayCollection
      */
     public function getScoreInRounds()
     {
         return $this->scoreInRounds;
-    }
-
-    /**
-     * @param string $scoreInRounds
-     *
-     * @return Event
-     */
-    public function setScoreInRounds(string $scoreInRounds)
-    {
-        $this->scoreInRounds = $scoreInRounds;
-
-        return $this;
     }
 }
