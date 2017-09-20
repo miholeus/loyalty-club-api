@@ -47,24 +47,43 @@ class EventType extends AbstractType
             ])
             ->add('isLineUp', null, ['label' => 'Опубликован состав'])
             ->add('scoreInRounds')
-            ->add('clubHome')
-            ->add('clubGuest')
+            ->add('clubHome', EntityType::class, [
+                'class' => 'Zenomania\CoreBundle\Entity\Club',
+                'choice_label' => 'name',
+                'required' => true
+            ])
+            ->add('clubGuest', EntityType::class, [
+                'class' => 'Zenomania\CoreBundle\Entity\Club',
+                'choice_label' => 'name',
+                'required' => true
+            ])
             ->add('place', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Place',
                 'choice_label' => 'name',
-                'empty_data' => null
+                'empty_data' => null,
+                'placeholder' => 'Выберите место',
+                'required' => false
             ])
-            ->add('promoAction', EntityType::class, [
-                'class' => 'Zenomania\CoreBundle\Entity\PromoAction',
-                'choice_label' => 'name'
+            ->add('season', EntityType::class, [
+                'class' => 'Zenomania\CoreBundle\Entity\Season',
+                'choice_label' => 'name',
+                'empty_data' => null,
+                'placeholder' => 'Выберите сезон',
+                'required' => false
             ])
             ->add('sport', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Sport',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'empty_data' => null,
+                'placeholder' => 'Выберите вид спорта',
+                'required' => false
             ])
             ->add('mvp', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Player',
-                'choice_label' => 'lastname'
+                'choice_label' => 'lastname',
+                'empty_data' => null,
+                'placeholder' => 'Выберите игрока',
+                'required' => false
             ]);
     }
     

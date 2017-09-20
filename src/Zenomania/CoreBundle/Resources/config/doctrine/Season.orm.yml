@@ -1,7 +1,7 @@
-Zenomania\CoreBundle\Entity\PromoAction:
+Zenomania\CoreBundle\Entity\Season:
     type: entity
-    table: promo_action
-    repositoryClass: Zenomania\CoreBundle\Repository\PromoActionRepository
+    table: season
+    repositoryClass: Zenomania\CoreBundle\Repository\SeasonRepository
     indexes:
         promo_action__club:
             columns:

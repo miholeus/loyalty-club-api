@@ -15,9 +15,9 @@ Zenomania\CoreBundle\Entity\Event:
         FK_event_sport:
             columns:
                 - sport_id
-        FK_event_promo_action:
+        FK_event_season:
             columns:
-                - promo_action
+                - season_id
         FK_event_mvp:
             columns:
                 - mvp
@@ -120,14 +120,14 @@ Zenomania\CoreBundle\Entity\Event:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
-        promoAction:
-            targetEntity: PromoAction
+        season:
+            targetEntity: Zenomania\CoreBundle\Entity\Season
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                promo_action:
+                season_id:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false

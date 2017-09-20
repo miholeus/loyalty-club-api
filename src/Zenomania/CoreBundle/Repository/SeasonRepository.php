@@ -9,14 +9,14 @@
 namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zenomania\CoreBundle\Entity\PromoAction;
+use Zenomania\CoreBundle\Entity\Season;
 
-class PromoActionRepository extends EntityRepository
+class SeasonRepository extends EntityRepository
 {
     /**
      * Finds current promo action
      *
-     * @return PromoAction|null
+     * @return Season|null
      */
     public function findCurrentSeason()
     {

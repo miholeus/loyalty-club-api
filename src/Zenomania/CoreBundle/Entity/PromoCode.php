@@ -48,11 +48,6 @@ class PromoCode
     private $activatedDt;
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\PromoAction
-     */
-    private $action;
-
-    /**
      * @var \Zenomania\CoreBundle\Entity\PromoSmsIn
      */
     private $sms;
@@ -62,7 +57,10 @@ class PromoCode
      */
     private $ticket;
 
-
+    /**
+     * @var \Zenomania\CoreBundle\Entity\Season
+     */
+    private $season;
     /**
      * Get id
      *
@@ -242,30 +240,6 @@ class PromoCode
     }
 
     /**
-     * Set action
-     *
-     * @param \Zenomania\CoreBundle\Entity\PromoAction $action
-     *
-     * @return PromoCode
-     */
-    public function setAction(\Zenomania\CoreBundle\Entity\PromoAction $action = null)
-    {
-        $this->action = $action;
-
-        return $this;
-    }
-
-    /**
-     * Get action
-     *
-     * @return \Zenomania\CoreBundle\Entity\PromoAction
-     */
-    public function getAction()
-    {
-        return $this->action;
-    }
-
-    /**
      * Set sms
      *
      * @param \Zenomania\CoreBundle\Entity\PromoSmsIn $sms
@@ -311,5 +285,29 @@ class PromoCode
     public function getTicket()
     {
         return $this->ticket;
+    }
+
+    /**
+     * Set season
+     *
+     * @param \Zenomania\CoreBundle\Entity\Season $season
+     *
+     * @return PromoCode
+     */
+    public function setSeason(\Zenomania\CoreBundle\Entity\Season $season = null)
+    {
+        $this->season = $season;
+
+        return $this;
+    }
+
+    /**
+     * Get season
+     *
+     * @return \Zenomania\CoreBundle\Entity\Season
+     */
+    public function getSeason()
+    {
+        return $this->season;
     }
 }

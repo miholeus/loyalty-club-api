@@ -5,7 +5,7 @@ namespace Zenomania\CoreBundle\Entity;
 /**
  * PromoAction
  */
-class PromoAction
+class Season
 {
     /**
      * @var integer
@@ -58,7 +58,7 @@ class PromoAction
      *
      * @param string $name
      *
-     * @return PromoAction
+     * @return Season
      */
     public function setName($name)
     {
@@ -82,7 +82,7 @@ class PromoAction
      *
      * @param string $displayname
      *
-     * @return PromoAction
+     * @return Season
      */
     public function setDisplayname($displayname)
     {
@@ -106,7 +106,7 @@ class PromoAction
      *
      * @param boolean $active
      *
-     * @return PromoAction
+     * @return Season
      */
     public function setActive($active)
     {
@@ -130,7 +130,7 @@ class PromoAction
      *
      * @param \DateTime $dtStart
      *
-     * @return PromoAction
+     * @return Season
      */
     public function setDtStart($dtStart)
     {
@@ -154,7 +154,7 @@ class PromoAction
      *
      * @param \DateTime $dtEnd
      *
-     * @return PromoAction
+     * @return Season
      */
     public function setDtEnd($dtEnd)
     {
@@ -178,7 +178,7 @@ class PromoAction
      *
      * @param \Zenomania\CoreBundle\Entity\Club $clubOwner
      *
-     * @return PromoAction
+     * @return Season
      */
     public function setClubOwner(\Zenomania\CoreBundle\Entity\Club $clubOwner = null)
     {
