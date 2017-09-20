@@ -25,10 +25,7 @@ if (jQuery().datepicker) {
 
 if (jQuery().datetimepicker) {
     $('.datetimepicker').datetimepicker({
-        format: "dd.mm.yyyy hh:ii:ss",
-        language: "ru",
-        multidate: false,
-        autoclose: true,
-        minViewMode: 1
+        format: "DD.MM.YYYY hh:mm:ss",
+        locale: "ru"
     });
 }

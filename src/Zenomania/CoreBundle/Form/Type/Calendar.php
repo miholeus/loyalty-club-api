@@ -60,7 +60,7 @@ class Calendar extends AbstractType
     protected function getFormat()
     {
         if ($this->type == self::DATE_TIME) {
-            return 'dd.mm.yyyy H:i:s';
+            return 'DD.MM.YYYY hh:mm:ss';
         }
         return 'dd.mm.yyyy';
     }
