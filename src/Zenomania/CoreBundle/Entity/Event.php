@@ -80,9 +80,14 @@ class Event
     private $isLineUp;
 
     /**
-     * @var ArrayCollection
+     * @var string
      */
     private $scoreInRounds;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $rounds;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\Player
@@ -100,7 +105,7 @@ class Event
     public function __construct()
     {
         $this->personPoint = new ArrayCollection();
-        $this->scoreInRounds = new ArrayCollection();
+        $this->rounds = new ArrayCollection();
     }
 
     /**
@@ -452,7 +457,7 @@ class Event
     }
 
     /**
-     * @return ArrayCollection
+     * @return string
      */
     public function getScoreInRounds()
     {
@@ -466,12 +471,27 @@ class Event
      */
     public function setScoreInRounds($scoreInRounds)
     {
+        $this->scoreInRounds = $scoreInRounds;
+
+        return $this;
+    }
+
+    /**
+     * Преобразует массив со счётом каждого раунда в строку, типа 25:21, 25:23, 25:20
+     *
+     * @param ArrayCollection $rounds
+     *
+     * @return Event
+     */
+    public function reverseRounds($rounds)
+    {
         $array = [];
-        /** @var ScoreInRound $round */
-        foreach ($this->getScoreInRounds() as $round) {
+        foreach ($rounds as $round) {
+            /** @var ScoreInRound $round */
             if (($round->getHomeScore() <= 15) && ($round->getGuestScore() <= 15)) {
                 break;
             }
+
             $array[] = $round->getHomeScore() . ":" . $round->getGuestScore();
         }
 
@@ -481,13 +501,62 @@ class Event
     }
 
     /**
-     * @param ArrayCollection $scoreInRounds
+     * Преобразует строку в массив со счётом каждого раунда
      *
-     * @return \Zenomania\CoreBundle\Entity\Event
+     * @param string $scoreInRounds
      */
-    public function setScoreInRoundsNew(ArrayCollection $scoreInRounds)
+    public function transformerRounds($scoreInRounds)
     {
-        $this->scoreInRounds = $scoreInRounds;
+        $this->setRounds(new ArrayCollection());
+
+        if (empty($scoreInRounds)) {
+            for ($i = 1; $i <= 5; $i++) {
+                $round = new ScoreInRound();
+                $round->setNameRound($i);
+                $round->setHomeScore(0);
+                $round->setGuestScore(0);
+                $this->getRounds()->add($round);
+            }
+        } else {
+            $rounds = explode(', ', $scoreInRounds);
+            $i = 1;
+            foreach ($rounds as $round) {
+                $score = explode(':', $round);
+
+                $scoreRound = new ScoreInRound();
+                $scoreRound->setNameRound($i);
+                $scoreRound->setHomeScore($score[0]);
+                $scoreRound->setGuestScore($score[1]);
+                $this->getRounds()->add($scoreRound);
+                $i++;
+            }
+
+            for ($j = $i; $j <= 5; $j++) {
+                $scoreRound = new ScoreInRound();
+                $scoreRound->setNameRound($j);
+                $scoreRound->setHomeScore(0);
+                $scoreRound->setGuestScore(0);
+                $this->getRounds()->add($scoreRound);
+            }
+        }
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getRounds()
+    {
+        return $this->rounds;
+    }
+
+    /**
+     * @param ArrayCollection $rounds
+     *
+     * @return Event
+     */
+    public function setRounds($rounds)
+    {
+        $this->rounds = $rounds;
 
         return $this;
     }

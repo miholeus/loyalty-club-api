@@ -2,17 +2,13 @@
 
 namespace Zenomania\CoreBundle\Form;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zenomania\CoreBundle\Entity\ScoreInRound;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
-use Zenomania\CoreBundle\Entity\Player;
 use Zenomania\CoreBundle\Form\Type\Calendar;
 
 class EventType extends AbstractType
@@ -92,29 +88,11 @@ class EventType extends AbstractType
                 'placeholder' => 'Выберите игрока',
                 'required' => false
             ])
-            ->add('scoreInRounds', CollectionType::class, [
+            ->add('scoreInRounds')
+            ->add('rounds', CollectionType::class, [
                 'entry_type' => ScoreInRoundType::class,
                 'entry_options' => array('label' => false),
             ]);
-
-        $builder->get('scoreInRounds')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($a) {
-                    return $a;
-                },
-                function ($rounds) {
-                    $array = [];
-                    /** @var ScoreInRound $round */
-                    foreach ($rounds as $round) {
-                        if (($round->getHomeScore() <= 15) && ($round->getGuestScore() <= 15)) {
-                            break;
-                        }
-                        $array[] = $round->getHomeScore() . ":" . $round->getGuestScore();
-                    }
-
-                    return implode(', ', $array);
-                }
-            ));
     }
 
     /**
