@@ -55,7 +55,7 @@ class TransferActorService
             'lastname' => $person->getLastName(),
             'middlename' => $person->getMiddleName(),
             'login' => $actor->getUsername(),
-            'email' => $person->getEmail(),
+            'email' => !empty($person->getEmail()) ? $person->getEmail() : null,
             'password' => $actor->getPassword(),
             'birthDate' => $person->getBdate(),
             'avatar' => $person->getAvatar(),
@@ -67,6 +67,14 @@ class TransferActorService
             'isDeleted' => false,
             'isSuperuser' => false
         ];
+        if (!empty($actor->getRegDate())) {
+            $params['createdOn'] = $actor->getRegDate();
+        }
+        foreach (['firstname', 'lastname'] as $name) {
+            if (mb_strlen($params[$name], 'utf-8') < 3) {
+                $params[$name] = $params[$name] . time();
+            }
+        }
 
         $user = User::fromArray($params);
         $this->getUserRepository()->save($user);
