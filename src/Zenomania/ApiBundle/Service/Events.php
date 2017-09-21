@@ -20,6 +20,13 @@ class Events
     {
         $this->eventRepository = $eventRepository;
     }
+
+    /**
+     * Finds next event
+     *
+     * @return null|\Zenomania\CoreBundle\Event\Event
+     * @throws EntityNotFoundException
+     */
     public function nextEvent()
     {
         $dt = new \DateTimeImmutable();
@@ -28,6 +35,7 @@ class Events
         if (null === $event) {
             throw EntityNotFoundException::eventNotFound();
         }
+        return $event;
     }
 
     /**

@@ -61,7 +61,8 @@ class EventRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('e')
-            ->from('ZenomaniaCoreBundle:Event', 'e');
+            ->from('ZenomaniaCoreBundle:Event', 'e')
+            ->orderBy('e.date', 'DESC');
         $paginator = new CustomPaginator($query);
         return $paginator;
     }
