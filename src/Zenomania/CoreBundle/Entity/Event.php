@@ -65,11 +65,6 @@ class Event
     private $place;
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\PromoAction
-     */
-    private $promoAction;
-
-    /**
      * @var \Zenomania\CoreBundle\Entity\Sport
      */
     private $sport;
@@ -93,6 +88,11 @@ class Event
      * @var \Zenomania\CoreBundle\Entity\Player
      */
     private $mvp;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\Season
+     */
+    private $season;
 
     /**
      * Constructor
@@ -354,30 +354,6 @@ class Event
     }
 
     /**
-     * Set promoAction
-     *
-     * @param \Zenomania\CoreBundle\Entity\PromoAction $promoAction
-     *
-     * @return Event
-     */
-    public function setPromoAction(\Zenomania\CoreBundle\Entity\PromoAction $promoAction = null)
-    {
-        $this->promoAction = $promoAction;
-
-        return $this;
-    }
-
-    /**
-     * Get promoAction
-     *
-     * @return \Zenomania\CoreBundle\Entity\PromoAction
-     */
-    public function getPromoAction()
-    {
-        return $this->promoAction;
-    }
-
-    /**
      * Set sport
      *
      * @param \Zenomania\CoreBundle\Entity\Sport $sport
@@ -514,5 +490,29 @@ class Event
         $this->scoreInRounds = $scoreInRounds;
 
         return $this;
+    }
+
+    /**
+     * Set season
+     *
+     * @param \Zenomania\CoreBundle\Entity\Season $season
+     *
+     * @return Event
+     */
+    public function setSeason(\Zenomania\CoreBundle\Entity\Season $season = null)
+    {
+        $this->season = $season;
+
+        return $this;
+    }
+
+    /**
+     * Get season
+     *
+     * @return \Zenomania\CoreBundle\Entity\Season
+     */
+    public function getSeason()
+    {
+        return $this->season;
     }
 }

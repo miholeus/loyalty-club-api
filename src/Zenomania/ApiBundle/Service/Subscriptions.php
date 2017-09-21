@@ -11,7 +11,7 @@ namespace Zenomania\ApiBundle\Service;
 
 use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\PersonPoints;
-use Zenomania\CoreBundle\Entity\PromoAction;
+use Zenomania\CoreBundle\Entity\Season;
 use Zenomania\CoreBundle\Entity\Subscription;
 use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
@@ -67,10 +67,10 @@ class Subscriptions
      * Начисляем пользователю User баллы лояльности за регистрацию билета barcode
      *
      * @param Person $person
-     * @param PromoAction $promoAction
+     * @param Season $promoAction
      * @return int
      */
-    public function chargePointForSubsRegistration(Person $person, PromoAction $promoAction)
+    public function chargePointForSubsRegistration(Person $person, Season $promoAction)
     {
         $charge = 3000; // Сколько начислить баллов за регистрацию билета
 

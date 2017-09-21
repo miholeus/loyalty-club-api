@@ -2,9 +2,9 @@ Zenomania\CoreBundle\Entity\PromoCode:
     type: entity
     table: promo_code
     indexes:
-        promo_code__promo_action:
+        promo_code__season:
             columns:
-                - action
+                - season_id
         promo_code__ticket:
             columns:
                 - ticket
@@ -70,14 +70,14 @@ Zenomania\CoreBundle\Entity\PromoCode:
             nullable: true
             column: activated_dt
     manyToOne:
-        action:
-            targetEntity: PromoAction
+        season:
+            targetEntity: Zenomania\CoreBundle\Entity\Season
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                action:
+                season_id:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false

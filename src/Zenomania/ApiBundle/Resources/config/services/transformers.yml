@@ -17,6 +17,12 @@ services:
     api.data.transformer.user.profile_transformer:
         class: Zenomania\ApiBundle\Service\Transformer\User\UserProfileTransformer
         arguments: ['@utils.host_based_url', '@repository.person_points_repository']
+    api.data.transformer.club:
+        class: Zenomania\ApiBundle\Service\Transformer\ClubTransformer
+        arguments: ['@utils.host_based_url']
     api.data.transformer.event.transformer:
         class: Zenomania\ApiBundle\Service\Transformer\Event\EventTransformer
+        arguments: ['@utils.host_based_url']
+    api.data.transformer.event.prediction:
+        class: Zenomania\ApiBundle\Service\Transformer\Event\EventPredictionTransformer
         arguments: ['@utils.host_based_url']

@@ -49,7 +49,7 @@ Zenomania\CoreBundle\Entity\PersonPoints:
             nullable: false
     manyToOne:
         season:
-            targetEntity: PromoAction
+            targetEntity: Zenomania\CoreBundle\Entity\Season
             cascade: {  }
             fetch: LAZY
             mappedBy: null

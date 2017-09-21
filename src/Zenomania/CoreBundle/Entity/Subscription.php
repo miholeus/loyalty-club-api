@@ -68,7 +68,7 @@ class Subscription
     private $person;
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\PromoAction
+     * @var \Zenomania\CoreBundle\Entity\Season
      */
     private $season;
 
@@ -362,11 +362,11 @@ class Subscription
     /**
      * Set season
      *
-     * @param \Zenomania\CoreBundle\Entity\PromoAction $season
+     * @param \Zenomania\CoreBundle\Entity\Season $season
      *
      * @return Subscription
      */
-    public function setSeason(\Zenomania\CoreBundle\Entity\PromoAction $season = null)
+    public function setSeason(\Zenomania\CoreBundle\Entity\Season $season = null)
     {
         $this->season = $season;
 
@@ -376,7 +376,7 @@ class Subscription
     /**
      * Get season
      *
-     * @return \Zenomania\CoreBundle\Entity\PromoAction
+     * @return \Zenomania\CoreBundle\Entity\Season
      */
     public function getSeason()
     {
