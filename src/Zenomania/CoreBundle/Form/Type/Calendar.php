@@ -7,11 +7,24 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToLocalizedStringTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Calendar class for forms
+ *
+ * Datetime syntax can be found here
+ * http://userguide.icu-project.org/formatparse/datetime#TOC-Date-Time-Format-Syntax
+ */
 class Calendar extends AbstractType
 {
     const DAY = 0;
     const MONTH = 1;
     const YEAR = 2;
+    const DATE_TIME = 3;
+    /**
+     * Calendar type
+     *
+     * @var integer
+     */
+    protected $type;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -19,6 +32,7 @@ class Calendar extends AbstractType
         $builder->addViewTransformer(new DateTimeToLocalizedStringTransformer(
             null, null, -1, null, \IntlDateFormatter::GREGORIAN, $pattern
         ));
+        $this->type = $options['type'] ?? self::DAY;
     }
 
     public function buildView(\Symfony\Component\Form\FormView $view, \Symfony\Component\Form\FormInterface $form, array $options)
@@ -65,6 +79,9 @@ class Calendar extends AbstractType
                 break;
             case self::YEAR :
                 $currentClass .= 'datepicker-year';
+                break;
+            case self::DATE_TIME:
+                $currentClass .= 'datetimepicker';
                 break;
             case self::DAY :
             default:

@@ -7,6 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+use Zenomania\CoreBundle\Entity\Player;
+use Zenomania\CoreBundle\Form\Type\Calendar;
 
 class EventType extends AbstractType
 {
@@ -17,46 +20,74 @@ class EventType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('date')
+            ->add('date', Calendar::class, [
+                'type' => Calendar::DATE_TIME,
+                'required' => true,
+                'format' => 'dd.MM.yyyy HH:mm:ss',
+                'description' => 'Дата начала мероприятия',
+            ])
             ->add('purchasable', null, ['label' => 'Покупка билета ч/з программу лояльности'])
             ->add('chship')
             ->add('scoreHome', IntegerType::class, [
                 'attr' => [
                     'min' => 0,
                     'max' => 3
-                ]
+                ],
+                'required' => false
             ])
             ->add('scoreGuest', IntegerType::class, [
                 'attr' => [
                     'min' => 0,
                     'max' => 3
-                ]
+                ],
+                'required' => false
             ])
             ->add('scoreSaved', IntegerType::class, [
                 'attr' => [
                     'min' => 0,
                     'max' => 1
-                ]
+                ],
+                'required' => false
             ])
             ->add('isLineUp', null, ['label' => 'Опубликован состав'])
             ->add('scoreInRounds')
-            ->add('clubHome')
-            ->add('clubGuest')
+            ->add('clubHome', EntityType::class, [
+                'class' => 'Zenomania\CoreBundle\Entity\Club',
+                'choice_label' => 'name',
+                'required' => true
+            ])
+            ->add('clubGuest', EntityType::class, [
+                'class' => 'Zenomania\CoreBundle\Entity\Club',
+                'choice_label' => 'name',
+                'required' => true
+            ])
             ->add('place', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Place',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'empty_data' => null,
+                'placeholder' => 'Выберите место',
+                'required' => false
             ])
-            ->add('promoAction', EntityType::class, [
-                'class' => 'Zenomania\CoreBundle\Entity\PromoAction',
-                'choice_label' => 'name'
+            ->add('season', EntityType::class, [
+                'class' => 'Zenomania\CoreBundle\Entity\Season',
+                'choice_label' => 'name',
+                'empty_data' => null,
+                'placeholder' => 'Выберите сезон',
+                'required' => false
             ])
             ->add('sport', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Sport',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'empty_data' => null,
+                'placeholder' => 'Выберите вид спорта',
+                'required' => false
             ])
             ->add('mvp', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Player',
-                'choice_label' => 'lastname'
+                'choice_label' => 'lastname',
+                'empty_data' => null,
+                'placeholder' => 'Выберите игрока',
+                'required' => false
             ]);
     }
     
