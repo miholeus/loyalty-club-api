@@ -60,16 +60,19 @@ class UserProfile
         $this->getUserService()->save($user);
 
         $person = $this->getPersonRepository()->findPersonByUser($user);
+        $profileData = [
+            'firstName' => $profile->getFirstName(),
+            'lastName' => $profile->getLastName(),
+            'middleName' => $profile->getLastName(),
+            'email' => $profile->getEmail(),
+            'mobile' => $user->getPhone(),
+            'bdate' => $user->getBirthDate(),
+            'user' => $user
+        ];
         if (null === $person) {
-            $person = Person::fromArray([
-                'firstName' => $profile->getFirstName(),
-                'lastName' => $profile->getLastName(),
-                'middleName' => $profile->getLastName(),
-                'email' => $profile->getEmail(),
-                'mobile' => $user->getPhone(),
-                'bdate' => $user->getBirthDate(),
-                'user' => $user
-            ]);
+            $person = Person::fromArray($profileData);
+        } else {
+            $person->setFromArray($profileData);
         }
         if (null !== $profile->getCity()->getId()) {
             $person->setCity($profile->getCity());
