@@ -23,6 +23,7 @@ class EventType extends AbstractType
             ->add('date', Calendar::class, [
                 'type' => Calendar::DATE_TIME,
                 'required' => true,
+                'format' => 'dd.MM.yyyy HH:mm:ss',
                 'description' => 'Дата начала мероприятия',
             ])
             ->add('purchasable', null, ['label' => 'Покупка билета ч/з программу лояльности'])
@@ -31,19 +32,22 @@ class EventType extends AbstractType
                 'attr' => [
                     'min' => 0,
                     'max' => 3
-                ]
+                ],
+                'required' => false
             ])
             ->add('scoreGuest', IntegerType::class, [
                 'attr' => [
                     'min' => 0,
                     'max' => 3
-                ]
+                ],
+                'required' => false
             ])
             ->add('scoreSaved', IntegerType::class, [
                 'attr' => [
                     'min' => 0,
                     'max' => 1
-                ]
+                ],
+                'required' => false
             ])
             ->add('isLineUp', null, ['label' => 'Опубликован состав'])
             ->add('scoreInRounds')

@@ -7,6 +7,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToLocalizedStringTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Calendar class for forms
+ *
+ * Datetime syntax can be found here
+ * http://userguide.icu-project.org/formatparse/datetime#TOC-Date-Time-Format-Syntax
+ */
 class Calendar extends AbstractType
 {
     const DAY = 0;
@@ -41,9 +47,9 @@ class Calendar extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'format' => $this->getFormat(),
+            'format' => 'dd.MM.yyyy',
             'compound' => false,
-            'type' => $this->type,
+            'type' => self::DAY,
         ));
     }
 
@@ -57,13 +63,6 @@ class Calendar extends AbstractType
         return 'calendar';
     }
 
-    protected function getFormat()
-    {
-        if ($this->type == self::DATE_TIME) {
-            return 'DD.MM.YYYY hh:mm:ss';
-        }
-        return 'dd.mm.yyyy';
-    }
     /**
      * Возвращает правильный класс для календаря по типу календаря
      *
