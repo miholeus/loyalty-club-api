@@ -68,11 +68,20 @@ class Club
     private $person;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $players;
+    /**
+     * @var boolean
+     */
+    private $lineUpAvailable = false;
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->person = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->players = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -362,5 +371,63 @@ class Club
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * Set lineUpAvailable
+     *
+     * @param boolean $lineUpAvailable
+     *
+     * @return Club
+     */
+    public function setLineUpAvailable($lineUpAvailable)
+    {
+        $this->lineUpAvailable = $lineUpAvailable;
+
+        return $this;
+    }
+
+    /**
+     * Get lineUpAvailable
+     *
+     * @return boolean
+     */
+    public function getLineUpAvailable()
+    {
+        return $this->lineUpAvailable;
+    }
+
+    /**
+     * Add player
+     *
+     * @param \Zenomania\CoreBundle\Entity\Player $player
+     *
+     * @return Club
+     */
+    public function addPlayer(\Zenomania\CoreBundle\Entity\Player $player)
+    {
+        $this->players[] = $player;
+
+        return $this;
+    }
+
+    /**
+     * Remove player
+     *
+     * @param \Zenomania\CoreBundle\Entity\Player $player
+     */
+    public function removePlayer(\Zenomania\CoreBundle\Entity\Player $player)
+    {
+        $this->players->removeElement($player);
+    }
+
+    /**
+     * Get players
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlayers()
+    {
+        return $this->players;
     }
 }

@@ -78,7 +78,7 @@ class TicketController extends RestController
         $personRepository = $this->get('repository.person_repository');
         $person = $personRepository->findPersonByUser($user);
 
-        $promoActionRepository = $this->get('repository.promo_action_repository');
+        $promoActionRepository = $this->get('repository.club_season_repository');
         $season = $promoActionRepository->findCurrentSeason();
 
         // Начисляем баллы пользователю User за билет barcode

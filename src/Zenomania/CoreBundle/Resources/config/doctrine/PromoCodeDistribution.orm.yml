@@ -2,9 +2,9 @@ Zenomania\CoreBundle\Entity\PromoCodeDistribution:
     type: entity
     table: promo_code_distribution
     indexes:
-        promo_code_distribution__promo_action_id:
+        promo_code_distribution__season_id:
             columns:
-                - promo_action_id
+                - season_id
         promo_code_distribution__number_start:
             columns:
                 - number_start
@@ -59,14 +59,14 @@ Zenomania\CoreBundle\Entity\PromoCodeDistribution:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
-        promoAction:
-            targetEntity: PromoAction
+        season:
+            targetEntity: Zenomania\CoreBundle\Entity\Season
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                promo_action_id:
+                season_id:
                     referencedColumnName: id
             orphanRemoval: false
         area:
