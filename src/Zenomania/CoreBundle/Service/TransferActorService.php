@@ -55,7 +55,7 @@ class TransferActorService
             'lastname' => $person->getLastName(),
             'middlename' => $person->getMiddleName(),
             'login' => $actor->getUsername(),
-            'email' => !empty($person->getEmail()) ? $person->getEmail() : null,
+            'email' => !empty($person->getEmail()) ? trim($person->getEmail()) : null,
             'password' => $actor->getPassword(),
             'birthDate' => $person->getBdate(),
             'avatar' => $person->getAvatar(),
