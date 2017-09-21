@@ -8,11 +8,10 @@
 
 namespace Zenomania\ApiBundle\Service;
 
-
-use Zenomania\ApiBundle\Form\Model\UserProfile as UserModel;
+use Zenomania\ApiBundle\Form\Model\UserProfile as ProfileModel;
+use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Repository\PersonRepository;
 use Zenomania\CoreBundle\Service\User as UserService;
-use Zenomania\CoreBundle\Entity\User as UserEntity;
 
 class UserProfile
 {
@@ -49,21 +48,36 @@ class UserProfile
         $this->personRepository = $personRepository;
     }
 
-    public function save(UserModel $userModel, UserEntity $userEntity)
+    /**
+     * Saves user profile
+     *
+     * @param ProfileModel $profile
+     */
+    public function save(ProfileModel $profile)
     {
-        $userEntity->setFirstname($userModel->getFirstName());
-        $userEntity->setLastname($userModel->getLastName());
-        $userEntity->setMiddlename($userModel->getMiddleName());
-        $userEntity->setPhone($userModel->getPhone());
-        $userEntity->setBirthDate(new \DateTime($userModel->getBirthDate()));
-        $userEntity->setEmail($userModel->getEmail());
+        $user = $profile->getUser();
 
-        $this->getUserService()->prepareUserToSave($userEntity);
-        $this->getUserService()->save($userEntity);
+        $this->getUserService()->save($user);
 
-        $person = $this->getPersonRepository()->findPersonByUser($userEntity);
-        $person->setCity($userModel->getCity());
-        $person->setDistrict($userModel->getDistrict());
-        $this->getPersonRepository()->save($person, $person->getCity(), $person->getDistrict());
+        $person = $this->getPersonRepository()->findPersonByUser($user);
+        if (null === $person) {
+            $person = Person::fromArray([
+                'firstName' => $profile->getFirstName(),
+                'lastName' => $profile->getLastName(),
+                'middleName' => $profile->getLastName(),
+                'email' => $profile->getEmail(),
+                'mobile' => $user->getPhone(),
+                'bdate' => $user->getBirthDate(),
+                'user' => $user
+            ]);
+        }
+        if (null !== $profile->getCity()->getId()) {
+            $person->setCity($profile->getCity());
+        }
+        if (null !== $profile->getDistrict()->getId()) {
+            $person->setDistrict($profile->getDistrict());
+        }
+
+        $this->getPersonRepository()->save($person);
     }
 }

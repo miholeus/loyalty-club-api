@@ -10,16 +10,20 @@ namespace Zenomania\ApiBundle\Form\Model;
 
 use Zenomania\CoreBundle\Entity\City;
 use Zenomania\CoreBundle\Entity\District;
+use Zenomania\CoreBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class UserProfile
 {
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $firstName;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $lastName;
 
@@ -30,11 +34,7 @@ class UserProfile
 
     /**
      * @var string
-     */
-    private $phone;
-
-    /**
-     * @var string
+     * @Assert\NotBlank()
      */
     private $email;
 
@@ -52,7 +52,11 @@ class UserProfile
      * @var string
      */
     private $birthDate;
-
+    /**
+     * @var User
+     * @Assert\NotBlank()
+     */
+    private $user;
     /**
      * @return string
      */
@@ -99,22 +103,6 @@ class UserProfile
     public function setMiddleName(string $middleName)
     {
         $this->middleName = $middleName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param string $phone
-     */
-    public function setPhone(string $phone)
-    {
-        $this->phone = $phone;
     }
 
     /**
@@ -179,5 +167,33 @@ class UserProfile
     public function setBirthDate(string $birthDate)
     {
         $this->birthDate = $birthDate;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Populates user data
+     */
+    public function populateUser()
+    {
+        $this->getUser()->setFirstname($this->getFirstName());
+        $this->getUser()->setLastname($this->getLastName());
+        $this->getUser()->setMiddlename($this->getMiddleName());
+        $this->getUser()->setBirthDate(new \DateTime($this->getBirthDate()));
+        $this->getUser()->setEmail($this->getEmail());
     }
 }

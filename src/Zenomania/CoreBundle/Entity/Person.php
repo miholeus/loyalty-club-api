@@ -189,8 +189,23 @@ class Person
     {
         $this->fancard = new \Doctrine\Common\Collections\ArrayCollection();
         $this->activity = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->regDate = new \DateTime();
     }
 
+    /**
+     * Set data from array
+     *
+     * @param array $data
+     * @return Person
+     */
+    public static function fromArray(array $data)
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set" . ucfirst($key)}($value);
+        }
+        return $self;
+    }
     /**
      * Get id
      *

@@ -115,26 +115,29 @@ class ProfileController extends RestController
      * @Rest\RequestParam(name="first_name", description="Имя")
      * @Rest\RequestParam(name="last_name", description="Фамилия")
      * @Rest\RequestParam(name="middle_name", description="Отчество")
-     * @Rest\RequestParam(name="phone", description="Номер телефона")
      * @Rest\RequestParam(name="email", description="Электронная почта")
      * @Rest\RequestParam(name="city", description="Город")
      * @Rest\RequestParam(name="district", description="Район")
-     * @Rest\RequestParam(name="birthDate", description="Дата рождения")
+     * @Rest\RequestParam(name="birth_date", description="Дата рождения")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function putProfileAction(Request $request)
     {
-        $form = $this->createForm(UserProfileType::class);
+        $profile = new UserProfile();
+        $profile->setUser($this->getUser());
+
+        $form = $this->createForm(UserProfileType::class, $profile);
         $this->processForm($request, $form);
+
         if (!$form->isValid()) {
             throw $this->createFormValidationException($form);
         }
-        $data = $form->getData();
-        $service = $this->get('api.user_profile');
-        $data = $service->save($data, $this->getUser());
 
-        $view = $this->view($data);
+        $service = $this->get('api.user_profile');
+        $service->save($form->getData());
+
+        $view = $this->view(null, 204);
         return $this->handleView($view);
     }
 }

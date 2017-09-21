@@ -34,11 +34,9 @@ class PersonRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function save(Person $person, City $city, District $district)
+    public function save(Person $person)
     {
         $this->_em->persist($person);
-        $this->_em->persist($city);
-        $this->_em->persist($district);
         $this->_em->flush($person);
     }
 }
