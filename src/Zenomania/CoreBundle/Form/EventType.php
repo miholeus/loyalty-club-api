@@ -65,69 +65,25 @@ class EventType extends AbstractType
                 'entry_type' => ScoreInRoundType::class,
                 'entry_options' => array('label' => false),
             ]);
-//            ->add(
-//                $builder
-//                    ->create('scoreInRounds', CollectionType::class, [
-//                        'entry_type' => ScoreInRoundType::class,
-//                        'entry_options' => array('label' => false),
-//                    ])
-//                    ->addModelTransformer(new CallbackTransformer(
-//                        function ($roundsString) {
-//                            $rounds = explode(', ', $roundsString);
-//                            $array = new ArrayCollection();
-//                            $i = 1;
-//                            foreach ($rounds as $round) {
-//                                $scoreRound = new ScoreInRound();
-//                                $scoreRound->setNameRound($i . ' раунд');
-//                                $score = explode(':', $round);
-//                                $scoreRound->setHomeScore($score[0]);
-//                                $scoreRound->setGuestScore($score[1]);
-//
-//                                $array->add($scoreRound);
-//                                $i++;
-//                            }
-//                            return $array;
-//                        },
-//                        function ($rounds) {
-//                            $array = [];
-//                            /** @var ScoreInRound $round */
-//                            foreach ($rounds as $round) {
-//                                $array[] = $round->getHomeScore() . ":" . $round->getGuestScore();
-//                            }
-//
-//                            return implode(', ', $array);
-//                        }
-//                    ))
-//            );
 
-//        $builder->get('scoreInRounds')
-//            ->addModelTransformer(new CallbackTransformer(
-//                function ($rounds) {
-//                    $array = [];
-//                    /** @var ScoreInRound $round */
-//                    foreach ($rounds as $round) {
-//                        $array[] = $round->getHomeScore() . ":" . $round->getGuestScore();
-//                    }
-//
-//                    return implode(', ', $array);
-//                },
-//                function ($roundsString) {
-//                    $rounds = explode(', ', $roundsString);
-//                    $array = new ArrayCollection();
-//                    $i = 1;
-//                    foreach ($rounds as $round) {
-//                        $scoreRound = new ScoreInRound();
-//                        $scoreRound->setNameRound($i . ' раунд');
-//                        $score = explode(':', $round);
-//                        $scoreRound->setHomeScore($score[0]);
-//                        $scoreRound->setGuestScore($score[1]);
-//
-//                        $array->add($scoreRound);
-//                        $i++;
-//                    }
-//                    return $array;
-//                }
-//            ));
+        $builder->get('scoreInRounds')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($a) {
+                    return $a;
+                },
+                function ($rounds) {
+                    $array = [];
+                    /** @var ScoreInRound $round */
+                    foreach ($rounds as $round) {
+                        if (($round->getHomeScore() <= 15) && ($round->getGuestScore() <= 15)) {
+                            break;
+                        }
+                        $array[] = $round->getHomeScore() . ":" . $round->getGuestScore();
+                    }
+
+                    return implode(', ', $array);
+                }
+            ));
     }
 
     /**

@@ -31,7 +31,7 @@ class ScoreInRound
      */
     public function setNameRound($nameRound)
     {
-        $this->nameRound = $nameRound;
+        $this->nameRound = $nameRound . '-я партия';
     }
 
     /**

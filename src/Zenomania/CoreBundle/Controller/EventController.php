@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,22 +84,40 @@ class EventController extends Controller
     {
         $deleteForm = $this->createDeleteForm($event);
 
-        $event = new Event();
-        $round1 = new ScoreInRound();
-        $round1->setNameRound('1-ый раунд');
-        $round1->setHomeScore(0);
-        $round1->setGuestScore(0);
-        $event->getScoreInRounds()->add($round1);
-        $round2 = new ScoreInRound();
-        $round2->setNameRound('2-ой раунд');
-        $round2->setHomeScore(0);
-        $round2->setGuestScore(0);
-        $event->getScoreInRounds()->add($round2);
-        $round3 = new ScoreInRound();
-        $round3->setNameRound('3-ий раунд');
-        $round3->setHomeScore(0);
-        $round3->setGuestScore(0);
-        $event->getScoreInRounds()->add($round3);
+//        if (empty($event->getScoreInRounds())) {
+//            $event->setScoreInRoundsNew(new ArrayCollection());
+//
+//            for ($i = 1; $i <= 5; $i++) {
+//                $round = new ScoreInRound();
+//                $round->setNameRound($i . 'я партия');
+//                $round->setHomeScore(0);
+//                $round->setGuestScore(0);
+//                $event->getScoreInRounds()->add($round);
+//            }
+//        } else {
+            $rounds = explode(', ', $event->getScoreInRounds());
+            $array = new ArrayCollection();
+            $i = 1;
+            foreach ($rounds as $round) {
+                $scoreRound = new ScoreInRound();
+                $scoreRound->setNameRound($i);
+                $score = explode(':', $round);
+                $scoreRound->setHomeScore($score[0]);
+                $scoreRound->setGuestScore($score[1]);
+
+                $array->add($scoreRound);
+                $i++;
+            }
+            $event->setScoreInRoundsNew($array);
+            for ($j = $i; $j <= 5; $j++) {
+                $round = new ScoreInRound();
+                $round->setNameRound($j);
+                $round->setHomeScore(0);
+                $round->setGuestScore(0);
+                $event->getScoreInRounds()->add($round);
+            }
+//        }
+
 
         $editForm = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
         $editForm->handleRequest($request);

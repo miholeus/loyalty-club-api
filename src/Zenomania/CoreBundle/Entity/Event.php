@@ -482,4 +482,37 @@ class Event
     {
         return $this->scoreInRounds;
     }
+
+    /**
+     * @param string $scoreInRounds
+     *
+     * @return Event
+     */
+    public function setScoreInRounds($scoreInRounds)
+    {
+        $array = [];
+        /** @var ScoreInRound $round */
+        foreach ($this->getScoreInRounds() as $round) {
+            if (($round->getHomeScore() <= 15) && ($round->getGuestScore() <= 15)) {
+                break;
+            }
+            $array[] = $round->getHomeScore() . ":" . $round->getGuestScore();
+        }
+
+        $this->scoreInRounds = implode(', ', $array);
+
+        return $this;
+    }
+
+    /**
+     * @param ArrayCollection $scoreInRounds
+     *
+     * @return \Zenomania\CoreBundle\Entity\Event
+     */
+    public function setScoreInRoundsNew(ArrayCollection $scoreInRounds)
+    {
+        $this->scoreInRounds = $scoreInRounds;
+
+        return $this;
+    }
 }
