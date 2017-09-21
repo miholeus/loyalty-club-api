@@ -93,15 +93,28 @@ class EventController extends RestController
      *
      * ### Success Response ###
      *      {
-     *          "data":{
-     *              "club_home":<club home>
-     *              "club_guest":<club guest>
-     *              "place":<place>
-     *              "name":<name>
-     *              "score_home":<score home>
-     *              "score_guest":<score guest>
-     *              "score_in_round":<score in round>
+     *          "club_guest": {
+     *              "id": <integer>,
+     *              "logo": <string>,
+     *              "name": <string>
      *          },
+     *          "club_home": {
+     *              "id": <integer>,
+     *              "logo": <string>,
+     *              "name": <string>
+     *          },
+     *          "date": <timestamp>,
+     *          "id": <integer>,
+     *          "name": <string>,
+     *          "players": [
+     *              {
+     *                  "firstname": <string>,
+     *                  "id": <integer>,
+     *                  "lastname": <string>,
+     *                  "middlename": <string>,
+     *                  "photo": <string>
+     *              }
+     *          ]
      *          "time":<time request>
      *      }
      *
