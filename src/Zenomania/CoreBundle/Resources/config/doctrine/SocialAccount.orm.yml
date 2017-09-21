@@ -27,18 +27,9 @@ Zenomania\CoreBundle\Entity\SocialAccount:
         social_account__club_id:
             columns:
                 - club_id
-    uniqueConstraints:
-        network_group_id_club_id_outer_id:
+        social_account__network_idx:
             columns:
                 - network
-                - group_id
-                - club_id
-                - outer_id
-        network_club_person_outerid:
-            columns:
-                - network
-                - club_id
-                - person_id
                 - outer_id
     id:
         id:

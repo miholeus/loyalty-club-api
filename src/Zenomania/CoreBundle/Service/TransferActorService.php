@@ -77,13 +77,14 @@ class TransferActorService
         }
 
         $user = User::fromArray($params);
-        $this->getUserRepository()->save($user);
+        $this->getEm()->persist($user);
 
         $person->setUser($user);
-        $this->getPersonRepository()->save($person);
+        $this->getEm()->persist($person);
 
         $socialAccounts = ['facebook' => $actor->getFbId(), 'vk' => $actor->getVkId()];
         foreach ($socialAccounts as $network => $networkId) {
+            if (empty($networkId)) continue;
             if ($this->getSocialAccRepository()->isNewSocialAccount($network, $networkId)) {
                 $params = [
                     'person' => $person,
@@ -94,7 +95,7 @@ class TransferActorService
                 ];
 
                 $socialAcc = SocialAccount::fromArray($params);
-                $this->getSocialAccRepository()->save($socialAcc);
+                $this->getEm()->persist($socialAcc);
             }
         }
 
@@ -107,8 +108,9 @@ class TransferActorService
 
             $deviceToken = DeviceToken::fromArray($params);
             $this->getEm()->persist($deviceToken);
-            $this->getEm()->flush();
         }
+
+        $this->getEm()->flush();
     }
 
     /**
