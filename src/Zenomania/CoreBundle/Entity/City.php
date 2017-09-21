@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use FOS\RestBundle\Validator\Constraints as Assert;
+
 /**
  * City
  */
@@ -14,9 +16,9 @@ class City
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
-    private $name = '';
-
+    private $name;
 
     /**
      * Get id

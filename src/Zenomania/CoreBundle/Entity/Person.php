@@ -93,16 +93,6 @@ class Person
     private $notes;
 
     /**
-     * @var string
-     */
-    private $workAt = '';
-
-    /**
-     * @var string
-     */
-    private $studyAt = '';
-
-    /**
      * @var boolean
      */
     private $emailAllowed = '1';
@@ -138,11 +128,6 @@ class Person
     private $emailConfirmed = '0';
 
     /**
-     * @var array
-     */
-    private $eventsInfo = '';
-
-    /**
      * @var \Zenomania\CoreBundle\Entity\City
      */
     private $city;
@@ -156,16 +141,6 @@ class Person
      * @var \Zenomania\CoreBundle\Entity\District
      */
     private $district;
-
-    /**
-     * @var \Zenomania\CoreBundle\Entity\Education
-     */
-    private $education;
-
-    /**
-     * @var \Zenomania\CoreBundle\Entity\LineOfWork
-     */
-    private $lineOfWork;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -189,8 +164,35 @@ class Person
     {
         $this->fancard = new \Doctrine\Common\Collections\ArrayCollection();
         $this->activity = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->regDate = new \DateTime();
     }
 
+    /**
+     * Set data from array
+     *
+     * @param array $data
+     * @return Person
+     */
+    public static function fromArray(array $data)
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set" . ucfirst($key)}($value);
+        }
+        return $self;
+    }
+
+    /**
+     * Sets data from array
+     *
+     * @param array $data
+     */
+    public function setFromArray(array $data)
+    {
+        foreach ($data as $key => $value) {
+            $this->{"set" . ucfirst($key)}($value);
+        }
+    }
     /**
      * Get id
      *
@@ -586,54 +588,6 @@ class Person
     }
 
     /**
-     * Set workAt
-     *
-     * @param string $workAt
-     *
-     * @return Person
-     */
-    public function setWorkAt($workAt)
-    {
-        $this->workAt = $workAt;
-
-        return $this;
-    }
-
-    /**
-     * Get workAt
-     *
-     * @return string
-     */
-    public function getWorkAt()
-    {
-        return $this->workAt;
-    }
-
-    /**
-     * Set studyAt
-     *
-     * @param string $studyAt
-     *
-     * @return Person
-     */
-    public function setStudyAt($studyAt)
-    {
-        $this->studyAt = $studyAt;
-
-        return $this;
-    }
-
-    /**
-     * Get studyAt
-     *
-     * @return string
-     */
-    public function getStudyAt()
-    {
-        return $this->studyAt;
-    }
-
-    /**
      * Set emailAllowed
      *
      * @param boolean $emailAllowed
@@ -802,30 +756,6 @@ class Person
     }
 
     /**
-     * Set eventsInfo
-     *
-     * @param array $eventsInfo
-     *
-     * @return Person
-     */
-    public function setEventsInfo($eventsInfo)
-    {
-        $this->eventsInfo = $eventsInfo;
-
-        return $this;
-    }
-
-    /**
-     * Get eventsInfo
-     *
-     * @return array
-     */
-    public function getEventsInfo()
-    {
-        return $this->eventsInfo;
-    }
-
-    /**
      * Set city
      *
      * @param \Zenomania\CoreBundle\Entity\City $city
@@ -895,54 +825,6 @@ class Person
     public function getDistrict()
     {
         return $this->district;
-    }
-
-    /**
-     * Set education
-     *
-     * @param \Zenomania\CoreBundle\Entity\Education $education
-     *
-     * @return Person
-     */
-    public function setEducation(\Zenomania\CoreBundle\Entity\Education $education = null)
-    {
-        $this->education = $education;
-
-        return $this;
-    }
-
-    /**
-     * Get education
-     *
-     * @return \Zenomania\CoreBundle\Entity\Education
-     */
-    public function getEducation()
-    {
-        return $this->education;
-    }
-
-    /**
-     * Set lineOfWork
-     *
-     * @param \Zenomania\CoreBundle\Entity\LineOfWork $lineOfWork
-     *
-     * @return Person
-     */
-    public function setLineOfWork(\Zenomania\CoreBundle\Entity\LineOfWork $lineOfWork = null)
-    {
-        $this->lineOfWork = $lineOfWork;
-
-        return $this;
-    }
-
-    /**
-     * Get lineOfWork
-     *
-     * @return \Zenomania\CoreBundle\Entity\LineOfWork
-     */
-    public function getLineOfWork()
-    {
-        return $this->lineOfWork;
     }
 
     /**

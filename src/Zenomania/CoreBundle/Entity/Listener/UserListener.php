@@ -77,6 +77,7 @@ class UserListener
             }
         }
         $this->convertFilePathToRelative($user);
+        $user->setUpdatedOn(new \DateTime());
     }
 
     public function prePersist(User $user, LifecycleEventArgs $event)

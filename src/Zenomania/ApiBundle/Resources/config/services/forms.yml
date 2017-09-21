@@ -1,0 +1,6 @@
+services:
+    form.user_profile:
+        class: Zenomania\ApiBundle\Form\UserProfileType
+        arguments: ['@repository.city_repository', '@repository.district_repository']
+        tags:
+            - { name: form.type }

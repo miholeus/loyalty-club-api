@@ -1,6 +1,7 @@
 imports:
     - {resource: "services/transformers.yml" }
     - {resource: "services/clients.yml" }
+    - {resource: "services/forms.yml" }
 
 services:
     apitoken_authenticator:
@@ -66,5 +67,12 @@ services:
     api.profile_social_update:
         class: Zenomania\ApiBundle\Service\Social\UpdateSocialInfo
         arguments: ['@repository.social_account_repository', '@api.profile_social_bind']
+    user.profile:
+        class: Zenomania\ApiBundle\Form\Model\UserProfile
+    user.entity:
+        class: Zenomania\CoreBundle\Entity\User
+    api.user_profile:
+        class: Zenomania\ApiBundle\Service\UserProfile
+        arguments: ['@user.service','@repository.person_repository']
     api.person_points:
         class: Zenomania\ApiBundle\Service\PersonPoints

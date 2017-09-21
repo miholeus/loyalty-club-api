@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\District:
     type: entity
     table: district
+    repositoryClass: Zenomania\CoreBundle\Repository\DistrictRepository
     id:
         id:
             type: integer
