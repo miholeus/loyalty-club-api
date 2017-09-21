@@ -6,6 +6,7 @@
 
 namespace Zenomania\ApiBundle\Service\Invite;
 
+use Zenomania\ApiBundle\Service\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
@@ -13,8 +14,6 @@ use Zenomania\CoreBundle\Repository\UserReferralCodeRepository;
 
 class BonusPoints
 {
-    const POINTS_FOR_INVITE = 500;// Сколько начислить баллов за регистрацию по реферальному коду
-
     /**
      * @var UserReferralCodeRepository
      */
@@ -56,9 +55,9 @@ class BonusPoints
      */
     public function givePointsForInvite(UserReferralCode $referralCode, User $user)
     {
-        $this->getPersonPointsRepository()->givePointsForInvite($referralCode, $user, self::POINTS_FOR_INVITE);
+        $this->getPersonPointsRepository()->givePointsForInvite($referralCode, $user, PersonPoints::POINTS_FOR_INVITE);
 
-        return self::POINTS_FOR_INVITE;
+        return PersonPoints::POINTS_FOR_INVITE;
     }
 
     /**

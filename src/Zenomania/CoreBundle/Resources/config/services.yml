@@ -73,6 +73,9 @@ services:
         calls:
             - ['setUploadService', ['@file.upload_player_photo']]
             - ['setImageService', ['@images.service']]
+    event.service:
+        class: Zenomania\ApiBundle\Service\Events
+        arguments: ['@repository.event_repository']
     transfer_actor.service:
         class: Zenomania\CoreBundle\Service\TransferActorService
         arguments: ['@doctrine.orm.entity_manager']

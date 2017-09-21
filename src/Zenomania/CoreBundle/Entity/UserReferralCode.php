@@ -185,4 +185,14 @@ class UserReferralCode
         $this->activations++;
         $this->activated = true;
     }
+
+    /**
+     * Get activated
+     *
+     * @return boolean
+     */
+    public function getActivated()
+    {
+        return $this->activated;
+    }
 }

@@ -3,12 +3,6 @@ Zenomania\CoreBundle\Entity\Person:
     table: person
     repositoryClass: Zenomania\CoreBundle\Repository\PersonRepository
     indexes:
-        FK_person_line_of_work:
-            columns:
-                - line_of_work
-        FK_person_education:
-            columns:
-                - education
         FK_person_city:
             columns:
                 - city
@@ -18,20 +12,6 @@ Zenomania\CoreBundle\Entity\Person:
         person__email:
             columns:
                 - email
-        person__club:
-            columns:
-                - club_owner
-        person__reg_type_name:
-            columns:
-                - reg_type_name
-    uniqueConstraints:
-        person__promo_code:
-            columns:
-                - promo_code
-        person__club_owner_mobile:
-            columns:
-                - club_owner
-                - mobile
     id:
         id:
             type: integer
@@ -143,35 +123,17 @@ Zenomania\CoreBundle\Entity\Person:
             length: 255
             options:
                 fixed: false
-        workAt:
-            type: string
-            nullable: false
-            length: 256
-            options:
-                fixed: false
-                comment: 'место работы'
-                default: ''
-            column: work_at
-        studyAt:
-            type: string
-            nullable: false
-            length: 256
-            options:
-                fixed: false
-                comment: 'место учёбы'
-                default: ''
-            column: study_at
         emailAllowed:
             type: boolean
             nullable: false
             options:
-                default: '1'
+                default: true
             column: email_allowed
         smsAllowed:
             type: boolean
             nullable: false
             options:
-                default: '1'
+                default: true
             column: sms_allowed
         regDate:
             type: datetime
@@ -202,16 +164,8 @@ Zenomania\CoreBundle\Entity\Person:
             type: boolean
             nullable: false
             options:
-                default: '0'
+                default: false
             column: email_confirmed
-        eventsInfo:
-            type: simple_array
-            nullable: false
-            length: null
-            options:
-                fixed: false
-                default: ''
-            column: events_info
     manyToOne:
         city:
             targetEntity: City
@@ -246,28 +200,6 @@ Zenomania\CoreBundle\Entity\Person:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
-        education:
-            targetEntity: Education
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                education:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-            orphanRemoval: false
-        lineOfWork:
-            targetEntity: LineOfWork
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                line_of_work:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-            orphanRemoval: false
     manyToMany:
         fancard:
             targetEntity: FanCard
@@ -293,25 +225,6 @@ Zenomania\CoreBundle\Entity\Person:
                 inverseJoinColumns:
                     -
                         name: activity_id
-                        referencedColumnName: id
-                        onDelete: CASCADE
-            orderBy: null
-        video:
-            targetEntity: Zenomania\CoreBundle\Entity\Video
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: persons
-            joinTable:
-                name: video_view
-                joinColumns:
-                    -
-                        name: person_id
-                        referencedColumnName: id
-                        onDelete: CASCADE
-                inverseJoinColumns:
-                    -
-                        name: video_id
                         referencedColumnName: id
                         onDelete: CASCADE
             orderBy: null

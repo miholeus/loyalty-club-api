@@ -41,19 +41,6 @@ class SubscriptionNumber
     private $seat;
 
     /**
-     * @param array $data
-     * @return SubscriptionNumber
-     */
-    public static function fromArray(array $data): SubscriptionNumber
-    {
-        $self = new self();
-        foreach ($data as $key => $value) {
-            $self->{"set".ucfirst($key)}($value);
-        }
-        return $self;
-    }
-
-    /**
      * @return string
      */
     public function getCardcode()

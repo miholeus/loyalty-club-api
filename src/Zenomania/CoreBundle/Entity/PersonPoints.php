@@ -33,7 +33,7 @@ class PersonPoints
     private $dt;
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\PromoAction
+     * @var \Zenomania\CoreBundle\Entity\Season
      */
     private $season;
 
@@ -42,6 +42,10 @@ class PersonPoints
      */
     private $person;
 
+    /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $user;
     /**
      * @param array $data
      * @return PersonPoints
@@ -165,11 +169,11 @@ class PersonPoints
     /**
      * Set season
      *
-     * @param \Zenomania\CoreBundle\Entity\PromoAction $season
+     * @param \Zenomania\CoreBundle\Entity\Season $season
      *
      * @return PersonPoints
      */
-    public function setSeason(\Zenomania\CoreBundle\Entity\PromoAction $season = null)
+    public function setSeason(\Zenomania\CoreBundle\Entity\Season $season = null)
     {
         $this->season = $season;
 
@@ -179,7 +183,7 @@ class PersonPoints
     /**
      * Get season
      *
-     * @return \Zenomania\CoreBundle\Entity\PromoAction
+     * @return \Zenomania\CoreBundle\Entity\Season
      */
     public function getSeason()
     {
@@ -208,5 +212,29 @@ class PersonPoints
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Zenomania\CoreBundle\Entity\User $user
+     *
+     * @return PersonPoints
+     */
+    public function setUser(\Zenomania\CoreBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Zenomania\CoreBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

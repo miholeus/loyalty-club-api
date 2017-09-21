@@ -66,17 +66,17 @@ class SubscriptionController extends RestController
         }
 
         /** @var SubscriptionNumber $subNumber */
-        $subNumber = SubscriptionNumber::fromArray($form->getData());
+        $subNumber = $form->getData();
 
         /** @var Subscriptions $subService */
         $subService = $this->get('api.subscriptions');
 
         if (!$subService->isValidCardcode($subNumber)) {
-            throw new HttpException(400, "Данный абонемент #{$subNumber->getCardcode()} не найден.");
+            throw new HttpException(400, "Абонемент {$subNumber->getCardcode()} не найден");
         }
 
         if ($subService->isSubscriptionRegistered($subNumber)) {
-            throw new HttpException(400, "Данный абонемент #{$subNumber->getCardcode()} уже был зарегистрирован ранее.");
+            throw new HttpException(400, "Абонемент {$subNumber->getCardcode()} уже был зарегистрирован ранее");
         }
 
         $user = $this->getUser();
@@ -84,7 +84,7 @@ class SubscriptionController extends RestController
         $personRepository = $this->get('repository.person_repository');
         $person = $personRepository->findPersonByUser($user);
 
-        $promoActionRepository = $this->get('repository.promo_action_repository');
+        $promoActionRepository = $this->get('repository.club_season_repository');
         $season = $promoActionRepository->findCurrentSeason();
 
         // Начисляем баллы пользователю User за билет barcode

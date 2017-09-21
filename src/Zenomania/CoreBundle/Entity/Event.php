@@ -25,7 +25,7 @@ class Event
     /**
      * @var boolean
      */
-    private $purchasable = '0';
+    private $purchasable;
 
     /**
      * @var string
@@ -63,11 +63,6 @@ class Event
     private $place;
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\PromoAction
-     */
-    private $promoAction;
-
-    /**
      * @var \Zenomania\CoreBundle\Entity\Sport
      */
     private $sport;
@@ -76,6 +71,26 @@ class Event
      * @var \Doctrine\Common\Collections\Collection
      */
     private $personPoint;
+
+    /**
+     * @var boolean
+     */
+    private $isLineUp;
+
+    /**
+     * @var string
+     */
+    private $scoreInRounds;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\Player
+     */
+    private $mvp;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\Season
+     */
+    private $season;
 
     /**
      * Constructor
@@ -336,30 +351,6 @@ class Event
     }
 
     /**
-     * Set promoAction
-     *
-     * @param \Zenomania\CoreBundle\Entity\PromoAction $promoAction
-     *
-     * @return Event
-     */
-    public function setPromoAction(\Zenomania\CoreBundle\Entity\PromoAction $promoAction = null)
-    {
-        $this->promoAction = $promoAction;
-
-        return $this;
-    }
-
-    /**
-     * Get promoAction
-     *
-     * @return \Zenomania\CoreBundle\Entity\PromoAction
-     */
-    public function getPromoAction()
-    {
-        return $this->promoAction;
-    }
-
-    /**
      * Set sport
      *
      * @param \Zenomania\CoreBundle\Entity\Sport $sport
@@ -415,5 +406,89 @@ class Event
     public function getPersonPoint()
     {
         return $this->personPoint;
+    }
+
+    /**
+     * @return \Zenomania\CoreBundle\Entity\Player
+     */
+    public function getMvp()
+    {
+        return $this->mvp;
+    }
+
+    /**
+     * @param \Zenomania\CoreBundle\Entity\Player $mvp
+     *
+     * @return Event
+     */
+    public function setMvp(\Zenomania\CoreBundle\Entity\Player $mvp)
+    {
+        $this->mvp = $mvp;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsLineUp()
+    {
+        return $this->isLineUp;
+    }
+
+    /**
+     * @param bool $isLineUp
+     *
+     * @return \Zenomania\CoreBundle\Entity\Event
+     */
+    public function setIsLineUp(bool $isLineUp)
+    {
+        $this->isLineUp = $isLineUp;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScoreInRounds()
+    {
+        return $this->scoreInRounds;
+    }
+
+    /**
+     * @param string $scoreInRounds
+     *
+     * @return Event
+     */
+    public function setScoreInRounds(string $scoreInRounds)
+    {
+        $this->scoreInRounds = $scoreInRounds;
+
+        return $this;
+    }
+
+    /**
+     * Set season
+     *
+     * @param \Zenomania\CoreBundle\Entity\Season $season
+     *
+     * @return Event
+     */
+    public function setSeason(\Zenomania\CoreBundle\Entity\Season $season = null)
+    {
+        $this->season = $season;
+
+        return $this;
+    }
+
+    /**
+     * Get season
+     *
+     * @return \Zenomania\CoreBundle\Entity\Season
+     */
+    public function getSeason()
+    {
+        return $this->season;
     }
 }

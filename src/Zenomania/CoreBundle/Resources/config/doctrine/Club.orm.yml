@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\Club:
     type: entity
     table: club
+    repositoryClass: Zenomania\CoreBundle\Repository\ClubRepository
     indexes:
         FK_club_sport:
             columns:
@@ -17,7 +18,7 @@ Zenomania\CoreBundle\Entity\Club:
     fields:
         name:
             type: string
-            nullable: true
+            nullable: false
             length: 128
             options:
                 fixed: false
@@ -29,51 +30,45 @@ Zenomania\CoreBundle\Entity\Club:
                 fixed: false
         vkGroup:
             type: string
-            nullable: false
+            nullable: true
             length: 20
             options:
                 fixed: false
-                default: ''
             column: vk_group
         fbGroup:
             type: string
-            nullable: false
+            nullable: true
             length: 20
             options:
                 fixed: false
-                default: ''
             column: fb_group
         twitterGroup:
             type: string
-            nullable: false
+            nullable: true
             length: 20
             options:
                 fixed: false
-                default: ''
             column: twitter_group
         instagramGroup:
             type: string
-            nullable: false
+            nullable: true
             length: 20
             options:
                 fixed: false
-                default: ''
             column: instagram_group
         youtubeGroup:
             type: string
-            nullable: false
+            nullable: true
             length: 256
             options:
                 fixed: false
-                default: ''
             column: youtube_group
         ytUploadPlaylist:
             type: string
-            nullable: false
+            nullable: true
             length: 256
             options:
                 fixed: false
-                default: ''
             column: yt_upload_playlist
         logoImg:
             type: string
@@ -82,6 +77,13 @@ Zenomania\CoreBundle\Entity\Club:
             options:
                 fixed: false
             column: logo_img
+        lineUpAvailable:
+            type: boolean
+            nullable: false
+            options:
+                default: false
+            column: line_up_available
+            comment: 'Показывать ли стартовый состав матча для клуба'
     manyToOne:
         sport:
             targetEntity: Zenomania\CoreBundle\Entity\Sport
@@ -103,4 +105,13 @@ Zenomania\CoreBundle\Entity\Club:
             inversedBy: null
             joinTable: null
             orderBy: null
+        players:
+            targetEntity: Zenomania\CoreBundle\Entity\Player
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: club
+            inversedBy: null
+            joinTable: null
+            orderBy:
+                lastname: ASC
     lifecycleCallbacks: {  }

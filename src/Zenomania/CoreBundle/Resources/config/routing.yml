@@ -31,6 +31,9 @@ zenomania_core_actor:
 zenomania_core_sport:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/sport.yml"
     prefix:   /sport
+zenomania_core_event:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/event.yml"
+    prefix:   /event
 zenomania_core_player:
         resource: "@ZenomaniaCoreBundle/Resources/config/routing/player.yml"
         prefix:   /player

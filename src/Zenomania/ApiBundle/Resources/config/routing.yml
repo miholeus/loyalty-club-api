@@ -18,3 +18,9 @@ api_profile_social:
 api_invite:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\InviteController"
+api_event:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\EventController"
+api_points:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\PointsController"

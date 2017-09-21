@@ -9,9 +9,9 @@ Zenomania\CoreBundle\Entity\Subscription:
         FK_subscription_person:
             columns:
                 - person_id
-        FK_subscription_promo_action:
+        FK_subscription_season:
             columns:
-                - season
+                - season_id
     uniqueConstraints:
         subscription__stand_sector_row_seat:
             columns:
@@ -116,13 +116,13 @@ Zenomania\CoreBundle\Entity\Subscription:
                     onDelete: CASCADE
             orphanRemoval: false
         season:
-            targetEntity: PromoAction
+            targetEntity: Zenomania\CoreBundle\Entity\Season
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                season:
+                season_id:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false

@@ -19,8 +19,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Person
-    repository.promo_action_repository:
-        class: Zenomania\CoreBundle\Repository\PromoActionRepository
+    repository.club_season_repository:
+        class: Zenomania\CoreBundle\Repository\SeasonRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\PromoAction
@@ -34,6 +34,11 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\EventAttendance
+    repository.event_repository:
+        class: Zenomania\CoreBundle\Repository\EventRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\Event
     repository.social_account_repository:
         class: Zenomania\CoreBundle\Repository\SocialAccountRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
@@ -54,3 +59,13 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Actor
+    repository.city_repository:
+        class: Zenomania\CoreBundle\Repository\CityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\City
+    repository.district_repository:
+        class: Zenomania\CoreBundle\Repository\DistrictRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\District

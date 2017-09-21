@@ -28,16 +28,14 @@ class PromoCodeDistribution
     private $event;
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\PromoAction
-     */
-    private $promoAction;
-
-    /**
      * @var \Zenomania\CoreBundle\Entity\PromoCodeDistributionArea
      */
     private $area;
 
-
+    /**
+     * @var \Zenomania\CoreBundle\Entity\Season
+     */
+    private $season;
     /**
      * Get id
      *
@@ -121,30 +119,6 @@ class PromoCodeDistribution
     }
 
     /**
-     * Set promoAction
-     *
-     * @param \Zenomania\CoreBundle\Entity\PromoAction $promoAction
-     *
-     * @return PromoCodeDistribution
-     */
-    public function setPromoAction(\Zenomania\CoreBundle\Entity\PromoAction $promoAction = null)
-    {
-        $this->promoAction = $promoAction;
-
-        return $this;
-    }
-
-    /**
-     * Get promoAction
-     *
-     * @return \Zenomania\CoreBundle\Entity\PromoAction
-     */
-    public function getPromoAction()
-    {
-        return $this->promoAction;
-    }
-
-    /**
      * Set area
      *
      * @param \Zenomania\CoreBundle\Entity\PromoCodeDistributionArea $area
@@ -166,5 +140,29 @@ class PromoCodeDistribution
     public function getArea()
     {
         return $this->area;
+    }
+
+    /**
+     * Set season
+     *
+     * @param \Zenomania\CoreBundle\Entity\Season $season
+     *
+     * @return PromoCodeDistribution
+     */
+    public function setSeason(\Zenomania\CoreBundle\Entity\Season $season = null)
+    {
+        $this->season = $season;
+
+        return $this;
+    }
+
+    /**
+     * Get season
+     *
+     * @return \Zenomania\CoreBundle\Entity\Season
+     */
+    public function getSeason()
+    {
+        return $this->season;
     }
 }

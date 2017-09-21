@@ -12,6 +12,9 @@ Zenomania\CoreBundle\Entity\PersonPoints:
         person_points__season_id:
             columns:
                 - season_id
+        person_points__user_id:
+            columns:
+                - user_id
     id:
         id:
             type: integer
@@ -46,7 +49,7 @@ Zenomania\CoreBundle\Entity\PersonPoints:
             nullable: false
     manyToOne:
         season:
-            targetEntity: PromoAction
+            targetEntity: Zenomania\CoreBundle\Entity\Season
             cascade: {  }
             fetch: LAZY
             mappedBy: null
@@ -64,6 +67,17 @@ Zenomania\CoreBundle\Entity\PersonPoints:
             inversedBy: null
             joinColumns:
                 person_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        user:
+            targetEntity: Zenomania\CoreBundle\Entity\User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user_id:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false

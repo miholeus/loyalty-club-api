@@ -66,11 +66,11 @@ Zenomania\CoreBundle\Entity\Player:
             column: updated_on
     manyToOne:
         club:
-            targetEntity: Club
+            targetEntity: Zenomania\CoreBundle\Entity\Club
             cascade: {  }
             fetch: LAZY
             mappedBy: null
-            inversedBy: null
+            inversedBy: players
             joinColumns:
                 club:
                     referencedColumnName: id
