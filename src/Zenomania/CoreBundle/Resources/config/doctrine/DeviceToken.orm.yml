@@ -1,0 +1,65 @@
+Zenomania\CoreBundle\Entity\DeviceToken:
+    type: entity
+    table: device_token
+    indexes:
+        device_token__user_id:
+            columns:
+                - user_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        token:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+        createdOn:
+            type: datetime
+            nullable: true
+            column: created_on
+            comment: 'дата создания'
+        updatedOn:
+            type: datetime
+            nullable: true
+            comment: 'дата модификации'
+            column: updated_on
+        deviceType:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+            column: device_type
+        deviceName:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+            column: device_name
+        status:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+    manyToOne:
+        user:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

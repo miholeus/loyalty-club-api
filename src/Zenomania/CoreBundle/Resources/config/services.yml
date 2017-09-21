@@ -76,3 +76,6 @@ services:
     event.service:
         class: Zenomania\ApiBundle\Service\Events
         arguments: ['@repository.event_repository']
+    transfer_actor.service:
+        class: Zenomania\CoreBundle\Service\TransferActorService
+        arguments: ['@doctrine.orm.entity_manager']
