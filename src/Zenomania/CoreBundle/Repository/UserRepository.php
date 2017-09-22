@@ -159,13 +159,14 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
     }
 
     /**
-     * Проверяет есть ли пользователь по заданному логину или телефону
+     * Проверяет есть ли пользователь по заданному логину, телефону, email
      *
      * @param string $login
      * @param string $phone
+     * @param string $email
      * @return bool
      */
-    public function existsUserByLoginOrPhone($login, $phone)
+    public function existsUserByLoginOrPhone($login, $phone, $email)
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
@@ -174,6 +175,12 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->where('u.login = :login OR u.phone = :phone ')
             ->setParameter('login', $login)
             ->setParameter('phone', $phone);
+
+        if (!empty($email)) {
+            $qb->orWhere('u.email = :email')
+                ->setParameter('email', $email);
+        }
+
         $query = $qb->getQuery();
         $userList = $query->getResult();
 
