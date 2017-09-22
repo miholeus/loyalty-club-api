@@ -2,9 +2,11 @@
 
 namespace Zenomania\CoreBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Zenomania\CoreBundle\Entity\ScoreInRound;
 
 /**
  * Event controller.
@@ -81,13 +83,17 @@ class EventController extends Controller
     public function editAction(Request $request, Event $event)
     {
         $deleteForm = $this->createDeleteForm($event);
+
+        $event->transformerRounds($event->getScoreInRounds());
+
         $editForm = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $event->reverseRounds($event->getRounds());
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
+            return $this->redirectToRoute('event_show', array('id' => $event->getId()));
         }
 
         return $this->render('ZenomaniaCoreBundle:event:edit.html.twig', array(
