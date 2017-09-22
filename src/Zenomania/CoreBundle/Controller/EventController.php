@@ -3,9 +3,12 @@
 namespace Zenomania\CoreBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Tests\Normalizer\AbstractNormalizerTest;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Zenomania\CoreBundle\Entity\LineUp;
+use Zenomania\CoreBundle\Entity\Player;
 use Zenomania\CoreBundle\Entity\ScoreInRound;
 
 /**
@@ -84,6 +87,9 @@ class EventController extends Controller
     {
         $deleteForm = $this->createDeleteForm($event);
 
+        $service = $this->get('eventcore.service');
+        $service->transformerLineup($event);
+
         $event->transformerRounds($event->getScoreInRounds());
 
         $editForm = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
@@ -91,6 +97,7 @@ class EventController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $event->reverseRounds($event->getRounds());
+            $service->reverseLineup($event);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('event_show', array('id' => $event->getId()));

@@ -100,12 +100,18 @@ class Event
     private $season;
 
     /**
+     * @var ArrayCollection
+     */
+    private $lineup;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->personPoint = new ArrayCollection();
         $this->rounds = new ArrayCollection();
+        $this->lineup = new ArrayCollection();
     }
 
     /**
@@ -583,5 +589,25 @@ class Event
     public function getSeason()
     {
         return $this->season;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getLineup()
+    {
+        return $this->lineup;
+    }
+
+    /**
+     * @param ArrayCollection $lineup
+     *
+     * @return Event
+     */
+    public function setLineup(ArrayCollection $lineup)
+    {
+        $this->lineup = $lineup;
+
+        return $this;
     }
 }

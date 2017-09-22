@@ -92,6 +92,10 @@ class EventType extends AbstractType
             ->add('rounds', CollectionType::class, [
                 'entry_type' => ScoreInRoundType::class,
                 'entry_options' => array('label' => false),
+            ])
+            ->add('lineup', CollectionType::class, [
+                'entry_type' => LineUpType::class,
+                'entry_options' => array('label' => false),
             ]);
     }
 

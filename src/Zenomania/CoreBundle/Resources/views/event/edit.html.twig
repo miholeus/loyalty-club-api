@@ -33,6 +33,16 @@
             </div>
             <div class="box box-primary">
                 <div class="box-header with-border">
+                    <h3 class="box-title">Редактирование стартового состава</h3>
+                </div>
+                {% for player in form.lineup %}
+                <div class="box-body">
+                    {{ form_widget(player.player) }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
                     <h3 class="box-title">Редактирование счёта по партиям</h3>
                 </div>
                 <div class="row" style="margin-right: 0px;">
