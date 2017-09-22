@@ -56,8 +56,7 @@ class TransferDataFromActorCommand extends ContainerAwareCommand
 
             $login = $actor->getUsername();
             $phone = preg_replace('/\D/', '', $person->getMobile());
-            $email = $person->getEmail();
-            if ($userRepository->existsUserByLoginOrPhone($login, $phone, $email)) {
+            if ($userRepository->existsUserByLoginOrPhone($login, $phone)) {
                 $output->writeln("<info>User with login|phone (" . $login . "|" . $phone . ") exists</info>");
                 continue;
             }

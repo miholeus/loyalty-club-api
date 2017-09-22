@@ -159,14 +159,14 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
     }
 
     /**
-     * Проверяет есть ли пользователь по заданному логину, телефону, email
+     * Проверяет есть ли пользователь по заданному логину и телефону
      *
      * @param string $login
      * @param string $phone
-     * @param string $email
+     *
      * @return bool
      */
-    public function existsUserByLoginOrPhone($login, $phone, $email)
+    public function existsUserByLoginOrPhone($login, $phone)
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
@@ -176,10 +176,30 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->setParameter('login', $login)
             ->setParameter('phone', $phone);
 
-        if (!empty($email)) {
-            $qb->orWhere('u.email = :email')
-                ->setParameter('email', $email);
+        $query = $qb->getQuery();
+        $userList = $query->getResult();
+
+        if (empty($userList)) {
+            return false;
         }
+
+        return true;
+    }
+
+    /**
+     * Проверяет есть ли пользователь по заданному email
+     *
+     * @param string $email
+     * @return bool
+     */
+    public function existsUserByEmail($email)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('u')
+            ->from('ZenomaniaCoreBundle:User', 'u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email);
 
         $query = $qb->getQuery();
         $userList = $query->getResult();
