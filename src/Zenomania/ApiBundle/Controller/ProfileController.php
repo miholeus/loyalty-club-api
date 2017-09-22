@@ -104,7 +104,7 @@ class ProfileController extends RestController
      *  resource=true,
      *  description="Редактирование Профиля пользователя",
      *  statusCodes={
-     *         200="При успешном запросе",
+     *         204="При успешном запросе",
      *         400="Ошибка запроса"
      *     },
      *  headers={
