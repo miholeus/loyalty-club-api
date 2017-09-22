@@ -98,7 +98,7 @@ class EventController extends Controller
 
         return $this->render('ZenomaniaCoreBundle:event:edit.html.twig', array(
             'event' => $event,
-            'form' => $editForm->createView(),
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
