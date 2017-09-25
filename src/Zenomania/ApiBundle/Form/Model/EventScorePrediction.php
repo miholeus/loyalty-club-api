@@ -7,7 +7,10 @@
 namespace Zenomania\ApiBundle\Form\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Zenomania\ApiBundle\Form\Validator\Constraints\EventScoreResult;
+use Zenomania\ApiBundle\Form\Validator\Constraints\{
+    EventScoreResult as AcmeEventScoreResult,
+    EventScore as AcmeEventScore
+};
 
 class EventScorePrediction
 {
@@ -16,13 +19,14 @@ class EventScorePrediction
      *
      * @var string
      * @Assert\NotBlank()
-     * @EventScoreResult()
+     * @AcmeEventScoreResult()
      */
     protected $result;
     /**
      * Scores by parties
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
+     * @AcmeEventScore()
      */
     protected $scores;
 
@@ -31,6 +35,42 @@ class EventScorePrediction
         $this->scores = new \Doctrine\Common\Collections\ArrayCollection;
     }
 
+    /**
+     * Returns all scores in a string
+     *
+     * @return string
+     */
+    public function getScoreInRounds() : string
+    {
+        $scores = [];
+        /** @var EventScore $score */
+        foreach ($this->getScores() as $score) {
+            $value = $score->getScore();
+            $scores[] = $value;
+        }
+        return join(',', $scores);
+    }
+    /**
+     * Returns scores for club on home event
+     *
+     * @return integer
+     */
+    public function getScoreHome()
+    {
+        $values = explode(":", $this->getResult());
+        return intval($values[0]);
+    }
+
+    /**
+     * Returns scores for club on guest event
+     *
+     * @return integer
+     */
+    public function getScoreGuest()
+    {
+        $values = explode(":", $this->getResult());
+        return intval($values[1]);
+    }
     /**
      * @return string
      */

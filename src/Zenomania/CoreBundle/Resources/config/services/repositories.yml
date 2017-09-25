@@ -39,6 +39,11 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Event
+    repository.event_forecast_repository:
+        class: Zenomania\CoreBundle\Repository\EventForecastRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\EventForecast
     repository.social_account_repository:
         class: Zenomania\CoreBundle\Repository\SocialAccountRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]

@@ -5,7 +5,7 @@ namespace Zenomania\CoreBundle\Entity;
 /**
  * PersonEventForecast
  */
-class PersonEventForecast
+class EventForecast
 {
     /**
      * @var integer
@@ -37,7 +37,20 @@ class PersonEventForecast
      */
     private $person;
 
+    /**
+     * @var string
+     */
+    private $scoreInRounds;
 
+    /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $user;
+
+    public function __construct()
+    {
+        $this->dt = new \DateTime();
+    }
     /**
      * Get id
      *
@@ -53,7 +66,7 @@ class PersonEventForecast
      *
      * @param integer $scoreHome
      *
-     * @return PersonEventForecast
+     * @return EventForecast
      */
     public function setScoreHome($scoreHome)
     {
@@ -77,7 +90,7 @@ class PersonEventForecast
      *
      * @param integer $scoreGuest
      *
-     * @return PersonEventForecast
+     * @return EventForecast
      */
     public function setScoreGuest($scoreGuest)
     {
@@ -101,7 +114,7 @@ class PersonEventForecast
      *
      * @param \DateTime $dt
      *
-     * @return PersonEventForecast
+     * @return EventForecast
      */
     public function setDt($dt)
     {
@@ -125,7 +138,7 @@ class PersonEventForecast
      *
      * @param \Zenomania\CoreBundle\Entity\Event $event
      *
-     * @return PersonEventForecast
+     * @return EventForecast
      */
     public function setEvent(\Zenomania\CoreBundle\Entity\Event $event = null)
     {
@@ -149,7 +162,7 @@ class PersonEventForecast
      *
      * @param \Zenomania\CoreBundle\Entity\Person $person
      *
-     * @return PersonEventForecast
+     * @return EventForecast
      */
     public function setPerson(\Zenomania\CoreBundle\Entity\Person $person = null)
     {
@@ -166,5 +179,53 @@ class PersonEventForecast
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Zenomania\CoreBundle\Entity\User $user
+     *
+     * @return EventForecast
+     */
+    public function setUser(\Zenomania\CoreBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Zenomania\CoreBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set scoreInRounds
+     *
+     * @param string $scoreInRounds
+     *
+     * @return EventForecast
+     */
+    public function setScoreInRounds($scoreInRounds)
+    {
+        $this->scoreInRounds = $scoreInRounds;
+
+        return $this;
+    }
+
+    /**
+     * Get scoreInRounds
+     *
+     * @return string
+     */
+    public function getScoreInRounds()
+    {
+        return $this->scoreInRounds;
     }
 }

@@ -1,6 +1,7 @@
-Zenomania\CoreBundle\Entity\PersonEventForecast:
+Zenomania\CoreBundle\Entity\EventForecast:
     type: entity
-    table: person_event_forecast
+    table: event_forecast
+    repositoryClass: Zenomania\CoreBundle\Repository\EventForecastRepository
     indexes:
         FK_person_event_forecast_event:
             columns:
@@ -38,6 +39,13 @@ Zenomania\CoreBundle\Entity\PersonEventForecast:
             options:
                 unsigned: false
             column: score_guest
+        scoreInRounds:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+            column: score_in_round
         dt:
             type: datetime
             nullable: false
@@ -61,6 +69,17 @@ Zenomania\CoreBundle\Entity\PersonEventForecast:
             inversedBy: null
             joinColumns:
                 person_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        user:
+            targetEntity: Zenomania\CoreBundle\Entity\User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user_id:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false

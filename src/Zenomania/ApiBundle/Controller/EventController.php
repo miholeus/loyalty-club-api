@@ -228,6 +228,14 @@ class EventController extends RestController
      *              "errors": null
      *      }
      *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "id":<forecast id>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
      * @ApiDoc(
      *  section="Прогнозы",
      *  resource=true,
@@ -268,9 +276,23 @@ class EventController extends RestController
             throw $this->createFormValidationException($form);
         }
 
-        // @todo save data here
+        $service = $this->get('event_forecast.service');
 
-        $view = $this->view(null, 204);
+        if ($service->hasActiveForecast($event, $this->getUser())) {
+            throw new HttpException(400, "Вы уже сделали прогноз");
+        }
+
+        $forecast = $service->getEventForecastByModel($form->getData());
+        $forecast->setEvent($event);
+        $forecast->setUser($this->getUser());
+
+        $service->save($forecast);
+
+        $data = [
+            'id' => $forecast->getId()
+        ];
+
+        $view = $this->view($data, 200);
         return $this->handleView($view);
     }
 }
