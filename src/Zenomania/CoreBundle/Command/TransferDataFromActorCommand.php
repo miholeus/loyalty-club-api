@@ -61,6 +61,8 @@ class TransferDataFromActorCommand extends ContainerAwareCommand
                 continue;
             }
 
+            $output->writeln("<info>Starting transfer actor with id (" . $actor->getId() . ")</info>");
+
             $service->transfer($actor, $person);
 
             $output->writeln("<info>Success data transfer for actor with id (" . $actor->getId() . ")</info>");
