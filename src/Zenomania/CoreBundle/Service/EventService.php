@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Entity\LineUp;
+use Zenomania\CoreBundle\Entity\ScoreInRound;
 
 class EventService
 {
@@ -25,7 +26,7 @@ class EventService
     private $eventRepository;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var \Zenomania\CoreBundle\Repository\LineUpRepository
      */
     private $lineupRepository;
 
@@ -83,6 +84,8 @@ class EventService
      */
     public function reverseLineup($event)
     {
+        $this->getLineupRepository()->deleteAllByEventId($event->getId());
+
         foreach ($event->getLineup() as $line) {
             /** @var LineUp $line */
             if (empty($line->getPlayer())) {
@@ -93,8 +96,74 @@ class EventService
             $this->getEm()->persist($line);
         }
 
+        $event->setIsLineUp(true);
         $this->getEm()->flush();
         return true;
+    }
+
+    /**
+     * @param Event $event
+     */
+    public function transformerRounds($event)
+    {
+        $event->setRounds(new ArrayCollection());
+
+        if (empty($event->getScoreInRounds())) {
+            for ($i = 1; $i <= 5; $i++) {
+                $round = new ScoreInRound();
+                $round->setNameRound($i);
+                $round->setHomeScore(0);
+                $round->setGuestScore(0);
+                $event->getRounds()->add($round);
+            }
+        } else {
+            $rounds = explode(', ', $event->getScoreInRounds());
+            $i = 1;
+            foreach ($rounds as $round) {
+                $score = explode(':', $round);
+
+                $scoreRound = new ScoreInRound();
+                $scoreRound->setNameRound($i);
+                $scoreRound->setHomeScore($score[0]);
+                $scoreRound->setGuestScore($score[1]);
+                $event->getRounds()->add($scoreRound);
+                $i++;
+            }
+
+            for ($j = $i; $j <= 5; $j++) {
+                $scoreRound = new ScoreInRound();
+                $scoreRound->setNameRound($j);
+                $scoreRound->setHomeScore(0);
+                $scoreRound->setGuestScore(0);
+                $event->getRounds()->add($scoreRound);
+            }
+        }
+    }
+
+    /**
+     * Преобразует массив со счётом каждого раунда в строку, типа 25:21, 25:23, 25:20
+     *
+     * @param Event $event
+     */
+    public function reverseRounds($event)
+    {
+        $array = [];
+        $score = [0 => 0, 1 => 0];
+        foreach ($event->getRounds() as $round) {
+            /** @var ScoreInRound $round */
+            if (($round->getHomeScore() <= 15) && ($round->getGuestScore() <= 15)) {
+                break;
+            }
+
+            (($round->getHomeScore() - $round->getGuestScore()) > 0) ? ($score[0]++) : ($score[1]++);
+            $array[] = $round->getHomeScore() . ":" . $round->getGuestScore();
+        }
+
+        if (in_array(3, $score)) {
+            $event->setScoreSaved(1);
+        }
+
+        $event->setScoreInRounds(implode(', ', $array));
     }
 
     /**
@@ -106,7 +175,7 @@ class EventService
     }
 
     /**
-     * @return \Doctrine\ORM\EntityRepository
+     * @return \Zenomania\CoreBundle\Repository\LineUpRepository
      */
     public function getLineupRepository()
     {

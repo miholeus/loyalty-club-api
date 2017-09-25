@@ -59,6 +59,8 @@ class EventController extends Controller
             return $this->redirectToRoute('event_show', array('id' => $event->getId()));
         }
 
+        echo $form->getErrors();
+
         return $this->render('ZenomaniaCoreBundle:event:new.html.twig', array(
             'event' => $event,
             'form' => $form->createView(),
@@ -88,15 +90,16 @@ class EventController extends Controller
         $deleteForm = $this->createDeleteForm($event);
 
         $service = $this->get('eventcore.service');
+        // Преобразуем данные для отображения в связанных формах
         $service->transformerLineup($event);
-
-        $event->transformerRounds($event->getScoreInRounds());
+        $service->transformerRounds($event);
 
         $editForm = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $event->reverseRounds($event->getRounds());
+            // Преобразуем данных из связанных форм для сохранения
+            $service->reverseRounds($event);
             $service->reverseLineup($event);
             $this->getDoctrine()->getManager()->flush();
 

@@ -49,7 +49,7 @@ class EventType extends AbstractType
                 ],
                 'required' => false
             ])
-            ->add('isLineUp', null, ['label' => 'Опубликован состав'])
+            ->add('isLineUp', null, ['label' => 'Опубликован состав', 'required' => false])
             ->add('clubHome', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Club',
                 'choice_label' => 'name',
@@ -88,7 +88,7 @@ class EventType extends AbstractType
                 'placeholder' => 'Выберите игрока',
                 'required' => false
             ])
-            ->add('scoreInRounds')
+            ->add('scoreInRounds', null, ['label' => 'Счёт по партиям', 'required' => false])
             ->add('rounds', CollectionType::class, [
                 'entry_type' => ScoreInRoundType::class,
                 'entry_options' => array('label' => false),
