@@ -8,7 +8,7 @@ Zenomania\CoreBundle\Entity\EventForecast:
                 - event_id
         person_event_forecast__dt:
             columns:
-                - dt
+                - created_on
         IDX_89ADA1AA217BBB47:
             columns:
                 - person_id
@@ -46,9 +46,19 @@ Zenomania\CoreBundle\Entity\EventForecast:
             options:
                 fixed: false
             column: score_in_round
-        dt:
+        createdOn:
             type: datetime
             nullable: false
+            column: created_on
+        updatedOn:
+            type: datetime
+            nullable: true
+            column: updated_on
+        status:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
     manyToOne:
         event:
             targetEntity: Event

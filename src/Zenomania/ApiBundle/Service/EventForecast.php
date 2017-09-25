@@ -36,6 +36,7 @@ class EventForecast
         $forecast->setScoreHome($eventScorePrediction->getScoreHome())
                 ->setScoreGuest($eventScorePrediction->getScoreGuest())
                 ->setScoreInRounds($eventScorePrediction->getScoreInRounds());
+        $forecast->setStatus(\Zenomania\CoreBundle\Entity\EventForecast::STATUS_NEW);
         return $forecast;
     }
 

@@ -7,6 +7,8 @@ namespace Zenomania\CoreBundle\Entity;
  */
 class EventForecast
 {
+    const STATUS_NEW = 1;
+    const STATUS_PROCESSED = 2;
     /**
      * @var integer
      */
@@ -25,7 +27,12 @@ class EventForecast
     /**
      * @var \DateTime
      */
-    private $dt;
+    private $createdOn;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedOn;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\Event
@@ -47,9 +54,15 @@ class EventForecast
      */
     private $user;
 
+    /**
+     * @var integer
+     */
+    private $status;
+
     public function __construct()
     {
-        $this->dt = new \DateTime();
+        $this->createdOn = new \DateTime();
+        $this->updatedOn = new \DateTime();
     }
     /**
      * Get id
@@ -112,13 +125,13 @@ class EventForecast
     /**
      * Set dt
      *
-     * @param \DateTime $dt
+     * @param \DateTime $createdOn
      *
      * @return EventForecast
      */
-    public function setDt($dt)
+    public function setCreatedOn(\DateTime $createdOn)
     {
-        $this->dt = $dt;
+        $this->createdOn = $createdOn;
 
         return $this;
     }
@@ -128,9 +141,9 @@ class EventForecast
      *
      * @return \DateTime
      */
-    public function getDt()
+    public function getCreatedOn()
     {
-        return $this->dt;
+        return $this->createdOn;
     }
 
     /**
@@ -227,5 +240,45 @@ class EventForecast
     public function getScoreInRounds()
     {
         return $this->scoreInRounds;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     *
+     * @return EventForecast
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedOn()
+    {
+        return $this->updatedOn;
+    }
+
+    /**
+     * @param \DateTime $updatedOn
+     */
+    public function setUpdatedOn(\DateTime $updatedOn)
+    {
+        $this->updatedOn = $updatedOn;
     }
 }
