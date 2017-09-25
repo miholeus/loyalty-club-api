@@ -8,10 +8,14 @@ namespace Zenomania\ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Zenomania\ApiBundle\Form\UserProfileType;
-use Zenomania\CoreBundle\Entity\User;
 use Zenomania\ApiBundle\Form\Model\UserProfile;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use Zenomania\CoreBundle\Service\Upload\FilePathStrategy;
+use FOS\RestBundle\Controller\Annotations\Route;
 
 class ProfileController extends RestController
 {
@@ -136,6 +140,69 @@ class ProfileController extends RestController
 
         $service = $this->get('api.user_profile');
         $service->save($form->getData());
+
+        $view = $this->view(null, 204);
+        return $this->handleView($view);
+    }
+
+
+    /**
+     *
+     *
+     * @ApiDoc(
+     *  section="Профиль",
+     *  resource=true,
+     *  description="Загрузка фото пользователя",
+     *  statusCodes={
+     *          204="Успех",
+     *          400="Ошибки валидации"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @Route("/profile/photos")
+     * @RequestParam(name="photo", description="Оригинал фотографии", nullable=false)
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postProfilePhotoAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        $imageBig = $request->files->get('photo');
+        if (!$imageBig) {
+            throw new HttpException(400, 'Оригинальная картинка не найдена');
+        }
+
+        $imageService = $this->get('images.service');
+        $originalImage = $imageService->createImageFromFile($imageBig);
+
+        /**
+         * Загружаем фото
+         */
+        $strategy = new FilePathStrategy();
+        $strategy->setEntity($user);
+        $uploadService = $this->get('file.upload_profile_photo');
+        $uploadService->setUploadStrategy($strategy);
+        $uploadedOriginalPathArray = $uploadService->upload($imageBig);
+
+        // сохраняем фото в БД
+        $originalImage->setPath($uploadedOriginalPathArray['path']);
+        $originalImage->setSize($imageBig->getClientSize());
+        $imageService->save($originalImage);
+
+        // Привязываем фото к пользователю (также см. TaskBundle\Entity\Listener\UserListener)
+        $userService = $this->get('user.service');
+        $user->setAvatar(new File($uploadedOriginalPathArray['full_path'], false));
+        $userService->save($user);
 
         $view = $this->view(null, 204);
         return $this->handleView($view);
