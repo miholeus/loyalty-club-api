@@ -11,9 +11,10 @@ namespace Zenomania\CoreBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zenomania\CoreBundle\Entity\ScoreInRound;
+use Zenomania\CoreBundle\Form\Model\ScoreInRound;
 
 class ScoreInRoundType extends AbstractType
 {
@@ -23,7 +24,9 @@ class ScoreInRoundType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nameRound')
+            ->add('nameRound', TextType::class, [
+                'disabled' => true
+            ])
             ->add('homeScore', IntegerType::class, [
                 'attr' => [
                     'min' => 0,

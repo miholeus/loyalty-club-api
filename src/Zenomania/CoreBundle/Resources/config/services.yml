@@ -76,9 +76,6 @@ services:
     event.service:
         class: Zenomania\ApiBundle\Service\Events
         arguments: ['@repository.event_repository']
-    eventcore.service:
-        class: Zenomania\CoreBundle\Service\EventService
-        arguments: ['@doctrine.orm.entity_manager']
     event_forecast.service:
         class: Zenomania\ApiBundle\Service\EventForecast
         arguments: ['@repository.event_forecast_repository']

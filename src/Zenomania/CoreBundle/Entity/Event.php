@@ -102,7 +102,7 @@ class Event
     /**
      * @var ArrayCollection
      */
-    private $lineup;
+    private $lineUp;
 
     /**
      * Constructor
@@ -111,7 +111,7 @@ class Event
     {
         $this->personPoint = new ArrayCollection();
         $this->rounds = new ArrayCollection();
-        $this->lineup = new ArrayCollection();
+        $this->lineUp = new ArrayCollection();
     }
 
     /**
@@ -529,19 +529,39 @@ class Event
     /**
      * @return ArrayCollection
      */
-    public function getLineup()
+    public function getLineUp()
     {
-        return $this->lineup;
+        return $this->lineUp;
     }
 
     /**
-     * @param ArrayCollection $lineup
+     * Adds line up player to event
+     *
+     * @param LineUp $lineUp
+     */
+    public function addLineUp(LineUp $lineUp)
+    {
+        $this->lineUp[] = $lineUp;
+        $lineUp->setEvent($this);
+    }
+
+    /**
+     * @param LineUp $lineUp
+     * @return $this
+     */
+    public function removeLineUp(LineUp $lineUp)
+    {
+        $this->lineUp->removeElement($lineUp);
+        return $this;
+    }
+    /**
+     * @param ArrayCollection $lineUp
      *
      * @return Event
      */
-    public function setLineup(ArrayCollection $lineup)
+    public function setLineUp(ArrayCollection $lineUp)
     {
-        $this->lineup = $lineup;
+        $this->lineUp = $lineUp;
 
         return $this;
     }

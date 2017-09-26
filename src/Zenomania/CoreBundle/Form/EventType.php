@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+use Zenomania\CoreBundle\Form\DataTransformers\LineUpTransformer;
+use Zenomania\CoreBundle\Form\DataTransformers\ScoreInRoundTransformer;
 use Zenomania\CoreBundle\Form\Type\Calendar;
 
 class EventType extends AbstractType
@@ -97,6 +99,11 @@ class EventType extends AbstractType
                 'entry_type' => LineUpType::class,
                 'entry_options' => array('label' => false),
             ]);
+
+        $builder
+            ->addModelTransformer(new LineUpTransformer());
+        $builder
+            ->addModelTransformer(new ScoreInRoundTransformer());
     }
 
     /**
@@ -116,6 +123,4 @@ class EventType extends AbstractType
     {
         return 'zenomania_corebundle_event';
     }
-
-
 }

@@ -6,7 +6,7 @@
  * Time: 13:01
  */
 
-namespace Zenomania\CoreBundle\Entity;
+namespace Zenomania\CoreBundle\Form\Model;
 
 
 class ScoreInRound

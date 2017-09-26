@@ -24,7 +24,7 @@ Zenomania\CoreBundle\Entity\LineUp:
             cascade: {  }
             fetch: LAZY
             mappedBy: null
-            inversedBy: null
+            inversedBy: lineUp
             joinColumns:
                 event_id:
                     referencedColumnName: id

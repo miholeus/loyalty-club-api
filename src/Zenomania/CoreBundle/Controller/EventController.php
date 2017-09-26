@@ -2,14 +2,9 @@
 
 namespace Zenomania\CoreBundle\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Tests\Normalizer\AbstractNormalizerTest;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Zenomania\CoreBundle\Entity\LineUp;
-use Zenomania\CoreBundle\Entity\Player;
-use Zenomania\CoreBundle\Entity\ScoreInRound;
 
 /**
  * Event controller.
@@ -51,15 +46,14 @@ class EventController extends Controller
         $form = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
         $form->handleRequest($request);
 
+        $service = $this->get('event.service');
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($event);
-            $em->flush();
+
+            $service->save($form->getData());
 
             return $this->redirectToRoute('event_show', array('id' => $event->getId()));
         }
-
-        echo $form->getErrors();
 
         return $this->render('ZenomaniaCoreBundle:event:new.html.twig', array(
             'event' => $event,
@@ -89,26 +83,21 @@ class EventController extends Controller
     {
         $deleteForm = $this->createDeleteForm($event);
 
-        $service = $this->get('eventcore.service');
-        // Преобразуем данные для отображения в связанных формах
-        $service->transformerLineup($event);
-        $service->transformerRounds($event);
+        $service = $this->get('event.service');
 
-        $editForm = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
-        $editForm->handleRequest($request);
+        $form = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
+        $form->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            // Преобразуем данных из связанных форм для сохранения
-            $service->reverseRounds($event);
-            $service->reverseLineup($event);
-            $this->getDoctrine()->getManager()->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $service->save($form->getData());
 
             return $this->redirectToRoute('event_show', array('id' => $event->getId()));
         }
 
         return $this->render('ZenomaniaCoreBundle:event:edit.html.twig', array(
             'event' => $event,
-            'form' => $editForm->createView(),
+            'form' => $form->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }

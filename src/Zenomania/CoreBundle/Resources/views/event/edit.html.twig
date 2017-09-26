@@ -50,21 +50,22 @@
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-group" style="font-weight: 700; text-align: center;">scoreHome</div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-group" style="font-weight: 700; text-align: center;">scoreGuest</div>
                 </div>
+
                 {% for round in form.rounds %}
-                    <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                    <div class="row" style="margin-left: 0; margin-right: 0;">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-group" style="font-weight: 700; text-align: center;">{{ form_widget(round.nameRound) }}</div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-group">{{ form_widget(round.homeScore) }}</div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-group">{{ form_widget(round.guestScore) }}</div>
                     </div>
                 {% endfor %}
-                <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                <div class="row" style="margin-left: 0; margin-right: 0;">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-group" style="font-weight: 700; text-align: center;">Счёт в матче</div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-group">{{ form_widget(form.scoreHome) }}</div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 form-group">{{ form_widget(form.scoreGuest) }}</div>
                 </div>
                 <div class="box-footer">
                     <ul class="pull-right">
-                        <a class="btn btn-default" href="{{ path('club_index') }}">Отмена</a>
+                        <a class="btn btn-default" href="{{ path('event_index') }}">Отмена</a>
                         <input type="submit" class="btn btn-primary" value="Сохранить"/>
                         {{ form_end(form, {'render_rest': false}) }}
                     </ul>
