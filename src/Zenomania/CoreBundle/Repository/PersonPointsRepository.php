@@ -97,7 +97,6 @@ class PersonPointsRepository extends EntityRepository
      */
     public function getRating(User $user)
     {
-        var_dump(123);exit;
         $em = $this->getEntityManager();
 
         $subQuery = $em->getConnection()->createQueryBuilder()
