@@ -9,6 +9,7 @@
 namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zenomania\ApiBundle\Form\Model\Ratings;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
@@ -77,7 +78,7 @@ class PersonPointsRepository extends EntityRepository
         $this->_em->flush();
     }
 
-    public function getTotalPoints(User $user) : int
+    public function getTotalPoints(User $user): int
     {
         $qb = $this->_em->createQueryBuilder();
         $select = $qb->select(['points' => 'SUM(p.points)'])
@@ -96,6 +97,7 @@ class PersonPointsRepository extends EntityRepository
      */
     public function getRating(User $user)
     {
+        var_dump(123);exit;
         $em = $this->getEntityManager();
 
         $subQuery = $em->getConnection()->createQueryBuilder()
@@ -121,5 +123,16 @@ class PersonPointsRepository extends EntityRepository
             return intval($result[0]['position']);
         }
         return null;
+    }
+
+    /**
+     * Получаем общи рейтинг пользователей
+     *
+     * @param Ratings $filter
+     * @return Ratings
+     */
+    public function getRatings(Ratings $filter)
+    {
+
     }
 }
