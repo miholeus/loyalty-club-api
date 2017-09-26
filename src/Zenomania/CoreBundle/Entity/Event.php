@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Event
  */
@@ -83,6 +85,11 @@ class Event
     private $scoreInRounds;
 
     /**
+     * @var ArrayCollection
+     */
+    private $rounds;
+
+    /**
      * @var \Zenomania\CoreBundle\Entity\Player
      */
     private $mvp;
@@ -93,11 +100,18 @@ class Event
     private $season;
 
     /**
+     * @var ArrayCollection
+     */
+    private $lineUp;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->personPoint = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->personPoint = new ArrayCollection();
+        $this->rounds = new ArrayCollection();
+        $this->lineUp = new ArrayCollection();
     }
 
     /**
@@ -461,9 +475,29 @@ class Event
      *
      * @return Event
      */
-    public function setScoreInRounds(string $scoreInRounds)
+    public function setScoreInRounds($scoreInRounds)
     {
         $this->scoreInRounds = $scoreInRounds;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getRounds()
+    {
+        return $this->rounds;
+    }
+
+    /**
+     * @param ArrayCollection $rounds
+     *
+     * @return Event
+     */
+    public function setRounds($rounds)
+    {
+        $this->rounds = $rounds;
 
         return $this;
     }
@@ -490,5 +524,45 @@ class Event
     public function getSeason()
     {
         return $this->season;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getLineUp()
+    {
+        return $this->lineUp;
+    }
+
+    /**
+     * Adds line up player to event
+     *
+     * @param LineUp $lineUp
+     */
+    public function addLineUp(LineUp $lineUp)
+    {
+        $this->lineUp[] = $lineUp;
+        $lineUp->setEvent($this);
+    }
+
+    /**
+     * @param LineUp $lineUp
+     * @return $this
+     */
+    public function removeLineUp(LineUp $lineUp)
+    {
+        $this->lineUp->removeElement($lineUp);
+        return $this;
+    }
+    /**
+     * @param ArrayCollection $lineUp
+     *
+     * @return Event
+     */
+    public function setLineUp(ArrayCollection $lineUp)
+    {
+        $this->lineUp = $lineUp;
+
+        return $this;
     }
 }

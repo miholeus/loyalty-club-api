@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\LineUp:
     type: entity
     table: line_up
+    repositoryClass: Zenomania\CoreBundle\Repository\LineUpRepository
     indexes:
         FK_line_up_event:
             columns:
@@ -23,7 +24,7 @@ Zenomania\CoreBundle\Entity\LineUp:
             cascade: {  }
             fetch: LAZY
             mappedBy: null
-            inversedBy: null
+            inversedBy: lineUp
             joinColumns:
                 event_id:
                     referencedColumnName: id

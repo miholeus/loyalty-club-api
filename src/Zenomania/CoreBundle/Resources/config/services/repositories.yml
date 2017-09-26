@@ -74,3 +74,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\District
+    repository.lineup_repository:
+        class: Zenomania\CoreBundle\Repository\LineUpRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\LineUp

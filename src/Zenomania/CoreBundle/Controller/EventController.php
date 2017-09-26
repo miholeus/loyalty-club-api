@@ -46,10 +46,11 @@ class EventController extends Controller
         $form = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
         $form->handleRequest($request);
 
+        $service = $this->get('event.service');
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($event);
-            $em->flush();
+
+            $service->save($form->getData());
 
             return $this->redirectToRoute('event_show', array('id' => $event->getId()));
         }
@@ -81,18 +82,22 @@ class EventController extends Controller
     public function editAction(Request $request, Event $event)
     {
         $deleteForm = $this->createDeleteForm($event);
-        $editForm = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
-        $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $service = $this->get('event.service');
 
-            return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
+        $form = $this->createForm('Zenomania\CoreBundle\Form\EventType', $event);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $service->save($form->getData());
+
+            return $this->redirectToRoute('event_show', array('id' => $event->getId()));
         }
 
         return $this->render('ZenomaniaCoreBundle:event:edit.html.twig', array(
             'event' => $event,
-            'form' => $editForm->createView(),
+            'form' => $form->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
