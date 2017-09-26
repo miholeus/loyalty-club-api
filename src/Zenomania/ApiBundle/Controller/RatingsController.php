@@ -17,6 +17,49 @@ use Zenomania\ApiBundle\Form\RatingsType;
 class RatingsController extends RestController
 {
     /**
+     * * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 400,
+     *                  "message": "Bad Request"
+     *              },
+     *              "errors": null
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "position":<integer>,
+     *              "points": <integer>,
+     *              "user_id": <string>,
+     *              "avatar": <string>,
+     *              "firstname": <string>,
+     *              "lastname": <string>,
+     *              "middlename": <string>,
+     *              "middle_name": <string>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Рейтинг",
+     *  resource=true,
+     *  description="Общий рейтинг пользователй",
+     *  statusCodes={
+     *         200="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    },
+     *  output="array"
+     * )
      * @QueryParam(name="limit", default="20", requirements="\d+", description="Количество запрашиваемых записей" )
      * @QueryParam(name="offset", nullable=true, requirements="\d+", description="Смещение, с которого нужно начать просмотр")
      * @QueryParam(name="period", description="За какой период сделать выборку месяц(month)|сезон(season)|за все время()")
@@ -32,6 +75,10 @@ class RatingsController extends RestController
         }
 
         $ratingsService = $this->get('api.ratings');
-        $ratingsService->getRatings($form->getData());
+        /** @var array $data */
+        $data = $ratingsService->getRatings($form->getData());
+
+        $view = $this->view($data);
+        return $this->handleView($view);
     }
 }

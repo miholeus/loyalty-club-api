@@ -128,10 +128,48 @@ class PersonPointsRepository extends EntityRepository
      * Получаем общи рейтинг пользователей
      *
      * @param Ratings $filter
-     * @return Ratings
+     * @return array
      */
     public function getRatings(Ratings $filter)
     {
+        $em = $this->getEntityManager();
 
+        $subQuery = $em->getConnection()->createQueryBuilder()
+            ->select([
+                'SUM (points) AS points',
+                'user_id'
+            ])->from($this->getClassMetadata()->getTableName(), 'p')
+            ->innerJoin('p', 'users', 'u', 'p.user_id = u.id')
+            ->where('points > 0')
+            ->andWhere('user_id IS NOT NULL')
+            ->groupBy('user_id');
+        if ($filter->getPeriod()) {
+            $subQuery
+                ->andWhere('dt > :dt');
+        }
+
+        $qb = clone $em->getConnection()->createQueryBuilder();
+        $select = $qb->select([
+            'RANK () OVER (ORDER BY s.points DESC, firstname) AS position',
+            's.points',
+            's.user_id',
+            'u.avatar',
+            'u.firstname',
+            'u.lastname',
+            'u.middlename'
+        ])->from(sprintf("(%s)", $subQuery), 's')
+            ->innerJoin('s', 'users', 'u', 's.user_id = u.id')
+            ->orderBy('points', 'DESC');
+        if ($filter->getPeriod()) {
+            $select->setParameter('dt', $filter->getPeriod());
+        }
+        if ($filter->getLimit()) {
+            $select->setMaxResults($filter->getLimit());
+        }
+        if ($filter->getOffset()) {
+            $select->setFirstResult($filter->getOffset());
+        }
+        $result = $select->execute()->fetchAll();
+        return $result;
     }
 }

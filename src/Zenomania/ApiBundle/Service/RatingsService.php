@@ -25,7 +25,7 @@ class RatingsService
 
     public function getRatings(Ratings $filter)
     {
-        $this->getPersonPointsRepositry()->getRatings($filter);
+        return $this->getPersonPointsRepositry()->getRatings($filter);
     }
 
     /**
