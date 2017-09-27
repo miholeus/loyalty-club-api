@@ -25,7 +25,7 @@ class PromoCoupon
     /**
      * @var boolean
      */
-    private $activated = '0';
+    private $activated = false;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\PromoCouponAction

@@ -1,0 +1,24 @@
+promocoupon_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:PromoCoupon:index" }
+    methods:  GET
+
+promocoupon_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:PromoCoupon:show" }
+    methods:  GET
+
+promocoupon_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:PromoCoupon:new" }
+    methods:  [GET, POST]
+
+promocoupon_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:PromoCoupon:edit" }
+    methods:  [GET, POST]
+
+promocoupon_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZenomaniaCoreBundle:PromoCoupon:delete" }
+    methods:  DELETE

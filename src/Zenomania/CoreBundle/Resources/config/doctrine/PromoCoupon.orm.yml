@@ -34,7 +34,7 @@ Zenomania\CoreBundle\Entity\PromoCoupon:
             type: boolean
             nullable: false
             options:
-                default: '0'
+                default: false
     manyToOne:
         pcaction:
             targetEntity: PromoCouponAction
