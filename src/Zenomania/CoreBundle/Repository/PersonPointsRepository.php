@@ -37,7 +37,7 @@ class PersonPointsRepository extends EntityRepository
             'season' => $season,
             'person' => $person,
             'points' => $points,
-            'type' => 'reference',
+            'type' => PersonPoints::TYPE_INVITE,
             'state' => 'none',
             'dt' => new \DateTime()
         ];
@@ -66,7 +66,7 @@ class PersonPointsRepository extends EntityRepository
             'season' => $season,
             'person' => $person,
             'points' => $points,
-            'type' => 'vk_linked',
+            'type' => PersonPoints::TYPE_LINKED_VK,
             'state' => 'none',
             'dt' => new \DateTime()
         ];
@@ -77,6 +77,57 @@ class PersonPointsRepository extends EntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * Add points for subscription registration
+     *
+     * @param User $user
+     * @param $points
+     */
+    public function givePointsForSubscriptionRegistration(User $user, $points)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+
+        $params = [
+            'season' => $season,
+            'person' => $person,
+            'points' => $points,
+            'type' => PersonPoints::TYPE_SUBSCRIPTION_REGISTER,
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+
+        $personPoints = PersonPoints::fromArray($params);
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
+    }
+
+    /**
+     * Adds points for ticket registration
+     *
+     * @param User $user
+     * @param $points
+     */
+    public function givePointsForTicketRegistration(User $user, $points)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+
+        $params = [
+            'season' => $season,
+            'person' => $person,
+            'points' => $points,
+            'type' => PersonPoints::TYPE_TICKET_REGISTER,
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+
+        $personPoints = PersonPoints::fromArray($params);
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
+    }
     public function getTotalPoints(User $user) : int
     {
         $qb = $this->_em->createQueryBuilder();
