@@ -42,6 +42,15 @@ class PromoCouponAction
      */
     private $clubOwner;
 
+    public static function fromArray($data)
+    {
+        $self = new self();
+        foreach ($data as $k => $v) {
+            $self->{"set" . ucfirst($k)}($v);
+        }
+        return $self;
+    }
+
 
     /**
      * Get id

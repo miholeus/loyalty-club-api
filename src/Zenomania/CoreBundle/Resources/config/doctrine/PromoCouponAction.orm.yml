@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\PromoCouponAction:
     type: entity
     table: promo_coupon_action
+    repositoryClass: Zenomania\CoreBundle\Repository\PromoCouponActionRepository
     indexes:
         FK_promo_coupon_action_club:
             columns:

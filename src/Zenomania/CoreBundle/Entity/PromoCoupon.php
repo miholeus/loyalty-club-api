@@ -45,6 +45,15 @@ class PromoCoupon
         $this->personPoint = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    public static function fromArray($data)
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set".ucfirst($key)}($value);
+        }
+        return $self;
+    }
+
     /**
      * Get id
      *
