@@ -78,6 +78,12 @@ services:
         class: Zenomania\CoreBundle\Repository\LineUpRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
+            - Zenomania\CoreBundle\Entity\LineUp
+    repository.badge_repository:
+        class: Zenomania\CoreBundle\Repository\BadgeRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\Badge
     repository.badge_type_repository:
         class: Zenomania\CoreBundle\Entity\BadgeType
         factory: ['@doctrine.orm.default_entity_manager', getRepository]

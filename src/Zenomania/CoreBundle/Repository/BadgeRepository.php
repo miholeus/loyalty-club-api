@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Zenomania\CoreBundle\Entity\Badge;
+
 /**
  * BadgeRepository
  *
@@ -10,4 +12,8 @@ namespace Zenomania\CoreBundle\Repository;
  */
 class BadgeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function save(Badge $badge){
+        $this->_em->persist($badge);
+        $this->_em->flush($badge);
+    }
 }
