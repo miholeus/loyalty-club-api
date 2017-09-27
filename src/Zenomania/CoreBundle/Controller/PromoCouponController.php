@@ -18,19 +18,33 @@ use Zenomania\CoreBundle\Form\Model\FileUpload;
  */
 class PromoCouponController extends Controller
 {
+    const ITEMS_ON_PAGE = 2;
+
     /**
      * Lists all promoCoupon entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $promoCoupons = $em->getRepository('ZenomaniaCoreBundle:PromoCoupon')->findAll();
+        //$promoCoupons = $em->getRepository('ZenomaniaCoreBundle:PromoCoupon')->findAll();
+
+        $paginator = $em->getRepository('ZenomaniaCoreBundle:PromoCoupon')->getPaginator();
+
+        $paginator->setPageSize(self::ITEMS_ON_PAGE);
+        $paginator->setCurrentPage($request->get('page', 1));
+        $paginator->setRoute('promocoupon_index');
+        $paginator->setRequest($request);
 
         return $this->render('ZenomaniaCoreBundle:promocoupon:index.html.twig', array(
-            'promoCoupons' => $promoCoupons,
+            'promoCoupons' => $paginator->getQuery()->getResult(),
+            'paginator' => $paginator
         ));
+
+//        return $this->render('ZenomaniaCoreBundle:promocoupon:index.html.twig', array(
+//            'promoCoupons' => $promoCoupons,
+//        ));
     }
 
     /**

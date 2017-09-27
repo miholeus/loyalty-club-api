@@ -10,10 +10,12 @@ namespace Zenomania\CoreBundle\Repository;
 
 
 use Doctrine\ORM\EntityRepository;
+use Zenomania\CoreBundle\Doctrine\CustomPaginator;
 use Zenomania\CoreBundle\Entity\PromoCoupon;
 
 class PromoCouponRepository extends EntityRepository
 {
+
     public function save(PromoCoupon $promoCoupon)
     {
         $this->_em->persist($promoCoupon);
@@ -34,5 +36,19 @@ class PromoCouponRepository extends EntityRepository
             ->getQuery();
 
         return $query->getOneOrNullResult();
+    }
+
+    /**
+     * Gets paginator
+     *
+     * @return CustomPaginator
+     */
+    public function getPaginator()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('pc')
+            ->from('ZenomaniaCoreBundle:PromoCoupon', 'pc');
+        $paginator = new CustomPaginator($query);
+        return $paginator;
     }
 }
