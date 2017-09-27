@@ -84,8 +84,8 @@ class SubscriptionController extends RestController
         $personRepository = $this->get('repository.person_repository');
         $person = $personRepository->findPersonByUser($user);
 
-        $promoActionRepository = $this->get('repository.club_season_repository');
-        $season = $promoActionRepository->findCurrentSeason();
+        $seasonRepository = $this->get('repository.club_season_repository');
+        $season = $seasonRepository->findCurrentSeason();
 
         // Начисляем баллы пользователю User за билет barcode
         $zen = $subService->chargePointForSubsRegistration($person, $season);

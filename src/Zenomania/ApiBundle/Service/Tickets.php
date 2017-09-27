@@ -56,15 +56,15 @@ class Tickets
      * Начисляем пользователю User баллы лояльности за регистрацию билета barcode
      *
      * @param Person $person
-     * @param Season $promoAction
+     * @param Season $season
      * @return int
      */
-    public function chargePointForTicketRegistration(Person $person, Season $promoAction)
+    public function chargePointForTicketRegistration(Person $person, Season $season)
     {
         $charge = 200; // Сколько начислить баллов за регистрацию билета
 
         $params = [
-            'season' => $promoAction,
+            'season' => $season,
             'person' => $person,
             'points' => $charge,
             'type' => 'ticket_register',

@@ -31,10 +31,10 @@ class PersonPointsRepository extends EntityRepository
     public function givePointsForInvite(UserReferralCode $referralCode, User $user, $points)
     {
         $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($referralCode->getUser());
-        $promoAction = $this->_em->getRepository('ZenomaniaCoreBundle:PromoAction')->findCurrentSeason();
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
 
         $params = [
-            'season' => $promoAction,
+            'season' => $season,
             'person' => $person,
             'points' => $points,
             'type' => 'reference',
@@ -60,10 +60,10 @@ class PersonPointsRepository extends EntityRepository
     public function givePointsForSocialBind(User $user, $points)
     {
         $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
-        $promoAction = $this->_em->getRepository('ZenomaniaCoreBundle:PromoAction')->findCurrentSeason();
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
 
         $params = [
-            'season' => $promoAction,
+            'season' => $season,
             'person' => $person,
             'points' => $points,
             'type' => 'vk_linked',
