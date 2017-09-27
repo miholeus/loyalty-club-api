@@ -207,4 +207,58 @@ class ProfileController extends RestController
         $view = $this->view(null, 204);
         return $this->handleView($view);
     }
+
+    /**
+     *
+     * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 400,
+     *                  "message": "Bad Request"
+     *              },
+     *              "errors": null
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "matches":<integer>,
+     *              "purchases":<integer>,
+     *              "predictions":<integer>
+     *              "reposts":<integer>,
+     *              "invites":<integer>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Профиль",
+     *  resource=true,
+     *  description="Вкладка Моя статистика",
+     *  statusCodes={
+     *         200="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getProfileStatsAction()
+    {
+        $user = $this->getUser();
+        $transformer = $this->get('api.data.transformer.user.profile_stats_transformer');
+
+        $data = $this->getResourceItem($user, $transformer);
+        $view = $this->view($data);
+        return $this->handleView($view);
+    }
 }

@@ -11,6 +11,9 @@ class PersonPoints
     const TYPE_SUBSCRIPTION_REGISTER = 'sub_register';
     const TYPE_INVITE = 'reference';
     const TYPE_LINKED_VK = 'vk_linked';
+    const TYPE_PURCHASE = 'purchase';
+    const TYPE_FORECAST_WINNER = 'forecast_winner';
+    const TYPE_REPOST = 'repost';
 
     /**
      * @var integer

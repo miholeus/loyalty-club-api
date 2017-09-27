@@ -17,6 +17,9 @@ services:
     api.data.transformer.user.profile_transformer:
         class: Zenomania\ApiBundle\Service\Transformer\User\UserProfileTransformer
         arguments: ['@utils.host_based_url', '@repository.person_points_repository']
+    api.data.transformer.user.profile_stats_transformer:
+        class: Zenomania\ApiBundle\Service\Transformer\User\UserProfileStatsTransformer
+        arguments: ['@repository.person_points_repository']
     api.data.transformer.club:
         class: Zenomania\ApiBundle\Service\Transformer\ClubTransformer
         arguments: ['@utils.host_based_url']

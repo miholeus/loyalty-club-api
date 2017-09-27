@@ -128,6 +128,13 @@ class PersonPointsRepository extends EntityRepository
 
         $this->_em->flush();
     }
+
+    /**
+     * Total user points
+     *
+     * @param User $user
+     * @return int
+     */
     public function getTotalPoints(User $user) : int
     {
         $qb = $this->_em->createQueryBuilder();
@@ -135,8 +142,30 @@ class PersonPointsRepository extends EntityRepository
             ->from('ZenomaniaCoreBundle:PersonPoints', 'p')
             ->where('p.user = :user')
             ->setParameter('user', $user);
-        $result = $select->getQuery()->getSingleScalarResult();
-        return intval($result);
+        try {
+            $result = $select->getQuery()->getSingleScalarResult();
+            return intval($result);
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * User points aggregated by type
+     *
+     * @param User $user
+     * @return int
+     */
+    public function getUserPointsByType(User $user)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $select = $qb->select(['points' => 'SUM(p.points)', 'type' => 'p.type'])
+            ->from('ZenomaniaCoreBundle:PersonPoints', 'p')
+            ->where('p.user = :user')
+            ->groupBy('p.type')
+            ->setParameter('user', $user);
+        $result = $select->getQuery()->getOneOrNullResult();
+        return $result;
     }
 
     /**
