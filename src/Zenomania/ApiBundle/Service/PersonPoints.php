@@ -6,6 +6,10 @@
 
 namespace Zenomania\ApiBundle\Service;
 
+use Zenomania\ApiBundle\Service\Utils\PeriodConverter;
+use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Repository\PersonPointsRepository;
+
 class PersonPoints
 {
     const POINTS_FOR_INVITE = 10;// Сколько начислить баллов за регистрацию по реферальному коду
@@ -20,7 +24,15 @@ class PersonPoints
     const POINTS_FOR_PREDICTION_MATCH_ROUND_SCORE = 5;// счет в партиях 5 зен за угаданную партию
     const POINTS_FOR_PREDICTION_MATCH_ROUNDS = 5;// итоговый результат матча по партиям
     const POINTS_FOR_PREDICTION_MATCH_MVP = 5;// самый результативный игрок
+    /**
+     * @var PersonPointsRepository
+     */
+    private $repository;
 
+    public function __construct(PersonPointsRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     public function pointsForActions()
     {
@@ -31,5 +43,32 @@ class PersonPoints
             'prediction' => self::POINTS_FOR_PREDICTION_MAX,
             'invite_friend' => self::POINTS_FOR_INVITE
         ];
+    }
+
+    /**
+     * Fetches user points
+     *
+     * @param User $user
+     * @param \Zenomania\ApiBundle\Request\Filter\ProfileStatsFilter $filter
+     * @return array
+     */
+    public function getUserPoints(User $user, \Zenomania\ApiBundle\Request\Filter\ProfileStatsFilter $filter = null) : array
+    {
+        $date = null;
+        if (null !== $filter && null !== $filter->period) {
+            $periodConverter = new PeriodConverter(PeriodConverter::LAST_INTERVAL, ['interval' => $filter->period]);
+            $date = $periodConverter->getStartDate();
+        }
+
+        $data = $this->getRepository()->getUserPointsByType($user, $date);
+        return $data ?? [];
+    }
+
+    /**
+     * @return PersonPointsRepository
+     */
+    public function getRepository(): PersonPointsRepository
+    {
+        return $this->repository;
     }
 }

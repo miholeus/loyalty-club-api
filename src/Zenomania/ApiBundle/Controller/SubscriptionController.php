@@ -7,6 +7,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\ApiBundle\Service\Subscriptions;
 use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
 use Zenomania\CoreBundle\Form\SubscriptionNumberType;
@@ -81,18 +82,12 @@ class SubscriptionController extends RestController
 
         $user = $this->getUser();
 
-        $personRepository = $this->get('repository.person_repository');
-        $person = $personRepository->findPersonByUser($user);
-
-        $seasonRepository = $this->get('repository.club_season_repository');
-        $season = $seasonRepository->findCurrentSeason();
-
-        // Начисляем баллы пользователю User за билет barcode
-        $zen = $subService->chargePointForSubsRegistration($person, $season);
-
         // Заносим регистрацию абонемента cardcode в активность для пользователя User
-        $subService->subsRegistration($person, $subNumber);
-
+        try {
+            $zen = $subService->subsRegistration($subNumber, $user);
+        } catch (EntityNotFoundException $e) {
+            throw new HttpException(400, $e->getMessage());
+        }
 
         $data = [
             'points' => $zen
