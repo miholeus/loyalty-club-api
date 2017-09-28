@@ -17,7 +17,7 @@ use Zenomania\ApiBundle\Form\RatingsType;
 class RatingsController extends RestController
 {
     /**
-     * * ### Failed Response ###
+     * ### Failed Response ###
      *      {
      *          {
      *              "success": false,
