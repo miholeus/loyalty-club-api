@@ -3,13 +3,9 @@
 namespace Zenomania\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Encoder\CsvEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Zenomania\CoreBundle\Entity\PromoCoupon;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Zenomania\CoreBundle\Entity\PromoCouponAction;
 use Zenomania\CoreBundle\Form\Model\FileUpload;
 
 /**
@@ -18,7 +14,7 @@ use Zenomania\CoreBundle\Form\Model\FileUpload;
  */
 class PromoCouponController extends Controller
 {
-    const ITEMS_ON_PAGE = 2;
+    const ITEMS_ON_PAGE = 20;
 
     /**
      * Lists all promoCoupon entities.
@@ -27,8 +23,6 @@ class PromoCouponController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        //$promoCoupons = $em->getRepository('ZenomaniaCoreBundle:PromoCoupon')->findAll();
 
         $paginator = $em->getRepository('ZenomaniaCoreBundle:PromoCoupon')->getPaginator();
 
@@ -41,10 +35,6 @@ class PromoCouponController extends Controller
             'promoCoupons' => $paginator->getQuery()->getResult(),
             'paginator' => $paginator
         ));
-
-//        return $this->render('ZenomaniaCoreBundle:promocoupon:index.html.twig', array(
-//            'promoCoupons' => $promoCoupons,
-//        ));
     }
 
     /**
@@ -53,59 +43,20 @@ class PromoCouponController extends Controller
      */
     public function newAction(Request $request)
     {
+        // Форма для создания единичных промо-купонов
         $promoCoupon = new Promocoupon();
         $form = $this->createForm('Zenomania\CoreBundle\Form\PromoCouponType', $promoCoupon);
         $form->handleRequest($request);
 
+        // Форма для загрузки промо-купонов из файла
         $fileUpload = new FileUpload();
         $uploadForm = $this->createForm('Zenomania\CoreBundle\Form\PromoCouponUploadType', $fileUpload);
         $uploadForm->handleRequest($request);
 
         if ($uploadForm->isSubmitted() && $uploadForm->isValid()) {
             $dataFile = file_get_contents($fileUpload->getFile()->getPathName());
-
-            $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder(';', '"', '\\', '~')]);
-            $data = $serializer->decode($dataFile, 'csv');
-
-            $promoCouponRepository = $this->getDoctrine()->getRepository('ZenomaniaCoreBundle:PromoCoupon');
-            $pcactionRepository = $this->getDoctrine()->getRepository('ZenomaniaCoreBundle:PromoCouponAction');
-
-            $result = ['new' => 0, 'duplicate' => 0, 'error' => 0];
-            foreach ($data as $row) {
-                if (count($row) != 3) {
-                    $result['error']++;
-                    continue;
-                }
-
-                $pcaction = $pcactionRepository->findOneBy(['caption' => $row[FileUpload::FIELD_ACTION]]);
-
-                if (empty($pcaction)) {
-                    $params = [
-                        'club_owner' => 9,
-                        'caption' => $row[FileUpload::FIELD_ACTION]
-                    ];
-
-                    $pcaction = PromoCouponAction::fromArray($params);
-                    $pcactionRepository->save($pcaction);
-                }
-
-                $duplicate = $promoCouponRepository->findCouponByCode($row[FileUpload::FIELD_CODE]);
-                if (!empty($duplicate)) {
-                    $result['duplicate']++;
-                    continue;
-                }
-
-                $params = [
-                    'pcaction' => $pcaction,
-                    'code' => $row[FileUpload::FIELD_CODE],
-                    'points' => $row[FileUpload::FIELD_COUNT_ZEN],
-                    'activated' => false,
-                ];
-
-                $promoCoupon = PromoCoupon::fromArray($params);
-                $promoCouponRepository->save($promoCoupon);
-                $result['new']++;
-            }
+            $promoCouponService = $this->get('promocoupon.service');
+            $result = $promoCouponService->upload($dataFile);
 
             return $this->render('ZenomaniaCoreBundle:promocoupon:upload.html.twig', array(
                 'result' => $result,
