@@ -5,7 +5,7 @@ Zenomania\CoreBundle\Entity\PromoCoupon:
     indexes:
         FK_promo_coupon_promo_coupon_action:
             columns:
-                - pcaction
+                - action_id
     uniqueConstraints:
         code:
             columns:
@@ -36,16 +36,37 @@ Zenomania\CoreBundle\Entity\PromoCoupon:
             nullable: false
             options:
                 default: false
+        createdOn:
+            type: datetime
+            nullable: true
+            column: created_on
+            comment: 'дата создания'
+        updatedOn:
+            type: datetime
+            nullable: true
+            comment: 'дата модификации'
+            column: updated_on
     manyToOne:
-        pcaction:
+        action:
             targetEntity: PromoCouponAction
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                pcaction:
+                action_id:
                     referencedColumnName: id
                     onDelete: CASCADE
+            orphanRemoval: false
+        createdBy:
+            targetEntity: User
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                created_by:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
             orphanRemoval: false
     lifecycleCallbacks: {  }

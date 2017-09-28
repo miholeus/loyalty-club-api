@@ -78,7 +78,7 @@ class PromoCouponController extends Controller
         if ($uploadForm->isSubmitted() && $uploadForm->isValid()) {
             $dataFile = file_get_contents($fileUpload->getFile()->getPathName());
             $promoCouponService = $this->get('promocoupon.service');
-            $result = $promoCouponService->upload($dataFile);
+            $result = $promoCouponService->upload($dataFile, $this->getUser());
 
             return $this->render('ZenomaniaCoreBundle:promocoupon:upload.html.twig', array(
                 'result' => $result,

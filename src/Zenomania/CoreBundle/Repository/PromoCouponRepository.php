@@ -12,12 +12,17 @@ namespace Zenomania\CoreBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Doctrine\CustomPaginator;
 use Zenomania\CoreBundle\Entity\PromoCoupon;
+use Zenomania\CoreBundle\Entity\User;
 
 class PromoCouponRepository extends EntityRepository
 {
 
-    public function save(PromoCoupon $promoCoupon)
+    public function save(PromoCoupon $promoCoupon, User $user)
     {
+        if (null === $promoCoupon->getId()) {
+            $promoCoupon->setCreatedBy($user);
+        }
+
         $this->_em->persist($promoCoupon);
         $this->_em->flush();
     }

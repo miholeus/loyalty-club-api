@@ -43,9 +43,10 @@ class PromoCouponService
      * Загружаем данные в таблицу promo_coupon
      *
      * @param $dataFile
+     * @param $user
      * @return array
      */
-    public function upload($dataFile)
+    public function upload($dataFile, $user)
     {
         $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder(';', '"', '\\', '~')]);
         $data = $serializer->decode($dataFile, 'csv');
@@ -85,7 +86,7 @@ class PromoCouponService
             }
 
             $params = [
-                'pcaction' => $pcaction,
+                'action' => $pcaction,
                 'code' => $row[FileUpload::FIELD_CODE],
                 'points' => $row[FileUpload::FIELD_COUNT_ZEN],
                 'activated' => false,
@@ -93,7 +94,7 @@ class PromoCouponService
 
             // Загружаем промо-купон в базу
             $promoCoupon = PromoCoupon::fromArray($params);
-            $promoCouponRepository->save($promoCoupon);
+            $promoCouponRepository->save($promoCoupon, $user);
             $result['new']++;
         }
 
