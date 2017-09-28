@@ -3,6 +3,10 @@
 {% block body %}
     <h1>Promocoupons list</h1>
 
+    <div>
+        {% include '@ZenomaniaCore/form/search.html.twig' with {form: searchForm} %}
+    </div>
+
     <table class="table table-striped table-hover">
         <thead>
         <tr>

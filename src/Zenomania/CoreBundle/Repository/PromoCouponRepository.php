@@ -41,13 +41,21 @@ class PromoCouponRepository extends EntityRepository
     /**
      * Gets paginator
      *
+     * @param string|null $str
      * @return CustomPaginator
      */
-    public function getPaginator()
+    public function getPaginator($str = null)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('pc')
             ->from('ZenomaniaCoreBundle:PromoCoupon', 'pc');
+
+        if (!empty($query)) {
+            $str = mb_strtolower(trim($str), 'utf-8');
+            $query
+                ->andWhere("LOWER(pc.code) LIKE :code")
+                ->setParameter('code', "%{$str}%");
+        }
         $paginator = new CustomPaginator($query);
         return $paginator;
     }

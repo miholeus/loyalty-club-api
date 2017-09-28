@@ -22,3 +22,8 @@ promocoupon_delete:
     path:     /{id}/delete
     defaults: { _controller: "ZenomaniaCoreBundle:PromoCoupon:delete" }
     methods:  DELETE
+
+promocoupon_search_pagination:
+    path:     /search_pagination
+    defaults: { _controller: "ZenomaniaCoreBundle:PromoCoupon:searchPagination" }
+    methods:  POST

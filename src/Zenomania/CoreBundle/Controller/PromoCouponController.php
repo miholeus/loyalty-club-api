@@ -2,11 +2,13 @@
 
 namespace Zenomania\CoreBundle\Controller;
 
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Zenomania\CoreBundle\Entity\PromoCoupon;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Zenomania\CoreBundle\Form\Model\FileUpload;
+use Zenomania\CoreBundle\Form\Model\Search;
 
 /**
  * Promocoupon controller.
@@ -24,17 +26,37 @@ class PromoCouponController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $paginator = $em->getRepository('ZenomaniaCoreBundle:PromoCoupon')->getPaginator();
+        $paginator = $em->getRepository('ZenomaniaCoreBundle:PromoCoupon')->getPaginator($request->get('query'));
 
         $paginator->setPageSize(self::ITEMS_ON_PAGE);
         $paginator->setCurrentPage($request->get('page', 1));
         $paginator->setRoute('promocoupon_index');
         $paginator->setRequest($request);
 
+        $searchForm = $this->createForm('Zenomania\CoreBundle\Form\SearchType', new Search($request->get('query')), [
+            'action' => $this->generateUrl('promocoupon_search_pagination'),
+            'query_placeholder' => 'ZENITPROMO100'
+        ]);
+
         return $this->render('ZenomaniaCoreBundle:promocoupon:index.html.twig', array(
             'promoCoupons' => $paginator->getQuery()->getResult(),
-            'paginator' => $paginator
+            'paginator' => $paginator,
+            'searchForm' => $searchForm->createView()
         ));
+    }
+
+    public function searchPaginationAction(Request $request)
+    {
+        /** @var Form $searchForm */
+        $searchForm = $this->createForm('Zenomania\CoreBundle\Form\SearchType');
+        $searchForm->handleRequest($request);
+        if ($searchForm->isValid()) {
+            $searchParameters = $searchForm->get('clear')->isClicked()
+                ? [] : ['query' => $searchForm->getData()->getQuery()];
+
+            return $this->redirectToRoute('promocoupon_index', $searchParameters);
+        }
+        throw new \ErrorException("Search form is not valid");
     }
 
     /**
