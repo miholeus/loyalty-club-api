@@ -180,6 +180,13 @@ Zenomania\CoreBundle\Entity\User:
                     referencedColumnName: id
                     onDelete: RESTRICT
             orphanRemoval: false
+    oneToMany:
+        accounts:
+            targetEntity: Zenomania\CoreBundle\Entity\SocialAccount
+            mappedBy: user
+            inversedBy: null
+            cascade: ["persist"]
+            orphanRemoval: false
     oneToOne:
         person:
           targetEntity: Zenomania\CoreBundle\Entity\Person

@@ -365,7 +365,10 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
      */
     private $isDeleted = false;
 
-
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $accounts;
     /**
      * Get id
      *
@@ -960,5 +963,39 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
     {
         $hash = new Hashids($this->getPhone());
         return $hash->encode($this->getPhone());
+    }
+
+    /**
+     * Add account
+     *
+     * @param \Zenomania\CoreBundle\Entity\SocialAccount $account
+     *
+     * @return User
+     */
+    public function addAccount(\Zenomania\CoreBundle\Entity\SocialAccount $account)
+    {
+        $this->accounts[] = $account;
+
+        return $this;
+    }
+
+    /**
+     * Remove account
+     *
+     * @param \Zenomania\CoreBundle\Entity\SocialAccount $account
+     */
+    public function removeAccount(\Zenomania\CoreBundle\Entity\SocialAccount $account)
+    {
+        $this->accounts->removeElement($account);
+    }
+
+    /**
+     * Get accounts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAccounts()
+    {
+        return $this->accounts;
     }
 }

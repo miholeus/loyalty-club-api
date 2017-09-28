@@ -36,6 +36,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
+            'user'   => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_INVITE,
             'state' => 'none',
@@ -65,6 +66,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
+            'user'   => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_LINKED_VK,
             'state' => 'none',
@@ -91,6 +93,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
+            'user'   => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_SUBSCRIPTION_REGISTER,
             'state' => 'none',
@@ -117,6 +120,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
+            'user'   => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_TICKET_REGISTER,
             'state' => 'none',

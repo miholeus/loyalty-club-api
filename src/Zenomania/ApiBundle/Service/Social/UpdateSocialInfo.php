@@ -31,18 +31,41 @@ class UpdateSocialInfo
      * Saves social account
      *
      * @param SocialAccount $account
-     * @param User $user
      */
-    public function save(SocialAccount $account, User $user)
+    public function save(SocialAccount $account)
     {
-        $current = $this->repository->findAccountByOuterId($account);
+        $current = $this->getRepository()->findAccountByOuterId($account);
 
         if (!$current) {
-            $this->repository->save($account);
             // trigger new event
             if ($account->getOuterId()) {
-                $this->bonusPoints->givePointsForSocialBind($user);
+                $this->getBonusPoints()->givePointsForSocialBind($account->getUser());
             }
+        } else {
+            $current->setUser($account->getUser());
+            $current->setFirstName($account->getFirstName());
+            $current->setLastName($account->getLastName());
+            $current->setEmail($account->getEmail());
+            $current->setBdate($account->getBdate());
+            $current->setAccessToken($account->getAccessToken());
+            $account = $current;
         }
+        $this->getRepository()->save($account);
+    }
+
+    /**
+     * @return SocialAccountRepository
+     */
+    public function getRepository(): SocialAccountRepository
+    {
+        return $this->repository;
+    }
+
+    /**
+     * @return BonusPoints
+     */
+    public function getBonusPoints(): BonusPoints
+    {
+        return $this->bonusPoints;
     }
 }

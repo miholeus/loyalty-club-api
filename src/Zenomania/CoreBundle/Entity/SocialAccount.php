@@ -108,6 +108,10 @@ class SocialAccount
     private $email;
 
     /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $user;
+    /**
      * Constructor
      */
     public function __construct()
@@ -603,5 +607,29 @@ class SocialAccount
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Zenomania\CoreBundle\Entity\User $user
+     *
+     * @return SocialAccount
+     */
+    public function setUser(\Zenomania\CoreBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Zenomania\CoreBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
