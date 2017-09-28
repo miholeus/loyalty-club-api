@@ -13,6 +13,7 @@ use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\ApiBundle\Service\Tickets;
 
 class TicketController extends RestController
@@ -75,17 +76,12 @@ class TicketController extends RestController
 
         $user = $this->getUser();
 
-        $personRepository = $this->get('repository.person_repository');
-        $person = $personRepository->findPersonByUser($user);
-
-        $promoActionRepository = $this->get('repository.club_season_repository');
-        $season = $promoActionRepository->findCurrentSeason();
-
-        // Начисляем баллы пользователю User за билет barcode
-        $zen = $ticketsService->chargePointForTicketRegistration($person, $season);
-
         // Заносим регистрацию билета barcode в активность для пользователя User
-        $ticketsService->ticketRegistration($person, $barcode);
+        try {
+            $zen = $ticketsService->ticketRegistration($barcode, $user);
+        } catch (EntityNotFoundException $e) {
+            throw new HttpException(400, $e->getMessage());
+        }
 
         $data = [
             'points' => $zen

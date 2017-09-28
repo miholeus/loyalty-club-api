@@ -8,11 +8,9 @@
 
 namespace Zenomania\ApiBundle\Service;
 
-
+use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\EventAttendance;
-use Zenomania\CoreBundle\Entity\Person;
-use Zenomania\CoreBundle\Entity\PersonPoints;
-use Zenomania\CoreBundle\Entity\Season;
+use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Repository\EventAttendanceRepository;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\TicketRepository;
@@ -55,40 +53,40 @@ class Tickets
     /**
      * Начисляем пользователю User баллы лояльности за регистрацию билета barcode
      *
-     * @param Person $person
-     * @param Season $promoAction
+     * @param User $user
      * @return int
      */
-    public function chargePointForTicketRegistration(Person $person, Season $promoAction)
+    protected function givePointForRegistration(User $user)
     {
-        $charge = 200; // Сколько начислить баллов за регистрацию билета
+        $points = PersonPoints::POINTS_FOR_TICKET_REGISTRATION; // Сколько начислить баллов за регистрацию билета
+        $this->getPersonPointsRepository()->givePointsForTicketRegistration($user, $points);
 
-        $params = [
-            'season' => $promoAction,
-            'person' => $person,
-            'points' => $charge,
-            'type' => 'ticket_register',
-            'state' => 'none',
-            'dt' => new \DateTime()
-        ];
-
-        $personPoints = PersonPoints::fromArray($params);
-        $this->getPersonPointsRepository()->save($personPoints);
-
-        return $charge;
+        return $points;
     }
 
     /**
      * Регистрация билета определенным пользователем
      *
-     * @param Person $person
      * @param string $barcode
-     * @return EventAttendance|null
+     * @param User $user
+     * @return int
+     * @throws EntityNotFoundException
      */
-    public function ticketRegistration(Person $person, $barcode)
+    public function ticketRegistration($barcode, User $user)
     {
         $ticket = $this->getTicketRepository()->findTicketByBarcode($barcode);
+
+        if (null === $ticket) {
+            throw new EntityNotFoundException("Ticket not found by barcode");
+        }
+
         $attendance = $this->getTicketRepository()->findAttendanceByBarcode($barcode);
+
+        if (null === $attendance) {
+            throw new EntityNotFoundException("Attendance not found by barcode");
+        }
+
+        $person = $user->getPerson();
 
         $params = [
             'event' => $attendance->getEvent(),
@@ -98,7 +96,9 @@ class Tickets
         ];
 
         $eventAttendance = EventAttendance::fromArray($params);
-        return $this->getEventAttendanceRepository()->save($eventAttendance);
+        $this->getEventAttendanceRepository()->save($eventAttendance);
+
+        return $this->givePointForRegistration($user);
     }
 
     /**

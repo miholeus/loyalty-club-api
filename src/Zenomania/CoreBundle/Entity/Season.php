@@ -3,7 +3,7 @@
 namespace Zenomania\CoreBundle\Entity;
 
 /**
- * PromoAction
+ * Season
  */
 class Season
 {

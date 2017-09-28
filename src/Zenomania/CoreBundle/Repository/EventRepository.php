@@ -82,4 +82,32 @@ class EventRepository extends EntityRepository
             ->setMaxResults(1);
         return $query->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * @param \Zenomania\CoreBundle\Entity\Event $event
+     */
+    public function save(\Zenomania\CoreBundle\Entity\Event $event)
+    {
+        $this->getEntityManager()->persist($event);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @param \Zenomania\CoreBundle\Entity\Event $event
+     * @return array|\Zenomania\CoreBundle\Entity\LineUp[]
+     */
+    public function findLineUp(\Zenomania\CoreBundle\Entity\Event $event)
+    {
+        $repo = $this->getEntityManager()->getRepository('ZenomaniaCoreBundle:LineUp');
+        return $repo->findBy(['event' => $event]);
+    }
+    /**
+     * Removes line up from entity manager
+     *
+     * @param \Zenomania\CoreBundle\Entity\LineUp $lineUp
+     */
+    public function removeLineUp(\Zenomania\CoreBundle\Entity\LineUp $lineUp)
+    {
+        $this->getEntityManager()->remove($lineUp);
+    }
 }

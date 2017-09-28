@@ -32,13 +32,13 @@ class PersonPointsRepository extends EntityRepository
     public function givePointsForInvite(UserReferralCode $referralCode, User $user, $points)
     {
         $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($referralCode->getUser());
-        $promoAction = $this->_em->getRepository('ZenomaniaCoreBundle:PromoAction')->findCurrentSeason();
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
 
         $params = [
-            'season' => $promoAction,
+            'season' => $season,
             'person' => $person,
             'points' => $points,
-            'type' => 'reference',
+            'type' => PersonPoints::TYPE_INVITE,
             'state' => 'none',
             'dt' => new \DateTime()
         ];
@@ -61,13 +61,13 @@ class PersonPointsRepository extends EntityRepository
     public function givePointsForSocialBind(User $user, $points)
     {
         $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
-        $promoAction = $this->_em->getRepository('ZenomaniaCoreBundle:PromoAction')->findCurrentSeason();
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
 
         $params = [
-            'season' => $promoAction,
+            'season' => $season,
             'person' => $person,
             'points' => $points,
-            'type' => 'vk_linked',
+            'type' => PersonPoints::TYPE_LINKED_VK,
             'state' => 'none',
             'dt' => new \DateTime()
         ];
@@ -78,15 +78,100 @@ class PersonPointsRepository extends EntityRepository
         $this->_em->flush();
     }
 
-    public function getTotalPoints(User $user): int
+    /**
+     * Add points for subscription registration
+     *
+     * @param User $user
+     * @param $points
+     */
+    public function givePointsForSubscriptionRegistration(User $user, $points)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+
+        $params = [
+            'season' => $season,
+            'person' => $person,
+            'points' => $points,
+            'type' => PersonPoints::TYPE_SUBSCRIPTION_REGISTER,
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+
+        $personPoints = PersonPoints::fromArray($params);
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
+    }
+
+    /**
+     * Adds points for ticket registration
+     *
+     * @param User $user
+     * @param $points
+     */
+    public function givePointsForTicketRegistration(User $user, $points)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+
+        $params = [
+            'season' => $season,
+            'person' => $person,
+            'points' => $points,
+            'type' => PersonPoints::TYPE_TICKET_REGISTER,
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+
+        $personPoints = PersonPoints::fromArray($params);
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
+    }
+
+    /**
+     * Total user points
+     *
+     * @param User $user
+     * @return int
+     */
+    public function getTotalPoints(User $user) : int
     {
         $qb = $this->_em->createQueryBuilder();
         $select = $qb->select(['points' => 'SUM(p.points)'])
             ->from('ZenomaniaCoreBundle:PersonPoints', 'p')
             ->where('p.user = :user')
             ->setParameter('user', $user);
-        $result = $select->getQuery()->getSingleScalarResult();
-        return intval($result);
+        try {
+            $result = $select->getQuery()->getSingleScalarResult();
+            return intval($result);
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * User points aggregated by type
+     *
+     * @param User $user
+     * @param \DateTime|null $fromDate
+     * @return array
+     */
+    public function getUserPointsByType(User $user, \DateTime $fromDate = null)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $select = $qb->select(['points' => 'SUM(p.points)', 'type' => 'p.type'])
+            ->from('ZenomaniaCoreBundle:PersonPoints', 'p')
+            ->where('p.user = :user')
+            ->groupBy('p.type')
+            ->setParameter('user', $user);
+        if (null !== $fromDate) {
+            $select->andWhere('p.dt > :date')
+                ->setParameter('date', $fromDate);
+        }
+        $result = $select->getQuery()->getOneOrNullResult();
+        return $result;
     }
 
     /**

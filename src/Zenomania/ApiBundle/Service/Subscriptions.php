@@ -9,10 +9,8 @@
 namespace Zenomania\ApiBundle\Service;
 
 
-use Zenomania\CoreBundle\Entity\Person;
-use Zenomania\CoreBundle\Entity\PersonPoints;
-use Zenomania\CoreBundle\Entity\Season;
-use Zenomania\CoreBundle\Entity\Subscription;
+use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
+use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\SubscriptionRepository;
@@ -66,42 +64,37 @@ class Subscriptions
     /**
      * Начисляем пользователю User баллы лояльности за регистрацию билета barcode
      *
-     * @param Person $person
-     * @param Season $promoAction
+     * @param User $user
      * @return int
      */
-    public function chargePointForSubsRegistration(Person $person, Season $promoAction)
+    protected function givePointsForRegistration(User $user)
     {
-        $charge = 3000; // Сколько начислить баллов за регистрацию билета
-
-        $params = [
-            'season' => $promoAction,
-            'person' => $person,
-            'points' => $charge,
-            'type' => 'sub_register',
-            'state' => 'none',
-            'dt' => new \DateTime()
-        ];
-
-        $personPoints = PersonPoints::fromArray($params);
-        $this->getPersonPointsRepository()->save($personPoints);
-
+        $charge = PersonPoints::POINTS_FOR_SUBSCRIPTION_REGISTRATION; // Сколько начислить баллов за регистрацию билета
+        $this->getPersonPointsRepository()->givePointsForSubscriptionRegistration($user, $charge);
         return $charge;
     }
 
     /**
      * Регистрация абонемента определенным пользователем
      *
-     * @param Person $person
      * @param SubscriptionNumber $subNumber
-     * @return null|Subscription
+     * @param User $user
+     * @return int number of points for action
+     * @throws EntityNotFoundException
      */
-    public function subsRegistration(Person $person, SubscriptionNumber $subNumber)
+    public function subsRegistration(SubscriptionNumber $subNumber, User $user)
     {
         $subs = $this->getSubscriptionRepository()->findSubsByNumber($subNumber);
+        if (null === $subs) {
+            throw new EntityNotFoundException("Subscription not found by cardcode");
+        }
+
+        $person = $user->getPerson();
         $subs->setPerson($person);
 
-        return $this->getSubscriptionRepository()->save($subs);
+        $this->getSubscriptionRepository()->save($subs);
+
+        return $this->givePointsForRegistration($user);
     }
 
     /**

@@ -211,6 +211,4 @@ class DeviceToken
     {
         $this->user = $user;
     }
-
-
 }

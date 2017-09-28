@@ -4,11 +4,13 @@ namespace Zenomania\CoreBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
-use Zenomania\CoreBundle\Entity\Player;
+use Zenomania\CoreBundle\Form\DataTransformers\LineUpTransformer;
+use Zenomania\CoreBundle\Form\DataTransformers\ScoreInRoundTransformer;
 use Zenomania\CoreBundle\Form\Type\Calendar;
 
 class EventType extends AbstractType
@@ -49,8 +51,7 @@ class EventType extends AbstractType
                 ],
                 'required' => false
             ])
-            ->add('isLineUp', null, ['label' => 'Опубликован состав'])
-            ->add('scoreInRounds')
+            ->add('isLineUp', null, ['label' => 'Опубликован состав', 'required' => false])
             ->add('clubHome', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Club',
                 'choice_label' => 'name',
@@ -88,9 +89,23 @@ class EventType extends AbstractType
                 'empty_data' => null,
                 'placeholder' => 'Выберите игрока',
                 'required' => false
+            ])
+            ->add('scoreInRounds', null, ['label' => 'Счёт по партиям', 'required' => false])
+            ->add('rounds', CollectionType::class, [
+                'entry_type' => ScoreInRoundType::class,
+                'entry_options' => array('label' => false),
+            ])
+            ->add('lineup', CollectionType::class, [
+                'entry_type' => LineUpType::class,
+                'entry_options' => array('label' => false),
             ]);
+
+        $builder
+            ->addModelTransformer(new LineUpTransformer());
+        $builder
+            ->addModelTransformer(new ScoreInRoundTransformer());
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -108,6 +123,4 @@ class EventType extends AbstractType
     {
         return 'zenomania_corebundle_event';
     }
-
-
 }

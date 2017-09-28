@@ -12,6 +12,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Route;
+use Zenomania\ApiBundle\Form\EventScorePredictionType;
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -119,7 +120,7 @@ class EventController extends RestController
      *      }
      *
      * @ApiDoc(
-     *  section="Мероприятия",
+     *  section="Прогнозы",
      *  resource=true,
      *  description="Данные по предстоящему мероприятию",
      *  statusCodes={
@@ -211,6 +212,87 @@ class EventController extends RestController
         $dataEvent = $this->getResourceCollection($events, $transformer);
 
         $view = $this->view($dataEvent);
+        return $this->handleView($view);
+    }
+
+    /**
+     *
+     * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 400,
+     *                  "message": "Bad Request"
+     *              },
+     *              "errors": null
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "id":<forecast id>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Прогнозы",
+     *  resource=true,
+     *  description="Прогноз счета в партиях",
+     *  statusCodes={
+     *         204="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    },
+     *  input={
+     *     "class"="\Zenomania\ApiBundle\Form\EventScorePredictionType",
+     *     "name"=""
+     *     }
+     * )
+     *
+     * @Route(requirements={"event": "\d+"})
+     *
+     * @param Event $event
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postEventPredictionAction(Event $event = null, Request $request)
+    {
+        if (null === $event) {
+            throw new HttpException(400, "Мероприятие не найдено");
+        }
+
+        $form = $this->createForm(EventScorePredictionType::class);
+        $this->processForm($request, $form);
+
+        if (!$form->isValid()) {
+            throw $this->createFormValidationException($form);
+        }
+
+        $service = $this->get('event_forecast.service');
+
+        if ($service->hasActiveForecast($event, $this->getUser())) {
+            throw new HttpException(400, "Вы уже сделали прогноз");
+        }
+
+        $forecast = $service->getEventForecastByModel($form->getData());
+        $forecast->setEvent($event);
+        $forecast->setUser($this->getUser());
+
+        $service->save($forecast);
+
+        $data = [
+            'id' => $forecast->getId()
+        ];
+
+        $view = $this->view($data, 200);
         return $this->handleView($view);
     }
 }
