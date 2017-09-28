@@ -47,7 +47,7 @@ class ExceptionNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
-        if ($data instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+        if ($data instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
             return false;
         }
         return $data instanceof \Exception;
