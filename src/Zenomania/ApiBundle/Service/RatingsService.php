@@ -8,7 +8,7 @@
 
 namespace Zenomania\ApiBundle\Service;
 
-use Zenomania\ApiBundle\Form\Model\Ratings;
+use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 
 class RatingsService
@@ -23,7 +23,7 @@ class RatingsService
         $this->personPointsRepository = $personPointsRepository;
     }
 
-    public function getRatings(Ratings $filter)
+    public function getRatings(RatingsFilter $filter)
     {
         return $this->getPersonPointsRepositry()->getRatings($filter);
     }

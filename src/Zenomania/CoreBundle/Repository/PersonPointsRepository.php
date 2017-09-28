@@ -9,7 +9,7 @@
 namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zenomania\ApiBundle\Form\Model\Ratings;
+use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
@@ -212,10 +212,10 @@ class PersonPointsRepository extends EntityRepository
     /**
      * Получаем общи рейтинг пользователей
      *
-     * @param Ratings $filter
+     * @param RatingsFilter $filter
      * @return array
      */
-    public function getRatings(Ratings $filter)
+    public function getRatings(RatingsFilter $filter)
     {
         $em = $this->getEntityManager();
 

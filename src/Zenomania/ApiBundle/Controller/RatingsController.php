@@ -8,11 +8,11 @@
 
 namespace Zenomania\ApiBundle\Controller;
 
+use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
-use Symfony\Component\HttpFoundation\Request;
-use Zenomania\ApiBundle\Form\RatingsType;
+use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
 
 class RatingsController extends RestController
 {
@@ -26,6 +26,7 @@ class RatingsController extends RestController
      *                  "message": "Bad Request"
      *              },
      *              "errors": null
+     *          }
      *      }
      *
      * ### Success Response ###
@@ -62,21 +63,25 @@ class RatingsController extends RestController
      * )
      * @QueryParam(name="limit", default="20", requirements="\d+", description="Количество запрашиваемых записей" )
      * @QueryParam(name="offset", nullable=true, requirements="\d+", description="Смещение, с которого нужно начать просмотр")
-     * @QueryParam(name="period", description="За какой период сделать выборку месяц(month)|сезон(season)|за все время()")
+     * @QueryParam(name="period", description="Сделать выборку за месяц(month)|сезон(season)|все()")
      *
      * @Route("ratings")
+     * @param ParamFetcher $paramFetcher
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getRatingsAction(Request $request)
+    public function getRatingsAction(ParamFetcher $paramFetcher)
     {
-        $form = $this->createForm(RatingsType::class);
-        $this->processForm($request, $form);
-        if (!$form->isValid()) {
-            throw $this->createFormValidationException($form);
-        }
+        $transformer = $this->get('api.data.transformer.ratings');
+        $service = $this->get('api.ratings');
 
-        $ratingsService = $this->get('api.ratings');
+        $params = $this->getParams($paramFetcher, 'stats');
+        $filter = new RatingsFilter();
+        $filter->setFromArray($params);
+
+        /** @var array $items */
+        $items = $service->getRatings($filter);
         /** @var array $data */
-        $data = $ratingsService->getRatings($form->getData());
+        $data = $this->getResourceItem($items, $transformer);
 
         $view = $this->view($data);
         return $this->handleView($view);
