@@ -12,6 +12,7 @@ class PeriodConverter
 {
     const WEEK = "week";
     const MONTH = "month";
+    const SEASON = "season";
     const QUARTER = "quarter";
     const YEAR = 'year';
     const THIS_WEEK = "thisweek";
@@ -47,7 +48,16 @@ class PeriodConverter
      */
     public function __construct($period, $params = [])
     {
-        if (!in_array($period, [self::WEEK, self::MONTH, self::QUARTER, self::YEAR, self::THIS_WEEK, self::LAST_INTERVAL, self::NEXT_INTERVAL])) {
+        if (!in_array($period, [
+            self::WEEK,
+            self::MONTH,
+            self::SEASON,
+            self::QUARTER,
+            self::YEAR,
+            self::THIS_WEEK,
+            self::LAST_INTERVAL,
+            self::NEXT_INTERVAL,
+        ])) {
             throw new Exception("Period marker not found!", 404);
         }
 
@@ -57,6 +67,9 @@ class PeriodConverter
                 break;
             case self::MONTH:
                 $this->fillByMonth();
+                break;
+            case self::SEASON:
+                $this->fillBySeason();
                 break;
             case self::QUARTER:
                 $this->fillByQuarter();
@@ -112,7 +125,8 @@ class PeriodConverter
     /**
      * Текущая неделя
      */
-    protected function fillByThisWeek(){
+    protected function fillByThisWeek()
+    {
         $weekForStartDate = new \DateTime();
         $weekForFinishDate = new \DateTime();
         $weekForStartDate->modify('monday this week');
@@ -145,6 +159,28 @@ class PeriodConverter
         $this->startDate = new \DateTime($currentDate->format('Y') . '-' . $firstQuarterMonthNumberString . '-01');
         $this->finishDate = $currentDate;
     }
+
+    protected function fillBySeason()
+    {
+        $currentDate = new \DateTime();
+        $winter = new \DateTime('December 1');
+        $spring = new \DateTime('March 1');
+        $summer = new \DateTime('June 1');
+        $fall = new \DateTime('September 1');
+        switch ($currentDate) {
+            case $currentDate >= $winter && $currentDate < $spring:
+                $season = $winter;
+            case $currentDate >= $spring && $currentDate < $summer:
+                $season = $spring;
+            case $currentDate >= $summer && $currentDate < $fall:
+                $season = $summer;
+            case $currentDate >= $fall && $currentDate < $winter:
+                $season = $fall;
+        }
+        $this->startDate = new \DateTime($season->format('Y-m') . '-01');
+        $this->finishDate = $currentDate;
+    }
+
     /**
      *  Год (с 00 1 дня до текущей даты текущего года)
      */
@@ -163,7 +199,7 @@ class PeriodConverter
      */
     protected function fillPeriodLastInterval($params)
     {
-        if(!isset($params['interval']) || !array_key_exists($params['interval'], $this->intervalDays)){
+        if (!isset($params['interval']) || !array_key_exists($params['interval'], $this->intervalDays)) {
             throw new Exception("Interval not found!", 404);
         }
         $interval = $params['interval'];
@@ -182,7 +218,7 @@ class PeriodConverter
      */
     protected function fillPeriodNextInterval($params)
     {
-        if(!isset($params['interval']) || !array_key_exists($params['interval'], $this->intervalDays)){
+        if (!isset($params['interval']) || !array_key_exists($params['interval'], $this->intervalDays)) {
             throw new Exception("Interval not found!", 404);
         }
         $interval = $params['interval'];
