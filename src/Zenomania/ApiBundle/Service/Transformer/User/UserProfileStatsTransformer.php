@@ -10,25 +10,11 @@ namespace Zenomania\ApiBundle\Service\Transformer\User;
 
 use Zenomania\ApiBundle\Service\Transformer\TransformerAbstract;
 use Zenomania\CoreBundle\Entity\PersonPoints;
-use Zenomania\CoreBundle\Entity\User;
-use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 
 class UserProfileStatsTransformer extends TransformerAbstract
 {
-    /**
-     * @var PersonPointsRepository
-     */
-    private $repository;
-
-    public function __construct(PersonPointsRepository $repository)
+    public function transform(array $data)
     {
-        $this->repository = $repository;
-    }
-
-    public function transform(User $user)
-    {
-        $data = $this->getRepository()->getUserPointsByType($user);
-
         $matches = 0;
         if (isset($data[PersonPoints::TYPE_TICKET_REGISTER])) {
             $matches += $data[PersonPoints::TYPE_TICKET_REGISTER];
@@ -43,13 +29,5 @@ class UserProfileStatsTransformer extends TransformerAbstract
             'reposts' => $data[PersonPoints::TYPE_REPOST] ?? 0,
             'invites' => $data[PersonPoints::TYPE_INVITE] ?? 0
         ];
-    }
-
-    /**
-     * @return PersonPointsRepository
-     */
-    public function getRepository(): PersonPointsRepository
-    {
-        return $this->repository;
     }
 }

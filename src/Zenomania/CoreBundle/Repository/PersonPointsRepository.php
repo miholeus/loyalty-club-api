@@ -154,9 +154,10 @@ class PersonPointsRepository extends EntityRepository
      * User points aggregated by type
      *
      * @param User $user
-     * @return int
+     * @param \DateTime|null $fromDate
+     * @return array
      */
-    public function getUserPointsByType(User $user)
+    public function getUserPointsByType(User $user, \DateTime $fromDate = null)
     {
         $qb = $this->_em->createQueryBuilder();
         $select = $qb->select(['points' => 'SUM(p.points)', 'type' => 'p.type'])
@@ -164,6 +165,10 @@ class PersonPointsRepository extends EntityRepository
             ->where('p.user = :user')
             ->groupBy('p.type')
             ->setParameter('user', $user);
+        if (null !== $fromDate) {
+            $select->andWhere('p.dt > :date')
+                ->setParameter('date', $fromDate);
+        }
         $result = $select->getQuery()->getOneOrNullResult();
         return $result;
     }

@@ -7,6 +7,8 @@
 namespace Zenomania\ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -250,14 +252,24 @@ class ProfileController extends RestController
      *    }
      * )
      *
+     * @QueryParam(name="period", requirements="^(month|year)$", allowBlank=true, nullable=true, description="Фильтрация по дате")
+     *
+     * @param ParamFetcher $paramFetcher
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getProfileStatsAction()
+    public function getProfileStatsAction(ParamFetcher $paramFetcher)
     {
-        $user = $this->getUser();
         $transformer = $this->get('api.data.transformer.user.profile_stats_transformer');
+        $service = $this->get('api.person_points');
 
-        $data = $this->getResourceItem($user, $transformer);
+        $params = $this->getParams($paramFetcher, 'stats');
+        $params['period'] = !empty($params['period']) ? $params['period'] : null;
+
+        $filter = new \Zenomania\ApiBundle\Request\Filter\ProfileStatsFilter($params);
+
+        $items = $service->getUserPoints($this->getUser(), $filter);
+
+        $data = $this->getResourceItem($items, $transformer);
         $view = $this->view($data);
         return $this->handleView($view);
     }
