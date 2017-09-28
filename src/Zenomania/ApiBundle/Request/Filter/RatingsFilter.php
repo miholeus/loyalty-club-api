@@ -2,14 +2,16 @@
 /**
  * Created by PhpStorm.
  * User: igor
- * Date: 25.09.17
- * Time: 18:37
+ * Date: 28.09.17
+ * Time: 14:17
  */
 
-namespace Zenomania\ApiBundle\Form\Model;
+namespace Zenomania\ApiBundle\Request\Filter;
 
 
-class Ratings
+use Zenomania\ApiBundle\Service\Utils\PeriodConverter;
+
+class RatingsFilter
 {
     /**
      * @var integer
@@ -22,7 +24,7 @@ class Ratings
     private $offset;
 
     /**
-     * @var string
+     * @var \DateTime
      */
     private $period;
 
@@ -72,5 +74,21 @@ class Ratings
     public function setPeriod(string $period)
     {
         $this->period = $period;
+    }
+
+    /**
+     * Set data from array
+     *
+     * @param array $data
+     */
+    public function setFromArray(array $data)
+    {
+        foreach ($data as $key => $value) {
+            if ($key == 'period' && $value) {
+                $period = new PeriodConverter($value);
+                $value = $period->getStartDate()->format('Y-m-d');
+            }
+            $this->{"set" . ucfirst($key)}($value);
+        }
     }
 }
