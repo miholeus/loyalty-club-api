@@ -10,7 +10,6 @@ namespace Zenomania\ApiBundle\Controller;
 
 use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
 
@@ -63,9 +62,8 @@ class RatingsController extends RestController
      * )
      * @QueryParam(name="limit", default="20", requirements="\d+", description="Количество запрашиваемых записей" )
      * @QueryParam(name="offset", nullable=true, requirements="\d+", description="Смещение, с которого нужно начать просмотр")
-     * @QueryParam(name="period", description="Сделать выборку за месяц(month)|сезон(season)|все()")
+     * @QueryParam(name="period", requirements="^(month|season)$", allowBlank=true, nullable=true, description="Сделать выборку за месяц(month)|сезон(season)|все()")
      *
-     * @Route("ratings")
      * @param ParamFetcher $paramFetcher
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -74,9 +72,10 @@ class RatingsController extends RestController
         $transformer = $this->get('api.data.transformer.ratings');
         $service = $this->get('api.ratings');
 
-        $params = $this->getParams($paramFetcher, 'stats');
-        $filter = new RatingsFilter();
-        $filter->setFromArray($params);
+        $params = $this->getParams($paramFetcher, 'ratings');
+        $params['period'] = !empty($params['period']) ? $params['period'] : null;
+
+        $filter = new RatingsFilter($params);
 
         /** @var array $items */
         $items = $service->getRatings($filter);
