@@ -55,7 +55,11 @@ class ExceptionListener implements EventSubscriberInterface
 
             $body = $this->serializer->serialize($result, 'json');
 
-            $this->logger->log($level, $logData['message'], $logData);
+            $enableLog = $logData['enabled'];
+            unset($logData['enabled']);
+            if ($enableLog) {
+                $this->logger->log($level, $logData['message'], $logData);
+            }
             $event->setResponse(new Response($body, $result['exception']['code']));
         }
     }
