@@ -6,9 +6,6 @@ Zenomania\CoreBundle\Entity\Ticket:
         ticket__event:
             columns:
                 - event_id
-        ticket__fan_card:
-            columns:
-                - fan_card_id
         ticket__state:
             columns:
                 - state
@@ -45,12 +42,6 @@ Zenomania\CoreBundle\Entity\Ticket:
             generator:
                 strategy: IDENTITY
     fields:
-        fanCardId:
-            type: integer
-            nullable: true
-            options:
-                unsigned: true
-            column: fan_card_id
         serial:
             type: string
             nullable: false

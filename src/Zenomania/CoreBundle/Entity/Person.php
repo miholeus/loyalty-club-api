@@ -107,10 +107,6 @@ class Person
      */
     private $regDate;
 
-    /**
-     * @var integer
-     */
-    private $regActor;
 
     /**
      * @var string
@@ -133,24 +129,10 @@ class Person
     private $city;
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\Club
-     */
-    private $clubOwner;
-
-    /**
      * @var \Zenomania\CoreBundle\Entity\District
      */
     private $district;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $fancard;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $activity;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\User
@@ -162,8 +144,6 @@ class Person
      */
     public function __construct()
     {
-        $this->fancard = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->activity = new \Doctrine\Common\Collections\ArrayCollection();
         $this->regDate = new \DateTime();
     }
 
@@ -660,30 +640,6 @@ class Person
     }
 
     /**
-     * Set regActor
-     *
-     * @param integer $regActor
-     *
-     * @return Person
-     */
-    public function setRegActor($regActor)
-    {
-        $this->regActor = $regActor;
-
-        return $this;
-    }
-
-    /**
-     * Get regActor
-     *
-     * @return integer
-     */
-    public function getRegActor()
-    {
-        return $this->regActor;
-    }
-
-    /**
      * Set regType
      *
      * @param string $regType
@@ -780,30 +736,6 @@ class Person
     }
 
     /**
-     * Set clubOwner
-     *
-     * @param \Zenomania\CoreBundle\Entity\Club $clubOwner
-     *
-     * @return Person
-     */
-    public function setClubOwner(\Zenomania\CoreBundle\Entity\Club $clubOwner = null)
-    {
-        $this->clubOwner = $clubOwner;
-
-        return $this;
-    }
-
-    /**
-     * Get clubOwner
-     *
-     * @return \Zenomania\CoreBundle\Entity\Club
-     */
-    public function getClubOwner()
-    {
-        return $this->clubOwner;
-    }
-
-    /**
      * Set district
      *
      * @param \Zenomania\CoreBundle\Entity\District $district
@@ -825,74 +757,6 @@ class Person
     public function getDistrict()
     {
         return $this->district;
-    }
-
-    /**
-     * Add fancard
-     *
-     * @param \Zenomania\CoreBundle\Entity\FanCard $fancard
-     *
-     * @return Person
-     */
-    public function addFancard(\Zenomania\CoreBundle\Entity\FanCard $fancard)
-    {
-        $this->fancard[] = $fancard;
-
-        return $this;
-    }
-
-    /**
-     * Remove fancard
-     *
-     * @param \Zenomania\CoreBundle\Entity\FanCard $fancard
-     */
-    public function removeFancard(\Zenomania\CoreBundle\Entity\FanCard $fancard)
-    {
-        $this->fancard->removeElement($fancard);
-    }
-
-    /**
-     * Get fancard
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFancard()
-    {
-        return $this->fancard;
-    }
-
-    /**
-     * Add activity
-     *
-     * @param \Zenomania\CoreBundle\Entity\Activity $activity
-     *
-     * @return Person
-     */
-    public function addActivity(\Zenomania\CoreBundle\Entity\Activity $activity)
-    {
-        $this->activity[] = $activity;
-
-        return $this;
-    }
-
-    /**
-     * Remove activity
-     *
-     * @param \Zenomania\CoreBundle\Entity\Activity $activity
-     */
-    public function removeActivity(\Zenomania\CoreBundle\Entity\Activity $activity)
-    {
-        $this->activity->removeElement($activity);
-    }
-
-    /**
-     * Get activity
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getActivity()
-    {
-        return $this->activity;
     }
 
     /**
