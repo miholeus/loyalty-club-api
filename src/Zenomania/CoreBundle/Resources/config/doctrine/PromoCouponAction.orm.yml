@@ -2,10 +2,6 @@ Zenomania\CoreBundle\Entity\PromoCouponAction:
     type: entity
     table: promo_coupon_action
     repositoryClass: Zenomania\CoreBundle\Repository\PromoCouponActionRepository
-    indexes:
-        FK_promo_coupon_action_club:
-            columns:
-                - club_owner
     id:
         id:
             type: integer
@@ -32,30 +28,10 @@ Zenomania\CoreBundle\Entity\PromoCouponAction:
             options:
                 default: '0'
             column: is_blocked
-        pcaType:
-            type: string
-            nullable: false
-            length: null
-            options:
-                fixed: false
-                default: normal
-            column: pca_type
         allowedDays:
             type: boolean
             nullable: false
             options:
                 default: '0'
             column: allowed_days
-    manyToOne:
-        clubOwner:
-            targetEntity: Club
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                club_owner:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-            orphanRemoval: false
     lifecycleCallbacks: {  }

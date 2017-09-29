@@ -28,19 +28,9 @@ class PromoCouponAction
     private $isBlocked = '0';
 
     /**
-     * @var string
-     */
-    private $pcaType = 'normal';
-
-    /**
      * @var boolean
      */
     private $allowedDays = '0';
-
-    /**
-     * @var \Zenomania\CoreBundle\Entity\Club
-     */
-    private $clubOwner;
 
     public static function fromArray($data)
     {
@@ -135,30 +125,6 @@ class PromoCouponAction
     }
 
     /**
-     * Set pcaType
-     *
-     * @param string $pcaType
-     *
-     * @return PromoCouponAction
-     */
-    public function setPcaType($pcaType)
-    {
-        $this->pcaType = $pcaType;
-
-        return $this;
-    }
-
-    /**
-     * Get pcaType
-     *
-     * @return string
-     */
-    public function getPcaType()
-    {
-        return $this->pcaType;
-    }
-
-    /**
      * Set allowedDays
      *
      * @param boolean $allowedDays
@@ -180,29 +146,5 @@ class PromoCouponAction
     public function getAllowedDays()
     {
         return $this->allowedDays;
-    }
-
-    /**
-     * Set clubOwner
-     *
-     * @param \Zenomania\CoreBundle\Entity\Club $clubOwner
-     *
-     * @return PromoCouponAction
-     */
-    public function setClubOwner(\Zenomania\CoreBundle\Entity\Club $clubOwner = null)
-    {
-        $this->clubOwner = $clubOwner;
-
-        return $this;
-    }
-
-    /**
-     * Get clubOwner
-     *
-     * @return \Zenomania\CoreBundle\Entity\Club
-     */
-    public function getClubOwner()
-    {
-        return $this->clubOwner;
     }
 }

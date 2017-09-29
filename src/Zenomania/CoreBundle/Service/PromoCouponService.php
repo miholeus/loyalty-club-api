@@ -70,7 +70,6 @@ class PromoCouponService
             // Если такой акции нет, то создаём её
             if (empty($pcaction)) {
                 $params = [
-                    'club_owner' => 9,
                     'caption' => $row[FileUpload::FIELD_ACTION]
                 ];
 
