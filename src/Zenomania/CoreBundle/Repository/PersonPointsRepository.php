@@ -9,6 +9,7 @@
 namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
@@ -210,5 +211,52 @@ class PersonPointsRepository extends EntityRepository
             return intval($result[0]['position']);
         }
         return null;
+    }
+
+    /**
+     * Получаем общи рейтинг пользователей
+     *
+     * @param RatingsFilter $filter
+     * @return array
+     */
+    public function getRatings(RatingsFilter $filter)
+    {
+        $em = $this->getEntityManager();
+
+        $subQuery = $em->getConnection()->createQueryBuilder()
+            ->select([
+                'SUM (points) AS points',
+                'user_id'
+            ])->from($this->getClassMetadata()->getTableName(), 'p')
+            ->innerJoin('p', 'users', 'u', 'p.user_id = u.id')
+            ->where('points > 0')
+            ->andWhere('user_id IS NOT NULL')
+            ->groupBy('user_id');
+        if ($filter->period) {
+            $subQuery
+                ->andWhere('dt > :dt');
+        }
+
+        $qb = clone $em->getConnection()->createQueryBuilder();
+        $select = $qb->select([
+            'RANK () OVER (ORDER BY s.points DESC, firstname) AS position',
+            's.points',
+            's.user_id',
+            'u.avatar',
+            'u.firstname',
+            'u.lastname',
+            'u.middlename'
+        ])->from(sprintf("(%s)", $subQuery), 's')
+            ->innerJoin('s', 'users', 'u', 's.user_id = u.id')
+            ->orderBy('points', 'DESC');
+        if ($filter->period) {
+            $select->setParameter('dt', $filter->period);
+        }
+
+        $select->setMaxResults($filter->getLimit());
+        $select->setFirstResult($filter->getOffset());
+
+        $result = $select->execute()->fetchAll();
+        return $result;
     }
 }

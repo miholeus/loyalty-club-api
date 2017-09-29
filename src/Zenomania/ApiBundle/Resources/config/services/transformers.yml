@@ -28,3 +28,6 @@ services:
     api.data.transformer.event.prediction:
         class: Zenomania\ApiBundle\Service\Transformer\Event\EventPredictionTransformer
         arguments: ['@utils.host_based_url']
+    api.data.transformer.ratings:
+        class: Zenomania\ApiBundle\Service\Transformer\RatingsTransformer
+        arguments: ['@utils.host_based_url']
