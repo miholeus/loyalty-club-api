@@ -379,6 +379,16 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
         return $this->id;
     }
 
+    /**
+     * Sets identifier
+     *
+     * @param $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     public function __toString()
     {
         return sprintf("%s %s", $this->getFirstname(), $this->getLastname());

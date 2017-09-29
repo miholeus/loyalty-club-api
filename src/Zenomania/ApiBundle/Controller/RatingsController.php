@@ -80,7 +80,7 @@ class RatingsController extends RestController
         /** @var array $items */
         $items = $service->getRatings($filter);
         /** @var array $data */
-        $data = $this->getResourceItem($items, $transformer);
+        $data = $this->getResourceCollection($items, $transformer);
 
         $view = $this->view($data);
         return $this->handleView($view);

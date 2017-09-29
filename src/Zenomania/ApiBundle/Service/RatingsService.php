@@ -23,6 +23,12 @@ class RatingsService
         $this->personPointsRepository = $personPointsRepository;
     }
 
+    /**
+     * Fetches ratings by filter
+     *
+     * @param RatingsFilter $filter
+     * @return array
+     */
     public function getRatings(RatingsFilter $filter)
     {
         return $this->getPersonPointsRepositry()->getRatings($filter);

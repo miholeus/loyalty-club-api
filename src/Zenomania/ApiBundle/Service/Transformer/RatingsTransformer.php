@@ -8,21 +8,40 @@
 
 namespace Zenomania\ApiBundle\Service\Transformer;
 
+use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Service\Utils\HostBasedUrl;
+
 class RatingsTransformer extends TransformerAbstract
 {
-    public function transform(array $items)
+    protected $defaultIncludes = ['user'];
+    /**
+     * @var HostBasedUrl
+     */
+    private $url;
+
+    public function __construct(HostBasedUrl $url)
     {
-        $data = array();
-        foreach ($items as $key => $value){
-            $item['position'] = $value['position'];
-            $item['points'] = $value['points'];
-            $item['user_id'] = $value['user_id'];
-            $item['avatar'] = $value['avatar'];
-            $item['firstname'] = $value['firstname'];
-            $item['lastname'] = $value['lastname'];
-            $item['middlename'] = $value['middlename'];
-            $data[] = $item;
-        }
+        $this->url = $url;
+    }
+
+    public function transform(array $item)
+    {
+        $data = [
+            'position'     => $item['position'],
+            'points'       => $item['points'],
+        ];
         return $data;
+    }
+
+    public function includeUser(array $item)
+    {
+        $user = User::fromArray([
+            'id' => $item['user_id'],
+            'avatar' => $item['avatar'],
+            'firstname' => $item['firstname'],
+            'lastname' => $item['lastname'],
+            'middlename' => $item['middlename']
+        ]);
+        return $this->item($user, new UserTransformer($this->url));
     }
 }

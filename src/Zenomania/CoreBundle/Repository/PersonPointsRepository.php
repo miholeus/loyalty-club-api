@@ -232,7 +232,7 @@ class PersonPointsRepository extends EntityRepository
             ->where('points > 0')
             ->andWhere('user_id IS NOT NULL')
             ->groupBy('user_id');
-        if ($filter->getPeriod()) {
+        if ($filter->period) {
             $subQuery
                 ->andWhere('dt > :dt');
         }
@@ -249,15 +249,13 @@ class PersonPointsRepository extends EntityRepository
         ])->from(sprintf("(%s)", $subQuery), 's')
             ->innerJoin('s', 'users', 'u', 's.user_id = u.id')
             ->orderBy('points', 'DESC');
-        if ($filter->getPeriod()) {
-            $select->setParameter('dt', $filter->getPeriod());
+        if ($filter->period) {
+            $select->setParameter('dt', $filter->period);
         }
-        if ($filter->getLimit()) {
-            $select->setMaxResults($filter->getLimit());
-        }
-        if ($filter->getOffset()) {
-            $select->setFirstResult($filter->getOffset());
-        }
+
+        $select->setMaxResults($filter->getLimit());
+        $select->setFirstResult($filter->getOffset());
+
         $result = $select->execute()->fetchAll();
         return $result;
     }
