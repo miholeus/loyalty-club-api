@@ -33,12 +33,13 @@ class RatingsController extends RestController
      *          "data":{
      *              "position":<integer>,
      *              "points": <integer>,
-     *              "user_id": <string>,
-     *              "avatar": <string>,
-     *              "firstname": <string>,
-     *              "lastname": <string>,
-     *              "middlename": <string>,
-     *              "middle_name": <string>
+     *              "user": [
+     *                  "id": <integer>,
+     *                  "photo": <string>,
+     *                  "first_name": <string>,
+     *                  "last_name": <string>,
+     *                  "middle_name": <string>
+     *              ]
      *          },
      *          "time":<time request>
      *      }
