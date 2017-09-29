@@ -77,3 +77,6 @@ services:
     api.person_points:
         class: Zenomania\ApiBundle\Service\PersonPoints
         arguments: ['@repository.person_points_repository']
+    api.promocoupon:
+        class: Zenomania\ApiBundle\Service\PromoCoupon
+        arguments: ['@repository.promocoupon_repository']

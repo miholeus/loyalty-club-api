@@ -24,3 +24,6 @@ api_event:
 api_points:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\PointsController"
+api_promocoupon:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\PromoCouponController"
