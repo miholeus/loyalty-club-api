@@ -65,12 +65,12 @@ class PromoCouponService
             }
 
             // Пытаемся найти промо акцию по названию
-            $pcaction = $pcactionRepository->findOneBy(['caption' => $row[FileUpload::FIELD_ACTION]]);
+            $pcaction = $pcactionRepository->findOneBy(['name' => $row[FileUpload::FIELD_ACTION]]);
 
             // Если такой акции нет, то создаём её
             if (empty($pcaction)) {
                 $params = [
-                    'caption' => $row[FileUpload::FIELD_ACTION]
+                    'name' => $row[FileUpload::FIELD_ACTION]
                 ];
 
                 $pcaction = PromoCouponAction::fromArray($params);

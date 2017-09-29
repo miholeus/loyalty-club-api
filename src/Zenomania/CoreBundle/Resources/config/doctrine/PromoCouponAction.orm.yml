@@ -12,7 +12,7 @@ Zenomania\CoreBundle\Entity\PromoCouponAction:
             generator:
                 strategy: IDENTITY
     fields:
-        caption:
+        name:
             type: string
             nullable: false
             length: 256
@@ -34,4 +34,14 @@ Zenomania\CoreBundle\Entity\PromoCouponAction:
             options:
                 default: '0'
             column: allowed_days
+        createdOn:
+            type: datetime
+            nullable: true
+            column: created_on
+            comment: 'дата создания'
+        updatedOn:
+            type: datetime
+            nullable: true
+            comment: 'дата модификации'
+            column: updated_on
     lifecycleCallbacks: {  }

@@ -20,7 +20,7 @@ class PromoCouponType extends AbstractType
             ->add('activated')
             ->add('action', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\PromoCouponAction',
-                'choice_label' => 'caption',
+                'choice_label' => 'name',
             ]);
     }
     

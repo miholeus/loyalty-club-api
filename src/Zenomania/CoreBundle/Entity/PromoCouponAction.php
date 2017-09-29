@@ -15,7 +15,7 @@ class PromoCouponAction
     /**
      * @var string
      */
-    private $caption;
+    private $name;
 
     /**
      * @var \DateTime
@@ -32,6 +32,16 @@ class PromoCouponAction
      */
     private $allowedDays = '0';
 
+    /**
+     * @var \DateTime
+     */
+    private $createdOn;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedOn;
+
     public static function fromArray($data)
     {
         $self = new self();
@@ -41,6 +51,14 @@ class PromoCouponAction
         return $self;
     }
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->createdOn = new \DateTime();
+        $this->updatedOn = new \DateTime();
+    }
 
     /**
      * Get id
@@ -53,27 +71,27 @@ class PromoCouponAction
     }
 
     /**
-     * Set caption
+     * Set name
      *
-     * @param string $caption
+     * @param string $name
      *
      * @return PromoCouponAction
      */
-    public function setCaption($caption)
+    public function setName($name)
     {
-        $this->caption = $caption;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get caption
+     * Get name
      *
      * @return string
      */
-    public function getCaption()
+    public function getName()
     {
-        return $this->caption;
+        return $this->name;
     }
 
     /**
@@ -146,5 +164,45 @@ class PromoCouponAction
     public function getAllowedDays()
     {
         return $this->allowedDays;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * @param \DateTime $createdOn
+     *
+     * @return PromoCouponAction
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->createdOn = $createdOn;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedOn()
+    {
+        return $this->updatedOn;
+    }
+
+    /**
+     * @param \DateTime $updatedOn
+     *
+     * @return PromoCouponAction
+     */
+    public function setUpdatedOn($updatedOn)
+    {
+        $this->updatedOn = $updatedOn;
+
+        return $this;
     }
 }
