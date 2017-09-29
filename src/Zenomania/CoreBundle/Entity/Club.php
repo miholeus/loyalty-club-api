@@ -65,11 +65,6 @@ class Club
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $person;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
     private $players;
     /**
      * @var boolean
@@ -80,7 +75,6 @@ class Club
      */
     public function __construct()
     {
-        $this->person = new \Doctrine\Common\Collections\ArrayCollection();
         $this->players = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -332,40 +326,6 @@ class Club
     public function getSport()
     {
         return $this->sport;
-    }
-
-    /**
-     * Add person
-     *
-     * @param \Zenomania\CoreBundle\Entity\Person $person
-     *
-     * @return Club
-     */
-    public function addPerson(\Zenomania\CoreBundle\Entity\Person $person)
-    {
-        $this->person[] = $person;
-
-        return $this;
-    }
-
-    /**
-     * Remove person
-     *
-     * @param \Zenomania\CoreBundle\Entity\Person $person
-     */
-    public function removePerson(\Zenomania\CoreBundle\Entity\Person $person)
-    {
-        $this->person->removeElement($person);
-    }
-
-    /**
-     * Get person
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPerson()
-    {
-        return $this->person;
     }
 
     public function __toString()

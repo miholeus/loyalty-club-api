@@ -3,9 +3,6 @@ Zenomania\CoreBundle\Entity\Subscription:
     table: subscription
     repositoryClass: Zenomania\CoreBundle\Repository\SubscriptionRepository
     indexes:
-        FK_subscription_fan_card:
-            columns:
-                - fan_card_id
         FK_subscription_person:
             columns:
                 - person_id
@@ -23,10 +20,6 @@ Zenomania\CoreBundle\Entity\Subscription:
             columns:
                 - serial
                 - number
-        subscription__person_id_fan_card_id:
-            columns:
-                - person_id
-                - fan_card_id
     id:
         id:
             type: integer
@@ -93,17 +86,6 @@ Zenomania\CoreBundle\Entity\Subscription:
                 fixed: false
                 default: ''
     manyToOne:
-        fanCard:
-            targetEntity: FanCard
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                fan_card_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-            orphanRemoval: false
         person:
             targetEntity: Person
             cascade: {  }

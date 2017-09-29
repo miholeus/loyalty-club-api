@@ -52,6 +52,12 @@ class ExceptionNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
+        if ($data instanceof \Zenomania\ApiBundle\Service\Exception\FormValidateException) {
+            return true;
+        }
+        if ($data instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+            return false;
+        }
         return $data instanceof \Exception;
     }
 }

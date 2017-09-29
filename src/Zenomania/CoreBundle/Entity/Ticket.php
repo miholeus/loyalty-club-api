@@ -13,11 +13,6 @@ class Ticket
     private $id;
 
     /**
-     * @var integer
-     */
-    private $fanCardId;
-
-    /**
      * @var string
      */
     private $serial = '';
@@ -76,30 +71,6 @@ class Ticket
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set fanCardId
-     *
-     * @param integer $fanCardId
-     *
-     * @return Ticket
-     */
-    public function setFanCardId($fanCardId)
-    {
-        $this->fanCardId = $fanCardId;
-
-        return $this;
-    }
-
-    /**
-     * Get fanCardId
-     *
-     * @return integer
-     */
-    public function getFanCardId()
-    {
-        return $this->fanCardId;
     }
 
     /**

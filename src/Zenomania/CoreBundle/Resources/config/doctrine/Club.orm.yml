@@ -97,14 +97,6 @@ Zenomania\CoreBundle\Entity\Club:
                     onDelete: CASCADE
             orphanRemoval: false
     oneToMany:
-        person:
-            targetEntity: Zenomania\CoreBundle\Entity\Person
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: clubOwner
-            inversedBy: null
-            joinTable: null
-            orderBy: null
         players:
             targetEntity: Zenomania\CoreBundle\Entity\Player
             cascade: {  }

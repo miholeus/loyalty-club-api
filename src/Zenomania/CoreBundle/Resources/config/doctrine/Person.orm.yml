@@ -139,12 +139,6 @@ Zenomania\CoreBundle\Entity\Person:
             type: datetime
             nullable: true
             column: reg_date
-        regActor:
-            type: integer
-            nullable: true
-            options:
-                unsigned: true
-            column: reg_actor
         regType:
             type: string
             nullable: true
@@ -178,17 +172,6 @@ Zenomania\CoreBundle\Entity\Person:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
-        clubOwner:
-            targetEntity: Zenomania\CoreBundle\Entity\Club
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: person
-            joinColumns:
-                club_owner:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-            orphanRemoval: false
         district:
             targetEntity: District
             cascade: {  }
@@ -200,34 +183,6 @@ Zenomania\CoreBundle\Entity\Person:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
-    manyToMany:
-        fancard:
-            targetEntity: FanCard
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: person
-            inversedBy: null
-            joinTable: null
-            orderBy: null
-        activity:
-            targetEntity: Activity
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: person
-            joinTable:
-                name: person_activity
-                joinColumns:
-                    -
-                        name: person_id
-                        referencedColumnName: id
-                        onDelete: CASCADE
-                inverseJoinColumns:
-                    -
-                        name: activity_id
-                        referencedColumnName: id
-                        onDelete: CASCADE
-            orderBy: null
     oneToOne:
         user:
             targetEntity: Zenomania\CoreBundle\Entity\User

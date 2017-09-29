@@ -22,7 +22,7 @@ class SeasonRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('u')
-            ->from('ZenomaniaCoreBundle:PromoAction', 'u')
+            ->from('ZenomaniaCoreBundle:Season', 'u')
             ->orderBy('u.dtStart', 'DESC')
             ->setMaxResults(1)
             ->getQuery();
