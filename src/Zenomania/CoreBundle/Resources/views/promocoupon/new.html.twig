@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box box-primary">
+                {{ form_start(form) }}
+                <div class="box-header with-border">
+                    <h3 class="box-title">Создание промо-купона</h3>
+                </div>
+                <div class="box-body">
+                    {{ form_widget(form) }}
+                </div>
+                <div class="box-footer">
+                    <ul class="pull-right">
+                        <input type="submit" class="btn btn-primary pull-right" value="Сохранить"/>
+                    </ul>
+                    <a class="btn btn-default" href="{{ path('promocoupon_index') }}">Отмена</a>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box box-primary">
+                {{ form_start(uploadForm) }}
+                <div class="box-header with-border">
+                    <h3 class="box-title">Загрузка промо-купонов</h3>
+                </div>
+                <div class="box-body">
+                    <p>Первая строка (строка с заголовками) должна содержать названия: 'CODE', 'ACTION', 'COUNT_ZEN'.</p>
+                    {{ form_widget(uploadForm) }}
+                </div>
+                <div class="box-footer">
+                    <ul class="pull-right">
+                        <input type="submit" class="btn btn-primary pull-right" value="Загрузить"/>
+                    </ul>
+                </div>
+                {{ form_end(uploadForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

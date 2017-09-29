@@ -15,7 +15,7 @@ class PromoCouponAction
     /**
      * @var string
      */
-    private $caption;
+    private $name;
 
     /**
      * @var \DateTime
@@ -28,20 +28,37 @@ class PromoCouponAction
     private $isBlocked = '0';
 
     /**
-     * @var string
-     */
-    private $pcaType = 'normal';
-
-    /**
      * @var boolean
      */
     private $allowedDays = '0';
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\Club
+     * @var \DateTime
      */
-    private $clubOwner;
+    private $createdOn;
 
+    /**
+     * @var \DateTime
+     */
+    private $updatedOn;
+
+    public static function fromArray($data)
+    {
+        $self = new self();
+        foreach ($data as $k => $v) {
+            $self->{"set" . ucfirst($k)}($v);
+        }
+        return $self;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->createdOn = new \DateTime();
+        $this->updatedOn = new \DateTime();
+    }
 
     /**
      * Get id
@@ -54,27 +71,27 @@ class PromoCouponAction
     }
 
     /**
-     * Set caption
+     * Set name
      *
-     * @param string $caption
+     * @param string $name
      *
      * @return PromoCouponAction
      */
-    public function setCaption($caption)
+    public function setName($name)
     {
-        $this->caption = $caption;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get caption
+     * Get name
      *
      * @return string
      */
-    public function getCaption()
+    public function getName()
     {
-        return $this->caption;
+        return $this->name;
     }
 
     /**
@@ -126,30 +143,6 @@ class PromoCouponAction
     }
 
     /**
-     * Set pcaType
-     *
-     * @param string $pcaType
-     *
-     * @return PromoCouponAction
-     */
-    public function setPcaType($pcaType)
-    {
-        $this->pcaType = $pcaType;
-
-        return $this;
-    }
-
-    /**
-     * Get pcaType
-     *
-     * @return string
-     */
-    public function getPcaType()
-    {
-        return $this->pcaType;
-    }
-
-    /**
      * Set allowedDays
      *
      * @param boolean $allowedDays
@@ -174,26 +167,42 @@ class PromoCouponAction
     }
 
     /**
-     * Set clubOwner
-     *
-     * @param \Zenomania\CoreBundle\Entity\Club $clubOwner
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * @param \DateTime $createdOn
      *
      * @return PromoCouponAction
      */
-    public function setClubOwner(\Zenomania\CoreBundle\Entity\Club $clubOwner = null)
+    public function setCreatedOn($createdOn)
     {
-        $this->clubOwner = $clubOwner;
+        $this->createdOn = $createdOn;
 
         return $this;
     }
 
     /**
-     * Get clubOwner
-     *
-     * @return \Zenomania\CoreBundle\Entity\Club
+     * @return \DateTime
      */
-    public function getClubOwner()
+    public function getUpdatedOn()
     {
-        return $this->clubOwner;
+        return $this->updatedOn;
+    }
+
+    /**
+     * @param \DateTime $updatedOn
+     *
+     * @return PromoCouponAction
+     */
+    public function setUpdatedOn($updatedOn)
+    {
+        $this->updatedOn = $updatedOn;
+
+        return $this;
     }
 }

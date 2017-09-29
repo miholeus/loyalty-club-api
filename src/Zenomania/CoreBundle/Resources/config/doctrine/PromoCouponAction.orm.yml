@@ -1,10 +1,7 @@
 Zenomania\CoreBundle\Entity\PromoCouponAction:
     type: entity
     table: promo_coupon_action
-    indexes:
-        FK_promo_coupon_action_club:
-            columns:
-                - club_owner
+    repositoryClass: Zenomania\CoreBundle\Repository\PromoCouponActionRepository
     id:
         id:
             type: integer
@@ -15,7 +12,7 @@ Zenomania\CoreBundle\Entity\PromoCouponAction:
             generator:
                 strategy: IDENTITY
     fields:
-        caption:
+        name:
             type: string
             nullable: false
             length: 256
@@ -31,30 +28,20 @@ Zenomania\CoreBundle\Entity\PromoCouponAction:
             options:
                 default: '0'
             column: is_blocked
-        pcaType:
-            type: string
-            nullable: false
-            length: null
-            options:
-                fixed: false
-                default: normal
-            column: pca_type
         allowedDays:
             type: boolean
             nullable: false
             options:
                 default: '0'
             column: allowed_days
-    manyToOne:
-        clubOwner:
-            targetEntity: Club
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                club_owner:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-            orphanRemoval: false
+        createdOn:
+            type: datetime
+            nullable: true
+            column: created_on
+            comment: 'дата создания'
+        updatedOn:
+            type: datetime
+            nullable: true
+            comment: 'дата модификации'
+            column: updated_on
     lifecycleCallbacks: {  }

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Загружено</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <td>В базу успешно загружено {{ result.new }} кода(ов)</td>
+                        </tr>
+                        <tr>
+                            <td>При загрузке были обнаружены {{ result.duplicate }} дублирующихся кода(ов)</td>
+                        </tr>
+                        <tr>
+                            <td>При загрузке произошло {{ result.error }} ошибок</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <ul class="pull-right">
+                        <a class="btn btn-default" href="{{ path('promocoupon_index') }}">Back to the list</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

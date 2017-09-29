@@ -82,3 +82,6 @@ services:
     transfer_actor.service:
         class: Zenomania\CoreBundle\Service\TransferActorService
         arguments: ['@doctrine.orm.entity_manager']
+    promocoupon.service:
+        class: Zenomania\CoreBundle\Service\PromoCouponService
+        arguments: ['@doctrine.orm.entity_manager']
