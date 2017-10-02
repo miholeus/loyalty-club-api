@@ -82,3 +82,9 @@ services:
     transfer_actor.service:
         class: Zenomania\CoreBundle\Service\TransferActorService
         arguments: ['@doctrine.orm.entity_manager']
+    badge.service:
+        class: Zenomania\CoreBundle\Service\Badge
+        parent: core.user_aware_service
+        calls:
+            - ['setUploadService', ['@file.upload_badge_photo']]
+            - ['setImageService', ['@images.service']]

@@ -37,6 +37,9 @@ zenomania_core_event:
 zenomania_core_player:
         resource: "@ZenomaniaCoreBundle/Resources/config/routing/player.yml"
         prefix:   /player
+zenomania_core_badge:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/badge.yml"
+    prefix:   /badge
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}

@@ -2,10 +2,13 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
+
+
 /**
  * Badge
  */
-class Badge
+class Badge implements IdentifiableInterface
 {
     /**
      * @var int
