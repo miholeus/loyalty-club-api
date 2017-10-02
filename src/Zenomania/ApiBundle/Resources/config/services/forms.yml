@@ -4,3 +4,8 @@ services:
         arguments: ['@repository.city_repository', '@repository.district_repository']
         tags:
             - { name: form.type }
+    form.event_player_prediction:
+        class: Zenomania\ApiBundle\Form\EventPlayerPredictionType
+        arguments: ['@player.service']
+        tags:
+            - { name: form.type }
