@@ -62,10 +62,20 @@ class PromoCouponController extends RestController
         $promoCouponService = $this->get('api.promocoupon');
 
         if (!$promoCouponService->isValidNumber($numberPromoCoupon)) {
-            throw new HttpException(400, "Промо-кода с таким номером {$numberPromoCoupon} не найдено.");
+            throw new HttpException(400, "Промо-код с номером {$numberPromoCoupon} не найден.");
         }
 
-        $zen = 1234;
+        if ($promoCouponService->isPromoCouponRegistered($numberPromoCoupon)) {
+            throw new HttpException(400, "Промо-код с номером {$numberPromoCoupon} уже был использован.");
+        }
+
+        $user = $this->getUser();
+
+        try {
+            $zen = $promoCouponService->promoCouponRegistration($numberPromoCoupon, $user);
+        } catch (EntityNotFoundException $e) {
+            throw new HttpException($e->getMessage());
+        }
 
         $data = [
             'points' => $zen
