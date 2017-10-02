@@ -76,6 +76,35 @@ class EventController extends Controller
     }
 
     /**
+     * Подсчёт прогнозов пользователей
+     */
+    public function calculateAction(Event $event)
+    {
+        $service = $this->get('event.service');
+
+
+        $deleteForm = $this->createDeleteForm($event);
+
+        return $this->render('ZenomaniaCoreBundle:event:show.html.twig', array(
+            'event' => $event,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Пересчитать прогнозы пользователей
+     */
+    public function recountAction(Event $event)
+    {
+        $deleteForm = $this->createDeleteForm($event);
+
+        return $this->render('ZenomaniaCoreBundle:event:show.html.twig', array(
+            'event' => $event,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
      * Displays a form to edit an existing event entity.
      *
      */

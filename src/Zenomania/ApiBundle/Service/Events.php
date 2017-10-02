@@ -7,6 +7,7 @@
 namespace Zenomania\ApiBundle\Service;
 
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
+use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Repository\EventRepository;
 
 class Events
@@ -83,5 +84,13 @@ class Events
     public function getEventRepository(): EventRepository
     {
         return $this->eventRepository;
+    }
+
+    /**
+     * @param Event $event
+     */
+    public function calculate(Event $event)
+    {
+
     }
 }

@@ -22,3 +22,13 @@ event_delete:
     path:     /{id}/delete
     defaults: { _controller: "ZenomaniaCoreBundle:Event:delete" }
     methods:  DELETE
+
+event_calculate:
+    path:     /{id}/calculate
+    defaults: { _controller: "ZenomaniaCoreBundle:Event:calculate" }
+    methods:  GET
+
+event_recount:
+    path:     /{id}/recount
+    defaults: { _controller: "ZenomaniaCoreBundle:Event:recount" }
+    methods:  GET
