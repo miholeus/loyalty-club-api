@@ -85,6 +85,7 @@ class ProfileSocialController extends RestController
 
         try {
             $userInfo = $serviceSocialInfo->getUserInfo($data);
+            $userInfo->setUser($this->getUser());
         } catch (ClientException $e) {
             throw new HttpException(400, $e->getMessage(), $e);
         }

@@ -31,12 +31,6 @@ Zenomania\CoreBundle\Entity\EventAttendance:
             options:
                 unsigned: true
             column: subscription_id
-        fanCard:
-            type: integer
-            nullable: true
-            options:
-                unsigned: true
-            column: fan_card
         enterDate:
             type: datetime
             nullable: false

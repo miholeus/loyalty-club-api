@@ -28,11 +28,6 @@ class EventAttendanceImport
     private $subscriptionNumber;
 
     /**
-     * @var string
-     */
-    private $fanCardNumber;
-
-    /**
      * @var \DateTime
      */
     private $enterDt;
@@ -148,30 +143,6 @@ class EventAttendanceImport
     public function getSubscriptionNumber()
     {
         return $this->subscriptionNumber;
-    }
-
-    /**
-     * Set fanCardNumber
-     *
-     * @param string $fanCardNumber
-     *
-     * @return EventAttendanceImport
-     */
-    public function setFanCardNumber($fanCardNumber)
-    {
-        $this->fanCardNumber = $fanCardNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get fanCardNumber
-     *
-     * @return string
-     */
-    public function getFanCardNumber()
-    {
-        return $this->fanCardNumber;
     }
 
     /**

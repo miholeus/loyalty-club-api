@@ -49,13 +49,6 @@ Zenomania\CoreBundle\Entity\EventAttendanceImport:
             options:
                 fixed: false
             column: subscription_number
-        fanCardNumber:
-            type: string
-            nullable: true
-            length: 20
-            options:
-                fixed: false
-            column: fan_card_number
         enterDt:
             type: datetime
             nullable: false

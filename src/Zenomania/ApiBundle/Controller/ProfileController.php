@@ -7,6 +7,8 @@
 namespace Zenomania\ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -205,6 +207,70 @@ class ProfileController extends RestController
         $userService->save($user);
 
         $view = $this->view(null, 204);
+        return $this->handleView($view);
+    }
+
+    /**
+     *
+     * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 400,
+     *                  "message": "Bad Request"
+     *              },
+     *              "errors": null
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "matches":<integer>,
+     *              "purchases":<integer>,
+     *              "predictions":<integer>
+     *              "reposts":<integer>,
+     *              "invites":<integer>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Профиль",
+     *  resource=true,
+     *  description="Вкладка Моя статистика",
+     *  statusCodes={
+     *         200="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @QueryParam(name="period", requirements="^(month|year)$", allowBlank=true, nullable=true, description="Фильтрация по дате")
+     *
+     * @param ParamFetcher $paramFetcher
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getProfileStatsAction(ParamFetcher $paramFetcher)
+    {
+        $transformer = $this->get('api.data.transformer.user.profile_stats_transformer');
+        $service = $this->get('api.person_points');
+
+        $params = $this->getParams($paramFetcher, 'stats');
+        $params['period'] = !empty($params['period']) ? $params['period'] : null;
+
+        $filter = new \Zenomania\ApiBundle\Request\Filter\ProfileStatsFilter($params);
+
+        $items = $service->getUserPoints($this->getUser(), $filter);
+
+        $data = $this->getResourceItem($items, $transformer);
+        $view = $this->view($data);
         return $this->handleView($view);
     }
 }

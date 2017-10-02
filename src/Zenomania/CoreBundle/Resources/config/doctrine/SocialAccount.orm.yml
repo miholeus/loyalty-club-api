@@ -157,4 +157,14 @@ Zenomania\CoreBundle\Entity\SocialAccount:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
+        user:
+            targetEntity: Zenomania\CoreBundle\Entity\User
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: accounts
+            joinColumns:
+                user_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
     lifecycleCallbacks: {  }

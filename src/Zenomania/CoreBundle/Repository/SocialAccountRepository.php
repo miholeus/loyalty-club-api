@@ -17,7 +17,7 @@ class SocialAccountRepository extends EntityRepository
      * Finds account by external id
      *
      * @param SocialAccount $socialAccount
-     * @return mixed
+     * @return SocialAccount|null
      */
     public function findAccountByOuterId(SocialAccount $socialAccount)
     {

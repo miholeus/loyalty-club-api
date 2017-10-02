@@ -23,11 +23,6 @@ class EventAttendance
     private $subscriptionId;
 
     /**
-     * @var integer
-     */
-    private $fanCard;
-
-    /**
      * @var \DateTime
      */
     private $enterDate;
@@ -124,30 +119,6 @@ class EventAttendance
     public function getSubscriptionId()
     {
         return $this->subscriptionId;
-    }
-
-    /**
-     * Set fanCard
-     *
-     * @param integer $fanCard
-     *
-     * @return EventAttendance
-     */
-    public function setFanCard($fanCard)
-    {
-        $this->fanCard = $fanCard;
-
-        return $this;
-    }
-
-    /**
-     * Get fanCard
-     *
-     * @return integer
-     */
-    public function getFanCard()
-    {
-        return $this->fanCard;
     }
 
     /**

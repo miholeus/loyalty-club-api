@@ -58,11 +58,6 @@ class Subscription
     private $note = '';
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\FanCard
-     */
-    private $fanCard;
-
-    /**
      * @var \Zenomania\CoreBundle\Entity\Person
      */
     private $person;
@@ -309,30 +304,6 @@ class Subscription
     public function getNote()
     {
         return $this->note;
-    }
-
-    /**
-     * Set fanCard
-     *
-     * @param \Zenomania\CoreBundle\Entity\FanCard $fanCard
-     *
-     * @return Subscription
-     */
-    public function setFanCard(\Zenomania\CoreBundle\Entity\FanCard $fanCard = null)
-    {
-        $this->fanCard = $fanCard;
-
-        return $this;
-    }
-
-    /**
-     * Get fanCard
-     *
-     * @return \Zenomania\CoreBundle\Entity\FanCard
-     */
-    public function getFanCard()
-    {
-        return $this->fanCard;
     }
 
     /**

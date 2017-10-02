@@ -33,9 +33,9 @@ class Vkontakte implements SocialInterface
      * Get social account by profile data
      *
      * @param ProfileSocialData $socialData
-     * @return bool|mixed
+     * @return SocialAccount
      */
-    public function getUserInfo(ProfileSocialData $socialData)
+    public function getUserInfo(ProfileSocialData $socialData): SocialAccount
     {
         $data = $this->getClient()->getProfile($socialData);
 
@@ -50,7 +50,9 @@ class Vkontakte implements SocialInterface
         $socialAccount->setSex($data->sex);
         $socialAccount->setCountry($data->country->id);
         $socialAccount->setCity($data->city->id);
-        $socialAccount->setMobilePhone($data->mobile_phone);
+        if (isset($data->mobile_phone)) {
+            $socialAccount->setMobilePhone($data->mobile_phone);
+        }
 
         return $socialAccount;
     }
