@@ -76,6 +76,3 @@ services:
         arguments: ['@user.service','@repository.person_repository']
     api.person_points:
         class: Zenomania\ApiBundle\Service\PersonPoints
-    api.badge:
-        class: Zenomania\ApiBundle\Service\Badge
-        arguments: ['@repository.badge_repository']

@@ -4,8 +4,3 @@ services:
         arguments: ['@repository.city_repository', '@repository.district_repository']
         tags:
             - { name: form.type }
-    form.badge:
-        class: Zenomania\ApiBundle\Form\BadgeType
-        arguments: ['@repository.badge_type_repository']
-        tags:
-            - { name: form.type }
