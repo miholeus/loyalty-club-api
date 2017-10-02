@@ -40,6 +40,9 @@ zenomania_core_player:
 zenomania_core_badge:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/badge.yml"
     prefix:   /badge
+zenomania_core_badge_type:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/badgetype.yml"
+    prefix:   /badge/type
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}

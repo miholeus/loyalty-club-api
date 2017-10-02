@@ -42,6 +42,7 @@ class Builder
         $menu->addChild('Matches & Results', self::makeResourceRoutes('event'));
         $menu->addChild('Player', self::makeResourceRoutes('player'));
         $menu->addChild('Badge', self::makeResourceRoutes('badge'));
+        $menu->addChild('Badge Type', self::makeResourceRoutes('badge_type'));
 
         $this->fillBranchRoutes($menu->getChildren());
 

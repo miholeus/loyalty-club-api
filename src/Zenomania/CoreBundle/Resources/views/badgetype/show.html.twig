@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   	<div class="row">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Badge Type</h3>
+				</div>
+				<div class="box-body">
+					<table class="table table-bordered table-responsive">
+						<tbody>
+							<tr>
+								<th>Id</th>
+								<td>{{ badgeType.id }}</td>
+							</tr>
+							<tr>
+								<th>Наименование</th>
+								<td>{{ badgeType.title }}</td>
+							</tr>
+							<tr>
+								<th>Сортировка</th>
+								<td>{{ badgeType.sort }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="box-footer clearfix">
+					<ul class="pull-right">
+						<a class="btn btn-default" href="{{ path('badge_type_index') }}">Back to the list</a>
+						<a class="btn btn-primary" href="{{ path('badge_type_edit', { 'id': badgeType.id }) }}">Edit</a>
+					</ul>
+					{{ form_start(delete_form) }}
+					<input id="badge_type_delete_button" class="btn btn-danger pull-left" type="submit" value="Delete">
+					{{ form_end(delete_form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+	{{ confirm('#badge_type_delete_button') }}
+
+{% endblock %}
+
+
