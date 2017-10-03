@@ -78,18 +78,18 @@ class PromoCoupon
     {
         /** @var \Zenomania\CoreBundle\Entity\PromoCoupon $promoCoupon */
         $promoCoupon = $this->getPromoCouponRepository()->findCouponByCode($number);
-        $this->promoCouponActivate($promoCoupon, $user);
+        $this->promoCouponActivate($promoCoupon);
         $points = $promoCoupon->getPoints();
         $this->getPersonPointsRepository()->givePointsForPromoCouponRegistration($user, $points);
 
         return $points;
     }
 
-    protected function promoCouponActivate(\Zenomania\CoreBundle\Entity\PromoCoupon $promoCoupon, User $user)
+    protected function promoCouponActivate(\Zenomania\CoreBundle\Entity\PromoCoupon $promoCoupon)
     {
         $promoCoupon->setActivated(true);
         $promoCoupon->setUpdatedOn(new \DateTime());
-        $this->getPromoCouponRepository()->save($promoCoupon, $user);
+        $this->getPromoCouponRepository()->save($promoCoupon);
     }
 
     /**

@@ -84,4 +84,6 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
     promocoupon.service:
         class: Zenomania\CoreBundle\Service\PromoCouponService
-        arguments: ['@doctrine.orm.entity_manager']
+        parent: core.user_aware_service
+    promocoupon.parser:
+        class: Zenomania\CoreBundle\Service\PromoCouponParser

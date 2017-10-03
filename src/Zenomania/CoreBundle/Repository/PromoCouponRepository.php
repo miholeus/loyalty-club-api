@@ -17,12 +17,8 @@ use Zenomania\CoreBundle\Entity\User;
 class PromoCouponRepository extends EntityRepository
 {
 
-    public function save(PromoCoupon $promoCoupon, User $user)
+    public function save(PromoCoupon $promoCoupon)
     {
-        if (null === $promoCoupon->getId()) {
-            $promoCoupon->setCreatedBy($user);
-        }
-
         $this->_em->persist($promoCoupon);
         $this->_em->flush();
     }

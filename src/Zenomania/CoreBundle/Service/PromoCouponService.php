@@ -10,49 +10,68 @@ namespace Zenomania\CoreBundle\Service;
 
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Serializer\Encoder\CsvEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Zenomania\CoreBundle\Entity\PromoCoupon;
 use Zenomania\CoreBundle\Entity\PromoCouponAction;
+use Zenomania\CoreBundle\Event\NotificationInterface;
 use Zenomania\CoreBundle\Form\Model\FileUpload;
 
-class PromoCouponService
+class PromoCouponService extends UserAwareService
 {
-    /** @var EntityManager */
-    private $em;
-
     /** @var \Zenomania\CoreBundle\Repository\PromoCouponRepository */
     private $promoCouponRepository;
 
     /** @var \Zenomania\CoreBundle\Repository\PromoCouponActionRepository */
-    private $pcactionRepository;
+    private $promoCouponActionRepository;
 
     /**
      * PromoCouponService constructor.
      * @param EntityManager $em
+     * @param TokenStorage $tokenStorage
+     * @param NotificationInterface $notificationManager
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, TokenStorage $tokenStorage, NotificationInterface $notificationManager)
     {
-        $this->em = $em;
+        parent::__construct($em, $tokenStorage, $notificationManager);
+
         $this->promoCouponRepository = $em->getRepository('ZenomaniaCoreBundle:PromoCoupon');
-        $this->pcactionRepository = $em->getRepository('ZenomaniaCoreBundle:PromoCouponAction');
+        $this->promoCouponActionRepository = $em->getRepository('ZenomaniaCoreBundle:PromoCouponAction');
     }
 
     /**
+     * Tries to find promo coupon action
+     * Adds new if it was not found
+     *
+     * @param array $row
+     * @return null|object|PromoCouponAction
+     */
+    protected function getPromoCouponAction(array $row)
+    {
+        $repository = $this->getPromoCouponActionRepository();
+
+        $couponAction = $repository->findOneBy(['name' => $row[FileUpload::FIELD_ACTION]]);
+
+        // Если такой акции нет, то создаём её
+        if (empty($couponAction)) {
+            $params = [
+                'name' => $row[FileUpload::FIELD_ACTION]
+            ];
+
+            $couponAction = PromoCouponAction::fromArray($params);
+            $repository->save($couponAction);
+        }
+
+        return $couponAction;
+    }
+    /**
      * Загружаем данные в таблицу promo_coupon
      *
-     * @param $dataFile
-     * @param $user
+     * @param $data
      * @return array
      */
-    public function upload($dataFile, $user)
+    public function addFromFile(array $data)
     {
-        $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder(';', '"', '\\', '~')]);
-        $data = $serializer->decode($dataFile, 'csv');
-
         $promoCouponRepository = $this->getPromoCouponRepository();
-        $pcactionRepository = $this->getPcactionRepository();
 
         // Результирующий массив с итогом загрузки данных
         $result = ['new' => 0, 'duplicate' => 0, 'error' => 0];
@@ -65,17 +84,7 @@ class PromoCouponService
             }
 
             // Пытаемся найти промо акцию по названию
-            $pcaction = $pcactionRepository->findOneBy(['name' => $row[FileUpload::FIELD_ACTION]]);
-
-            // Если такой акции нет, то создаём её
-            if (empty($pcaction)) {
-                $params = [
-                    'name' => $row[FileUpload::FIELD_ACTION]
-                ];
-
-                $pcaction = PromoCouponAction::fromArray($params);
-                $pcactionRepository->save($pcaction);
-            }
+            $couponAction = $this->getPromoCouponAction($row);
 
             // Проверяем на наличие записи с таким промо-купоном
             $duplicate = $promoCouponRepository->findCouponByCode($row[FileUpload::FIELD_CODE]);
@@ -85,7 +94,7 @@ class PromoCouponService
             }
 
             $params = [
-                'action' => $pcaction,
+                'action' => $couponAction,
                 'code' => $row[FileUpload::FIELD_CODE],
                 'points' => $row[FileUpload::FIELD_COUNT_ZEN],
                 'activated' => false,
@@ -93,19 +102,12 @@ class PromoCouponService
 
             // Загружаем промо-купон в базу
             $promoCoupon = PromoCoupon::fromArray($params);
-            $promoCouponRepository->save($promoCoupon, $user);
+            $promoCoupon->setCreatedBy($this->getUser());
+            $promoCouponRepository->save($promoCoupon);
             $result['new']++;
         }
 
         return $result;
-    }
-
-    /**
-     * @return EntityManager
-     */
-    public function getEm()
-    {
-        return $this->em;
     }
 
     /**
@@ -119,8 +121,8 @@ class PromoCouponService
     /**
      * @return \Zenomania\CoreBundle\Repository\PromoCouponActionRepository
      */
-    public function getPcactionRepository()
+    public function getPromoCouponActionRepository()
     {
-        return $this->pcactionRepository;
+        return $this->promoCouponActionRepository;
     }
 }
