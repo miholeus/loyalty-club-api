@@ -68,26 +68,32 @@ class PromoCoupon
     }
 
     /**
-     * Регистрация промо-кода пользователем
+     * Активация промо-кода пользователем
      *
      * @param string $number
      * @param User $user
      * @return int
      */
-    public function promoCouponRegistration(string $number, User $user)
+    public function activateByNumber(string $number, User $user)
     {
         /** @var \Zenomania\CoreBundle\Entity\PromoCoupon $promoCoupon */
         $promoCoupon = $this->getPromoCouponRepository()->findCouponByCode($number);
-        $this->promoCouponActivate($promoCoupon);
+        $this->activate($promoCoupon, $user);
         $points = $promoCoupon->getPoints();
         $this->getPersonPointsRepository()->givePointsForPromoCouponRegistration($user, $points);
 
         return $points;
     }
 
-    protected function promoCouponActivate(\Zenomania\CoreBundle\Entity\PromoCoupon $promoCoupon)
+    /**
+     * Activates promo coupon
+     *
+     * @param \Zenomania\CoreBundle\Entity\PromoCoupon $promoCoupon
+     * @param User $user
+     */
+    protected function activate(\Zenomania\CoreBundle\Entity\PromoCoupon $promoCoupon, User $user)
     {
-        $promoCoupon->setActivated(true);
+        $promoCoupon->setActivatedBy($user);
         $promoCoupon->setUpdatedOn(new \DateTime());
         $this->getPromoCouponRepository()->save($promoCoupon);
     }

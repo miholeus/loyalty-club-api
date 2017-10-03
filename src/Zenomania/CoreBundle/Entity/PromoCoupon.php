@@ -53,6 +53,11 @@ class PromoCoupon
     private $createdBy;
 
     /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $activatedBy;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -273,5 +278,30 @@ class PromoCoupon
     public function getCreatedBy()
     {
         return $this->createdBy;
+    }
+
+    /**
+     * Set activatedBy
+     *
+     * @param \Zenomania\CoreBundle\Entity\User $activatedBy
+     *
+     * @return PromoCoupon
+     */
+    public function setActivatedBy(\Zenomania\CoreBundle\Entity\User $activatedBy)
+    {
+        $this->activatedBy = $activatedBy;
+        $this->activated = true;
+
+        return $this;
+    }
+
+    /**
+     * Get activatedBy
+     *
+     * @return \Zenomania\CoreBundle\Entity\User
+     */
+    public function getActivatedBy()
+    {
+        return $this->activatedBy;
     }
 }

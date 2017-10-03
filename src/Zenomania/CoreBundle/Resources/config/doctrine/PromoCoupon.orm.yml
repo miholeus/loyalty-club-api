@@ -69,4 +69,15 @@ Zenomania\CoreBundle\Entity\PromoCoupon:
                     onDelete: CASCADE
                     nullable: false
             orphanRemoval: false
+        activatedBy:
+            targetEntity: User
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                activated_by:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+            orphanRemoval: false
     lifecycleCallbacks: {  }

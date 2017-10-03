@@ -234,4 +234,3 @@ class EventPlayerForecast
         return $this->user;
     }
 }
-

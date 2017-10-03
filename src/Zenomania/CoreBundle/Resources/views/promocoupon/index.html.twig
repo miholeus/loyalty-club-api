@@ -25,7 +25,7 @@
                 <td>{{ promoCoupon.code }}</td>
                 <td>{{ promoCoupon.points }}</td>
                 <td>{% if promoCoupon.activated %}Yes{% else %}No{% endif %}</td>
-                <td>{{ promoCoupon.action.caption }}</td>
+                <td>{{ promoCoupon.action.name }}</td>
                 <td>
                     <a href="{{ path('promocoupon_show', { 'id': promoCoupon.id }) }}" class="btn btn-default">show</a>
                     <a href="{{ path('promocoupon_edit', { 'id': promoCoupon.id }) }}" class="btn btn-default">edit</a>
