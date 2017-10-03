@@ -6,6 +6,6 @@ services:
             - { name: form.type }
     form.event_player_prediction:
         class: Zenomania\ApiBundle\Form\EventPlayerPredictionType
-        arguments: ['@player.service']
+        arguments: ['@player.service', '@security.token_storage']
         tags:
             - { name: form.type }

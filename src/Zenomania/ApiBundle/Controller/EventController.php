@@ -322,9 +322,7 @@ class EventController extends RestController
      *
      * ### Success Response ###
      *      {
-     *          "data":{
-     *              "id":<player forecast id>
-     *          },
+     *          "data":null
      *          "time":<time request>
      *      }
      *
@@ -361,6 +359,9 @@ class EventController extends RestController
             throw new HttpException(400, "Мероприятие не найдено");
         }
 
+        $request->request->set('event', $event->getId());
+        $request->attributes->remove('event');
+
         $form = $this->createForm(EventPlayerPredictionType::class);
         $this->processForm($request, $form);
 
@@ -368,23 +369,19 @@ class EventController extends RestController
             throw $this->createFormValidationException($form);
         }
 
-        $service = $this->get('event_player_forecast.service');
+        $service = $this->get('event_forecast.service');
 
-        if ($service->hasActiveForecast($event, $this->getUser())) {
+        if ($service->hasActivePlayerForecast($event, $this->getUser())) {
             throw new HttpException(400, "Вы уже сделали прогноз");
         }
 
-        $forecast = $service->getEventForecastByModel($form->getData());
-        $forecast->setEvent($event);
-        $forecast->setUser($this->getUser());
+        /** @var \Zenomania\ApiBundle\Form\EventPlayerPredictionType $data */
+        $data = $form->getData();
+        $forecasts = $data->getForecasts();
 
-        $service->save($forecast);
+        $service->savePlayerForecasts($forecasts);
 
-        $data = [
-            'id' => $forecast->getId()
-        ];
-
-        $view = $this->view($data, 200);
+        $view = $this->view(null, 204);
         return $this->handleView($view);
     }
 }
