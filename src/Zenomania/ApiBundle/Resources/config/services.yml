@@ -80,3 +80,6 @@ services:
     api.promocoupon:
         class: Zenomania\ApiBundle\Service\PromoCoupon
         arguments: ['@repository.promocoupon_repository', '@repository.person_points_repository']
+    api.ratings:
+        class: Zenomania\ApiBundle\Service\RatingsService
+        arguments: ['@repository.person_points_repository']

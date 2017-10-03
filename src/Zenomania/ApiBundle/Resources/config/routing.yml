@@ -27,3 +27,9 @@ api_points:
 api_promocoupon:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\PromoCouponController"
+api_ratings:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\RatingsController"
+api_players:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\PlayerController"

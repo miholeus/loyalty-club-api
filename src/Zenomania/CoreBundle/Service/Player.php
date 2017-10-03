@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class Player extends UserAwareService
 {
+    const DEFAULT_CLUB_ID = 9;
     /**
      * @var UploadPlayerPhoto
      */
@@ -87,5 +88,36 @@ class Player extends UserAwareService
     public function setImageService(Images $imageService)
     {
         $this->imageService = $imageService;
+    }
+
+    /**
+     * Fetches active players for club
+     *
+     * @param integer $clubId
+     * @return array|\Zenomania\CoreBundle\Entity\Player[]
+     */
+    public function getActivePlayers($clubId)
+    {
+        $repo = $this->getEntityManager()->getRepository('ZenomaniaCoreBundle:Player');
+        return $repo->findBy(['isActive' => true, 'club' => $clubId]);
+    }
+
+    /**
+     * Gets players by IDs
+     *
+     * @param array $ids
+     * @param null $clubId
+     * @return \Zenomania\CoreBundle\Entity\Player[]
+     */
+    public function getByIds($ids, $clubId = null)
+    {
+        $repo = $this->getEntityManager()->getRepository('ZenomaniaCoreBundle:Player');
+        return $repo->findBy(
+            [
+                'id' => $ids,
+                'isActive' => true,
+                'club' => $clubId
+            ]
+        );
     }
 }

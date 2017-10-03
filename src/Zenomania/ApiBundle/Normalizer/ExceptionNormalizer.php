@@ -25,6 +25,10 @@ class ExceptionNormalizer implements NormalizerInterface
             $exception->setHeaders([]);
         }
 
+        $enableLog = true;
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            $enableLog = false;
+        }
         if (!$exception instanceof FlattenException) {
             $exception = FlattenException::create($exception, 500);
         }
@@ -33,7 +37,8 @@ class ExceptionNormalizer implements NormalizerInterface
             'success' => false,
             'log' => [
                 'message' => $exception->getMessage(),
-                'trace' => $exception->getTrace()
+                'trace' => $exception->getTrace(),
+                'enabled' => $enableLog
             ],
             'exception' => array(
                 'code' => $exception->getStatusCode(),
@@ -47,12 +52,6 @@ class ExceptionNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
-        if ($data instanceof \Zenomania\ApiBundle\Service\Exception\FormValidateException) {
-            return true;
-        }
-        if ($data instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
-            return false;
-        }
         return $data instanceof \Exception;
     }
 }

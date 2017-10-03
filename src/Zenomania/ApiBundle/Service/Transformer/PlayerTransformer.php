@@ -31,9 +31,9 @@ class PlayerTransformer extends TransformerAbstract
     {
         return [
             'id' => $player->getId(),
-            'firstname' => $player->getFirstname(),
-            'lastname' => $player->getLastname(),
-            'middlename' => $player->getMiddlename(),
+            'first_name' => $player->getFirstname(),
+            'last_name' => $player->getLastname(),
+            'middle_name' => $player->getMiddlename(),
             'photo' => $this->url->getUrl($player->getPhoto())
         ];
     }
