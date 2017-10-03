@@ -78,7 +78,12 @@ services:
         arguments: ['@repository.event_repository', '@doctrine.orm.entity_manager']
     event_forecast.service:
         class: Zenomania\ApiBundle\Service\EventForecast
-        arguments: ['@repository.event_forecast_repository']
+        arguments: ['@repository.event_forecast_repository', '@repository.event_player_forecast_repository']
     transfer_actor.service:
         class: Zenomania\CoreBundle\Service\TransferActorService
         arguments: ['@doctrine.orm.entity_manager']
+    promocoupon.service:
+        class: Zenomania\CoreBundle\Service\PromoCouponService
+        parent: core.user_aware_service
+    promocoupon.parser:
+        class: Zenomania\CoreBundle\Service\PromoCouponParser

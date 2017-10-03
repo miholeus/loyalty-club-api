@@ -1,19 +1,7 @@
-Zenomania\CoreBundle\Entity\EventForecast:
+Zenomania\CoreBundle\Entity\EventPlayerForecast:
     type: entity
-    table: event_forecast
-    repositoryClass: Zenomania\CoreBundle\Repository\EventForecastRepository
-    indexes:
-        FK_person_event_forecast_event:
-            columns:
-                - event_id
-        person_event_forecast__dt:
-            columns:
-                - created_on
-    uniqueConstraints:
-        event_forecast_by_user:
-            columns:
-                - user_id
-                - event_id
+    table: event_player_forecast
+    repositoryClass: Zenomania\CoreBundle\Repository\EventPlayerForecastRepository
     id:
         id:
             type: integer
@@ -24,25 +12,6 @@ Zenomania\CoreBundle\Entity\EventForecast:
             generator:
                 strategy: IDENTITY
     fields:
-        scoreHome:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: score_home
-        scoreGuest:
-            type: integer
-            nullable: false
-            options:
-                unsigned: false
-            column: score_guest
-        scoreInRounds:
-            type: string
-            nullable: true
-            length: 255
-            options:
-                fixed: false
-            column: score_in_round
         createdOn:
             type: datetime
             nullable: false
@@ -56,9 +25,15 @@ Zenomania\CoreBundle\Entity\EventForecast:
             nullable: true
             options:
                 unsigned: true
+        isMvp:
+            type: boolean
+            nullable: false
+            options:
+                default: false
+            column: is_mvp
     manyToOne:
         event:
-            targetEntity: Event
+            targetEntity: Zenomania\CoreBundle\Entity\Event
             cascade: {  }
             fetch: LAZY
             mappedBy: null
@@ -68,14 +43,14 @@ Zenomania\CoreBundle\Entity\EventForecast:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
-        person:
-            targetEntity: Person
+        player:
+            targetEntity: Zenomania\CoreBundle\Entity\Player
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                person_id:
+                player_id:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false

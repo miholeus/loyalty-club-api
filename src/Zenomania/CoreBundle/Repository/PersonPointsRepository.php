@@ -147,11 +147,38 @@ class PersonPointsRepository extends EntityRepository
         $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
 
         $params = [
+                'season' => $season,
+                'person' => $person,
+                'user'   => $user,
+                'points' => $points,
+                'type' => $type,
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+
+        $personPoints = PersonPoints::fromArray($params);
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
+    }
+
+    /**
+     * Adds points for promo-coupon registration
+     *
+     * @param User $user
+     * @param $points
+     */
+    public function givePointsForPromoCouponRegistration(User $user, $points)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+
+        $params = [
             'season' => $season,
             'person' => $person,
             'user'   => $user,
             'points' => $points,
-            'type' => $type,
+            'type' => PersonPoints::TYPE_PROMO_COUPON,
             'state' => 'none',
             'dt' => new \DateTime()
         ];

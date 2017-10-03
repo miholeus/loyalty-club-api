@@ -94,7 +94,7 @@ class UploadFile implements UploadInterface
     public function getUploadPath()
     {
         if (null === $this->uploadPath) {
-            throw new UploadFileException("Photo upload path is not set");
+            throw new UploadFileException("File upload path is not set");
         }
         return $this->uploadPath;
     }

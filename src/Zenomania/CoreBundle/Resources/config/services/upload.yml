@@ -12,3 +12,6 @@ services:
     file.upload_player_photo:
         class: Zenomania\CoreBundle\Service\Upload\UploadPlayerPhoto
         parent: file.upload_photo_abstract
+    file.upload_promo_coupon:
+        class: Zenomania\CoreBundle\Service\Upload\UploadPromoCoupon
+        parent: file.upload
