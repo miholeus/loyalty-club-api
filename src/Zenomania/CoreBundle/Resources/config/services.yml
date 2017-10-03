@@ -82,3 +82,8 @@ services:
     transfer_actor.service:
         class: Zenomania\CoreBundle\Service\TransferActorService
         arguments: ['@doctrine.orm.entity_manager']
+    promocoupon.service:
+        class: Zenomania\CoreBundle\Service\PromoCouponService
+        parent: core.user_aware_service
+    promocoupon.parser:
+        class: Zenomania\CoreBundle\Service\PromoCouponParser

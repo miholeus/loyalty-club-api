@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Promocoupons list</h1>
+
+    <div>
+        {% include '@ZenomaniaCore/form/search.html.twig' with {form: searchForm} %}
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Code</th>
+            <th>Points</th>
+            <th>Activated</th>
+            <th>Action</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for promoCoupon in promoCoupons %}
+            <tr>
+                <td><a href="{{ path('promocoupon_show', { 'id': promoCoupon.id }) }}">{{ promoCoupon.id }}</a></td>
+                <td>{{ promoCoupon.code }}</td>
+                <td>{{ promoCoupon.points }}</td>
+                <td>{% if promoCoupon.activated %}Yes{% else %}No{% endif %}</td>
+                <td>{{ promoCoupon.action.name }}</td>
+                <td>
+                    <a href="{{ path('promocoupon_show', { 'id': promoCoupon.id }) }}" class="btn btn-default">show</a>
+                    <a href="{{ path('promocoupon_edit', { 'id': promoCoupon.id }) }}" class="btn btn-default">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <nav class="text-center">
+        {% include '@ZenomaniaCore/shared/paginator.html.twig' with {paginator: paginator} %}
+    </nav>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('promocoupon_new') }}">Create a new promoCoupon</a>
+        </li>
+    </ul>
+{% endblock %}

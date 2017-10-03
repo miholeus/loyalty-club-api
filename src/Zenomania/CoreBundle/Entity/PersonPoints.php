@@ -14,6 +14,7 @@ class PersonPoints
     const TYPE_PURCHASE = 'purchase';
     const TYPE_FORECAST_WINNER = 'forecast_winner';
     const TYPE_REPOST = 'repost';
+    const TYPE_PROMO_COUPON = 'promo_coupon';
 
     /**
      * @var integer
