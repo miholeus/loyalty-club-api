@@ -81,6 +81,7 @@ class EventController extends Controller
     public function calculateAction(Event $event)
     {
         $service = $this->get('event.service');
+        $service->calculate($event);
 
 
         $deleteForm = $this->createDeleteForm($event);

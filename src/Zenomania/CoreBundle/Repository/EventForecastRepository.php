@@ -36,4 +36,19 @@ class EventForecastRepository extends EntityRepository
             ->getQuery();
         return $query->getOneOrNullResult();
     }
+
+    /**
+     * @param Event $event
+     * @return array
+     */
+    public function getEventForecastByEvent(Event $event)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('f')
+            ->from('ZenomaniaCoreBundle:EventForecast', 'f')
+            ->where('f.event = :event')
+            ->setParameter('event', $event)
+            ->getQuery();
+        return $query->getResult();
+    }
 }
