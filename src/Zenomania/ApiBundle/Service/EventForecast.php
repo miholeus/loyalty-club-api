@@ -10,17 +10,23 @@ use Zenomania\ApiBundle\Form\Model\EventScorePrediction;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Repository\EventForecastRepository;
+use Zenomania\CoreBundle\Repository\EventPlayerForecastRepository;
 
 class EventForecast
 {
     /**
      * @var EventForecastRepository
      */
-    private $repository;
+    private $eventForecastRepository;
+    /**
+     * @var EventPlayerForecastRepository
+     */
+    private $playerForecastRepository;
 
-    public function __construct(EventForecastRepository $repository)
+    public function __construct(EventForecastRepository $repository, EventPlayerForecastRepository $playerForecastRepository)
     {
-        $this->repository = $repository;
+        $this->eventForecastRepository = $repository;
+        $this->playerForecastRepository = $playerForecastRepository;
     }
 
     /**
@@ -41,7 +47,7 @@ class EventForecast
     }
 
     /**
-     * Checks if user has made forecast
+     * Checks if user has made forecast of scores
      *
      * @param Event $event
      * @param User $user
@@ -49,9 +55,26 @@ class EventForecast
      */
     public function hasActiveForecast(Event $event, User $user) : bool
     {
-        $forecast = $this->getRepository()->getEventForecast($event, $user);
+        $forecast = $this->getEventForecastRepository()->getEventForecast($event, $user);
 
         if (null !== $forecast) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if user has made player's forecast
+     *
+     * @param Event $event
+     * @param User $user
+     * @return bool
+     */
+    public function hasActivePlayerForecast(Event $event, User $user) : bool
+    {
+        $records = $this->getPlayerForecastRepository()->getTotalForecastPlayers($event, $user);
+
+        if (0 != $records) {
             return true;
         }
         return false;
@@ -63,13 +86,31 @@ class EventForecast
      */
     public function save(\Zenomania\CoreBundle\Entity\EventForecast $forecast)
     {
-        $this->getRepository()->save($forecast);
+        $this->getEventForecastRepository()->save($forecast);
+    }
+
+    /**
+     * Saves user's forecast for event player
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $forecasts
+     */
+    public function savePlayerForecasts(\Doctrine\Common\Collections\ArrayCollection $forecasts)
+    {
+        $this->getPlayerForecastRepository()->saveForecasts($forecasts);
     }
     /**
      * @return EventForecastRepository
      */
-    public function getRepository(): EventForecastRepository
+    public function getEventForecastRepository(): EventForecastRepository
     {
-        return $this->repository;
+        return $this->eventForecastRepository;
+    }
+
+    /**
+     * @return EventPlayerForecastRepository
+     */
+    public function getPlayerForecastRepository(): EventPlayerForecastRepository
+    {
+        return $this->playerForecastRepository;
     }
 }

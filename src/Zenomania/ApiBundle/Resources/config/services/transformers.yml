@@ -31,3 +31,6 @@ services:
     api.data.transformer.ratings:
         class: Zenomania\ApiBundle\Service\Transformer\RatingsTransformer
         arguments: ['@utils.host_based_url']
+    api.data.transformer.players:
+        class: Zenomania\ApiBundle\Service\Transformer\PlayerTransformer
+        arguments: ['@utils.host_based_url']

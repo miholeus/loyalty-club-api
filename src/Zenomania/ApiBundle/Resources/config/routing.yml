@@ -27,3 +27,6 @@ api_points:
 api_ratings:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\RatingsController"
+api_players:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\PlayerController"

@@ -33,6 +33,9 @@ abstract class AbstractIdToEntityTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        if (!is_string($value)) {
+            throw new TransformationFailedException();
+        }
         $ids = explode(',', $value);
         foreach ($ids as $id) {
             if (!is_numeric($id)) {
