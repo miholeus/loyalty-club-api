@@ -86,9 +86,14 @@ class BadgeController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $service = $this->get('badge.service');
 
-            return $this->redirectToRoute('badge_edit', array('id' => $badge->getId()));
+            try {
+                $service->save($badge);
+                return $this->redirectToRoute('badge_edit', array('id' => $badge->getId()));
+            } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+                $form->addError(new FormError($e->getMessage()));
+            }
         }
 
         return $this->render('ZenomaniaCoreBundle:badge:edit.html.twig', array(
