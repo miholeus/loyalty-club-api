@@ -6,9 +6,11 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Entity\EventPlayerForecast;
+use Zenomania\CoreBundle\Entity\Player;
 use Zenomania\CoreBundle\Entity\User;
 
 class EventPlayerForecastRepository extends EntityRepository
@@ -40,6 +42,48 @@ class EventPlayerForecastRepository extends EntityRepository
         } catch (\Doctrine\ORM\NoResultException $e) {
             return 0;
         }
+    }
+
+    /**
+     * Получить массив с данными пользователь -> количество предсказанных игроков
+     *
+     * @param Event $event
+     * @param array $idPlayers
+     * @return array
+     */
+    public function getAmountOfPredictedPlayers(Event $event, array $idPlayers)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select(['IDENTITY(epf.user) AS user', 'COUNT(epf.id) AS cnt'])
+            ->from('ZenomaniaCoreBundle:EventPlayerForecast', 'epf')
+            ->where('epf.event = :event')
+            ->andWhere('epf.player IN (:players)')
+            ->setParameter('event', $event)
+            ->setParameter('players', $idPlayers)
+            ->groupBy('epf.user')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param Event $event
+     * @return array
+     */
+    public function getPredictedMvp(Event $event)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select(['epf.user'])
+            ->from('ZenomaniaCoreBundle:EventPlayerForecast', 'epf')
+            ->where('epf.event = :event')
+            ->andWhere('epf.player = :player')
+            ->andWhere('epf.isMvp = true')
+            ->setParameter('event', $event)
+            ->setParameter('player', $event->getMvp())
+            ->groupBy('epf.user')
+            ->getQuery();
+
+        return $query->getResult();
     }
 
     /**
