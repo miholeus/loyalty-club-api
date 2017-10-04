@@ -75,6 +75,8 @@ class PromoCouponController extends Controller
         $uploadForm = $this->createForm('Zenomania\CoreBundle\Form\PromoCouponUploadType', $fileUpload);
         $uploadForm->handleRequest($request);
 
+        $service = $this->get('promocoupon.service');
+
         if ($uploadForm->isSubmitted() && $uploadForm->isValid()) {
 
             $upload = $this->get('file.upload_promo_coupon');
@@ -82,8 +84,7 @@ class PromoCouponController extends Controller
             $parser = $this->get('promocoupon.parser');
             $data = $parser->getData($file['full_path']);
 
-            $promoCouponService = $this->get('promocoupon.service');
-            $result = $promoCouponService->addFromFile($data);
+            $result = $service->addFromFile($data);
 
             return $this->render('ZenomaniaCoreBundle:promocoupon:upload.html.twig', array(
                 'result' => $result,
@@ -91,9 +92,7 @@ class PromoCouponController extends Controller
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($promoCoupon);
-            $em->flush();
+            $service->save($promoCoupon);
 
             return $this->redirectToRoute('promocoupon_show', array('id' => $promoCoupon->getId()));
         }
@@ -129,8 +128,10 @@ class PromoCouponController extends Controller
         $editForm = $this->createForm('Zenomania\CoreBundle\Form\PromoCouponType', $promoCoupon);
         $editForm->handleRequest($request);
 
+        $service = $this->get('promocoupon.service');
+
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $service->save($promoCoupon);
 
             return $this->redirectToRoute('promocoupon_edit', array('id' => $promoCoupon->getId()));
         }
