@@ -25,12 +25,12 @@ class PromoCoupon
     /**
      * @var boolean
      */
-    private $activated = '0';
+    private $activated = false;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\PromoCouponAction
      */
-    private $pcaction;
+    private $action;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -38,11 +38,42 @@ class PromoCoupon
     private $personPoint;
 
     /**
+     * @var \DateTime
+     */
+    private $createdOn;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedOn;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $createdBy;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $activatedBy;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->personPoint = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->createdOn = new \DateTime();
+        $this->updatedOn = new \DateTime();
+    }
+
+    public static function fromArray($data)
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set".ucfirst($key)}($value);
+        }
+        return $self;
     }
 
     /**
@@ -128,27 +159,27 @@ class PromoCoupon
     }
 
     /**
-     * Set pcaction
+     * Set action
      *
-     * @param \Zenomania\CoreBundle\Entity\PromoCouponAction $pcaction
+     * @param \Zenomania\CoreBundle\Entity\PromoCouponAction $action
      *
      * @return PromoCoupon
      */
-    public function setPcaction(\Zenomania\CoreBundle\Entity\PromoCouponAction $pcaction = null)
+    public function setAction(\Zenomania\CoreBundle\Entity\PromoCouponAction $action = null)
     {
-        $this->pcaction = $pcaction;
+        $this->action = $action;
 
         return $this;
     }
 
     /**
-     * Get pcaction
+     * Get action
      *
      * @return \Zenomania\CoreBundle\Entity\PromoCouponAction
      */
-    public function getPcaction()
+    public function getAction()
     {
-        return $this->pcaction;
+        return $this->action;
     }
 
     /**
@@ -183,5 +214,94 @@ class PromoCoupon
     public function getPersonPoint()
     {
         return $this->personPoint;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * @param \DateTime $createdOn
+     *
+     * @return PromoCoupon
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->createdOn = $createdOn;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedOn()
+    {
+        return $this->updatedOn;
+    }
+
+    /**
+     * @param \DateTime $updatedOn
+     *
+     * @return PromoCoupon
+     */
+    public function setUpdatedOn($updatedOn)
+    {
+        $this->updatedOn = $updatedOn;
+
+        return $this;
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param \Zenomania\CoreBundle\Entity\User $createdBy
+     *
+     * @return PromoCoupon
+     */
+    public function setCreatedBy(\Zenomania\CoreBundle\Entity\User $createdBy)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return \Zenomania\CoreBundle\Entity\User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set activatedBy
+     *
+     * @param \Zenomania\CoreBundle\Entity\User $activatedBy
+     *
+     * @return PromoCoupon
+     */
+    public function setActivatedBy(\Zenomania\CoreBundle\Entity\User $activatedBy)
+    {
+        $this->activatedBy = $activatedBy;
+        $this->activated = true;
+
+        return $this;
+    }
+
+    /**
+     * Get activatedBy
+     *
+     * @return \Zenomania\CoreBundle\Entity\User
+     */
+    public function getActivatedBy()
+    {
+        return $this->activatedBy;
     }
 }

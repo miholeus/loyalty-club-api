@@ -44,6 +44,11 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\EventForecast
+    repository.event_player_forecast_repository:
+        class: Zenomania\CoreBundle\Repository\EventPlayerForecastRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\EventPlayerForecast
     repository.social_account_repository:
         class: Zenomania\CoreBundle\Repository\SocialAccountRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
@@ -89,3 +94,13 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\BadgeType
+    repository.promocoupon_repository:
+        class: Zenomania\CoreBundle\Repository\PromoCouponRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\PromoCoupon
+    repository.pcaction_repository:
+        class: Zenomania\CoreBundle\Repository\PromoCouponActionRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\PromoCouponAction
