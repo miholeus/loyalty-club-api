@@ -39,7 +39,7 @@ Zenomania\CoreBundle\Entity\Badge:
                 default: true
     manyToOne:
         typeId:
-            targetEntity: BadgeType
+            targetEntity: Zenomania\CoreBundle\Entity\BadgeType
             cascade: {  }
             mappedBy: null
             inversedBy: null
@@ -48,6 +48,6 @@ Zenomania\CoreBundle\Entity\Badge:
                 type_id:
                     nullable: false
                     referencedColumnName: id
-                    onDelete: RESTRICT
+                    onDelete: CASCADE
             orphanRemoval: false
     lifecycleCallbacks: {  }
