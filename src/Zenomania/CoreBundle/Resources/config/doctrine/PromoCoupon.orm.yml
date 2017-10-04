@@ -67,7 +67,7 @@ Zenomania\CoreBundle\Entity\PromoCoupon:
                 created_by:
                     referencedColumnName: id
                     onDelete: CASCADE
-                    nullable: false
+                    nullable: true
             orphanRemoval: false
         activatedBy:
             targetEntity: User
@@ -78,6 +78,6 @@ Zenomania\CoreBundle\Entity\PromoCoupon:
                 activated_by:
                     referencedColumnName: id
                     onDelete: CASCADE
-                    nullable: false
+                    nullable: true
             orphanRemoval: false
     lifecycleCallbacks: {  }
