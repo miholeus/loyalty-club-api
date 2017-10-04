@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Badge</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ badge.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Наименование</th>
+                            <td>{{ badge.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Код</th>
+                            <td>{{ badge.code }}</td>
+                        </tr>
+                        <tr>
+                            <th>Вид бейджа</th>
+                            <td>{{ badge.typeId.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Иконка</th>
+                            <td>{{ badge.photo }}</td>
+                        </tr>
+                        <tr>
+                            <th>Сортировка</th>
+                            <td>{{ badge.sort }}</td>
+                        </tr>
+                        <tr>
+                            <th>Зены</th>
+                            <td>{{ badge.points }}</td>
+                        </tr>
+                        <tr>
+                            <th>Макусимум зенов</th>
+                            <td>{{ badge.maxPoints }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <ul class="pull-right">
+                        <a class="btn btn-default" href="{{ path('badge_index') }}">Back to the list</a>
+                        <a class="btn btn-primary" href="{{ path('badge_edit', { 'id': badge.id }) }}">Edit</a>
+                    </ul>
+                    {{ form_start(delete_form) }}
+                    <input id="badge_delete_button" class="btn btn-danger pull-left" type="submit" value="Delete">
+                    {{ form_end(delete_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ confirm('#badge_delete_button') }}
+
+{% endblock %}
+
+

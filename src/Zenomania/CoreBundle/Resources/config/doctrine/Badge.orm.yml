@@ -1,0 +1,53 @@
+Zenomania\CoreBundle\Entity\Badge:
+    type: entity
+    table: null
+    repositoryClass: Zenomania\CoreBundle\Repository\BadgeRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        title:
+            type: string
+            length: 255
+        code:
+            type: string
+            length: 255
+            unique: true
+        photo:
+            type: string
+            length: 255
+            nullable: true
+        sort:
+            type: integer
+            options:
+                default: '0'
+        points:
+            type: integer
+            options:
+                default: '1'
+        maxPoints:
+            type: integer
+            column: max_points
+            options:
+                default: '1'
+        active:
+            type: boolean
+            options:
+                default: true
+    manyToOne:
+        typeId:
+            targetEntity: Zenomania\CoreBundle\Entity\BadgeType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            fetch: LAZY
+            joinColumns:
+                type_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

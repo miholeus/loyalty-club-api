@@ -84,6 +84,16 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\LineUp
+    repository.badge_repository:
+        class: Zenomania\CoreBundle\Repository\BadgeRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\Badge
+    repository.badge_type_repository:
+        class: Zenomania\CoreBundle\Repository\BadgeTypeRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\BadgeType
     repository.promocoupon_repository:
         class: Zenomania\CoreBundle\Repository\PromoCouponRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]

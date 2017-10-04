@@ -87,3 +87,9 @@ services:
         parent: core.user_aware_service
     promocoupon.parser:
         class: Zenomania\CoreBundle\Service\PromoCouponParser
+    badge.service:
+        class: Zenomania\CoreBundle\Service\Badge
+        parent: core.user_aware_service
+        calls:
+            - ['setUploadService', ['@file.upload_badge_photo']]
+            - ['setImageService', ['@images.service']]

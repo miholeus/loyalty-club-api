@@ -31,6 +31,7 @@ parameters:
     auth_key_ttl: 3600 # 1 hour
     profile_upload_photo_dir: uploads/profiles
     player_upload_photo_dir: uploads/players
+    badge_upload_photo_dir: uploads/badges
     upload_promo_coupon_dir: uploads/coupons
     upload_dir: '%kernel.root_dir%/../web'
 
