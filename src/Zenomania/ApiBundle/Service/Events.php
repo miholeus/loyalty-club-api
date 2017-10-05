@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Entity\EventForecast;
+use Zenomania\CoreBundle\Entity\EventPlayerForecast;
 use Zenomania\CoreBundle\Entity\LineUp;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
@@ -44,8 +45,8 @@ class Events
 
     public function __construct(EventRepository $eventRepository, EntityManager $em)
     {
-        $this->eventRepository = $eventRepository;
         $this->em = $em;
+        $this->eventRepository = $eventRepository;
         $this->eventForecastRepository = $em->getRepository('ZenomaniaCoreBundle:EventForecast');
         $this->userRepository = $em->getRepository('ZenomaniaCoreBundle:User');
         $this->personPointsRepository = $em->getRepository('ZenomaniaCoreBundle:PersonPoints');
@@ -118,10 +119,13 @@ class Events
 
     /**
      * @param Event $event
-     * @return int
      */
     public function calculate(Event $event)
     {
+        if ($this->isNotCalculate($event)) {
+            return;
+        }
+
         // Получить все прогнозы для события $event
         $eventForecast = $this->getEventForecastRepository()->getEventForecastByEvent($event);
 
@@ -137,61 +141,44 @@ class Events
 
             // Проверить предсказан ли победитель матча и начислить очки
             if ($this->predictedWinner($forecast, $event)) {
-                $points = PersonPointsService::POINTS_FOR_PREDICTION_MATCH_RESULT;
-                $type = PersonPoints::TYPE_FORECAST_WINNER_MATCH_RESULT;
-                $this->getPersonPointsRepository()->givePointsForForecast($user, $points, $type);
+                $this->addPointsForPredictedWinner($user);
             }
 
             // Проверить предсказан ли точный счёт матча и начислить очки
             if ($this->predictedExactScore($forecast, $event)) {
-                $points = PersonPointsService::POINTS_FOR_PREDICTION_MATCH_ROUNDS;
-                $type = PersonPoints::TYPE_FORECAST_WINNER_MATCH_ROUNDS;
-                $this->getPersonPointsRepository()->givePointsForForecast($user, $points, $type);
+                $this->addPointsForPredictedScore($user);
             }
 
             // Проверить в скольки раундах точно предсказан счёт и начислить очки
             if ($predictedRound = $this->predictedScoreInRound($forecast, $event)) {
-                $points = PersonPointsService::POINTS_FOR_PREDICTION_MATCH_ROUND_SCORE;
-                $type = PersonPoints::TYPE_FORECAST_WINNER_MATCH_ROUND_SCORE;
-                $this->getPersonPointsRepository()->givePointsForForecast($user, $points * $predictedRound, $type);
+                $this->addPointsForPredictedScoreInRound($user, $predictedRound);
             }
 
-            $this->processe($forecast);
+            // Устанавливаем статус прогноза как обработанный
+            $this->processeForecast($forecast);
         }
 
+        // Получить массив id игроков стартового состава
+        $idPlayers = $this->getPlayersLineUp($event);
 
-        // Выбрать стартовый состав для мероприятия $event
-        $lineUp = $this->getEventRepository()->findLineUp($event);
-
-        // Собрать игроков стартового состава в массив
-        $idPlayers = [];
-        /** @var LineUp $player */
-        foreach ($lineUp as $item) {
-            $idPlayers[] = $item->getPlayer()->getId();
-        }
-
-        // Получить массив с данными
+        // Получить массив с данными: пользователь -> количество предсказанных игроков
         $predictedPlayers = $this->getEventPlayerForecastRepository()->getAmountOfPredictedPlayers($event, $idPlayers);
-var_dump($predictedPlayers);
-        exit;
+
         foreach ($predictedPlayers as $item) {
-            $user = $this->getUserRepository()->find($item['user']);
-            $points = PersonPoints::POINTS_FOR_PREDICTION_ONE_PLAYER; // Сколько начислить баллов за предсказанного игрока стартового состава
-            $this->getPersonPointsRepository()->givePointsForForecast($user, $points * $item['cnt'], 'forecast_winner_one_player');
+            $this->addPointsForPredictedPlayers($item);
+            $this->processePlayerForecast($event, $item['user']);
         }
 
-
-        $predictedMvp = $this->getEm()->getRepository('ZenomaniaCoreBundle:EventPlayerForecast')->getPredictedMvp($event);
+        // Получить массив пользователей, которые угадали результативного игрока
+        $predictedMvp = $this->getEventPlayerForecastRepository()->getPredictedMvp($event);
 
         foreach ($predictedMvp as $item) {
             $user = $this->getUserRepository()->find($item['user']);
-            $points = PersonPoints::POINTS_FOR_PREDICTION_MATCH_MVP; // Сколько начислить баллов за предсказанного результативного игрока
-            $this->getPersonPointsRepository()->givePointsForForecast($user, $points, 'forecast_winner_mvp');
+            $this->addPointsForPredictedMvp($user);
         }
 
-        $event->setScoreSaved(1);
-
-        return 100;
+        // Установить событию метку как обработанное для подсчёта прогнозов
+        $this->processedEvent($event);
     }
 
     /**
@@ -285,7 +272,7 @@ var_dump($predictedPlayers);
         return $this->em;
     }
 
-    private function processe(EventForecast $forecast)
+    private function processeForecast(EventForecast $forecast)
     {
         $forecast->setUpdatedOn(new \DateTime());
         $forecast->setStatus(EventForecast::STATUS_PROCESSED);
@@ -298,5 +285,114 @@ var_dump($predictedPlayers);
     public function getEventPlayerForecastRepository()
     {
         return $this->eventPlayerForecastRepository;
+    }
+
+    private function processePlayerForecast($event, $userId)
+    {
+        $user = $this->getUserRepository()->find($userId);
+        /** @var EventPlayerForecast */
+        $playerForecast = $this->getEventPlayerForecastRepository()->findBy(['event' => $event, 'user' => $user]);
+        $this->getEventPlayerForecastRepository()->updateForecasts($playerForecast);
+    }
+
+    /**
+     * @param $user
+     */
+    private function addPointsForPredictedWinner($user)
+    {
+        $points = PersonPointsService::POINTS_FOR_PREDICTION_MATCH_RESULT;
+        $type = PersonPoints::TYPE_FORECAST_WINNER_MATCH_RESULT;
+        $this->getPersonPointsRepository()->givePointsForForecast($user, $points, $type);
+    }
+
+    /**
+     * @param $user
+     */
+    private function addPointsForPredictedScore($user)
+    {
+        $points = PersonPointsService::POINTS_FOR_PREDICTION_MATCH_ROUNDS;
+        $type = PersonPoints::TYPE_FORECAST_WINNER_MATCH_ROUNDS;
+        $this->getPersonPointsRepository()->givePointsForForecast($user, $points, $type);
+    }
+
+    /**
+     * @param $user
+     * @param $predictedRound
+     */
+    private function addPointsForPredictedScoreInRound($user, $predictedRound)
+    {
+        $points = PersonPointsService::POINTS_FOR_PREDICTION_MATCH_ROUND_SCORE;
+        $type = PersonPoints::TYPE_FORECAST_WINNER_MATCH_ROUND_SCORE;
+        $this->getPersonPointsRepository()->givePointsForForecast($user, $points * $predictedRound, $type);
+    }
+
+    /**
+     * @param $user
+     */
+    private function addPointsForPredictedMvp($user)
+    {
+        $points = PersonPointsService::POINTS_FOR_PREDICTION_MATCH_MVP;
+        $type = PersonPoints::TYPE_FORECAST_WINNER_MVP;
+        $this->getPersonPointsRepository()->givePointsForForecast($user, $points, $type);
+    }
+
+    /**
+     * @param Event $event
+     */
+    private function processedEvent(Event $event)
+    {
+        $event->setScoreSaved(EventRepository::SCORE_SAVED_PROCESSED);
+        $this->getEventRepository()->save($event);
+    }
+
+    /**
+     * @param array $item
+     */
+    private function addPointsForPredictedPlayers(array $item)
+    {
+        /** @var User $user */
+        $user = $this->getUserRepository()->find($item['user']);
+        $points = PersonPointsService::POINTS_FOR_PREDICTION_ONE_PLAYER;
+        $type = PersonPoints::TYPE_FORECAST_WINNER_ONE_PLAYER;
+        $this->getPersonPointsRepository()->givePointsForForecast($user, $points * $item['cnt'], $type);
+    }
+
+    /**
+     * @param Event $event
+     * @return array
+     */
+    private function getPlayersLineUp(Event $event)
+    {
+        // Выбрать стартовый состав для мероприятия $event
+        $lineUp = $this->getEventRepository()->findLineUp($event);
+
+        // Собрать id игроков стартового состава заданного мероприятия в массив
+        $idPlayers = [];
+        /** @var LineUp $player */
+        foreach ($lineUp as $item) {
+            $idPlayers[] = $item->getPlayer()->getId();
+        }
+        return $idPlayers;
+    }
+
+    /**
+     * @param Event $event
+     * @return bool
+     */
+    private function isNotCalculate(Event $event)
+    {
+        if ($event->getScoreSaved() == EventRepository::SCORE_SAVED_PROCESSED) {
+            return true;
+        }
+
+        if ((!in_array($event->getScoreHome(), [0, 1, 2, 3]))) {
+            return true;
+        }
+
+        if ((!in_array($event->getScoreGuest(), [0, 1, 2, 3]))) {
+            return true;
+        }
+
+        return false;
     }
 }

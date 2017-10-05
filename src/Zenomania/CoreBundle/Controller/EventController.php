@@ -81,10 +81,9 @@ class EventController extends Controller
     public function calculateAction(Event $event)
     {
         $service = $this->get('event.service');
-        $res = $service->calculate($event);
+        $service->calculate($event);
 
         return $this->render('ZenomaniaCoreBundle:event:calculate.html.twig', array(
-            'res' => $res,
         ));
     }
 

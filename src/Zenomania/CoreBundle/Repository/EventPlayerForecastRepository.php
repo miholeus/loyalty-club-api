@@ -58,8 +58,10 @@ class EventPlayerForecastRepository extends EntityRepository
             ->from('ZenomaniaCoreBundle:EventPlayerForecast', 'epf')
             ->where('epf.event = :event')
             ->andWhere('epf.player IN (:players)')
+            ->andWhere('epf.status != :status OR epf.status IS NULL')
             ->setParameter('event', $event)
             ->setParameter('players', $idPlayers)
+            ->setParameter('status', EventPlayerForecast::STATUS_PROCESSED)
             ->groupBy('epf.user')
             ->getQuery();
 
@@ -67,13 +69,14 @@ class EventPlayerForecastRepository extends EntityRepository
     }
 
     /**
+     * Получить массив пользователей, которые предсказали результативного игрока
      * @param Event $event
      * @return array
      */
     public function getPredictedMvp(Event $event)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $query = $qb->select(['epf.user'])
+        $query = $qb->select(['IDENTITY(epf.user) AS user'])
             ->from('ZenomaniaCoreBundle:EventPlayerForecast', 'epf')
             ->where('epf.event = :event')
             ->andWhere('epf.player = :player')
@@ -96,6 +99,23 @@ class EventPlayerForecastRepository extends EntityRepository
         $em = $this->getEntityManager();
         /** @var EventPlayerForecast $forecast */
         foreach ($forecasts as $forecast) {
+            $em->persist($forecast);
+        }
+        $em->flush();
+    }
+
+    /**
+     * Updates forecasts
+     *
+     * @param array $forecasts
+     */
+    public function updateForecasts(array $forecasts)
+    {
+        $em = $this->getEntityManager();
+        /** @var EventPlayerForecast $forecast */
+        foreach ($forecasts as $forecast) {
+            $forecast->setUpdatedOn(new \DateTime());
+            $forecast->setStatus(EventPlayerForecast::STATUS_PROCESSED);
             $em->persist($forecast);
         }
         $em->flush();

@@ -15,6 +15,8 @@ use Zenomania\CoreBundle\Event\Event;
 
 class EventRepository extends EntityRepository
 {
+    const SCORE_SAVED_NEW = 1;
+    const SCORE_SAVED_PROCESSED = 2;
 
     /**
      * Находит событие по его id
