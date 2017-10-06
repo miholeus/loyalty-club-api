@@ -98,6 +98,11 @@ class Tickets
         $eventAttendance = EventAttendance::fromArray($params);
         $this->getEventAttendanceRepository()->save($eventAttendance);
 
+        /** @todo Вычилисть интервал за сколько прошел болельщик на матч и передать его в функцию для начисления в соответсвии с этим интервалом очков */
+        $timeAttendance = 'Получить время прохода на стадион';
+        $timeEvent = 'Получить время мероприятия';
+        $interval = (($timeEvent - $timeAttendance) >= 0) ?: 0;
+
         return $this->givePointForRegistration($user);
     }
 
