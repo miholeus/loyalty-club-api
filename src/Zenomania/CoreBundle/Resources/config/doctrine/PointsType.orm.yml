@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\PointsType:
     type: entity
     table: points_type
+    repositoryClass: Zenomania\CoreBundle\Repository\PointsTypeRepository
     id:
         id:
             type: integer
