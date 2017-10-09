@@ -46,6 +46,9 @@ zenomania_core_badge_type:
 zenomania_core_promocoupon:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/promocoupon.yml"
     prefix:   /promocoupon
+zenomania_core_pointstype:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/pointstype.yml"
+    prefix:   /pointstype
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}

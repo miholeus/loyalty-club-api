@@ -110,7 +110,7 @@ class Tickets
         /** Вычисляем время до начала мероприятия, за которое болельщик пришел на стадион */
         $timeAttendance = $attendance->getEnterDt()->getTimestamp();
         $timeEvent = $ticket->getEvent()->getDate()->getTimestamp();
-        $interval = ceil(($timeEvent - $timeAttendance) / 60);
+        $interval = intval(ceil(($timeEvent - $timeAttendance) / 60));
 
         /** Получаем количество процентов для начисления баллов и итогое кол-во баллов */
         $pointsTypeRepository = $this->getEm()->getRepository('ZenomaniaCoreBundle:PointsType');

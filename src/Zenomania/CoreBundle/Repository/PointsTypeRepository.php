@@ -21,7 +21,7 @@ class PointsTypeRepository extends EntityRepository
      * @param int $interval
      * @return mixed
      */
-    public function findPercentByTypeAndInterval(string $type, integer $interval)
+    public function findPercentByTypeAndInterval(string $type, int $interval)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('pt.percent')
