@@ -40,7 +40,7 @@ services:
         arguments: ['@repository.user_repository', '@security.password_encoder']
     api.tickets:
         class: Zenomania\ApiBundle\Service\Tickets
-        arguments: ['@repository.ticket_repository', '@repository.person_points_repository', '@repository.event_attendance_repository']
+        arguments: ['@repository.ticket_repository', '@repository.person_points_repository', '@repository.event_attendance_repository', '@doctrine.orm.entity_manager']
     api.subscriptions:
         class: Zenomania\ApiBundle\Service\Subscriptions
         arguments: ['@repository.person_points_repository', '@repository.subscription_repository']

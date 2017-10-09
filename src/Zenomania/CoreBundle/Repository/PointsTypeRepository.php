@@ -27,10 +27,10 @@ class PointsTypeRepository extends EntityRepository
         $query = $qb->select('pt.percent')
             ->from('ZenomaniaCoreBundle:PointsType', 'pt')
             ->where('pt.type = :type')
-            ->andWhere('pt.interval >= :interval')
+            ->andWhere('pt.interval <= :interval')
             ->setParameter('type', $type)
             ->setParameter('interval', $interval)
-            ->orderBy('pt.interval', 'ASC')
+            ->orderBy('pt.interval', 'DESC')
             ->setMaxResults(1)
             ->getQuery();
 
