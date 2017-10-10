@@ -10,6 +10,7 @@ namespace Zenomania\ApiBundle\Service;
 
 
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
+use Zenomania\CoreBundle\Entity\Subscription;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
@@ -65,11 +66,12 @@ class Subscriptions
      * Начисляем пользователю User баллы лояльности за регистрацию билета barcode
      *
      * @param User $user
+     * @param Subscription $subs
      * @return int
      */
-    protected function givePointsForRegistration(User $user)
+    protected function givePointsForRegistration(User $user, Subscription $subs)
     {
-        $charge = PersonPoints::POINTS_FOR_SUBSCRIPTION_REGISTRATION; // Сколько начислить баллов за регистрацию билета
+        $charge = round($subs->getPrice() * PersonPoints::PERCENT_FOR_SUBSCRIPTION_REGISTRATION / 100); // Сколько начислить баллов за регистрацию билета
         $this->getPersonPointsRepository()->givePointsForSubscriptionRegistration($user, $charge);
         return $charge;
     }
@@ -94,7 +96,7 @@ class Subscriptions
 
         $this->getSubscriptionRepository()->save($subs);
 
-        return $this->givePointsForRegistration($user);
+        return $this->givePointsForRegistration($user, $subs);
     }
 
     /**
