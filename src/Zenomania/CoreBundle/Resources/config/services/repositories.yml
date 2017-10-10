@@ -104,3 +104,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\PromoCouponAction
+    repository.user_badge_repository:
+        class: Zenomania\CoreBundle\Repository\UserBadgeRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\UserBadge
