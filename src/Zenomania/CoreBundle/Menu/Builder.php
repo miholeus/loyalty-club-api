@@ -47,6 +47,7 @@ class Builder
         $menu->addChild('Matches & Results', self::makeResourceRoutes('event'));
         $menu->addChild('Player', self::makeResourceRoutes('player'));
         $menu->addChild('Promo coupon', self::makeResourceRoutes('promocoupon'));
+        $menu->addChild('Points', self::makeResourceRoutes('pointstype'));
 
         $badges = $menu->addChild('Badges');
         $badges->addChild('Badges', self::makeResourceRoutes('badge'));

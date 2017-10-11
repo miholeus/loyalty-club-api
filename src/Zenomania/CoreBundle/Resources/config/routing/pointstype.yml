@@ -1,0 +1,24 @@
+pointstype_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:PointsType:index" }
+    methods:  GET
+
+pointstype_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:PointsType:show" }
+    methods:  GET
+
+pointstype_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:PointsType:new" }
+    methods:  [GET, POST]
+
+pointstype_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:PointsType:edit" }
+    methods:  [GET, POST]
+
+pointstype_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZenomaniaCoreBundle:PointsType:delete" }
+    methods:  DELETE

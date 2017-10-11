@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Pointstype</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ pointsType.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <td>{{ pointsType.type }}</td>
+                        </tr>
+                        <tr>
+                            <th>Interval</th>
+                            <td>{{ pointsType.interval }}</td>
+                        </tr>
+                        <tr>
+                            <th>Percent</th>
+                            <td>{{ pointsType.percent }}</td>
+                        </tr>
+                        <tr>
+                            <th>Isactive</th>
+                            <td>{% if pointsType.isActive %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Createdon</th>
+                            <td>{% if pointsType.createdOn %}{{ pointsType.createdOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <ul class="pull-right">
+                        <a class="btn btn-default" href="{{ path('pointstype_index') }}">Back to the list</a>
+                        <a class="btn btn-primary" href="{{ path('pointstype_edit', { 'id': pointsType.id }) }}">Edit</a>
+                    </ul>
+                    {{ form_start(delete_form) }}
+                    <input id="pointstype_delete_button" class="btn btn-danger pull-left" type="submit" value="Delete">
+                    {{ form_end(delete_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ confirm('#pointstype_delete_button') }}
+{% endblock %}
