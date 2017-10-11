@@ -114,10 +114,11 @@ class Tickets
 
         /** Получаем количество процентов для начисления баллов и итогое кол-во баллов */
         $pointsTypeRepository = $this->getEm()->getRepository('ZenomaniaCoreBundle:PointsType');
-        $percent = $pointsTypeRepository->findPercentByTypeAndInterval(PersonPoints::TYPE_TICKET_REGISTER, $interval);
+        $pointsType = $pointsTypeRepository->findPercentByTypeAndInterval(PersonPoints::TYPE_TICKET_REGISTER, $interval);
 
         $points = 0;
-        if (!empty($percent)) {
+        if (!empty($pointsType)) {
+            $percent = $pointsType->getPercent();
             $points = round($ticket->getPrice() * $percent / 100);
             $this->givePointForRegistration($user, $points);
         }

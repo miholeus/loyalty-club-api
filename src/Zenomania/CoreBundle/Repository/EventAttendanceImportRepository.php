@@ -11,6 +11,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Entity\Event;
+use Zenomania\CoreBundle\Entity\EventAttendanceImport;
 
 class EventAttendanceImportRepository extends EntityRepository
 {
@@ -27,11 +28,18 @@ class EventAttendanceImportRepository extends EntityRepository
         $query = $qb->select('u')
             ->from('ZenomaniaCoreBundle:EventAttendanceImport', 'u')
             ->where('u.event = :event')
-            ->andWhere('subscription_number IS NOT NULL AND person_id IS NOT NULL')
-            ->andWhere('price > 0')
+            ->andWhere('u.subscriptionNumber IS NOT NULL')
+            ->andWhere('u.person IS NULL')
+            ->andWhere('u.price > 0')
             ->setParameter('event', $event)
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    public function save(EventAttendanceImport $event)
+    {
+        $this->_em->persist($event);
+        $this->_em->flush();
     }
 }

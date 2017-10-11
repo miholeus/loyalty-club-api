@@ -24,7 +24,7 @@ class PointsTypeRepository extends EntityRepository
     public function findPercentByTypeAndInterval(string $type, int $interval)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $query = $qb->select('pt.percent')
+        $query = $qb->select('pt')
             ->from('ZenomaniaCoreBundle:PointsType', 'pt')
             ->where('pt.type = :type')
             ->andWhere('pt.interval <= :interval')
@@ -34,6 +34,6 @@ class PointsTypeRepository extends EntityRepository
             ->setMaxResults(1)
             ->getQuery();
 
-        return $query->getSingleScalarResult();
+        return $query->getOneOrNullResult();
     }
 }
