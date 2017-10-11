@@ -8,7 +8,6 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
-
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Entity\Actor;
 use Zenomania\CoreBundle\Entity\Person;
@@ -54,4 +53,24 @@ class PersonRepository extends EntityRepository
         $this->_em->persist($person);
         $this->_em->flush();
     }
+
+    public function isFullProfile(User $user)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('u')
+            ->from('ZenomaniaCoreBundle:Person', 'u')
+            ->where('u.user = :user')
+            ->andWhere('u.firstName IS NOT NULL')
+            ->andWhere('u.lastName IS NOT NULL')
+            ->andWhere('u.middleName IS NOT NULL')
+            ->andWhere('u.email IS NOT NULL')
+            ->andWhere('u.bdate IS NOT NULL')
+            ->andWhere('u.city IS NOT NULL')
+            ->andWhere('u.district IS NOT NULL')
+            ->setParameter('user', $user->getId())
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
 }

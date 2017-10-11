@@ -48,6 +48,21 @@ class UserBadge
         $this->getUserBadgeRepository()->save($userBadge);
     }
 
+    public function givePointsForFullProfile(User $user)
+    {
+        $userBadge = new UserBadgeEntity();
+
+        /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => 'full profile']);
+
+        $userBadge->setUser($user);
+        $userBadge->setPoints($badge->getMaxPoints());
+        $userBadge->setBadgeId($badge);
+        $userBadge->setCreatedOn(new \DateTime());
+
+        $this->getUserBadgeRepository()->save($userBadge);
+    }
+
     /**
      * @return UserBadgeRepository
      */

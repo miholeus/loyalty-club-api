@@ -10,6 +10,7 @@ namespace Zenomania\CoreBundle\Event\Listener;
 
 use Zenomania\CoreBundle\Event\User\RegistrationEvent;
 use Zenomania\CoreBundle\Event\User\ProfileEvent;
+use Zenomania\CoreBundle\Repository\PersonRepository;
 use Zenomania\CoreBundle\Service\UserBadge;
 
 class BadgeListener
@@ -19,9 +20,15 @@ class BadgeListener
      */
     private $userBadge;
 
-    public function __construct(UserBadge $userBadge)
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
+
+    public function __construct(UserBadge $userBadge, PersonRepository $personRepository)
     {
         $this->userBadge = $userBadge;
+        $this->personRepository = $personRepository;
     }
 
     public function onRegistrationEvent(RegistrationEvent $registrationEvent)
@@ -31,7 +38,15 @@ class BadgeListener
 
     public function onUserProfileEvent(ProfileEvent $profileEvent)
     {
+        $user = $profileEvent->getArgument('user');
 
+        //Проверям заполнена ли анкета
+        $person = $this->getPersonRepository()->isFullProfile($user);
+
+        //Выдаем бейдж
+        if ($person) {
+            $this->getUserBadge()->givePointsForFullProfile($user);
+        }
     }
 
     /**
@@ -42,4 +57,11 @@ class BadgeListener
         return $this->userBadge;
     }
 
+    /**
+     * @return PersonRepository
+     */
+    public function getPersonRepository(): PersonRepository
+    {
+        return $this->personRepository;
+    }
 }
