@@ -43,9 +43,10 @@ class BadgeListener
         //Проверям заполнена ли анкета
         $person = $this->getPersonRepository()->isFullProfile($user);
 
-        //Выдаем бейдж
         if ($person) {
-            $this->getUserBadge()->givePointsForFullProfile($user);
+            $this->getUserBadge()->giveBadgeForFullProfile($user);
+        } else {
+            $this->getUserBadge()->deleteBadgeForFullProfile($user);
         }
     }
 

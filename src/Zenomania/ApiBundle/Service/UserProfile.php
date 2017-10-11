@@ -78,7 +78,7 @@ class UserProfile
         $profileData = [
             'firstName' => $profile->getFirstName(),
             'lastName' => $profile->getLastName(),
-            'middleName' => $profile->getLastName(),
+            'middleName' => $profile->getMiddleName(),
             'email' => $profile->getEmail(),
             'mobile' => $user->getPhone(),
             'bdate' => $user->getBirthDate(),

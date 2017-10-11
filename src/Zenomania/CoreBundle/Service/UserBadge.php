@@ -48,7 +48,29 @@ class UserBadge
         $this->getUserBadgeRepository()->save($userBadge);
     }
 
-    public function givePointsForFullProfile(User $user)
+    public function giveBadgeForFullProfile(User $user)
+    {
+        $userBadge = $this->getUserBadgeFullProfile($user);
+
+        if(!$userBadge){
+            $this->getUserBadgeRepository()->save($userBadge);
+        }
+    }
+
+    public function deleteBadgeForFullProfile(User $user)
+    {
+        $userBadge = $this->getUserBadgeFullProfile($user);
+
+        if($userBadge){
+            $this->getUserBadgeRepository()->remove($userBadge);
+        }
+    }
+
+    /**
+     * @param User $user
+     * @return null|object
+     */
+    public function getUserBadgeFullProfile(User $user)
     {
         $userBadge = new UserBadgeEntity();
 
@@ -56,11 +78,14 @@ class UserBadge
         $badge = $this->getBadgeRepository()->findOneBy(['code' => 'full profile']);
 
         $userBadge->setUser($user);
-        $userBadge->setPoints($badge->getMaxPoints());
         $userBadge->setBadgeId($badge);
-        $userBadge->setCreatedOn(new \DateTime());
 
-        $this->getUserBadgeRepository()->save($userBadge);
+        return $this->getUserBadgeRepository()->findOneBy(
+            [
+                'badgeId' => $userBadge->getBadgeId(),
+                'user' => $userBadge->getUser()->getId()
+            ]
+        );
     }
 
     /**
