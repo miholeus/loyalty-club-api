@@ -8,6 +8,8 @@
 
 namespace Zenomania\CoreBundle\Event\Listener;
 
+use Zenomania\CoreBundle\Entity\Person;
+use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Event\User\RegistrationEvent;
 use Zenomania\CoreBundle\Event\User\ProfileEvent;
 use Zenomania\CoreBundle\Repository\PersonRepository;
@@ -31,23 +33,59 @@ class BadgeListener
         $this->personRepository = $personRepository;
     }
 
+    /**
+     * User registration event
+     *
+     * @param RegistrationEvent $registrationEvent
+     */
     public function onRegistrationEvent(RegistrationEvent $registrationEvent)
     {
-        $this->getUserBadge()->givePointsForRegistrations($registrationEvent->getArgument('user'));
+        $this->getUserBadge()->giveBadgeForRegistrations($registrationEvent->getArgument('user'));
     }
 
+    /**
+     * User
+     *
+     * @param ProfileEvent $profileEvent
+     */
     public function onUserProfileEvent(ProfileEvent $profileEvent)
     {
+        /** @var User $user */
         $user = $profileEvent->getArgument('user');
 
         //Проверям заполнена ли анкета
-        $person = $this->getPersonRepository()->isFullProfile($user);
-
-        if ($person) {
-            $this->getUserBadge()->giveBadgeForFullProfile($user);
-        } else {
-            $this->getUserBadge()->deleteBadgeForFullProfile($user);
+        $person = $user->getPerson();
+        $profileCompleted = false;
+        if (null !== $person && $this->isFullProfile($person)) {
+            $profileCompleted = true;
         }
+
+        if ($profileCompleted) {
+            $this->getUserBadge()->giveBadgeIfProfileCompleted($user);
+        } else {
+            $this->getUserBadge()->revokeBadgeIfProfileNotCompleted($user);
+        }
+    }
+
+    /**
+     * Checks if profile is completed
+     *
+     * @param Person $person
+     * @return bool
+     */
+    protected function isFullProfile(Person $person)
+    {
+        $profileCompleted = true;
+        if (!$person->getFirstName() || !$person->getLastName() || !$person->getMiddleName()) {
+            $profileCompleted = false;
+        }
+        if (!$person->getEmail() || !$person->getBdate()) {
+            $profileCompleted = false;
+        }
+        if (!$person->getDistrict() || !$person->getCity()) {
+            $profileCompleted = false;
+        }
+        return $profileCompleted;
     }
 
     /**

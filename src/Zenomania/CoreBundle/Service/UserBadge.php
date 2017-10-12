@@ -15,7 +15,6 @@ use Zenomania\CoreBundle\Entity\User;
 
 class UserBadge
 {
-
     /**
      * @var UserBadgeRepository
      */
@@ -33,33 +32,48 @@ class UserBadge
 
     }
 
-    public function givePointsForRegistrations(User $user)
+    /**
+     * Add's badge for user's registration
+     *
+     * @param User $user
+     */
+    public function giveBadgeForRegistrations(User $user)
     {
         $userBadge = new UserBadgeEntity();
 
         /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
-        $badge = $this->getBadgeRepository()->findOneBy(['code' => 'hello']);
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => \Zenomania\CoreBundle\Entity\Badge::TYPE_REGISTRATION]);
 
         $userBadge->setUser($user);
         $userBadge->setPoints($badge->getPoints());
         $userBadge->setBadgeId($badge);
-        $userBadge->setCreatedOn(new \DateTime());
 
         $this->getUserBadgeRepository()->save($userBadge);
     }
 
-    public function giveBadgeForFullProfile(User $user)
+    /**
+     * Give's user badge for profile completion
+     *
+     * @param User $user
+     * @return null|object
+     */
+    public function giveBadgeIfProfileCompleted(User $user)
     {
-        $userBadge = $this->getUserBadgeFullProfile($user);
+        $userBadge = $this->getProfileCompletedBadge($user);
 
         if(!$userBadge){
             $this->getUserBadgeRepository()->save($userBadge);
         }
+
+        return $userBadge;
     }
 
-    public function deleteBadgeForFullProfile(User $user)
+    /**
+     * @param User $user
+     */
+    public function revokeBadgeIfProfileNotCompleted(User $user)
     {
-        $userBadge = $this->getUserBadgeFullProfile($user);
+        $userBadge = $this->getProfileCompletedBadge($user);
 
         if($userBadge){
             $this->getUserBadgeRepository()->remove($userBadge);
@@ -67,23 +81,20 @@ class UserBadge
     }
 
     /**
+     * Get's user's profile completed badge
+     *
      * @param User $user
-     * @return null|object
+     * @return null|\Zenomania\CoreBundle\Entity\UserBadge
      */
-    public function getUserBadgeFullProfile(User $user)
+    public function getProfileCompletedBadge(User $user)
     {
-        $userBadge = new UserBadgeEntity();
-
         /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
-        $badge = $this->getBadgeRepository()->findOneBy(['code' => 'full profile']);
-
-        $userBadge->setUser($user);
-        $userBadge->setBadgeId($badge);
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => \Zenomania\CoreBundle\Entity\Badge::TYPE_PROFILE_COMPLETED]);
 
         return $this->getUserBadgeRepository()->findOneBy(
             [
-                'badgeId' => $userBadge->getBadgeId(),
-                'user' => $userBadge->getUser()->getId()
+                'badgeId' => $badge,
+                'user' => $user
             ]
         );
     }

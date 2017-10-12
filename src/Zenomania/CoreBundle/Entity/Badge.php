@@ -10,6 +10,9 @@ use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
  */
 class Badge implements IdentifiableInterface
 {
+    const TYPE_REGISTRATION = 'hello';
+    const TYPE_VISITED_FIRST_MATCH = 'first match';
+    const TYPE_PROFILE_COMPLETED = 'profile done';
     /**
      * @var int
      */

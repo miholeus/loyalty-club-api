@@ -33,7 +33,10 @@ class UserBadge
      */
     private $user;
 
-
+    public function __construct()
+    {
+        $this->createdOn = new \DateTime();
+    }
     /**
      * Get id
      *
