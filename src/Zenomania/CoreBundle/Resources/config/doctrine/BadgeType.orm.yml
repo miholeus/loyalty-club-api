@@ -1,6 +1,6 @@
 Zenomania\CoreBundle\Entity\BadgeType:
     type: entity
-    table: null
+    table: badge_type
     repositoryClass: Zenomania\CoreBundle\Repository\BadgeTypeRepository
     id:
         id:
