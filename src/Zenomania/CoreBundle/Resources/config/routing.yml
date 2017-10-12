@@ -37,6 +37,12 @@ zenomania_core_event:
 zenomania_core_player:
         resource: "@ZenomaniaCoreBundle/Resources/config/routing/player.yml"
         prefix:   /player
+zenomania_core_badge:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/badge.yml"
+    prefix:   /badge
+zenomania_core_badge_type:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/badgetype.yml"
+    prefix:   /badge/type
 zenomania_core_promocoupon:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/promocoupon.yml"
     prefix:   /promocoupon

@@ -229,8 +229,16 @@ class PersonPointsRepository extends EntityRepository
             $select->andWhere('p.dt > :date')
                 ->setParameter('date', $fromDate);
         }
-        $result = $select->getQuery()->getOneOrNullResult();
-        return $result;
+        try {
+            $result = $select->getQuery()->getArrayResult();
+            $data = [];
+            foreach ($result as $item) {
+                $data[$item['type']] = $item[1];
+            }
+            return $data;
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return [];
+        }
     }
 
     /**

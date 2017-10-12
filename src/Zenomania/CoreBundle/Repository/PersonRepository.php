@@ -8,9 +8,7 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
-
 use Doctrine\ORM\EntityRepository;
-use Zenomania\CoreBundle\Entity\Actor;
 use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\User;
 
@@ -28,22 +26,6 @@ class PersonRepository extends EntityRepository
             ->from('ZenomaniaCoreBundle:Person', 'u')
             ->where('u.user = :user')
             ->setParameter('user', $user->getId())
-            ->getQuery();
-
-        return $query->getOneOrNullResult();
-    }
-
-    /**
-     * @param Actor $actor
-     * @return Person
-     */
-    public function findPersonByActor(Actor $actor)
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $query = $qb->select('u')
-            ->from('ZenomaniaCoreBundle:Person', 'u')
-            ->where('u.id = :actor')
-            ->setParameter('actor', $actor->getPerson()->getId())
             ->getQuery();
 
         return $query->getOneOrNullResult();

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Badges list</h1>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Code</th>
+            <th>Photo</th>
+            <th>Sort</th>
+            <th>Points</th>
+            <th>Max Points</th>
+            <th>Active</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for badge in badges %}
+            <tr>
+                <td><a href="{{ path('badge_show', { 'id': badge.id }) }}">{{ badge.id }}</a></td>
+                <td>{{ badge.title }}</td>
+                <td>{{ badge.code }}</td>
+                <td>{{ badge.sort }}</td>
+                <td>{{ badge.points }}</td>
+                <td>{{ badge.maxPoints }}</td>
+                <td>{% if badge.active %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <a href="{{ path('badge_show', { 'id': badge.id }) }}" class="btn btn-default">show</a>
+                    <a href="{{ path('badge_edit', { 'id': badge.id }) }}" class="btn btn-default">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('badge_new') }}">Create a new badge</a>
+        </li>
+    </ul>
+{% endblock %}

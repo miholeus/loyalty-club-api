@@ -87,3 +87,12 @@ services:
         parent: core.user_aware_service
     promocoupon.parser:
         class: Zenomania\CoreBundle\Service\PromoCouponParser
+    badge.service:
+        class: Zenomania\CoreBundle\Service\Badge
+        parent: core.user_aware_service
+        calls:
+            - ['setUploadService', ['@file.upload_badge_photo']]
+            - ['setImageService', ['@images.service']]
+    user_badge.service:
+        class: Zenomania\CoreBundle\Service\UserBadge
+        arguments: ['@repository.user_badge_repository','@repository.badge_repository']

@@ -111,6 +111,18 @@ class PromoCouponService extends UserAwareService
     }
 
     /**
+     * Saves coupon
+     *
+     * @param PromoCoupon $coupon
+     */
+    public function save(PromoCoupon $coupon)
+    {
+        if (null === $coupon->getId()) {
+            $coupon->setCreatedBy($this->getUser());
+        }
+        $this->getPromoCouponRepository()->save($coupon);
+    }
+    /**
      * @return \Zenomania\CoreBundle\Repository\PromoCouponRepository
      */
     public function getPromoCouponRepository()

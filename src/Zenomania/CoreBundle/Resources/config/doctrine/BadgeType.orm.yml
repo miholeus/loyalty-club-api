@@ -1,0 +1,19 @@
+Zenomania\CoreBundle\Entity\BadgeType:
+    type: entity
+    table: badge_type
+    repositoryClass: Zenomania\CoreBundle\Repository\BadgeTypeRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        title:
+            type: string
+            length: 255
+        sort:
+            type: integer
+            options:
+                default: '0'
+    lifecycleCallbacks: {  }

@@ -29,12 +29,17 @@ class Builder
         /** @var ItemInterface $menu */
         $menu = $this->factory->createItem('Zenomania', ['route' => 'zenomania_core_homepage']);
         $menu->addChild('Home', ['route' => 'zenomania_core_homepage']);
-        $menu->addChild('User Roles', self::makeResourceRoutes('user_role'));
-        $menu->addChild('User statuses', self::makeResourceRoutes('user_status'));
-        $menu->addChild('Users', self::makeResourceRoutes('user'));
-        $menu->addChild('Countries', self::makeResourceRoutes('country'));
-        $menu->addChild('Cities', self::makeResourceRoutes('city'));
-        $menu->addChild('Districts', self::makeResourceRoutes('district'));
+
+        $users = $menu->addChild('Users');
+        $users->addChild('User Roles', self::makeResourceRoutes('user_role'));
+        $users->addChild('User statuses', self::makeResourceRoutes('user_status'));
+        $users->addChild('Users', self::makeResourceRoutes('user'));
+
+        $geo = $menu->addChild('Countries');
+        $geo->addChild('Countries', self::makeResourceRoutes('country'));
+        $geo->addChild('Cities', self::makeResourceRoutes('city'));
+        $geo->addChild('Districts', self::makeResourceRoutes('district'));
+
         $menu->addChild('Clubs', self::makeResourceRoutes('club'));
         $menu->addChild('Actors', self::makeResourceRoutes('actor'));
         $menu->addChild('Sport', self::makeResourceRoutes('sport'));
@@ -42,6 +47,10 @@ class Builder
         $menu->addChild('Matches & Results', self::makeResourceRoutes('event'));
         $menu->addChild('Player', self::makeResourceRoutes('player'));
         $menu->addChild('Promo coupon', self::makeResourceRoutes('promocoupon'));
+
+        $badges = $menu->addChild('Badges');
+        $badges->addChild('Badges', self::makeResourceRoutes('badge'));
+        $badges->addChild('Badge Types', self::makeResourceRoutes('badge_type'));
 
         $this->fillBranchRoutes($menu->getChildren());
 

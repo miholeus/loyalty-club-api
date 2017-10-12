@@ -15,3 +15,6 @@ services:
     file.upload_promo_coupon:
         class: Zenomania\CoreBundle\Service\Upload\UploadPromoCoupon
         parent: file.upload
+    file.upload_badge_photo:
+        class: Zenomania\CoreBundle\Service\Upload\UploadBadgePhoto
+        parent: file.upload_photo_abstract
