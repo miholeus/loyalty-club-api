@@ -9,6 +9,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Event
 {
+    const SCORE_SAVED_NEW = 1;
+    const SCORE_SAVED_PROCESSED = 2;
+
     /**
      * @var integer
      */
