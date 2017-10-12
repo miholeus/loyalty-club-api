@@ -8,6 +8,7 @@ namespace Zenomania\ApiBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
+use Zenomania\ApiBundle\Service\Exception\PointsCanNotBeGrantedException;
 use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Entity\EventForecast;
 use Zenomania\CoreBundle\Entity\EventPlayerForecast;
@@ -118,22 +119,21 @@ class Events
     }
 
     /**
+     * Process predictions for event
+     *
      * @param Event $event
      */
-    public function calculate(Event $event)
+    public function processPredictions(Event $event)
     {
-        if ($this->isNotCalculate($event)) {
-            return;
-        }
+        $this->ensurePointsCanBeGranted($event);
 
         // Получить все прогнозы для события $event
-        $eventForecast = $this->getEventForecastRepository()->getEventForecastByEvent($event);
+        $forecasts = $this->getEventForecastRepository()->getForecasts($event);
 
         // Обработать каждый прогноз и начислить очки
         /** @var EventForecast $forecast */
-        foreach ($eventForecast as $forecast) {
-            /** @var User $user */
-            $user = $this->getUserRepository()->find($forecast->getUser());
+        foreach ($forecasts as $forecast) {
+            $user = $forecast->getUser();
 
             if (empty($user)) {
                 continue;
@@ -188,16 +188,12 @@ class Events
      * @param Event $event
      * @return bool
      */
-    protected function predictedWinner(EventForecast $forecast, Event $event)
+    protected function predictedWinner(EventForecast $forecast, Event $event): bool
     {
-        $forecastWinner = $forecast->getScoreHome() - $forecast->getScoreGuest();
-        $eventWinner = $event->getScoreHome() - $event->getScoreGuest();
+        $forecastWinner = $forecast->getScoreHome() > $forecast->getScoreGuest();
+        $eventWinner = $event->getScoreHome() > $event->getScoreGuest();
 
-        if (($forecastWinner * $eventWinner) > 0) {
-            return true;
-        }
-
-        return false;
+        return $forecastWinner === $eventWinner;
     }
 
     /**
@@ -205,20 +201,14 @@ class Events
      *
      * @param EventForecast $forecast
      * @param Event $event
-     * @return int
+     * @return bool
      */
-    protected function predictedScoreInRound(EventForecast $forecast, Event $event)
+    protected function predictedScoreInRound(EventForecast $forecast, Event $event): bool
     {
-        $count = 0;
         $forecastRounds = explode(';', $forecast->getScoreInRounds());
         $eventRounds = explode(';', $event->getScoreInRounds());
-        foreach ($forecastRounds as $round => $score) {
-            if ($score == $eventRounds[$round]) {
-                $count++;
-            }
-        }
 
-        return $count;
+        return $forecastRounds == $eventRounds;
     }
 
     /**
@@ -228,7 +218,7 @@ class Events
      * @param Event $event
      * @return bool
      */
-    protected function predictedExactScore(EventForecast $forecast, Event $event)
+    protected function predictedExactScore(EventForecast $forecast, Event $event): bool
     {
         $predictedScoreHome = ($forecast->getScoreHome() == $event->getScoreHome());
         $predictedScoreGuest =  ($forecast->getScoreGuest() == $event->getScoreGuest());
@@ -341,7 +331,7 @@ class Events
      */
     private function processedEvent(Event $event)
     {
-        $event->setScoreSaved(EventRepository::SCORE_SAVED_PROCESSED);
+        $event->setScoreSaved(Event::SCORE_SAVED_PROCESSED);
         $this->getEventRepository()->save($event);
     }
 
@@ -377,22 +367,19 @@ class Events
 
     /**
      * @param Event $event
+     * @throws PointsCanNotBeGrantedException
      * @return bool
      */
-    private function isNotCalculate(Event $event)
+    private function ensurePointsCanBeGranted(Event $event)
     {
-        if ($event->getScoreSaved() == EventRepository::SCORE_SAVED_PROCESSED) {
-            return true;
+        if ($event->getScoreSaved() == Event::SCORE_SAVED_PROCESSED) {
+            throw new PointsCanNotBeGrantedException("Событие уже обработано");
         }
 
-        if ((!in_array($event->getScoreHome(), [0, 1, 2, 3]))) {
-            return true;
+        if ($event->getDate()->getTimestamp() > time()) {
+            throw new PointsCanNotBeGrantedException("Событие еще не закончилось");
         }
 
-        if ((!in_array($event->getScoreGuest(), [0, 1, 2, 3]))) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 }

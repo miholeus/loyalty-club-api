@@ -43,7 +43,7 @@ class EventForecastRepository extends EntityRepository
      * @param Event $event
      * @return array
      */
-    public function getEventForecastByEvent(Event $event)
+    public function getForecasts(Event $event)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('f')

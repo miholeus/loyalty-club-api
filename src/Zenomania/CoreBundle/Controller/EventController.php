@@ -77,11 +77,13 @@ class EventController extends Controller
 
     /**
      * Подсчёт прогнозов пользователей
+     * @param Event $event
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function calculateAction(Event $event)
     {
         $service = $this->get('event.service');
-        $service->calculate($event);
+        $service->processPredictions($event);
 
         return $this->render('ZenomaniaCoreBundle:event:calculate.html.twig', array(
         ));
