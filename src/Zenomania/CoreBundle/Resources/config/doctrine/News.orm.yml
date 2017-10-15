@@ -1,0 +1,53 @@
+Zenomania\CoreBundle\Entity\News:
+    type: entity
+    table: news
+    repositoryClass: Zenomania\CoreBundle\Repository\NewsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        text:
+            type: text
+            nullable: true
+        vkId:
+            type: integer
+            column: vk_id
+            nullable: true
+        dt:
+            type: datetime
+        photo:
+            type: string
+            length: 255
+            nullable: true
+        video:
+            type: string
+            length: 255
+            nullable: true
+        tags:
+            type: json_array
+            nullable: true
+            options:
+                fixed: false
+                jsonb: true
+        published:
+            type: boolean
+            options:
+                fixed: false
+                default: true
+        createdOn:
+            type: datetime
+            column: created_on
+        updatedOn:
+            type: datetime
+            nullable: true
+            column: updated_on
+        status:
+            type: string
+            length: 255
+            options:
+                fixed: false
+                default: 'new'
+    lifecycleCallbacks: {  }
