@@ -38,9 +38,9 @@ class SocialRepost
     private $person;
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\SocialPost
+     * @var \Zenomania\CoreBundle\Entity\News
      */
-    private $post;
+    private $news;
 
 
     /**
@@ -176,13 +176,13 @@ class SocialRepost
     /**
      * Set post
      *
-     * @param \Zenomania\CoreBundle\Entity\SocialPost $post
+     * @param \Zenomania\CoreBundle\Entity\News $post
      *
      * @return SocialRepost
      */
-    public function setPost(\Zenomania\CoreBundle\Entity\SocialPost $post = null)
+    public function setNews(\Zenomania\CoreBundle\Entity\News $news = null)
     {
-        $this->post = $post;
+        $this->news = $news;
 
         return $this;
     }
@@ -190,10 +190,10 @@ class SocialRepost
     /**
      * Get post
      *
-     * @return \Zenomania\CoreBundle\Entity\SocialPost
+     * @return \Zenomania\CoreBundle\Entity\News
      */
-    public function getPost()
+    public function getNews()
     {
-        return $this->post;
+        return $this->news;
     }
 }

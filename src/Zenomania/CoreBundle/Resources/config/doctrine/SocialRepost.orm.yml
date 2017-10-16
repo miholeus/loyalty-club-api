@@ -1,17 +1,18 @@
 Zenomania\CoreBundle\Entity\SocialRepost:
     type: entity
     table: social_repost
+    repositoryClass: Zenomania\CoreBundle\Repository\SocialRepostRepository
     indexes:
         FK_social_repost_person:
             columns:
                 - person_id
         IDX_C37F24194B89032C:
             columns:
-                - post_id
+                - news_id
     uniqueConstraints:
         post_id_user_outerid:
             columns:
-                - post_id
+                - news_id
                 - user_outerid
     id:
         id:
@@ -61,14 +62,14 @@ Zenomania\CoreBundle\Entity\SocialRepost:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
-        post:
-            targetEntity: SocialPost
+        news:
+            targetEntity: News
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                post_id:
+                news_id:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
