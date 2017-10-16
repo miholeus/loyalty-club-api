@@ -10,6 +10,7 @@ namespace Zenomania\ApiBundle\Service\Social\Client;
 
 use Zenomania\ApiBundle\Form\Model\ProfileSocialData;
 use GuzzleHttp\Client;
+use Zenomania\CoreBundle\Entity\News;
 
 class VkontakteClient implements ClientInterface
 {
@@ -62,15 +63,15 @@ class VkontakteClient implements ClientInterface
     /**
      * Получить id всех пользователей сделавших репост заданного поста
      *
-     * @param null $post
+     * @param News $post
      * @return array
      * @throws ClientException
      */
-    public function getReposts($post = null)
+    public function getReposts(News $post)
     {
         $queryData = [
             'owner_id' => '-32408054',
-            'post_id' => '96972',
+            'post_id' => $post->getVkId(),
             'v' => $this->version,
         ];
         $response = $this->client->request(

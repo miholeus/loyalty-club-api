@@ -42,6 +42,18 @@ class SocialRepost
      */
     private $news;
 
+    /**
+    * @param array $data
+    * @return SocialRepost
+    */
+    public static function fromArray(array $data) : SocialRepost
+    {
+        $self = new self();
+        foreach ($data as $key => $value) {
+            $self->{"set".ucfirst($key)}($value);
+        }
+        return $self;
+    }
 
     /**
      * Get id

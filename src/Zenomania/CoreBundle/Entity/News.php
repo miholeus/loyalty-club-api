@@ -7,6 +7,10 @@ namespace Zenomania\CoreBundle\Entity;
  */
 class News
 {
+    const STATUS_NEW = 'new';
+    const STATUS_CONTROLLED = 'controlled';
+    const STATUS_DONE = 'done';
+
     /**
      * @var int
      */

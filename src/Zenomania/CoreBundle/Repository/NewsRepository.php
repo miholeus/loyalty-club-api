@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Zenomania\CoreBundle\Entity\News;
+
 /**
  * NewsRepository
  *
@@ -10,4 +12,21 @@ namespace Zenomania\CoreBundle\Repository;
  */
 class NewsRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * Возвращает новые записи из ВК
+     *
+     * @return array
+     */
+    public function findAllNewNews()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
+            ->where('n.status = :status')
+            ->setParameter('status', News::STATUS_NEW)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }
