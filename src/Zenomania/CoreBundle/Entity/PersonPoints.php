@@ -60,6 +60,12 @@ class PersonPoints
      * @var \Zenomania\CoreBundle\Entity\User
      */
     private $user;
+
+    /**
+     * @var SocialRepost
+     */
+    private $socialRepost;
+
     /**
      * @param array $data
      * @return PersonPoints
@@ -250,5 +256,24 @@ class PersonPoints
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @return SocialRepost
+     */
+    public function getSocialRepost()
+    {
+        return $this->socialRepost;
+    }
+
+    /**
+     * @param SocialRepost $socialRepost
+     * @return PersonPoints
+     */
+    public function setSocialRepost(SocialRepost $socialRepost)
+    {
+        $this->socialRepost = $socialRepost;
+
+        return $this;
     }
 }

@@ -43,6 +43,11 @@ class SocialRepost
     private $news;
 
     /**
+     * @var \Zenomania\CoreBundle\Entity\PersonPoints
+     */
+    private $personPoints;
+
+    /**
     * @param array $data
     * @return SocialRepost
     */
@@ -207,5 +212,24 @@ class SocialRepost
     public function getNews()
     {
         return $this->news;
+    }
+
+    /**
+     * @return PersonPoints
+     */
+    public function getPersonPoints()
+    {
+        return $this->personPoints;
+    }
+
+    /**
+     * @param PersonPoints $personPoints
+     * @return SocialRepost
+     */
+    public function setPersonPoints(PersonPoints $personPoints)
+    {
+        $this->personPoints = $personPoints;
+
+        return $this;
     }
 }

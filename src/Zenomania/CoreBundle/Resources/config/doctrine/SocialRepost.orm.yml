@@ -73,4 +73,11 @@ Zenomania\CoreBundle\Entity\SocialRepost:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
+    oneToOne:
+        personPoints:
+            targetEntity: Zenomania\CoreBundle\Entity\PersonPoints
+            inversedBy: socialRepost
+            joinColumn:
+              name: person_points_id
+              referencedColumnName: id
     lifecycleCallbacks: {  }
