@@ -139,6 +139,7 @@ class PersonPointsRepository extends EntityRepository
      *
      * @param User $user
      * @param $points
+     * @return PersonPoints
      */
     public function givePointsForRepost(User $user, $points)
     {
@@ -159,6 +160,8 @@ class PersonPointsRepository extends EntityRepository
         $this->_em->persist($personPoints);
 
         $this->_em->flush();
+
+        return $personPoints;
     }
 
     /**

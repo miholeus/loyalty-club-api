@@ -71,18 +71,19 @@ class NewRepostCommand extends ContainerAwareCommand
                     continue;
                 }
 
+                $personPoints = $this->addPointsForRepost($person->getUser(), $points);
                 $params = [
                     'person' => $person,
                     'news' => $post,
                     'network' => 'vk',
                     'userOuterid' => $repost->from_id,
                     'repostOuterid' => $repost->id,
-                    'repostDt' => (new \DateTime())->setTimestamp($repost->date)
+                    'repostDt' => (new \DateTime())->setTimestamp($repost->date),
+                    'personPoints' => $personPoints
                 ];
 
                 $socialRepost = SocialRepost::fromArray($params);
                 $socialRepostRepository->save($socialRepost);
-                $this->addPointsForRepost($person->getUser(), $points);
                 echo "Засчитали репост участника с id Вконтакте = " . $repost->from_id . PHP_EOL;
             }
         }
@@ -95,10 +96,11 @@ class NewRepostCommand extends ContainerAwareCommand
      *
      * @param User $user
      * @param int $points
+     * @return \Zenomania\CoreBundle\Entity\PersonPoints
      */
     private function addPointsForRepost(User $user, int $points)
     {
-        $this->getContainer()
+        return $this->getContainer()
             ->get('repository.person_points_repository')
             ->givePointsForRepost($user, $points);
     }
