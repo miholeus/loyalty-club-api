@@ -85,4 +85,33 @@ class VkontakteClient implements ClientInterface
         }
         throw new ClientException($reposts->error->error_code, $reposts->error->error_msg);
     }
+
+    /**
+     * Получить массив из id аккаунтов пользователей, которые сделали репост
+     *
+     * @param News $post
+     * @return mixed
+     * @throws ClientException
+     */
+    public function getList(News $post)
+    {
+        $queryData = [
+            'type' => 'post',
+            'owner_id' => '-32408054',
+            'item_id' => $post->getVkId(),
+            'filter' => 'copies',
+            'friends_only' => 0,
+            'v' => $this->version,
+        ];
+        $response = $this->client->request(
+            'GET',
+            'likes.getList',
+            ['query' => $queryData]
+        );
+        $reposts = \GuzzleHttp\json_decode($response->getBody()->getContents());
+        if (isset($reposts->response)) {
+            return $reposts->response->items;
+        }
+        throw new ClientException($reposts->error->error_code, $reposts->error->error_msg);
+    }
 }

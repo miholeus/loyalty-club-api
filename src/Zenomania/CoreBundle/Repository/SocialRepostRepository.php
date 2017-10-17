@@ -44,9 +44,52 @@ class SocialRepostRepository extends EntityRepository
         return true;
     }
 
+    /**
+     * Получить список id аккаунтов, которые сделали репост данной записи
+     *
+     * @param News $news
+     * @return array
+     */
+    public function findRepostByPost(News $news)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('sr.userOuterid')
+            ->from('ZenomaniaCoreBundle:SocialRepost', 'sr')
+            ->where('sr.news = :news')
+            ->setParameter('news', $news);
+
+        $query = $qb->getQuery();
+        return $query->getArrayResult();
+    }
+
     public function save(SocialRepost $socialRepost)
     {
         $this->_em->persist($socialRepost);
         $this->_em->flush();
+    }
+
+    public function removeRepost(array $id, int $postId)
+    {
+        $em = $this->getEntityManager();
+        $q = $em->createQuery("DELETE FROM Zenomania\CoreBundle\Entity\SocialRepost sr WHERE sr.user_outerid IN (:id) AND sr.news_id = :news");
+        $q->setParameter('id', $id);
+        $q->setParameter('news', $postId);
+        $q->execute();
+    }
+
+    public function getPerponPointsForRemove(array $id, int $postId)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('sr.personPoints')
+            ->from('ZenomaniaCoreBundle:SocialRepost', 'sr')
+            ->where('sr.user_outerid IN (:id)')
+            ->andWhere('sr.news_id = :news')
+            ->setParameter('news', $id)
+            ->setParameter('news', $postId);
+
+        $query = $qb->getQuery();
+        return $query->getArrayResult();
     }
 }

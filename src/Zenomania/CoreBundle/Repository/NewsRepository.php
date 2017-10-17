@@ -30,6 +30,23 @@ class NewsRepository extends \Doctrine\ORM\EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * Возвращает записи из ВК, находящиеся под контролем
+     *
+     * @return array
+     */
+    public function findAllControlledNews()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
+            ->where('n.status = :status')
+            ->setParameter('status', News::STATUS_CONTROLLED)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     public function save(News $news)
     {
         $this->_em->persist($news);
