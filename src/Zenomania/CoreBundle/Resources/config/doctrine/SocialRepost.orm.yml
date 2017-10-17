@@ -80,4 +80,5 @@ Zenomania\CoreBundle\Entity\SocialRepost:
             joinColumn:
               name: person_points_id
               referencedColumnName: id
+              onDelete: CASCADE
     lifecycleCallbacks: {  }
