@@ -96,3 +96,6 @@ services:
     user_badge.service:
         class: Zenomania\CoreBundle\Service\UserBadge
         arguments: ['@repository.user_badge_repository','@repository.badge_repository']
+    news.service:
+        class: Zenomania\CoreBundle\Service\NewsService
+        arguments: ['@doctrine.orm.entity_manager']

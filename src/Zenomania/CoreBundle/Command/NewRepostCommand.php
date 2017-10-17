@@ -12,9 +12,10 @@ namespace Zenomania\CoreBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Zenomania\CoreBundle\Entity\News;
+use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\SocialAccount;
 use Zenomania\CoreBundle\Entity\SocialRepost;
+use Zenomania\CoreBundle\Entity\User;
 
 class NewRepostCommand extends ContainerAwareCommand
 {
@@ -30,23 +31,30 @@ class NewRepostCommand extends ContainerAwareCommand
         $output->writeln("<info>The start search for new repost</info>");
 
         /** Подключаем все необходимые репозитории и сервисы */
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $socialRepostRepository = $this->getContainer()->get('repository.social_repost_repository');
         $serviceVk = $this->getContainer()->get('api.client.vk');
+        $serviceNews = $this->getContainer()->get('news.service');
 
         /** Получить список всех постов для проверки */
-        $posts = $em->getRepository('ZenomaniaCoreBundle:News')->findBy(['status' => News::STATUS_NEW]);
+        $posts = $serviceNews->getAllNewNews();
 
         foreach ($posts as $post) {
             echo "Обрабатываем сообщение №" . $post->getVkId() . PHP_EOL;
 
-            /** @todo проверить, содержит ли поле $post->getText() значение #XXXZEN */
+            if ($serviceNews->checkTimePost($post)) {
+                echo "Перевели новость из новых в подконтролем " . PHP_EOL;
+            }
+
+            $points = $serviceNews->getPointsFromText($post);
+            if (0 == $points) {
+                echo "Пост не содерит хэштега #XXXZEN" . PHP_EOL;
+                continue;
+            }
 
             /** Получить все репосты для заданного поста */
             $reposts = $serviceVk->getReposts($post);
             foreach ($reposts as $repost) {
-                $interval = $repost->date - $repost->copy_history[0]->date;
-                if ($interval > 24 * 60 * 60) {
+                if ($this->correctIntervalForRepost($repost)) {
                     echo "Репост сделан позднее нужной даты" . PHP_EOL;
                     continue;
                 }
@@ -56,30 +64,72 @@ class NewRepostCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                $socialAccount = $em->getRepository('ZenomaniaCoreBundle:SocialAccount')->findOneBy(['outerId' => $repost->from_id, 'network' => SocialAccount::NETWORK_VK]);
+                $person = $this->getPersonByVkId($repost->from_id);
+
+                if (empty($person)) {
+                    echo "В Zenomania нет участника с id Вконтакте = " . $repost->from_id . PHP_EOL;
+                    continue;
+                }
 
                 $params = [
-                    'person' => $socialAccount->getPerson(),
+                    'person' => $person,
                     'news' => $post,
                     'network' => 'vk',
                     'userOuterid' => $repost->from_id,
                     'repostOuterid' => $repost->id,
-                    'repostDt' => $repost->date
+                    'repostDt' => (new \DateTime())->setTimestamp($repost->date)
                 ];
 
                 $socialRepost = SocialRepost::fromArray($params);
                 $socialRepostRepository->save($socialRepost);
-                echo $repost->to_id . PHP_EOL;
-                echo "Интервал времени " . $interval . PHP_EOL;
+                $this->addPointsForRepost($person->getUser(), $points);
+                echo "Засчитали репост участника с id Вконтакте = " . $repost->from_id . PHP_EOL;
             }
         }
 
-        // Если еще нет, то добавить информацию о репостах в таблицу
-        // При добавлении информации о репосте, начислить баллы пользователю
-
-        // Если с момента опубликования поста прошло более 24 часов, то перевести пост в статус = CHECKED
-
-
         $output->writeln("<info>The end search for new repost</info>");
+    }
+
+    /**
+     * Добавить пользователю очки за репост
+     *
+     * @param User $user
+     * @param int $points
+     */
+    private function addPointsForRepost(User $user, int $points)
+    {
+        $this->getContainer()
+            ->get('repository.person_points_repository')
+            ->givePointsForRepost($user, $points);
+    }
+
+    private function correctIntervalForRepost($repost)
+    {
+        $interval = $repost->date - $repost->copy_history[0]->date;
+        return $interval > 24 * 60 * 60;
+    }
+
+    /**
+     * Получить профиль пользователя по его id в Вконтакте
+     *
+     * @param string $id
+     * @return null|Person
+     */
+    private function getPersonByVkId(string  $id)
+    {
+        /** @var SocialAccount $socialAccount */
+        $socialAccount = $this->getContainer()
+            ->get('repository.social_account_repository')
+            ->findOneBy([
+                'outerId' => $id,
+                'network' => SocialAccount::NETWORK_VK
+            ]);
+
+        $person = null;
+        if (!empty($socialAccount)) {
+            $person = $socialAccount->getPerson();
+        }
+
+        return $person;
     }
 }

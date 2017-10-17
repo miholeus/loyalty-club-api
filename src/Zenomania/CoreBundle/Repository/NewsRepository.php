@@ -29,4 +29,10 @@ class NewsRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getResult();
     }
+
+    public function save(News $news)
+    {
+        $this->_em->persist($news);
+        $this->_em->flush();
+    }
 }
