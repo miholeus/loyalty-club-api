@@ -30,6 +30,7 @@
                 <td>
                     <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-default">show</a>
                     <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-default">edit</a>
+                    <a href="{{ path('event_calculate', { 'id': event.id }) }}" class="btn btn-default">calculate</a>
                 </td>
             </tr>
         {% endfor %}

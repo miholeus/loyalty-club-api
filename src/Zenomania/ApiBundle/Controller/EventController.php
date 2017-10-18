@@ -10,6 +10,7 @@ namespace Zenomania\ApiBundle\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Route;
 use Zenomania\ApiBundle\Form\{
@@ -340,14 +341,12 @@ class EventController extends RestController
      *          "description"="access key header",
      *          "required"=true
      *      }
-     *    },
-     *  input={
-     *     "class"="\Zenomania\ApiBundle\Form\EventPlayerPredictionType",
-     *     "name"=""
-     *     }
+     *    }
      * )
      *
      * @Route(requirements={"event": "\d+"})
+     * @RequestParam(name="players", description="Список игроков (указывается через запятую идентификаторы)")
+     * @RequestParam(name="mvp", description="Ид самого важного игрока")
      *
      * @param Event $event
      * @param Request $request

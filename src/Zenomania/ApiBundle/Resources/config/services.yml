@@ -73,7 +73,7 @@ services:
         class: Zenomania\CoreBundle\Entity\User
     api.user_profile:
         class: Zenomania\ApiBundle\Service\UserProfile
-        arguments: ['@user.service','@repository.person_repository']
+        arguments: ['@user.service','@repository.person_repository', '@service_container']
     api.person_points:
         class: Zenomania\ApiBundle\Service\PersonPoints
         arguments: ['@repository.person_points_repository']
