@@ -15,7 +15,6 @@ use Zenomania\CoreBundle\Event\Event;
 
 class EventRepository extends EntityRepository
 {
-
     /**
      * Находит событие по его id
      *
