@@ -32,7 +32,12 @@ class PointsType
     /**
      * @var integer
      */
-    private $percent;
+    private $value;
+
+    /**
+     * @var boolean
+     */
+    private $isPercent;
 
     /**
      * @var boolean
@@ -98,18 +103,18 @@ class PointsType
     /**
      * @return int
      */
-    public function getPercent()
+    public function getValue()
     {
-        return $this->percent;
+        return $this->value;
     }
 
     /**
-     * @param int $percent
+     * @param int $value
      * @return PointsType
      */
-    public function setPercent(int $percent)
+    public function setValue(int $value)
     {
-        $this->percent = $percent;
+        $this->value = $value;
 
         return $this;
     }
@@ -117,7 +122,26 @@ class PointsType
     /**
      * @return bool
      */
-    public function isIsActive()
+    public function getIsPercent()
+    {
+        return $this->isPercent;
+    }
+
+    /**
+     * @param bool $isPercent
+     * @return $this
+     */
+    public function setIsPercent(bool $isPercent)
+    {
+        $this->isPercent = $isPercent;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsActive()
     {
         return $this->isActive;
     }

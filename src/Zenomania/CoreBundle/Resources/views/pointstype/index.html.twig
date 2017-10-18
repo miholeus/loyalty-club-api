@@ -9,7 +9,8 @@
             <th>Id</th>
             <th>Type</th>
             <th>Interval</th>
-            <th>Percent</th>
+            <th>Value</th>
+            <th>Ispercent</th>
             <th>Isactive</th>
             <th>Createdon</th>
             <th>Actions</th>
@@ -21,7 +22,8 @@
                 <td><a href="{{ path('pointstype_show', { 'id': pointsType.id }) }}">{{ pointsType.id }}</a></td>
                 <td>{{ pointsType.type }}</td>
                 <td>{{ pointsType.interval }}</td>
-                <td>{{ pointsType.percent }}</td>
+                <td>{{ pointsType.value }}</td>
+                <td>{% if pointsType.isPercent %}Yes{% else %}No{% endif %}</td>
                 <td>{% if pointsType.isActive %}Yes{% else %}No{% endif %}</td>
                 <td>{% if pointsType.createdOn %}{{ pointsType.createdOn|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>

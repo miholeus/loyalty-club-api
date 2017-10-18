@@ -23,8 +23,12 @@
                             <td>{{ pointsType.interval }}</td>
                         </tr>
                         <tr>
-                            <th>Percent</th>
-                            <td>{{ pointsType.percent }}</td>
+                            <th>Value</th>
+                            <td>{{ pointsType.value }}</td>
+                        </tr>
+                        <tr>
+                            <th>Ispercent</th>
+                            <td>{% if pointsType.isPercent %}Yes{% else %}No{% endif %}</td>
                         </tr>
                         <tr>
                             <th>Isactive</th>

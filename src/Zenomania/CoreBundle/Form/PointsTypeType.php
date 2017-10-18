@@ -29,12 +29,13 @@ class PointsTypeType extends AbstractType
                     'max' => 120
                 ]
             ])
-            ->add('percent', IntegerType::class, [
+            ->add('value', IntegerType::class, [
                 'attr' => [
                     'min' => 0,
-                    'max' => 100
+                    'max' => 1000000
                 ]
             ])
+            ->add('isPercent')
             ->add('isActive');
     }
     
