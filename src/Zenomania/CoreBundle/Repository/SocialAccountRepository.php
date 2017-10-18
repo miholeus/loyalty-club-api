@@ -10,6 +10,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Entity\SocialAccount;
+use Zenomania\CoreBundle\Entity\User;
 
 class SocialAccountRepository extends EntityRepository
 {
@@ -43,6 +44,20 @@ class SocialAccountRepository extends EntityRepository
         }
 
         return true;
+    }
+
+    public function findAccountVkByUser(User $user)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('sa')
+            ->from('ZenomaniaCoreBundle:SocialAccount', 'sa')
+            ->where('sa.user = :user')
+            ->andWhere('sa.network = :network')
+            ->andWhere('sa.accessToken IS NOT NULL')
+            ->setParameter('user', $user)
+            ->setParameter('network', SocialAccount::NETWORK_VK)
+            ->getQuery();
+        return $query->getOneOrNullResult();
     }
 
     /**

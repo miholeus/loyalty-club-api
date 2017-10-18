@@ -114,4 +114,31 @@ class VkontakteClient implements ClientInterface
         }
         throw new ClientException($reposts->error->error_code, $reposts->error->error_msg);
     }
+
+    /**
+     * Создать репост переданной новости на стену пользователя по токену
+     *
+     * @param News $post
+     * @param string $token
+     * @return mixed
+     * @throws ClientException
+     */
+    public function repost(News $post, string $token)
+    {
+        $queryData = [
+            'object' => 'wall-32408054_' . $post->getVkId(),
+            'access_token' => $token,
+            'v' => $this->version,
+        ];
+        $response = $this->client->request(
+            'GET',
+            'wall.repost',
+            ['query' => $queryData]
+        );
+        $reposts = \GuzzleHttp\json_decode($response->getBody()->getContents());
+        if (isset($reposts->response)) {
+            return $reposts->response->post_id;
+        }
+        throw new ClientException($reposts->error->error_code, $reposts->error->error_msg);
+    }
 }

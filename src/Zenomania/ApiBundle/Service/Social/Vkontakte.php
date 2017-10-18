@@ -71,6 +71,7 @@ class Vkontakte implements SocialInterface
         $scope = [
             'offline',
             'email',
+            'wall'
         ];
 
         $params = [
