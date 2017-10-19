@@ -13,17 +13,27 @@ use Zenomania\CoreBundle\Entity\EventAttendanceImport;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\PointsType;
 use Zenomania\CoreBundle\Entity\Ticket;
+use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\PointsTypeRepository;
 
 class TicketRegistration
 {
 
-    /** @var PointsTypeRepository */
+    /**
+     * @var PointsTypeRepository
+     */
     private $pointsTypeRepository;
 
-    public function __construct(PointsTypeRepository $pointsTypeRepository)
+    /**
+     * @var PersonPointsRepository
+     */
+    private $personPointsRepository;
+
+    public function __construct(PointsTypeRepository $pointsTypeRepository, PersonPointsRepository $personPointsRepository)
     {
         $this->pointsTypeRepository = $pointsTypeRepository;
+        $this->personPointsRepository = $personPointsRepository;
     }
 
     /**
@@ -57,10 +67,29 @@ class TicketRegistration
     }
 
     /**
+     * Gives points for ticket registration to selected user
+     *
+     * @param User $user
+     * @param $points
+     */
+    public function givePointsForTicketRegistration(User $user, $points)
+    {
+        $this->getPersonPointsRepository()->givePointsForTicketRegistration($user, $points);
+    }
+
+    /**
      * @return PointsTypeRepository
      */
     public function getPointsTypeRepository(): PointsTypeRepository
     {
         return $this->pointsTypeRepository;
+    }
+
+    /**
+     * @return PersonPointsRepository
+     */
+    public function getPersonPointsRepository(): PersonPointsRepository
+    {
+        return $this->personPointsRepository;
     }
 }

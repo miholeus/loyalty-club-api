@@ -66,19 +66,11 @@ class TicketController extends RestController
         /** @var Tickets $ticketsService */
         $ticketsService = $this->get('api.tickets');
 
-        if (!$ticketsService->isValidBarcode($barcode)) {
-            throw new HttpException(400, "По данному билету {$barcode} посещение мероприятия не зафиксировано.");
-        }
-
-        if ($ticketsService->isTicketRegistered($barcode)) {
-            throw new HttpException(400, "Данный билет {$barcode} уже был зарегистрирован ранее.");
-        }
-
         $user = $this->getUser();
 
         // Заносим регистрацию билета barcode в активность для пользователя User
         try {
-            $zen = $ticketsService->ticketRegistration($barcode, $user);
+            $zen = $ticketsService->registerByBarcode($barcode, $user);
         } catch (EntityNotFoundException $e) {
             throw new HttpException(400, $e->getMessage());
         }
