@@ -24,12 +24,17 @@ Zenomania\CoreBundle\Entity\PointsType:
             options:
                 unsigned: true
                 default: '0'
-        percent:
+        value:
             type: smallint
             nullable: false
             options:
                 unsigned: true
                 default: '0'
+        isPercent:
+            type: boolean
+            nullable: true
+            comment: 'значение value в процентах'
+            column: is_percent
         isActive:
             type: boolean
             nullable: true

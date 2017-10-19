@@ -9,9 +9,9 @@
 namespace Zenomania\ApiBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Zenomania\ApiBundle\Service\BonusPoints\TicketRegistration;
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\EventAttendance;
-use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Repository\EventAttendanceRepository;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
@@ -39,16 +39,20 @@ class Tickets
      */
     private $em;
 
+    /**
+     * @var TicketRegistration
+     */
+    private $ticketRegistrationService;
+
     public function __construct(
-        TicketRepository $ticketRepository,
-        PersonPointsRepository $personPointsRepository,
-        EventAttendanceRepository $eventAttendanceRepository,
-        EntityManager $em
+        EntityManager $em,
+        TicketRegistration $ticketRegistration
     ) {
-        $this->ticketRepository = $ticketRepository;
-        $this->personPointsRepository = $personPointsRepository;
-        $this->eventAttendanceRepository = $eventAttendanceRepository;
         $this->em = $em;
+        $this->ticketRepository = $em->getRepository('ZenomaniaCoreBundle:Ticket');
+        $this->personPointsRepository = $em->getRepository('ZenomaniaCoreBundle:PersonPoints');
+        $this->eventAttendanceRepository = $em->getRepository('ZenomaniaCoreBundle:EventAttendance');
+        $this->ticketRegistrationService = $ticketRegistration;
     }
 
     /**
@@ -107,19 +111,9 @@ class Tickets
         $eventAttendance = EventAttendance::fromArray($params);
         $this->getEventAttendanceRepository()->save($eventAttendance);
 
-        /** Вычисляем время до начала мероприятия, за которое болельщик пришел на стадион */
-        $timeAttendance = $attendance->getEnterDt()->getTimestamp();
-        $timeEvent = $ticket->getEvent()->getDate()->getTimestamp();
-        $interval = intval(ceil(($timeEvent - $timeAttendance) / 60));
+        $points = $this->getTicketRegistrationService()->getPoints($attendance, $ticket);
 
-        /** Получаем количество процентов для начисления баллов и итогое кол-во баллов */
-        $pointsTypeRepository = $this->getEm()->getRepository('ZenomaniaCoreBundle:PointsType');
-        $pointsType = $pointsTypeRepository->findPercentByTypeAndInterval(PersonPoints::TYPE_TICKET_REGISTER, $interval);
-
-        $points = 0;
-        if (!empty($pointsType)) {
-            $percent = $pointsType->getPercent();
-            $points = round($ticket->getPrice() * $percent / 100);
+        if (!empty($points)) {
             $this->givePointForRegistration($user, $points);
         }
 
@@ -178,5 +172,13 @@ class Tickets
     public function getEm(): EntityManager
     {
         return $this->em;
+    }
+
+    /**
+     * @return TicketRegistration
+     */
+    public function getTicketRegistrationService(): TicketRegistration
+    {
+        return $this->ticketRegistrationService;
     }
 }

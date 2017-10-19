@@ -16,6 +16,11 @@ class PersonPoints
     const TYPE_FORECAST_WINNER = 'forecast_winner';
     const TYPE_REPOST = 'repost';
     const TYPE_PROMO_COUPON = 'promo_coupon';
+    const TYPE_FORECAST_WINNER_MATCH_RESULT = 'forecast_winner_match_result';
+    const TYPE_FORECAST_WINNER_MATCH_ROUNDS = 'forecast_winner_match_rounds';
+    const TYPE_FORECAST_WINNER_MATCH_ROUND_SCORE = 'forecast_winner_match_round_score';
+    const TYPE_FORECAST_WINNER_ONE_PLAYER = 'forecast_winner_one_player';
+    const TYPE_FORECAST_WINNER_MVP = 'forecast_winner_mvp';
 
     /**
      * @var integer

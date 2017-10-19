@@ -36,4 +36,23 @@ class EventForecastRepository extends EntityRepository
             ->getQuery();
         return $query->getOneOrNullResult();
     }
+
+    /**
+     * Получить все прогнозы для события $event
+     *
+     * @param Event $event
+     * @return array
+     */
+    public function getForecasts(Event $event)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('f')
+            ->from('ZenomaniaCoreBundle:EventForecast', 'f')
+            ->where('f.event = :event')
+            ->andWhere('f.status != :status OR f.status IS NULL')
+            ->setParameter('event', $event)
+            ->setParameter('status', EventForecast::STATUS_PROCESSED)
+            ->getQuery();
+        return $query->getResult();
+    }
 }

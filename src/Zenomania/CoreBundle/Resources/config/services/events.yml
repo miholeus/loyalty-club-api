@@ -10,3 +10,13 @@ services:
         arguments: ['@api.invite_bonus_service']
         tags:
             - {name: "kernel.event_listener", event: "user.registration.referral", method: "onReferralCodeAppliedEvent"}
+    event.listener.badge.registration:
+        class: Zenomania\CoreBundle\Event\Listener\BadgeListener
+        arguments: ['@user_badge.service', '@repository.person_repository']
+        tags:
+            - {name: "kernel.event_listener", event: "user.registration.badge", method: "onRegistrationEvent"}
+    event.listener.badge.user_profile:
+        class: Zenomania\CoreBundle\Event\Listener\BadgeListener
+        arguments: ['@user_badge.service', '@repository.person_repository']
+        tags:
+            - {name: "kernel.event_listener", event: "user.profile.badge", method: "onUserProfileEvent"}

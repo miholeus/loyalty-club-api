@@ -13,6 +13,7 @@ use Zenomania\CoreBundle\Entity\UserRole;
 use Zenomania\CoreBundle\Entity\UserStatus;
 use Zenomania\CoreBundle\Event\NotificationInterface;
 use Zenomania\CoreBundle\Event\User\ReferralCodeAppliedEvent;
+use Zenomania\CoreBundle\Event\User\RegistrationEvent;
 use Zenomania\CoreBundle\Form\Model\Registration;
 use Zenomania\CoreBundle\Service\Sms\Message;
 use Zenomania\CoreBundle\Entity\User as EntityUser;
@@ -168,6 +169,10 @@ class RegistrationService extends TokenManagementService implements TokenConfirm
             $event->setArgument('user', $user);
             $this->attachEvent($event);
         }
+
+        $eventRegistration = new RegistrationEvent();
+        $eventRegistration->setArgument('user', $user);
+        $this->attachEvent($eventRegistration);
 
         $service->save($user);
 
