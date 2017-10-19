@@ -38,13 +38,14 @@ class AttendanceCommand extends ContainerAwareCommand
         $output->writeln("<info>The start of adding points</info>");
 
         /** Подключаем все необходимые репозитории */
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $eventAttendanceImportRepository = $em->getRepository('ZenomaniaCoreBundle:EventAttendanceImport');
-        $eventAttendanceRepository = $em->getRepository('ZenomaniaCoreBundle:EventAttendance');
-        $eventRepository = $em->getRepository('ZenomaniaCoreBundle:Event');
-        $subscriptionRepository = $em->getRepository('ZenomaniaCoreBundle:Subscription');
-        $personPointsRepository = $em->getRepository('ZenomaniaCoreBundle:PersonPoints');
-        $pointsTypeRepository = $em->getRepository('ZenomaniaCoreBundle:PointsType');
+        $container = $this->getContainer();
+        $eventRepository = $container->get('repository.event_repository');
+        $personPointsRepository = $container->get('repository.person_points_repository');
+        $eventAttendanceRepository = $container->get('repository.event_attendance_repository');
+        $subscriptionRepository = $container->get('repository.subscription_repository');
+        $eventAttendanceImportRepository = $container->get('repository.event_attendance_import_repository');
+        $bonusPointsService = $container->get('points.attendance');
+        $bonusPointsService->setAttendance(PersonPoints::TYPE_SUBSCRIPTION_ATTENDANCE);
 
 
         $event = $eventRepository->findEventById($eventId);
@@ -83,17 +84,9 @@ class AttendanceCommand extends ContainerAwareCommand
             $eventAttendance = EventAttendance::fromArray($params);
             $eventAttendanceRepository->save($eventAttendance);
 
-            /** Вычисляем время до начала мероприятия, за которое болельщик пришел на стадион */
-            $timeAttendance = $visitBySub->getEnterDt()->getTimestamp();
-            $timeEvent = $visitBySub->getEvent()->getDate()->getTimestamp();
-            $interval = intval(ceil(($timeEvent - $timeAttendance) / 60));
+            $points = $bonusPointsService->getAttendance()->getPoints($visitBySub);
 
-            /** Получаем количество процентов для начисления баллов и итогое кол-во баллов */
-            $pointsType = $pointsTypeRepository->findPercentByTypeAndInterval(PersonPoints::TYPE_SUBSCRIPTION_ATTENDANCE, $interval);
-
-            if (!empty($pointsType)) {
-                $percent = $pointsType->getPercent();
-                $points = round($visitBySub->getPrice() * $percent / 100);
+            if (!empty($points)) {
                 $user = $subscription->getPerson()->getUser();
                 $personPointsRepository->givePointsForSubscriptionAttendance($user, $points);
                 $output->writeln("<info>Пользователю {$user->getId()} начислено {$points} баллов</info>");

@@ -9,9 +9,10 @@
 namespace Zenomania\ApiBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use Zenomania\ApiBundle\Service\BonusPoints\TicketRegistration;
+use Zenomania\ApiBundle\Service\BonusPoints\AttendanceStrategy;
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\EventAttendance;
+use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Repository\EventAttendanceRepository;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
@@ -40,19 +41,19 @@ class Tickets
     private $em;
 
     /**
-     * @var TicketRegistration
+     * @var AttendanceStrategy
      */
-    private $ticketRegistrationService;
+    private $bonusPointsService;
 
     public function __construct(
         EntityManager $em,
-        TicketRegistration $ticketRegistration
+        AttendanceStrategy $bonusPoints
     ) {
         $this->em = $em;
         $this->ticketRepository = $em->getRepository('ZenomaniaCoreBundle:Ticket');
         $this->personPointsRepository = $em->getRepository('ZenomaniaCoreBundle:PersonPoints');
         $this->eventAttendanceRepository = $em->getRepository('ZenomaniaCoreBundle:EventAttendance');
-        $this->ticketRegistrationService = $ticketRegistration;
+        $this->bonusPointsService = $bonusPoints;
     }
 
     /**
@@ -111,7 +112,8 @@ class Tickets
         $eventAttendance = EventAttendance::fromArray($params);
         $this->getEventAttendanceRepository()->save($eventAttendance);
 
-        $points = $this->getTicketRegistrationService()->getPoints($attendance, $ticket);
+        $this->getBonusPointsService()->setAttendance(PersonPoints::TYPE_TICKET_REGISTER);
+        $points = $this->getBonusPointsService()->getAttendance()->getPoints($attendance);
 
         if (!empty($points)) {
             $this->givePointForRegistration($user, $points);
@@ -175,10 +177,10 @@ class Tickets
     }
 
     /**
-     * @return TicketRegistration
+     * @return AttendanceStrategy
      */
-    public function getTicketRegistrationService(): TicketRegistration
+    public function getBonusPointsService(): AttendanceStrategy
     {
-        return $this->ticketRegistrationService;
+        return $this->bonusPointsService;
     }
 }
