@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pointstypes list</h1>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Type</th>
+            <th>Interval</th>
+            <th>Value</th>
+            <th>Ispercent</th>
+            <th>Isactive</th>
+            <th>Createdon</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for pointsType in pointsTypes %}
+            <tr>
+                <td><a href="{{ path('pointstype_show', { 'id': pointsType.id }) }}">{{ pointsType.id }}</a></td>
+                <td>{{ pointsType.type }}</td>
+                <td>{{ pointsType.interval }}</td>
+                <td>{{ pointsType.value }}</td>
+                <td>{% if pointsType.isPercent %}Yes{% else %}No{% endif %}</td>
+                <td>{% if pointsType.isActive %}Yes{% else %}No{% endif %}</td>
+                <td>{% if pointsType.createdOn %}{{ pointsType.createdOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <a href="{{ path('pointstype_show', { 'id': pointsType.id }) }}" class="btn btn-default">show</a>
+                    <a href="{{ path('pointstype_edit', { 'id': pointsType.id }) }}" class="btn btn-default">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('pointstype_new') }}">Create a new pointsType</a>
+        </li>
+    </ul>
+{% endblock %}

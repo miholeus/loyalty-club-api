@@ -1,0 +1,48 @@
+Zenomania\CoreBundle\Entity\PointsType:
+    type: entity
+    table: points_type
+    repositoryClass: Zenomania\CoreBundle\Repository\PointsTypeRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        type:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: 'тип очков'
+        interval:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+        value:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+                default: '0'
+        isPercent:
+            type: boolean
+            nullable: true
+            comment: 'значение value в процентах'
+            column: is_percent
+        isActive:
+            type: boolean
+            nullable: true
+            comment: 'активен ли данный бонус'
+            column: is_active
+        createdOn:
+            type: datetime
+            nullable: true
+            column: created_on
+            comment: 'дата создания'
+    lifecycleCallbacks: {  }
