@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\EventAttendanceImport:
     type: entity
     table: event_attendance_import
+    repositoryClass: Zenomania\CoreBundle\Repository\EventAttendanceImportRepository
     indexes:
         event_attendance_import__ticket_number:
             columns:

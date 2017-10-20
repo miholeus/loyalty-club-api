@@ -16,6 +16,7 @@ class PersonPoints
     const POINTS_FOR_SOCIAL_BIND = 10;// Сколько начислить баллов за привязку соц сети
     const POINTS_FOR_TICKET_REGISTRATION = 100;
     const POINTS_FOR_SUBSCRIPTION_REGISTRATION = 200;
+    const PERCENT_FOR_SUBSCRIPTION_REGISTRATION = 10;
     const POINTS_FOR_PROMO_CODE_REGISTRATION = 50;
     const POINTS_FOR_PREDICTION_MAX = 50;
 

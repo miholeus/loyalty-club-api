@@ -298,4 +298,55 @@ class Events
 
         return true;
     }
+
+    /**
+     * Get points for predictions for event
+     *
+     * @param Event $event
+     * @param User $user
+     * @return int|null
+     */
+    public function getPointsForPredictions(Event $event, User $user)
+    {
+        if ($event->getScoreSaved() != Event::SCORE_SAVED_PROCESSED) {
+            return null;
+        }
+
+        $points = 0;
+
+        // Получить все прогнозы для события $event
+        $forecast = $this->getEventForecastRepository()->getEventForecast($event, $user);
+
+        $predictions = [
+            new WinnerPrediction($this->getPersonPointsRepository()),
+            new ExactScorePrediction($this->getPersonPointsRepository()),
+            new ScoreInRoundPrediction($this->getPersonPointsRepository())
+        ];
+
+
+        /** @var PredictionPointsInterface $prediction */
+        foreach ($predictions as $prediction) {
+            if ($prediction->supports($forecast)) {
+                $points += $prediction->getPoints($forecast);
+            }
+        }
+
+
+        // Получить массив id игроков стартового состава
+        $idPlayers = $this->getPlayersLineUp($event);
+
+        // Получить массив с данными: пользователь -> количество предсказанных игроков
+        $predictedPlayers = $this->getEventPlayerForecastRepository()->getAmountOfPredictedPlayersForUser($event, $idPlayers, $user);
+
+        $points += (PersonPointsService::POINTS_FOR_PREDICTION_ONE_PLAYER * $predictedPlayers);
+
+        // Получить массив пользователей, которые угадали результативного игрока
+        $predictedMvp = $this->getEventPlayerForecastRepository()->getPredictedMvpByUser($event, $user);
+
+        if (!empty($predictedMvp)) {
+            $points += PersonPointsService::POINTS_FOR_PREDICTION_MATCH_MVP;
+        }
+
+        return $points;
+    }
 }

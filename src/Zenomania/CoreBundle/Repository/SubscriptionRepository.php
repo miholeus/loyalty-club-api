@@ -34,6 +34,27 @@ class SubscriptionRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * Возвращает данные абонемента по его mifare
+     *
+     * @param string $mifare
+     * @return Subscription
+     */
+    public function findSubsByMifare(string $mifare)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('u')
+            ->from('ZenomaniaCoreBundle:Subscription', 'u')
+            ->where('u.mifare = :mifare')
+            ->setParameter('mifare', $mifare)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
+    /**
+     * @param Subscription $subscription
+     */
     public function save(Subscription $subscription)
     {
         $this->_em->persist($subscription);

@@ -34,6 +34,11 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\EventAttendance
+    repository.event_attendance_import_repository:
+        class: Zenomania\CoreBundle\Repository\EventAttendanceImportRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\EventAttendanceImport
     repository.event_repository:
         class: Zenomania\CoreBundle\Repository\EventRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
@@ -114,3 +119,18 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\UserBadge
+    repository.news_repository:
+        class: Zenomania\CoreBundle\Repository\NewsRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\News
+    repository.social_repost_repository:
+        class: Zenomania\CoreBundle\Repository\SocialRepostRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\SocialRepost
+    repository.news:
+        class: Zenomania\CoreBundle\Repository\NewsRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\News

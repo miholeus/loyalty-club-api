@@ -39,4 +39,9 @@ class WinnerPrediction extends AbstractPrediction implements PredictionPointsInt
         $type = PersonPoints::TYPE_FORECAST_WINNER_MATCH_RESULT;
         $this->getRepository()->givePointsForForecast($user, $points, $type);
     }
+
+    public function getPoints(EventForecast $forecast)
+    {
+        return PersonPointsService::POINTS_FOR_PREDICTION_MATCH_RESULT;
+    }
 }

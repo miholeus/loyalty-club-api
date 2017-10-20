@@ -83,6 +83,15 @@ services:
     api.ratings:
         class: Zenomania\ApiBundle\Service\RatingsService
         arguments: ['@repository.person_points_repository']
+    points.attendance:
+        class: Zenomania\ApiBundle\Service\BonusPoints\AttendanceStrategy
+        arguments: ['@repository.points_type']
     points.ticket_registration:
         class: Zenomania\ApiBundle\Service\BonusPoints\TicketRegistration
         arguments: ['@repository.points_type', '@repository.person_points_repository']
+    api.badge:
+        class: Zenomania\ApiBundle\Service\Badge
+        arguments: ['@repository.user_badge_repository']
+    api.news:
+        class: Zenomania\ApiBundle\Service\NewsService
+        arguments: ['@repository.news']

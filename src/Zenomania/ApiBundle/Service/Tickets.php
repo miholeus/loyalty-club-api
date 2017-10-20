@@ -9,6 +9,7 @@
 namespace Zenomania\ApiBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\EventAttendance;
 use Zenomania\CoreBundle\Entity\User;

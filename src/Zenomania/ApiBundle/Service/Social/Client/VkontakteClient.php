@@ -10,6 +10,7 @@ namespace Zenomania\ApiBundle\Service\Social\Client;
 
 use Zenomania\ApiBundle\Form\Model\ProfileSocialData;
 use GuzzleHttp\Client;
+use Zenomania\CoreBundle\Entity\News;
 
 class VkontakteClient implements ClientInterface
 {
@@ -57,5 +58,124 @@ class VkontakteClient implements ClientInterface
             return $userInfo;
         }
         throw new ClientException($userInfo->error->error_code, $userInfo->error->error_msg);
+    }
+
+    /**
+     * Получить id всех пользователей сделавших репост заданного поста
+     *
+     * @param News $post
+     * @param int $groupId
+     * @return array
+     * @throws ClientException
+     */
+    public function getReposts(News $post, int $groupId)
+    {
+        $queryData = [
+            'owner_id' => $groupId,
+            'post_id' => $post->getVkId(),
+            'v' => $this->version,
+        ];
+        $response = $this->client->request(
+            'GET',
+            'wall.getReposts',
+            ['query' => $queryData]
+        );
+        $reposts = \GuzzleHttp\json_decode($response->getBody()->getContents());
+        if (isset($reposts->response)) {
+            return $reposts->response->items;
+        }
+        throw new ClientException($reposts->error->error_code, $reposts->error->error_msg);
+    }
+
+    /**
+     * Получить массив из id аккаунтов пользователей, которые сделали репост
+     *
+     * @param News $post
+     * @param int $groupId
+     * @return mixed
+     * @throws ClientException
+     */
+    public function getList(News $post, int $groupId)
+    {
+        $queryData = [
+            'type' => 'post',
+            'owner_id' => $groupId,
+            'item_id' => $post->getVkId(),
+            'filter' => 'copies',
+            'friends_only' => 0,
+            'v' => $this->version,
+        ];
+        $response = $this->client->request(
+            'GET',
+            'likes.getList',
+            ['query' => $queryData]
+        );
+        $reposts = \GuzzleHttp\json_decode($response->getBody()->getContents());
+        if (isset($reposts->response)) {
+            return $reposts->response->items;
+        }
+        throw new ClientException($reposts->error->error_code, $reposts->error->error_msg);
+    }
+
+    /**
+     * Создать репост переданной новости на стену пользователя по токену
+     *
+     * @param News $post
+     * @param string $token
+     * @param int $groupId
+     * @return mixed
+     * @throws ClientException
+     */
+    public function repost(News $post, string $token, int $groupId)
+    {
+        $queryData = [
+            'object' => 'wall' . $groupId . '_' . $post->getVkId(),
+            'access_token' => $token,
+            'v' => $this->version,
+        ];
+        $response = $this->client->request(
+            'GET',
+            'wall.repost',
+            ['query' => $queryData]
+        );
+        $reposts = \GuzzleHttp\json_decode($response->getBody()->getContents());
+        if (isset($reposts->response)) {
+            return $reposts->response->post_id;
+        }
+        throw new ClientException($reposts->error->error_code, $reposts->error->error_msg);
+    }
+
+    /**
+     * Fetches news from vk wall in group
+     *
+     * @param int $ownerId
+     * @param string $token
+     * @param int $count
+     * @param string $filter
+     * @return mixed
+     * @throws ClientException
+     */
+    public function getNews(int $ownerId, string $token, int $count, string $filter)
+    {
+        $queryData = array(
+            'v' => $this->version,
+            'owner_id' => $ownerId,
+            'count' => $count,
+            'filter' => $filter,
+            'access_token' => $token,
+            'offset' => 0
+        );
+        $response = $this->client->request(
+            'GET',
+            'wall.get',
+            array('query' => $queryData)
+        );
+
+        $news = \GuzzleHttp\json_decode($response->getBody()->getContents());
+        if (isset($news->response)) {
+            $news = $news->response->items;
+            return $news;
+        }
+        throw new ClientException($news->error->error_code, $news->error->error_msg);
     }
 }

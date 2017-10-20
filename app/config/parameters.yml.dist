@@ -49,6 +49,8 @@ parameters:
     # Social settings
     vk_client_id: 6185768
     vk_access_front_url: zenomania.ru/join/vk
+    vk_group_id: -32408054
+    vk_access_token: secret_token
 
     # Registration url
     registration_url: zenomania.ru/join
