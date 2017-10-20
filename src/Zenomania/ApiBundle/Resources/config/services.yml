@@ -40,7 +40,7 @@ services:
         arguments: ['@repository.user_repository', '@security.password_encoder']
     api.tickets:
         class: Zenomania\ApiBundle\Service\Tickets
-        arguments: ['@doctrine.orm.entity_manager', '@points.attendance']
+        arguments: ['@doctrine.orm.entity_manager', '@event.notification_manager']
     api.subscriptions:
         class: Zenomania\ApiBundle\Service\Subscriptions
         arguments: ['@repository.person_points_repository', '@repository.subscription_repository']
@@ -86,3 +86,6 @@ services:
     points.attendance:
         class: Zenomania\ApiBundle\Service\BonusPoints\AttendanceStrategy
         arguments: ['@repository.points_type']
+    points.ticket_registration:
+        class: Zenomania\ApiBundle\Service\BonusPoints\TicketRegistration
+        arguments: ['@repository.points_type', '@repository.person_points_repository']

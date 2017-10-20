@@ -9,26 +9,23 @@
 namespace Zenomania\ApiBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use Zenomania\ApiBundle\Service\BonusPoints\AttendanceStrategy;
+
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\EventAttendance;
-use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Event\NotificationManager;
+use Zenomania\CoreBundle\Event\Ticket\RegistrationEvent;
 use Zenomania\CoreBundle\Repository\EventAttendanceRepository;
-use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\TicketRepository;
+use Zenomania\CoreBundle\Service\Traits\EventsAwareTrait;
 
 class Tickets
 {
+    use EventsAwareTrait;
     /**
      * @var TicketRepository
      */
     private $ticketRepository;
-
-    /**
-     * @var PersonPointsRepository
-     */
-    private $personPointsRepository;
 
     /**
      * @var EventAttendanceRepository
@@ -40,20 +37,14 @@ class Tickets
      */
     private $em;
 
-    /**
-     * @var AttendanceStrategy
-     */
-    private $bonusPointsService;
-
     public function __construct(
         EntityManager $em,
-        AttendanceStrategy $bonusPoints
+        NotificationManager $notificationManager
     ) {
         $this->em = $em;
+        $this->notificationManager = $notificationManager;
         $this->ticketRepository = $em->getRepository('ZenomaniaCoreBundle:Ticket');
-        $this->personPointsRepository = $em->getRepository('ZenomaniaCoreBundle:PersonPoints');
         $this->eventAttendanceRepository = $em->getRepository('ZenomaniaCoreBundle:EventAttendance');
-        $this->bonusPointsService = $bonusPoints;
     }
 
     /**
@@ -65,20 +56,6 @@ class Tickets
     }
 
     /**
-     * Начисляем пользователю User баллы лояльности за регистрацию билета barcode
-     *
-     * @param User $user
-     * @param $points
-     * @return int
-     */
-    protected function givePointForRegistration(User $user, $points)
-    {
-        $this->getPersonPointsRepository()->givePointsForTicketRegistration($user, $points);
-
-        return $points;
-    }
-
-    /**
      * Регистрация билета определенным пользователем
      *
      * @param string $barcode
@@ -86,19 +63,23 @@ class Tickets
      * @return int
      * @throws EntityNotFoundException
      */
-    public function ticketRegistration($barcode, User $user)
+    public function registerByBarcode($barcode, User $user)
     {
         $ticket = $this->getTicketRepository()->findTicketByBarcode($barcode);
 
         if (null === $ticket) {
-            throw new EntityNotFoundException("Ticket not found by barcode");
+            throw new EntityNotFoundException("Данный билет не найден");
+        }
+
+        if (!$this->isValidBarcode($barcode)) {
+            throw new EntityNotFoundException("По данному билету {$barcode} посещение мероприятия не зафиксировано.");
+        }
+
+        if ($this->isTicketRegistered($barcode)) {
+            throw new EntityNotFoundException("Данный билет {$barcode} уже был зарегистрирован ранее.");
         }
 
         $attendance = $this->getTicketRepository()->findAttendanceByBarcode($barcode);
-
-        if (null === $attendance) {
-            throw new EntityNotFoundException("Attendance not found by barcode");
-        }
 
         $person = $user->getPerson();
 
@@ -112,14 +93,13 @@ class Tickets
         $eventAttendance = EventAttendance::fromArray($params);
         $this->getEventAttendanceRepository()->save($eventAttendance);
 
-        $this->getBonusPointsService()->setAttendance(PersonPoints::TYPE_TICKET_REGISTER);
-        $points = $this->getBonusPointsService()->getAttendance()->getPoints($attendance);
+        $eventRegistration = new RegistrationEvent($ticket);
+        $eventRegistration->setArgument('user', $user);
+        $eventRegistration->setArgument('attendance', $attendance);
+        $this->attachEvent($eventRegistration);
 
-        if (!empty($points)) {
-            $this->givePointForRegistration($user, $points);
-        }
-
-        return $points;
+        $this->updateEvents();
+        return $eventRegistration->hasArgument('points') ? $eventRegistration->getArgument('points') : 0;
     }
 
     /**
@@ -153,14 +133,6 @@ class Tickets
     }
 
     /**
-     * @return PersonPointsRepository
-     */
-    public function getPersonPointsRepository(): PersonPointsRepository
-    {
-        return $this->personPointsRepository;
-    }
-
-    /**
      * @return EventAttendanceRepository
      */
     public function getEventAttendanceRepository(): EventAttendanceRepository
@@ -174,13 +146,5 @@ class Tickets
     public function getEm(): EntityManager
     {
         return $this->em;
-    }
-
-    /**
-     * @return AttendanceStrategy
-     */
-    public function getBonusPointsService(): AttendanceStrategy
-    {
-        return $this->bonusPointsService;
     }
 }
