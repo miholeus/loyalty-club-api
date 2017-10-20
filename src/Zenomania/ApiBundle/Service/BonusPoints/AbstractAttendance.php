@@ -8,7 +8,6 @@
 
 namespace Zenomania\ApiBundle\Service\BonusPoints;
 
-
 use Zenomania\CoreBundle\Entity\EventAttendanceImport;
 use Zenomania\CoreBundle\Entity\PointsType;
 use Zenomania\CoreBundle\Repository\PointsTypeRepository;
@@ -46,7 +45,7 @@ abstract class AbstractAttendance
 
         /** Получаем количество процентов для начисления баллов и итогое кол-во баллов */
         /** @var PointsType $pointsType */
-        $pointsType = $this->getRepository()->findPercentByTypeAndInterval($this->getTypeAttendance(), $interval);
+        $pointsType = $this->getRepository()->findPercentByTypeAndInterval($this->getPointsType(), $interval);
 
         $points = 0;
         if (!empty($pointsType)) {
@@ -71,5 +70,10 @@ abstract class AbstractAttendance
         return (int) ceil(($timeEvent - $timeAttendance) / 60);
     }
 
-    abstract function getTypeAttendance();
+    /**
+     * Attendance point's type
+     *
+     * @return mixed
+     */
+    abstract function getPointsType();
 }

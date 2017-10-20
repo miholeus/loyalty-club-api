@@ -8,7 +8,6 @@
 
 namespace Zenomania\CoreBundle\Command;
 
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,9 +33,6 @@ class AttendanceCommand extends ContainerAwareCommand
     {
         $eventId = $input->getArgument('event');
 
-
-        $output->writeln("<info>The start of adding points</info>");
-
         /** Подключаем все необходимые репозитории */
         $container = $this->getContainer();
         $eventRepository = $container->get('repository.event_repository');
@@ -45,15 +41,14 @@ class AttendanceCommand extends ContainerAwareCommand
         $subscriptionRepository = $container->get('repository.subscription_repository');
         $eventAttendanceImportRepository = $container->get('repository.event_attendance_import_repository');
         $bonusPointsService = $container->get('points.attendance');
-        $bonusPointsService->setAttendance(PersonPoints::TYPE_SUBSCRIPTION_ATTENDANCE);
-
 
         $event = $eventRepository->findEventById($eventId);
 
         if (empty($event)) {
-            $output->writeln("<info>Нет мероприятия с таким id.</info>");
-            exit();
+            throw new \RuntimeException("Нет мероприятия с таким id");
         }
+
+        $output->writeln("<info>The start of adding points</info>");
 
         // Получаем данные по всем проходам по абонементам для заданного мероприятия
         $visitBySubs = $eventAttendanceImportRepository->findAttendanceByEvent($event);

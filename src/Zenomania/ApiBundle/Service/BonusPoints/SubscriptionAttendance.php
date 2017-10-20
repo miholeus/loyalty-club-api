@@ -13,8 +13,7 @@ use Zenomania\CoreBundle\Entity\PersonPoints;
 
 class SubscriptionAttendance extends AbstractAttendance implements AttendanceInterface
 {
-
-    public function getTypeAttendance()
+    public function getPointsType()
     {
         return PersonPoints::TYPE_SUBSCRIPTION_ATTENDANCE;
     }

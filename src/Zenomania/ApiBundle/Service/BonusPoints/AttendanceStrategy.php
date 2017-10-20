@@ -8,22 +8,16 @@
 
 namespace Zenomania\ApiBundle\Service\BonusPoints;
 
-
 use Zenomania\CoreBundle\Entity\PersonPoints;
+use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\PointsTypeRepository;
 
 class AttendanceStrategy
 {
-
     /**
      * @var PointsTypeRepository
      */
     private $repository;
-
-    /**
-     * @var AttendanceInterface
-     */
-    private $attendance;
 
     public function __construct(PointsTypeRepository $repository)
     {
@@ -43,17 +37,6 @@ class AttendanceStrategy
      */
     public function getAttendance(): AttendanceInterface
     {
-        return $this->attendance;
-    }
-
-    public function setAttendance($typeAttendance)
-    {
-        if (PersonPoints::TYPE_SUBSCRIPTION_ATTENDANCE == $typeAttendance) {
-            $this->attendance = new SubscriptionAttendance($this->getRepository());
-        } elseif (PersonPoints::TYPE_TICKET_REGISTER == $typeAttendance) {
-            $this->attendance = new TicketRegistration($this->getRepository());
-        } else {
-            throw new TypeAttendanceException('Не найден тип прохода на мероприятия');
-        }
+        return new SubscriptionAttendance($this->getRepository());
     }
 }
