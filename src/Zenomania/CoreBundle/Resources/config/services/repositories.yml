@@ -34,6 +34,11 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\EventAttendance
+    repository.event_attendance_import_repository:
+        class: Zenomania\CoreBundle\Repository\EventAttendanceImportRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\EventAttendanceImport
     repository.event_repository:
         class: Zenomania\CoreBundle\Repository\EventRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
