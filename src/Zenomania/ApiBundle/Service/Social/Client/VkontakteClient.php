@@ -58,4 +58,28 @@ class VkontakteClient implements ClientInterface
         }
         throw new ClientException($userInfo->error->error_code, $userInfo->error->error_msg);
     }
+
+    public function getNews(int $ownerId, string $vk_access_token, int $count, string $filter)
+    {
+        $queryData = array(
+            'v' => $this->version,
+            'owner_id' => $ownerId,
+            'count' => 1,
+            'filter' => $filter,
+            'access_token' => $vk_access_token,
+            'offset' => 12
+        );
+        $response = $this->client->request(
+            'GET',
+            'wall.get',
+            array('query' => $queryData)
+        );
+
+        $news = \GuzzleHttp\json_decode($response->getBody()->getContents());
+        if (isset($news->response)) {
+            $news = $news->response->items;
+            return $news;
+        }
+        throw new ClientException($news->error->error_code, $news->error->error_msg);
+    }
 }
