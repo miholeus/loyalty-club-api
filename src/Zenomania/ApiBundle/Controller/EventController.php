@@ -19,6 +19,7 @@ use Zenomania\ApiBundle\Form\{
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Zenomania\CoreBundle\Entity\LineUp;
 
 class EventController extends RestController
 {
@@ -381,6 +382,110 @@ class EventController extends RestController
         $service->savePlayerForecasts($forecasts);
 
         $view = $this->view(null, 204);
+        return $this->handleView($view);
+    }
+
+    /**
+     *
+     * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 404,
+     *                  "message": "Event Not Found"
+     *              },
+     *              "errors": null
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *          "clubGuest": {
+     *              "id": <integer>,
+     *              "logo": <string>,
+     *              "name": <string>
+     *          },
+     *          "clubHome": {
+     *              "id": <integer>,
+     *              "logo": <string>,
+     *              "name": <string>
+     *          },
+     *          "date": <timestamp>,
+     *          "id": <integer>,
+     *          "name": <string>,
+     *          "score": {
+     *              "home": <integer>,
+     *              "guest": <integer>
+     *          },
+     *          "roundScore": [
+     *              {
+     *                  "round": <integer>,
+     *                  "home": <integer>,
+     *                  "guest": <integer>
+     *              }
+     *          ],
+     *          "mvp": {
+     *              "first_name": <string>,
+     *              "id": <integer>,
+     *              "last_name": <string>,
+     *              "middle_name": <string>,
+     *              "photo": <string>
+     *          },
+     *          "lineUp": [
+     *              {
+     *                  "first_name": <string>,
+     *                  "id": <integer>,
+     *                  "last_name": <string>,
+     *                  "middle_name": <string>,
+     *                  "photo": <string>
+     *              }
+     *          ]
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Прогнозы",
+     *  resource=true,
+     *  description="Данные по предстоящему мероприятию",
+     *  statusCodes={
+     *         200="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getPredictionHistoryAction()
+    {
+        $service = $this->get('event.service');
+        try {
+            $event = $service->nextEvent();
+        } catch (EntityNotFoundException $e) {
+            throw new HttpException(404, $e->getMessage(), $e);
+        }
+
+        $transformer = $this->get('api.data.transformer.prediction.history');
+
+        $repositoryLineUp = $this->get('repository.lineup_repository');
+        $lineup = $repositoryLineUp->findBy(['event' => $event]);
+
+        $transformer1 = $this->get('api.data.transformer.players');
+        $data1['lineUp'] = [];
+        /** @var LineUp $line */
+        foreach ($lineup as $line) {
+            $data1['lineUp'][] = $this->getResourceItem($line->getPlayer(), $transformer1);
+        }
+        $data = $this->getResourceItem($event, $transformer);
+        $data2 = array_merge($data, $data1);
+        $view = $this->view($data2);
+
         return $this->handleView($view);
     }
 }

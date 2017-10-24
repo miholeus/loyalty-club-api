@@ -34,3 +34,6 @@ services:
     api.data.transformer.players:
         class: Zenomania\ApiBundle\Service\Transformer\PlayerTransformer
         arguments: ['@utils.host_based_url']
+    api.data.transformer.prediction.history:
+        class: Zenomania\ApiBundle\Service\Transformer\Event\PredictionHistoryTransformer
+        arguments: ['@utils.host_based_url']
