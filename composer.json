@@ -22,9 +22,11 @@
     "require": {
         "php": ">=7.0",
         "craue/formflow-bundle": "~3.0@dev",
+        "doctrine/dbal": "^2.6",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-migrations-bundle": "^1.0",
-        "doctrine/orm": "^2.5",
+        "doctrine/instantiator": "^1.1",
+        "doctrine/orm": "dev-master",
         "friendsofsymfony/rest-bundle": "^2.2",
         "gregwar/captcha-bundle": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
