@@ -64,10 +64,10 @@ class VkontakteClient implements ClientInterface
         $queryData = array(
             'v' => $this->version,
             'owner_id' => $ownerId,
-            'count' => 1,
+            'count' => $count,
             'filter' => $filter,
             'access_token' => $vk_access_token,
-            'offset' => 12
+            'offset' => 0
         );
         $response = $this->client->request(
             'GET',

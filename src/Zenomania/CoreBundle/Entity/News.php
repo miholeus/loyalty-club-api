@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Zenomania\CoreBundle\Form\Model\PostVkontakte;
+
 /**
  * News
  */
@@ -311,5 +313,18 @@ class News
     public function getStatus()
     {
         return $this->status;
+    }
+
+    public static function fromPost(PostVkontakte $post){
+        $self = new self();
+        $self->setText($post->getText());
+        $self->setVkId($post->getId());
+        $self->setDt($post->getDate());
+        $self->setPhoto($post->getPhoto());
+        $self->setVideo($post->getVideo());
+        $self->setTags($post->getTags());
+        $self->setCreatedOn(new \DateTime());
+
+        return $self;
     }
 }
