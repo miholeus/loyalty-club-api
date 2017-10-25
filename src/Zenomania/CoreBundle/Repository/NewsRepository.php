@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Zenomania\CoreBundle\Entity\News;
+
 /**
  * NewsRepository
  *
@@ -10,4 +12,44 @@ namespace Zenomania\CoreBundle\Repository;
  */
 class NewsRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param int $vkId
+     * @param int $limit
+     * @return mixed
+     */
+    public function getLastNews(int $vkId, int $limit)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
+            ->where('n.vkId >= :vkId')
+            ->setParameter('vkId', $vkId)
+            ->orderBy('n.vkId')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function deleteNews($data)
+    {
+        foreach ($data as $news) {
+            $this->_em->remove($news);
+        }
+        $this->_em->flush();
+    }
+
+    public function saveNews($data)
+    {
+        foreach ($data as $news) {
+            $this->_em->persist($news);
+        }
+        $this->_em->flush();
+    }
+
+    public function save(News $news)
+    {
+        $this->_em->persist($news);
+        $this->_em->flush();
+    }
 }
