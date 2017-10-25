@@ -36,9 +36,9 @@ class RatingsService
         if (null !== $filter->period) {
             $periodConverter = new PeriodConverter(PeriodConverter::SEASON);
             $date = $periodConverter->getStartDate();
+            $filter->period = $date->format("Y-m-d");
         }
 
-        $filter->period = $date->format("Y-m-d");
         return $this->getPersonPointsRepositry()->getRatings($filter);
     }
 
