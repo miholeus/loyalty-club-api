@@ -160,24 +160,20 @@ class PeriodConverter
         $this->finishDate = $currentDate;
     }
 
+    /**
+     * Сезон начинается с 15 июля каждый год
+     */
     protected function fillBySeason()
     {
         $currentDate = new \DateTime();
-        $winter = new \DateTime('December 1');
-        $spring = new \DateTime('March 1');
-        $summer = new \DateTime('June 1');
-        $fall = new \DateTime('September 1');
-        switch ($currentDate) {
-            case $currentDate >= $winter && $currentDate < $spring:
-                $season = $winter;
-            case $currentDate >= $spring && $currentDate < $summer:
-                $season = $spring;
-            case $currentDate >= $summer && $currentDate < $fall:
-                $season = $summer;
-            case $currentDate >= $fall && $currentDate < $winter:
-                $season = $fall;
+        $startSeason = new \DateTime('July 15');
+        if ($currentDate >= $startSeason) {
+            $season = $startSeason;
+        } else {
+            $season = $startSeason->modify("-1 year");
         }
-        $this->startDate = new \DateTime($season->format('Y-m') . '-01');
+
+        $this->startDate = $season;
         $this->finishDate = $currentDate;
     }
 
