@@ -60,4 +60,11 @@ class ScoreInRoundPrediction extends AbstractPrediction implements PredictionPoi
         }
         return $count;
     }
+
+    public function getPoints(EventForecast $forecast)
+    {
+        $points = PersonPointsService::POINTS_FOR_PREDICTION_MATCH_ROUND_SCORE;
+        $predictedRound = $this->getNumberOfRoundsPredicted($forecast);
+        return $points * $predictedRound;
+    }
 }

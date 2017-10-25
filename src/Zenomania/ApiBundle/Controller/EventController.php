@@ -499,7 +499,11 @@ class EventController extends RestController
         $transformer = $this->get('api.data.transformer.players');
         $dataForecastMvp = $this->getResourceItem($forecastMvp->getPlayer(), $transformer);
 
-        $dataForecast = array_merge($dataForecastScore, ['lineup' => $dataLineupForecast], ['mvp' => $dataForecastMvp]);
+        // Получаем количество очков за прогнозы
+        $service = $this->get('event.service');
+        $points = $service->getPointsForPredictions($event, $user);
+
+        $dataForecast = array_merge($dataForecastScore, ['lineup' => $dataLineupForecast], ['mvp' => $dataForecastMvp], ['points' => $points]);
 
         $data = array_merge($dataEvent, ['lineup' => $dataLineup], ['forecast' => $dataForecast]);
         $view = $this->view($data);

@@ -69,6 +69,33 @@ class EventPlayerForecastRepository extends EntityRepository
     }
 
     /**
+     * Получить массив с данными пользователь -> количество предсказанных игроков
+     *
+     * @param Event $event
+     * @param array $idPlayers
+     * @param User $user
+     * @return array
+     */
+    public function getAmountOfPredictedPlayersForUser(Event $event, array $idPlayers, User $user)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select(['cnt' => 'COUNT(epf.id)'])
+            ->from('ZenomaniaCoreBundle:EventPlayerForecast', 'epf')
+            ->where('epf.event = :event')
+            ->andWhere('epf.player IN (:players)')
+            ->andWhere('epf.status = :status')
+            ->andWhere('epf.user = :user')
+            ->setParameter('event', $event)
+            ->setParameter('players', $idPlayers)
+            ->setParameter('status', EventPlayerForecast::STATUS_PROCESSED)
+            ->setParameter('user', $user)
+            ->groupBy('epf.user')
+            ->getQuery();
+
+        return $query->getSingleScalarResult();
+    }
+
+    /**
      * Получить массив пользователей, которые предсказали результативного игрока
      * @param Event $event
      * @return array

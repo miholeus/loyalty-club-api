@@ -27,4 +27,12 @@ interface PredictionPointsInterface
      * @return mixed
      */
     public function givePoints(EventForecast $forecast, User $user);
+
+    /**
+     * Get points for forecast event
+     *
+     * @param EventForecast $forecast
+     * @return mixed
+     */
+    public function getPoints(EventForecast $forecast);
 }
