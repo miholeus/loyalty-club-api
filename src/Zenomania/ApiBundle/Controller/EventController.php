@@ -471,20 +471,38 @@ class EventController extends RestController
             throw new HttpException(404, $e->getMessage(), $e);
         }
 
+        // Получаем данные по мероприятию
         $transformer = $this->get('api.data.transformer.prediction.history');
+        $dataEvent = $this->getResourceItem($event, $transformer);
 
+        // Получаем данные по стартовому составу
         $repositoryLineUp = $this->get('repository.lineup_repository');
         $lineup = $repositoryLineUp->findBy(['event' => $event]);
+        $transformer = $this->get('api.data.transformer.event.lineup');
+        $dataLineup = $this->getResourceCollection($lineup, $transformer);
 
-        $transformer1 = $this->get('api.data.transformer.players');
-        $data1['lineUp'] = [];
-        /** @var LineUp $line */
-        foreach ($lineup as $line) {
-            $data1['lineUp'][] = $this->getResourceItem($line->getPlayer(), $transformer1);
-        }
-        $data = $this->getResourceItem($event, $transformer);
-        $data2 = array_merge($data, $data1);
-        $view = $this->view($data2);
+        // Получаем данные с прогнозом счёта матча и каждой партии
+        $user = $this->getUser();
+        $repositoryForecast = $this->get('repository.event_forecast_repository');
+        $forecastScore = $repositoryForecast->getEventForecast($event, $user);
+        $transformer = $this->get('api.data.transformer.event.forecast');
+        $dataForecastScore = $this->getResourceItem($forecastScore, $transformer);
+
+        // Получаем данные с прогнозом стартового состава
+        $repositoryPlayerForecast = $this->get('repository.event_player_forecast_repository');
+        $forecastPlayer = $repositoryPlayerForecast->findBy(['event' => $event, 'user' => $user]);
+        $transformer = $this->get('api.data.transformer.event.lineup_forecast');
+        $dataLineupForecast = $this->getResourceCollection($forecastPlayer, $transformer);
+
+        // Получаем данные с прогнозом MVP
+        $forecastMvp = $repositoryPlayerForecast->findOneBy(['event' => $event, 'user' => $user, 'isMvp' => true]);
+        $transformer = $this->get('api.data.transformer.players');
+        $dataForecastMvp = $this->getResourceItem($forecastMvp->getPlayer(), $transformer);
+
+        $dataForecast = array_merge($dataForecastScore, ['lineup' => $dataLineupForecast], ['mvp' => $dataForecastMvp]);
+
+        $data = array_merge($dataEvent, ['lineup' => $dataLineup], ['forecast' => $dataForecast]);
+        $view = $this->view($data);
 
         return $this->handleView($view);
     }

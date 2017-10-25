@@ -37,3 +37,12 @@ services:
     api.data.transformer.prediction.history:
         class: Zenomania\ApiBundle\Service\Transformer\Event\PredictionHistoryTransformer
         arguments: ['@utils.host_based_url']
+    api.data.transformer.event.lineup:
+        class: Zenomania\ApiBundle\Service\Transformer\Event\LineUpTransformer
+        arguments: ['@utils.host_based_url']
+    api.data.transformer.event.forecast:
+        class: Zenomania\ApiBundle\Service\Transformer\Event\EventForecastTransformer
+        arguments: ['@utils.host_based_url']
+    api.data.transformer.event.lineup_forecast:
+        class: Zenomania\ApiBundle\Service\Transformer\Event\LineUpForecastTransformer
+        arguments: ['@utils.host_based_url']

@@ -11,13 +11,12 @@ namespace Zenomania\ApiBundle\Service\Transformer\Event;
 use Zenomania\ApiBundle\Service\Transformer\ClubTransformer;
 use Zenomania\ApiBundle\Service\Transformer\PlayerTransformer;
 use Zenomania\ApiBundle\Service\Transformer\TransformerAbstract;
-use Zenomania\CoreBundle\Entity\Club;
 use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Service\Utils\HostBasedUrl;
 
 class PredictionHistoryTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = ['club_home', 'club_guest', 'players', 'mvp'];
+    protected $defaultIncludes = ['club_home', 'club_guest', 'mvp'];
     /**
      * @var HostBasedUrl
      */
@@ -50,23 +49,6 @@ class PredictionHistoryTransformer extends TransformerAbstract
     public function includeClubGuest(Event $event)
     {
         return $this->item($event->getClubGuest(), new ClubTransformer($this->url));
-    }
-
-    public function includePlayers(Event $event)
-    {
-        $club = null;
-        /** @var Club $item */
-        foreach ([$event->getClubHome(), $event->getClubGuest()] as $item) {
-            if ($item->getLineUpAvailable()) {
-                $club = $item;
-                break;
-            }
-        }
-        if (null === $club) {// no players
-            return null;
-        }
-
-        return $this->collection($club->getPlayers(), new PlayerTransformer($this->url));
     }
 
     public function includeMvp(Event $event)
