@@ -52,6 +52,26 @@ class EventRepository extends EntityRepository
     }
 
     /**
+     *
+     *
+     * @param $limit
+     * @return array
+     */
+    public function findLastScoreSavedEvents($limit)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('e')
+            ->from('ZenomaniaCoreBundle:Event', 'e')
+            ->where('e.scoreSaved = :score')
+            ->setParameter('score', \Zenomania\CoreBundle\Entity\Event::SCORE_SAVED_PROCESSED)
+            ->orderBy('e.date', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
      * Gets paginator
      *
      * @return CustomPaginator

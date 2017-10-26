@@ -340,17 +340,12 @@ class Events
 
         $points += (PersonPointsService::POINTS_FOR_PREDICTION_ONE_PLAYER * $predictedPlayers);
 
-//
-//        // Получить массив пользователей, которые угадали результативного игрока
-//        $predictedMvp = $this->getEventPlayerForecastRepository()->getPredictedMvp($event);
-//
-//        foreach ($predictedMvp as $item) {
-//            $user = $this->getUserRepository()->find($item['user']);
-//            $this->addPointsForPredictedMvp($user);
-//        }
-//
-//        // Установить событию метку как обработанное для подсчёта прогнозов
-//        $this->processedEvent($event);
+        // Получить массив пользователей, которые угадали результативного игрока
+        $predictedMvp = $this->getEventPlayerForecastRepository()->getPredictedMvpByUser($event, $user);
+
+        if (!empty($predictedMvp)) {
+            $points += PersonPointsService::POINTS_FOR_PREDICTION_MATCH_MVP;
+        }
 
         return $points;
     }

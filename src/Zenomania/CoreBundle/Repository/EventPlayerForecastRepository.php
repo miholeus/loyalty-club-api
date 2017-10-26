@@ -117,6 +117,30 @@ class EventPlayerForecastRepository extends EntityRepository
     }
 
     /**
+     * Получить массив пользователей, которые предсказали результативного игрока
+     * @param Event $event
+     * @param User $user
+     * @return array
+     */
+    public function getPredictedMvpByUser(Event $event, User $user)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select(['IDENTITY(epf.user) AS user'])
+            ->from('ZenomaniaCoreBundle:EventPlayerForecast', 'epf')
+            ->where('epf.event = :event')
+            ->andWhere('epf.player = :player')
+            ->andWhere('epf.user = :user')
+            ->andWhere('epf.isMvp = true')
+            ->setParameter('event', $event)
+            ->setParameter('player', $event->getMvp())
+            ->setParameter('user', $user)
+            ->groupBy('epf.user')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
      * Saves forecasts
      *
      * @param \Doctrine\Common\Collections\ArrayCollection $forecasts
