@@ -64,13 +64,14 @@ class VkontakteClient implements ClientInterface
      * Получить id всех пользователей сделавших репост заданного поста
      *
      * @param News $post
+     * @param int $groupId
      * @return array
      * @throws ClientException
      */
-    public function getReposts(News $post)
+    public function getReposts(News $post, int $groupId)
     {
         $queryData = [
-            'owner_id' => '-32408054',
+            'owner_id' => $groupId,
             'post_id' => $post->getVkId(),
             'v' => $this->version,
         ];
@@ -90,14 +91,15 @@ class VkontakteClient implements ClientInterface
      * Получить массив из id аккаунтов пользователей, которые сделали репост
      *
      * @param News $post
+     * @param int $groupId
      * @return mixed
      * @throws ClientException
      */
-    public function getList(News $post)
+    public function getList(News $post, int $groupId)
     {
         $queryData = [
             'type' => 'post',
-            'owner_id' => '-32408054',
+            'owner_id' => $groupId,
             'item_id' => $post->getVkId(),
             'filter' => 'copies',
             'friends_only' => 0,
@@ -120,13 +122,14 @@ class VkontakteClient implements ClientInterface
      *
      * @param News $post
      * @param string $token
+     * @param int $groupId
      * @return mixed
      * @throws ClientException
      */
-    public function repost(News $post, string $token)
+    public function repost(News $post, string $token, int $groupId)
     {
         $queryData = [
-            'object' => 'wall-32408054_' . $post->getVkId(),
+            'object' => 'wall' . $groupId . '_' . $post->getVkId(),
             'access_token' => $token,
             'v' => $this->version,
         ];

@@ -321,6 +321,7 @@ class ProfileController extends RestController
         $newsId = $paramFetcher->get('news');
         $newsRepository = $this->get('repository.news_repository');
         $news = $newsRepository->find($newsId);
+        $groupId = $this->getParameter('vk_group_id');
 
         if (empty($news)) {
             throw new HttpException(400, 'Данная новость не найдена');
@@ -336,7 +337,7 @@ class ProfileController extends RestController
         }
 
         $serviceVk = $this->get('api.client.vk');
-        $response = $serviceVk->repost($news, $socialAccount->getAccessToken());
+        $response = $serviceVk->repost($news, $socialAccount->getAccessToken(), $groupId);
 
         $data = [
             'id' => $response

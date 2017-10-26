@@ -34,6 +34,7 @@ class NewRepostCommand extends ContainerAwareCommand
         $socialRepostRepository = $this->getContainer()->get('repository.social_repost_repository');
         $serviceVk = $this->getContainer()->get('api.client.vk');
         $serviceNews = $this->getContainer()->get('news_repost.service');
+        $groupId = $this->getContainer()->getParameter('vk_group_id');
 
         /** Получить список всех постов для проверки */
         $posts = $serviceNews->getAllNewNews();
@@ -52,7 +53,7 @@ class NewRepostCommand extends ContainerAwareCommand
             }
 
             /** Получить все репосты для заданного поста */
-            $reposts = $serviceVk->getReposts($post);
+            $reposts = $serviceVk->getReposts($post, $groupId);
             foreach ($reposts as $repost) {
                 if ($this->correctIntervalForRepost($repost)) {
                     echo "Репост сделан позднее нужной даты" . PHP_EOL;

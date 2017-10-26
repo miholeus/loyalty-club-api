@@ -29,6 +29,7 @@ class CheckRepostCommand extends ContainerAwareCommand
         /** Подключаем все необходимые репозитории и сервисы */
         $serviceNews = $this->getContainer()->get('news_repost.service');
         $serviceVk = $this->getContainer()->get('api.client.vk');
+        $groupId = $this->getContainer()->getParameter('vk_group_id');
 
         /** Получаем все новости, которые находятся под контролем */
         $posts = $serviceNews->getAllContlolledNews();
@@ -41,7 +42,7 @@ class CheckRepostCommand extends ContainerAwareCommand
             /** Получить id всех тех, кто репостил новости и получил очки за это */
             $repost = $serviceNews->getIdThoseWhoRepost($post);
             /** Список id аккаунтов репостов на данный момент */
-            $currentRepost = $serviceVk->getList($post);
+            $currentRepost = $serviceVk->getList($post, $groupId);
             /** Массим id тех кто удалил репосты после начисления им баллов */
             $deleteRepost = array_diff($repost, $currentRepost);
 
