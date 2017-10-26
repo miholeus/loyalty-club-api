@@ -42,6 +42,7 @@ class NewsCommand extends ContainerAwareCommand
         $token = $this->getContainer()->getParameter('vk_access_token');
         $rows = $vkClientService->getNews($groupId, $token, self::COUNT, self::FILTER);
 
+        $output->writeln(sprintf("<info>Получили %d новостей</info>", count($rows)));
         $posts = [];
         $pinned = null;
         $lastId = 0;
@@ -53,6 +54,8 @@ class NewsCommand extends ContainerAwareCommand
             $post = new PostVkontakte($row);
             $news = News::fromPost($post);
 
+            $output->writeln(sprintf("<info>Получили новость №%d:</info> %s...", $news->getVkId(), mb_substr($news->getText(), 0, 100, 'utf-8')));
+
             if (!empty($row->is_pinned) && $row->is_pinned) {
                 $pinned = $news;
             } else {
@@ -61,10 +64,15 @@ class NewsCommand extends ContainerAwareCommand
             $lastId = $news->getVkId();
         }
         ksort($posts);
+
+        $output->writeln("<info>Сохраняем новости</info>");
+
         $newsService->updateNews($lastId, $posts);
         // Закрепленный пост может быть очень старыми, поэтму его првоеряем отдельно
         if ($pinned !== null) {
             $newsService->updateNewsPinned($pinned);
         }
+
+        $output->writeln("<info>Закончили обработку</info>");
     }
 }

@@ -79,9 +79,9 @@ class PostVkontakte
      */
     private function parseTags($post)
     {
-        preg_match_all('/#[^\s]+/', $post->text, $matches);
+        preg_match_all('/#([^\s]+)/', $post->text, $matches);
 
-        return array_shift($matches);
+        return !empty($matches[1]) ? $matches[1] : [];
     }
 
     /**
