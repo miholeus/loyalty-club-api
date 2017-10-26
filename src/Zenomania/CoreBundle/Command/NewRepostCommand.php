@@ -33,7 +33,7 @@ class NewRepostCommand extends ContainerAwareCommand
         /** Подключаем все необходимые репозитории и сервисы */
         $socialRepostRepository = $this->getContainer()->get('repository.social_repost_repository');
         $serviceVk = $this->getContainer()->get('api.client.vk');
-        $serviceNews = $this->getContainer()->get('news.service');
+        $serviceNews = $this->getContainer()->get('news_repost.service');
 
         /** Получить список всех постов для проверки */
         $posts = $serviceNews->getAllNewNews();

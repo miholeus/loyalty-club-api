@@ -9,6 +9,7 @@ class PersonPoints
 {
     const TYPE_TICKET_REGISTER = 'ticket_register';
     const TYPE_SUBSCRIPTION_REGISTER = 'sub_register';
+    const TYPE_SUBSCRIPTION_ATTENDANCE = 'sub_attendance';
     const TYPE_INVITE = 'reference';
     const TYPE_LINKED_VK = 'vk_linked';
     const TYPE_PURCHASE = 'purchase';

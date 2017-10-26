@@ -27,7 +27,7 @@ class CheckRepostCommand extends ContainerAwareCommand
         $output->writeln("<info>Start checking repost</info>");
 
         /** Подключаем все необходимые репозитории и сервисы */
-        $serviceNews = $this->getContainer()->get('news.service');
+        $serviceNews = $this->getContainer()->get('news_repost.service');
         $serviceVk = $this->getContainer()->get('api.client.vk');
 
         /** Получаем все новости, которые находятся под контролем */

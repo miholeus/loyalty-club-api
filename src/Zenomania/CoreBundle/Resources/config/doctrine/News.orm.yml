@@ -27,10 +27,9 @@ Zenomania\CoreBundle\Entity\News:
             length: 255
             nullable: true
         tags:
-            type: json_array
+            type: json
             nullable: true
             options:
-                fixed: false
                 jsonb: true
         published:
             type: boolean

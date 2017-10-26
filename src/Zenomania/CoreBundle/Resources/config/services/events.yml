@@ -20,3 +20,8 @@ services:
         arguments: ['@user_badge.service', '@repository.person_repository']
         tags:
             - {name: "kernel.event_listener", event: "user.profile.badge", method: "onUserProfileEvent"}
+    event.listener.ticket.registration:
+        class: Zenomania\CoreBundle\Event\Listener\TicketListener
+        arguments: ['@points.ticket_registration']
+        tags:
+            - {name: "kernel.event_listener", event: "ticket.registration", method: "onRegistrationEvent"}

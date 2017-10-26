@@ -9,6 +9,7 @@
 namespace Zenomania\ApiBundle\Service;
 
 use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
+use Zenomania\ApiBundle\Service\Utils\PeriodConverter;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 
 class RatingsService
@@ -31,6 +32,13 @@ class RatingsService
      */
     public function getRatings(RatingsFilter $filter)
     {
+        $date = null;
+        if (null !== $filter->period) {
+            $periodConverter = new PeriodConverter(PeriodConverter::SEASON);
+            $date = $periodConverter->getStartDate();
+            $filter->period = $date->format("Y-m-d");
+        }
+
         return $this->getPersonPointsRepositry()->getRatings($filter);
     }
 
