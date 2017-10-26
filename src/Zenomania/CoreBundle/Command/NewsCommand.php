@@ -38,11 +38,13 @@ class NewsCommand extends ContainerAwareCommand
         /** @var VkontakteClient $service */
         $vkClientService = $this->getContainer()->get('api.client.vk');
         $newsService = $this->getContainer()->get('news.service');
-        $vk_group_id = $this->getContainer()->getParameter('vk_group_id');
-        $vk_access_token = $this->getContainer()->getParameter('vk_access_token');
-        $rows = $vkClientService->getNews($vk_group_id, $vk_access_token, self::COUNT, self::FILTER);
-        $newsArray = array();
-        $newsPinned = null;
+        $groupId = $this->getContainer()->getParameter('vk_group_id');
+        $token = $this->getContainer()->getParameter('vk_access_token');
+        $rows = $vkClientService->getNews($groupId, $token, self::COUNT, self::FILTER);
+
+        $posts = [];
+        $pinned = null;
+        $lastId = 0;
         foreach ($rows as $row) {
             // Пропускаем репосты
             if (!empty($row->copy_history)) {
@@ -52,16 +54,17 @@ class NewsCommand extends ContainerAwareCommand
             $news = News::fromPost($post);
 
             if (!empty($row->is_pinned) && $row->is_pinned) {
-                $newsPinned = $news;
+                $pinned = $news;
             } else {
-                $newsArray[$news->getVkId()] = $news;
+                $posts[$news->getVkId()] = $news;
             }
+            $lastId = $news->getVkId();
         }
-        ksort($newsArray);
-        $newsService->updateNews($news->getVkId(), $newsArray);
+        ksort($posts);
+        $newsService->updateNews($lastId, $posts);
         // Закрепленный пост может быть очень старыми, поэтму его првоеряем отдельно
-        if ($newsPinned !== null) {
-            $newsService->updateNewsPinned($newsPinned);
+        if ($pinned !== null) {
+            $newsService->updateNewsPinned($pinned);
         }
     }
 }

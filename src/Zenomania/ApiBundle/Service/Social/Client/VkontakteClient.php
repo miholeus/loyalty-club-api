@@ -59,14 +59,24 @@ class VkontakteClient implements ClientInterface
         throw new ClientException($userInfo->error->error_code, $userInfo->error->error_msg);
     }
 
-    public function getNews(int $ownerId, string $vk_access_token, int $count, string $filter)
+    /**
+     * Fetches news from vk wall in group
+     *
+     * @param int $ownerId
+     * @param string $token
+     * @param int $count
+     * @param string $filter
+     * @return mixed
+     * @throws ClientException
+     */
+    public function getNews(int $ownerId, string $token, int $count, string $filter)
     {
         $queryData = array(
             'v' => $this->version,
             'owner_id' => $ownerId,
             'count' => $count,
             'filter' => $filter,
-            'access_token' => $vk_access_token,
+            'access_token' => $token,
             'offset' => 0
         );
         $response = $this->client->request(

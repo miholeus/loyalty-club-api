@@ -65,6 +65,11 @@ class News
     private $status = 'new';
 
 
+    public function __construct()
+    {
+        $this->createdOn = new \DateTime();
+        $this->updatedOn = new \DateTime();
+    }
     /**
      * Get id.
      *
@@ -315,7 +320,14 @@ class News
         return $this->status;
     }
 
-    public static function fromPost(PostVkontakte $post){
+    /**
+     * News from post
+     *
+     * @param PostVkontakte $post
+     * @return News
+     */
+    public static function fromPost(PostVkontakte $post)
+    {
         $self = new self();
         $self->setText($post->getText());
         $self->setVkId($post->getId());
@@ -323,7 +335,6 @@ class News
         $self->setPhoto($post->getPhoto());
         $self->setVideo($post->getVideo());
         $self->setTags($post->getTags());
-        $self->setCreatedOn(new \DateTime());
 
         return $self;
     }

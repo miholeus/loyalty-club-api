@@ -40,7 +40,8 @@ class News
                 // Проверяем не был ли пост отредактирован
                 /** @var  NewsEntity $news */
                 $news = $data[$lastNews->getVkId()];
-                if ($news->getText() != $lastNews->getText() || $news->getPhoto() != $lastNews->getPhoto() || $news->getVideo() != $lastNews->getVideo()) {
+                if ($news->getText() != $lastNews->getText() || $news->getPhoto() != $lastNews->getPhoto()
+                    || $news->getVideo() != $lastNews->getVideo()) {
                     $lastNews->setText($news->getText());
                     $lastNews->setPhoto($news->getPhoto());
                     $lastNews->setVideo($news->getVideo());

@@ -50,7 +50,7 @@ parameters:
     vk_client_id: 6185768
     vk_access_front_url: zenomania.ru/join/vk
     vk_group_id: -32408054
-    vk_access_token: e287435ee287435ee287435ec4e2d92076ee287e287435ebb3cab4ef0700f268b52ea98
+    vk_access_token: secret_token
 
     # Registration url
     registration_url: zenomania.ru/join
