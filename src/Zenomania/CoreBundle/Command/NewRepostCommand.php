@@ -12,7 +12,6 @@ namespace Zenomania\CoreBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\SocialAccount;
 use Zenomania\CoreBundle\Entity\SocialRepost;
 use Zenomania\CoreBundle\Entity\User;
@@ -65,22 +64,19 @@ class NewRepostCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                $person = $this->getPersonByVkId($repost->from_id);
+                $user = $this->getUserByVkId($repost->from_id);
 
-                if (empty($person)) {
+                if (empty($user)) {
                     echo "В Zenomania нет участника с id Вконтакте = " . $repost->from_id . PHP_EOL;
                     continue;
                 }
 
-                $personPoints = $this->addPointsForRepost($person->getUser(), $points);
+                $this->addPointsForRepost($user, $points);
                 $params = [
-                    'person' => $person,
+                    'dt' => (new \DateTime())->setTimestamp($repost->date),
                     'news' => $post,
-                    'network' => 'vk',
-                    'userOuterid' => $repost->from_id,
-                    'repostOuterid' => $repost->id,
-                    'repostDt' => (new \DateTime())->setTimestamp($repost->date),
-                    'personPoints' => $personPoints
+                    'user' => $user,
+                    'vkId' => $repost->id
                 ];
 
                 $socialRepost = SocialRepost::fromArray($params);
@@ -116,9 +112,9 @@ class NewRepostCommand extends ContainerAwareCommand
      * Получить профиль пользователя по его id в Вконтакте
      *
      * @param string $id
-     * @return null|Person
+     * @return null|User
      */
-    private function getPersonByVkId(string  $id)
+    private function getUserByVkId(string  $id)
     {
         /** @var SocialAccount $socialAccount */
         $socialAccount = $this->getContainer()
@@ -128,11 +124,11 @@ class NewRepostCommand extends ContainerAwareCommand
                 'network' => SocialAccount::NETWORK_VK
             ]);
 
-        $person = null;
+        $user = null;
         if (!empty($socialAccount)) {
-            $person = $socialAccount->getPerson();
+            $user = $socialAccount->getUser();
         }
 
-        return $person;
+        return $user;
     }
 }

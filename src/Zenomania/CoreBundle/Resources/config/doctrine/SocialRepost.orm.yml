@@ -14,6 +14,7 @@ Zenomania\CoreBundle\Entity\SocialRepost:
             columns:
                 - news_id
                 - vk_id
+                - user_id
     id:
         id:
             type: integer

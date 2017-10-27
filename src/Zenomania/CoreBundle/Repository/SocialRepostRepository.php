@@ -29,10 +29,11 @@ class SocialRepostRepository extends EntityRepository
         $qb = $em->createQueryBuilder();
         $qb->select('sr')
             ->from('ZenomaniaCoreBundle:SocialRepost', 'sr')
+            ->innerJoin('ZenomaniaCoreBundle:SocialAccount', 'sa', 'WITH', 'sa.user = sr.user AND sa.network = \'vk\'')
             ->where('sr.news = :news')
-            ->andWhere('sr.userOuterid = :user')
+            ->andWhere('sa.outerId = :outerid')
             ->setParameter('news', $news)
-            ->setParameter('user', $userId);
+            ->setParameter('outerid', $userId);
 
         $query = $qb->getQuery();
         $userList = $query->getResult();

@@ -179,7 +179,7 @@ class PersonPointsRepository extends EntityRepository
             'user'   => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_REPOST,
-            'state' => 'none',
+            'state' => 'new',
             'dt' => new \DateTime()
         ];
 

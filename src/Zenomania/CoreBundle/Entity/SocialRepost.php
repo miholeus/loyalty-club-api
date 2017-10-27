@@ -37,6 +37,11 @@ class SocialRepost
      */
     private $news;
 
+    public function __construct()
+    {
+        $this->createdOn = new \DateTime();
+    }
+
     /**
     * @param array $data
     * @return SocialRepost
@@ -67,7 +72,7 @@ class SocialRepost
      *
      * @return SocialRepost
      */
-    public function setVkIid($vkId)
+    public function setVkId($vkId)
     {
         $this->vkId = $vkId;
 
@@ -154,5 +159,21 @@ class SocialRepost
     public function getNews()
     {
         return $this->news;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedOn(): \DateTime
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * @param \DateTime $createdOn
+     */
+    public function setCreatedOn(\DateTime $createdOn)
+    {
+        $this->createdOn = $createdOn;
     }
 }
