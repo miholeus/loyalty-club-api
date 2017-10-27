@@ -19,6 +19,7 @@ use Zenomania\ApiBundle\Form\{
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\Event;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Zenomania\CoreBundle\Entity\LineUp;
 
 class EventController extends RestController
 {
@@ -389,6 +390,110 @@ class EventController extends RestController
         $service->savePlayerForecasts($forecasts);
 
         $view = $this->view(null, 204);
+        return $this->handleView($view);
+    }
+
+    /**
+     *
+     * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 404,
+     *                  "message": "Event Not Found"
+     *              },
+     *              "errors": null
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *          "clubGuest": {
+     *              "id": <integer>,
+     *              "logo": <string>,
+     *              "name": <string>
+     *          },
+     *          "clubHome": {
+     *              "id": <integer>,
+     *              "logo": <string>,
+     *              "name": <string>
+     *          },
+     *          "date": <timestamp>,
+     *          "id": <integer>,
+     *          "name": <string>,
+     *          "score": {
+     *              "home": <integer>,
+     *              "guest": <integer>
+     *          },
+     *          "roundScore": [
+     *              {
+     *                  "round": <integer>,
+     *                  "home": <integer>,
+     *                  "guest": <integer>
+     *              }
+     *          ],
+     *          "mvp": {
+     *              "first_name": <string>,
+     *              "id": <integer>,
+     *              "last_name": <string>,
+     *              "middle_name": <string>,
+     *              "photo": <string>
+     *          },
+     *          "lineup": [
+     *              {
+     *                  "first_name": <string>,
+     *                  "id": <integer>,
+     *                  "last_name": <string>,
+     *                  "middle_name": <string>,
+     *                  "photo": <string>
+     *              }
+     *          ],
+     *          "forecast": {
+     *              "lineup": [...],
+     *              "mvp": {...}
+     *              "roundScore": [...],
+     *              "score": {...},
+     *              "points": <integer>
+     *          }
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Прогнозы",
+     *  resource=true,
+     *  description="История прогнозов",
+     *  statusCodes={
+     *         200="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @QueryParam(name="limit", description="Количество запрашиваемых мероприятий", default="15")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getPredictionsHistoryAction(Request $request)
+    {
+        $limit = $request->query->get('count');
+        if ($limit > 100) {
+            $limit = 100;
+        }
+
+        $eventRepository = $this->get('repository.event_repository');
+        $events = $eventRepository->findLastScoreSavedEvents($limit);
+
+        $transformer = $this->get('api.data.transformer.prediction.history');
+        $data = $this->getResourceCollection($events, $transformer);
+        $view = $this->view($data);
         return $this->handleView($view);
     }
 }

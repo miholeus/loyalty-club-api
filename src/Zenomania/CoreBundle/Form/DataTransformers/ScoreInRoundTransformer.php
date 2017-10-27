@@ -85,7 +85,7 @@ class ScoreInRoundTransformer implements DataTransformerInterface
                 $event->setScoreSaved(1);
             }
 
-            $event->setScoreInRounds(implode(', ', $scoreInRounds));
+            $event->setScoreInRounds(implode(',', $scoreInRounds));
 
             return $event;
         } else {

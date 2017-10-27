@@ -43,4 +43,9 @@ class ExactScorePrediction extends AbstractPrediction implements PredictionPoint
         $type = PersonPoints::TYPE_FORECAST_WINNER_MATCH_ROUNDS;
         $this->getRepository()->givePointsForForecast($user, $points, $type);
     }
+
+    public function getPoints(EventForecast $forecast)
+    {
+        return PersonPointsService::POINTS_FOR_PREDICTION_MATCH_ROUNDS;
+    }
 }
