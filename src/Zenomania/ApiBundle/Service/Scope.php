@@ -43,6 +43,23 @@ class Scope extends \League\Fractal\Scope
             if ($transformer instanceof NullValueInterface) {
                 $includedData = $this->cleanData($transformer, $includedData);
             }
+            foreach ($includedData as &$item) {
+                if (is_array($item)) {
+                    $data = [];
+                    foreach ($item as $resource) {
+                        if ($resource instanceof \League\Fractal\Resource\Item) {
+                            $resource = $resource->getTransformer()->transform($resource->getData());
+                            $data[] = $resource;
+                        }
+                    }
+                    if (!empty($data)) {
+                        $item = $data;
+                    }
+                }
+
+            }
+            unset($item);
+
             $transformedData = $this->manager->getSerializer()->mergeIncludes($transformedData, $includedData);
         }
 

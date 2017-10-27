@@ -28,8 +28,6 @@ class EventForecastTransformer extends TransformerAbstract
     public function transform(EventForecast $forecast)
     {
         return [
-            'id' => $forecast->getId(),
-            'date' => $forecast->getCreatedOn()->getTimestamp(),
             'score' => [
                 'home' => $forecast->getScoreHome(),
                 'guest' => $forecast->getScoreGuest()
@@ -46,7 +44,7 @@ class EventForecastTransformer extends TransformerAbstract
      */
     private function getRoundScore(string $str)
     {
-        $rounds = explode(';', $str);
+        $rounds = explode(',', $str);
         $i = 1;
         $roundScore = [];
         foreach ($rounds as $round) {

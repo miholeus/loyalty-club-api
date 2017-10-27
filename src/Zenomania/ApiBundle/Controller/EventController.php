@@ -446,7 +446,7 @@ class EventController extends RestController
      * @ApiDoc(
      *  section="Прогнозы",
      *  resource=true,
-     *  description="Данные по предстоящему мероприятию",
+     *  description="История прогнозов",
      *  statusCodes={
      *         200="При успешном запросе",
      *         400="Ошибка запроса"
@@ -466,7 +466,7 @@ class EventController extends RestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getPredictionHistoryAction(Request $request)
+    public function getPredictionsHistoryAction(Request $request)
     {
         $limit = $request->query->get('count', 15);
         if ($limit > 100) {
@@ -476,26 +476,15 @@ class EventController extends RestController
         $eventRepository = $this->get('repository.event_repository');
         $events = $eventRepository->findLastScoreSavedEvents($limit);
 
+
+        $transformer = $this->get('api.data.transformer.prediction.history');
+        $data = $this->getResourceCollection($events, $transformer);
+        $view = $this->view($data);
+        return $this->handleView($view);
+
         $data = [];
         /** @var Event $event */
         foreach ($events as $event) {
-            // Получаем данные по мероприятию
-            $transformer = $this->get('api.data.transformer.prediction.history');
-            $dataEvent = $this->getResourceItem($event, $transformer);
-
-            // Получаем данные по стартовому составу
-            $repositoryLineUp = $this->get('repository.lineup_repository');
-            $lineup = $repositoryLineUp->findBy(['event' => $event]);
-            $transformer = $this->get('api.data.transformer.event.lineup');
-            $dataLineup = $this->getResourceCollection($lineup, $transformer);
-
-            // Получаем данные с прогнозом счёта матча и каждой партии
-            $user = $this->getUser();
-            $repositoryForecast = $this->get('repository.event_forecast_repository');
-            $forecastScore = $repositoryForecast->getEventForecast($event, $user);
-            $transformer = $this->get('api.data.transformer.event.forecast');
-            $dataForecastScore = $this->getResourceItem($forecastScore, $transformer);
-
             // Получаем данные с прогнозом стартового состава
             $repositoryPlayerForecast = $this->get('repository.event_player_forecast_repository');
             $forecastPlayer = $repositoryPlayerForecast->findBy(['event' => $event, 'user' => $user]);

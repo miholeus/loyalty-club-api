@@ -8,7 +8,7 @@
 
 namespace Zenomania\ApiBundle\Service\Transformer\Event;
 
-
+use Zenomania\ApiBundle\Service\Transformer\PlayerTransformer;
 use Zenomania\ApiBundle\Service\Transformer\TransformerAbstract;
 use Zenomania\CoreBundle\Entity\EventPlayerForecast;
 use Zenomania\CoreBundle\Service\Utils\HostBasedUrl;
@@ -27,12 +27,6 @@ class LineUpForecastTransformer extends TransformerAbstract
 
     public function transform(EventPlayerForecast $playerForecast)
     {
-        return [
-            'id' => $playerForecast->getPlayer()->getId(),
-            'first_name' => $playerForecast->getPlayer()->getFirstname(),
-            'last_name' => $playerForecast->getPlayer()->getLastname(),
-            'middle_name' => $playerForecast->getPlayer()->getMiddlename(),
-            'photo' => $this->url->getUrl($playerForecast->getPlayer()->getPhoto())
-        ];
+        return $this->item($playerForecast->getPlayer(), new PlayerTransformer($this->url));
     }
 }

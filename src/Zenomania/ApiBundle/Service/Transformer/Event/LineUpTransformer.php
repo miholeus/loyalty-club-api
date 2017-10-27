@@ -28,12 +28,6 @@ class LineUpTransformer extends TransformerAbstract
 
     public function transform(LineUp $lineUp)
     {
-        return [
-            'id' => $lineUp->getPlayer()->getId(),
-            'first_name' => $lineUp->getPlayer()->getFirstname(),
-            'last_name' => $lineUp->getPlayer()->getLastname(),
-            'middle_name' => $lineUp->getPlayer()->getMiddlename(),
-            'photo' => $this->url->getUrl($lineUp->getPlayer()->getPhoto())
-        ];
+        return $this->item($lineUp->getPlayer(), new PlayerTransformer($this->url));
     }
 }
