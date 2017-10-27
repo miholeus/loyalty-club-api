@@ -4,18 +4,12 @@
  * @author     miholeus <me@miholeus.com> {@link http://miholeus.com}
  */
 
-
 namespace Zenomania\ApiBundle\Service\Transformer\Event;
 
-
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Zenomania\ApiBundle\Service\Transformer\ClubTransformer;
 use Zenomania\ApiBundle\Service\Transformer\PlayerTransformer;
 use Zenomania\ApiBundle\Service\Transformer\TransformerAbstract;
 use Zenomania\CoreBundle\Entity\Event;
-use Zenomania\CoreBundle\Entity\User;
-use Zenomania\CoreBundle\Repository\EventForecastRepository;
-use Zenomania\CoreBundle\Repository\EventPlayerForecastRepository;
 use Zenomania\CoreBundle\Service\Utils\HostBasedUrl;
 
 class PredictionHistoryTransformer extends TransformerAbstract
@@ -26,29 +20,17 @@ class PredictionHistoryTransformer extends TransformerAbstract
      */
     private $url;
     /**
-     * @var EventForecastRepository
+     * @var EventForecastTransformer
      */
-    private $eventForecastRepository;
-    /**
-     * @var EventPlayerForecastRepository
-     */
-    private $eventPlayerForecastRepository;
-    /**
-     * @var TokenStorage
-     */
-    private $tokenStorage;
+    private $eventForecastTransformer;
 
     public function __construct(
         HostBasedUrl $url,
-        EventForecastRepository $eventForecastRepository,
-        EventPlayerForecastRepository $eventPlayerForecastRepository,
-        TokenStorage $tokenStorage
+        EventForecastTransformer $eventForecastTransformer
     )
     {
         $this->url = $url;
-        $this->eventForecastRepository = $eventForecastRepository;
-        $this->eventPlayerForecastRepository = $eventPlayerForecastRepository;
-        $this->tokenStorage = $tokenStorage;
+        $this->eventForecastTransformer = $eventForecastTransformer;
     }
 
     public function transform(Event $event)
@@ -121,22 +103,9 @@ class PredictionHistoryTransformer extends TransformerAbstract
      */
     public function includeForecast(Event $event)
     {
-        $forecastScore = $this->getEventForecastRepository()->getEventForecast($event, $this->getUser());
-        if (null !== $forecastScore) {
-            return $this->item($forecastScore, new EventForecastTransformer($this->url));
-        }
-        return null;
+        return $this->item($event, $this->getEventForecastTransformer());
     }
 
-    /**
-     * Возвращает текущего пользователя
-     *
-     * @return User
-     */
-    protected function getUser()
-    {
-        return $this->tokenStorage->getToken()->getUser();
-    }
     /**
      * Преобразует строку с данными о результате партий в массив
      *
@@ -162,18 +131,10 @@ class PredictionHistoryTransformer extends TransformerAbstract
     }
 
     /**
-     * @return EventForecastRepository
+     * @return EventForecastTransformer
      */
-    public function getEventForecastRepository(): EventForecastRepository
+    public function getEventForecastTransformer(): EventForecastTransformer
     {
-        return $this->eventForecastRepository;
-    }
-
-    /**
-     * @return EventPlayerForecastRepository
-     */
-    public function getEventPlayerForecastRepository(): EventPlayerForecastRepository
-    {
-        return $this->eventPlayerForecastRepository;
+        return $this->eventForecastTransformer;
     }
 }

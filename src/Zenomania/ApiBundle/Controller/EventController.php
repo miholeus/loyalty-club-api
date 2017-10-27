@@ -476,7 +476,6 @@ class EventController extends RestController
         $eventRepository = $this->get('repository.event_repository');
         $events = $eventRepository->findLastScoreSavedEvents($limit);
 
-
         $transformer = $this->get('api.data.transformer.prediction.history');
         $data = $this->getResourceCollection($events, $transformer);
         $view = $this->view($data);
@@ -485,17 +484,6 @@ class EventController extends RestController
         $data = [];
         /** @var Event $event */
         foreach ($events as $event) {
-            // Получаем данные с прогнозом стартового состава
-            $repositoryPlayerForecast = $this->get('repository.event_player_forecast_repository');
-            $forecastPlayer = $repositoryPlayerForecast->findBy(['event' => $event, 'user' => $user]);
-            $transformer = $this->get('api.data.transformer.event.lineup_forecast');
-            $dataLineupForecast = $this->getResourceCollection($forecastPlayer, $transformer);
-
-            // Получаем данные с прогнозом MVP
-            $forecastMvp = $repositoryPlayerForecast->findOneBy(['event' => $event, 'user' => $user, 'isMvp' => true]);
-            $transformer = $this->get('api.data.transformer.players');
-            $dataForecastMvp = $this->getResourceItem($forecastMvp->getPlayer(), $transformer);
-
             // Получаем количество очков за прогнозы
             $service = $this->get('event.service');
             $points = $service->getPointsForPredictions($event, $user);

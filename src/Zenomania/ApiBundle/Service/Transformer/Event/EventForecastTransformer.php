@@ -8,32 +8,96 @@
 
 namespace Zenomania\ApiBundle\Service\Transformer\Event;
 
-
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Zenomania\ApiBundle\Service\Transformer\TransformerAbstract;
-use Zenomania\CoreBundle\Entity\EventForecast;
+use Zenomania\CoreBundle\Entity\Event;
+use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Repository\EventForecastRepository;
 use Zenomania\CoreBundle\Service\Utils\HostBasedUrl;
 
 class EventForecastTransformer extends TransformerAbstract
 {
+    protected $defaultIncludes = ['lineup', 'mvp'];
     /**
      * @var HostBasedUrl
      */
     private $url;
+    /**
+     * @var EventForecastRepository
+     */
+    private $eventForecastRepository;
+    /**
+     * @var TokenStorage
+     */
+    private $tokenStorage;
+    /**
+     * @var LineUpForecastTransformer
+     */
+    private $lineUpTransformer;
+    /**
+     * @var LineUpMvpForecastTransformer
+     */
+    private $lineUpMvpForecastTransformer;
 
-    public function __construct(HostBasedUrl $url)
+    public function __construct(
+        HostBasedUrl $url,
+        EventForecastRepository $eventForecastRepository,
+        TokenStorage $tokenStorage,
+        LineUpForecastTransformer $lineUpTransformer,
+        LineUpMvpForecastTransformer $lineUpMvpForecastTransformer
+    )
     {
         $this->url = $url;
+        $this->eventForecastRepository = $eventForecastRepository;
+        $this->tokenStorage = $tokenStorage;
+        $this->lineUpTransformer = $lineUpTransformer;
+        $this->lineUpMvpForecastTransformer = $lineUpMvpForecastTransformer;
     }
 
-    public function transform(EventForecast $forecast)
+    public function transform(Event $event)
     {
-        return [
-            'score' => [
-                'home' => $forecast->getScoreHome(),
-                'guest' => $forecast->getScoreGuest()
-            ],
-            'roundScore' => $this->getRoundScore($forecast->getScoreInRounds())
-        ];
+        $forecast = $this->getEventForecastRepository()->getEventForecast($event, $this->getUser());
+        if (null !== $forecast) {
+            return [
+                'score' => [
+                    'home' => $forecast->getScoreHome(),
+                    'guest' => $forecast->getScoreGuest()
+                ],
+                'roundScore' => $this->getRoundScore($forecast->getScoreInRounds())
+            ];
+        }
+        return null;
+    }
+
+    /**
+     * Прогноз по составу
+     *
+     * @param Event $event
+     * @return \League\Fractal\Resource\Item
+     */
+    public function includeLineup(Event $event)
+    {
+        return $this->getLineUpTransformer()->transform($event);
+    }
+
+    /**
+     * Прогноз по mvp игроку
+     *
+     * @param Event $event
+     * @return \League\Fractal\Resource\Item
+     */
+    public function includeMvp(Event $event)
+    {
+        return $this->getLineUpMvpForecastTransformer()->transform($event);
+    }
+    /**
+     * Возвращает текущего пользователя
+     *
+     * @return User
+     */
+    protected function getUser()
+    {
+        return $this->tokenStorage->getToken()->getUser();
     }
 
     /**
@@ -58,5 +122,29 @@ class EventForecastTransformer extends TransformerAbstract
         }
 
         return $roundScore;
+    }
+
+    /**
+     * @return EventForecastRepository
+     */
+    public function getEventForecastRepository(): EventForecastRepository
+    {
+        return $this->eventForecastRepository;
+    }
+
+    /**
+     * @return LineUpForecastTransformer
+     */
+    public function getLineUpTransformer(): LineUpForecastTransformer
+    {
+        return $this->lineUpTransformer;
+    }
+
+    /**
+     * @return LineUpMvpForecastTransformer
+     */
+    public function getLineUpMvpForecastTransformer(): LineUpMvpForecastTransformer
+    {
+        return $this->lineUpMvpForecastTransformer;
     }
 }
