@@ -4,6 +4,8 @@ namespace Zenomania\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Event
  */
@@ -19,11 +21,13 @@ class Event
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var \DateTime
+     * @Assert\NotBlank()
      */
     private $date;
 
