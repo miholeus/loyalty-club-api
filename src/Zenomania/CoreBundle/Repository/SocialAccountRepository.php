@@ -61,6 +61,25 @@ class SocialAccountRepository extends EntityRepository
     }
 
     /**
+     * Finds account by external id
+     *
+     * @param string $outerId
+     * @return null|SocialAccount
+     */
+    public function findAccountByVkOuterId(string $outerId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('sa')
+            ->from('ZenomaniaCoreBundle:SocialAccount', 'sa')
+            ->where('sa.outerId = :outerId')
+            ->andWhere('sa.network = :network')
+            ->setParameter('outerId', $outerId)
+            ->setParameter('network', SocialAccount::NETWORK_VK)
+            ->getQuery();
+        return $query->getOneOrNullResult();
+    }
+
+    /**
      * Saves social account
      *
      * @param SocialAccount $socialAccount

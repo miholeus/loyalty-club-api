@@ -166,9 +166,10 @@ class PersonPointsRepository extends EntityRepository
      *
      * @param User $user
      * @param $points
+     * @param string $state
      * @return PersonPoints
      */
-    public function givePointsForRepost(User $user, $points)
+    public function givePointsForRepost(User $user, $points, $state = 'new')
     {
         $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
         $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
@@ -179,7 +180,7 @@ class PersonPointsRepository extends EntityRepository
             'user'   => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_REPOST,
-            'state' => 'new',
+            'state' => $state,
             'dt' => new \DateTime()
         ];
 

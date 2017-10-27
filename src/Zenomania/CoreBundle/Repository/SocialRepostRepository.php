@@ -46,7 +46,7 @@ class SocialRepostRepository extends EntityRepository
     }
 
     /**
-     * Получить список id аккаунтов, которые сделали репост данной записи
+     * Получить всех кто сделал репост данной записи
      *
      * @param News $news
      * @return array
@@ -55,8 +55,9 @@ class SocialRepostRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
-        $qb->select('sr.userOuterid')
+        $qb->select('sa.outerId')
             ->from('ZenomaniaCoreBundle:SocialRepost', 'sr')
+            ->innerJoin('ZenomaniaCoreBundle:SocialAccount', 'sa', 'WITH', 'sa.user = sr.user AND sa.network = \'vk\'')
             ->where('sr.news = :news')
             ->setParameter('news', $news);
 
@@ -92,5 +93,28 @@ class SocialRepostRepository extends EntityRepository
 
         $query = $qb->getQuery();
         return $query->getArrayResult();
+    }
+
+    /**
+     * Получить все записи о репостах для заданной новости и внешних ВК id пользователей
+     *
+     * @param array $ids
+     * @param News $post
+     * @return array
+     */
+    public function findRepostByPostAndId(array $ids, News $post)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('sr')
+            ->from('ZenomaniaCoreBundle:SocialRepost', 'sr')
+            ->innerJoin('ZenomaniaCoreBundle:SocialAccount', 'sa', 'WITH', 'sa.user = sr.user AND sa.network = \'vk\'')
+            ->where('sr.news = :news')
+            ->andWhere('sa.outerId IN (:id)')
+            ->setParameter('news', $post)
+            ->setParameter('id', $ids);
+
+        $query = $qb->getQuery();
+        return $query->getResult();
     }
 }

@@ -64,7 +64,7 @@ class NewsService
 
         $ids = [];
         foreach ($reposts as $repost) {
-            $ids[] = $repost['userOuterid'];
+            $ids[] = $repost['outerId'];
         }
 
         return $ids;
@@ -74,17 +74,11 @@ class NewsService
      * @param array $ids
      * @param News $post
      */
-    public function removePointsForPost(array $ids, News $post)
+    public function removeReposts(array $ids, News $post)
     {
-        foreach ($ids as $id) {
-            /** @var SocialRepost $socialRepost */
-            $socialRepost = $this->getSocialRepostRepository()->findOneBy([
-                'userOuterid' => $id,
-                'news' => $post
-            ]);
-            $personPoints = $socialRepost->getPersonPoints();
-
-            $this->getEm()->remove($personPoints);
+        $socialReposts = $this->getSocialRepostRepository()->findRepostByPostAndId($ids, $post);
+        foreach ($socialReposts as $repost) {
+            $this->getEm()->remove($repost);
             $this->getEm()->flush();
         }
     }

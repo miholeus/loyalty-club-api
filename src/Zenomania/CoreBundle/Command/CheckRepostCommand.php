@@ -12,6 +12,7 @@ namespace Zenomania\CoreBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Zenomania\CoreBundle\Entity\User;
 
 class CheckRepostCommand extends ContainerAwareCommand
 {
@@ -49,10 +50,31 @@ class CheckRepostCommand extends ContainerAwareCommand
             if (empty($deleteRepost)) {
                 continue;
             }
-            $serviceNews->removePointsForPost($deleteRepost, $post);
+            $points = $serviceNews->getPointsFromText($post);
+            $this->clearPointsForDeleteRepost($deleteRepost, $points);
+            $serviceNews->removeReposts($deleteRepost, $post);
         }
 
         $output->writeln("<info>End checking repost</info>");
     }
 
+
+    /**
+     * Списать с пользователя очки за репост
+     *
+     * @param array $vkUserIds
+     * @param int $points
+     * @return \Zenomania\CoreBundle\Entity\PersonPoints
+     */
+    private function clearPointsForDeleteRepost(array $vkUserIds, int $points)
+    {
+        $personPointsRepository = $this->getContainer()->get('repository.person_points_repository');
+        $socialAccountRepository = $this->getContainer()->get('repository.social_account_repository');
+
+        foreach ($vkUserIds as $userId) {
+            $socialAccount = $socialAccountRepository->findAccountByVkOuterId($userId);
+            $user = $socialAccount->getUser();
+            $personPointsRepository->givePointsForRepost($user, -1 * $points, 'deleted');
+        }
+    }
 }
