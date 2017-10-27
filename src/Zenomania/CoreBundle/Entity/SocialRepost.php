@@ -15,37 +15,27 @@ class SocialRepost
     /**
      * @var string
      */
-    private $network;
-
-    /**
-     * @var string
-     */
-    private $userOuterid;
-
-    /**
-     * @var string
-     */
-    private $repostOuterid;
+    private $vkId;
 
     /**
      * @var \DateTime
      */
-    private $repostDt;
+    private $dt;
 
     /**
-     * @var \Zenomania\CoreBundle\Entity\Person
+     * @var \DateTime
      */
-    private $person;
+    private $createdOn;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $user;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\News
      */
     private $news;
-
-    /**
-     * @var \Zenomania\CoreBundle\Entity\PersonPoints
-     */
-    private $personPoints;
 
     /**
     * @param array $data
@@ -71,129 +61,81 @@ class SocialRepost
     }
 
     /**
-     * Set network
+     * Set vkId
      *
-     * @param string $network
+     * @param string $vkId
      *
      * @return SocialRepost
      */
-    public function setNetwork($network)
+    public function setVkIid($vkId)
     {
-        $this->network = $network;
+        $this->vkId = $vkId;
 
         return $this;
     }
 
     /**
-     * Get network
+     * Get vkId
      *
      * @return string
      */
-    public function getNetwork()
+    public function getVkId()
     {
-        return $this->network;
+        return $this->vkId;
     }
 
     /**
-     * Set userOuterid
+     * Set dt
      *
-     * @param string $userOuterid
+     * @param \DateTime $dt
      *
      * @return SocialRepost
      */
-    public function setUserOuterid($userOuterid)
+    public function setDt($dt)
     {
-        $this->userOuterid = $userOuterid;
+        $this->dt = $dt;
 
         return $this;
     }
 
     /**
-     * Get userOuterid
-     *
-     * @return string
-     */
-    public function getUserOuterid()
-    {
-        return $this->userOuterid;
-    }
-
-    /**
-     * Set repostOuterid
-     *
-     * @param string $repostOuterid
-     *
-     * @return SocialRepost
-     */
-    public function setRepostOuterid($repostOuterid)
-    {
-        $this->repostOuterid = $repostOuterid;
-
-        return $this;
-    }
-
-    /**
-     * Get repostOuterid
-     *
-     * @return string
-     */
-    public function getRepostOuterid()
-    {
-        return $this->repostOuterid;
-    }
-
-    /**
-     * Set repostDt
-     *
-     * @param \DateTime $repostDt
-     *
-     * @return SocialRepost
-     */
-    public function setRepostDt($repostDt)
-    {
-        $this->repostDt = $repostDt;
-
-        return $this;
-    }
-
-    /**
-     * Get repostDt
+     * Get dt
      *
      * @return \DateTime
      */
-    public function getRepostDt()
+    public function getDt()
     {
-        return $this->repostDt;
+        return $this->dt;
     }
 
     /**
-     * Set person
+     * Set user
      *
-     * @param \Zenomania\CoreBundle\Entity\Person $person
+     * @param \Zenomania\CoreBundle\Entity\User $user
      *
      * @return SocialRepost
      */
-    public function setPerson(\Zenomania\CoreBundle\Entity\Person $person = null)
+    public function setUser(\Zenomania\CoreBundle\Entity\User $user = null)
     {
-        $this->person = $person;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get person
+     * Get user
      *
-     * @return \Zenomania\CoreBundle\Entity\Person
+     * @return \Zenomania\CoreBundle\Entity\User
      */
-    public function getPerson()
+    public function getUser()
     {
-        return $this->person;
+        return $this->user;
     }
 
     /**
-     * Set post
+     * Set news
      *
-     * @param \Zenomania\CoreBundle\Entity\News $post
+     * @param \Zenomania\CoreBundle\Entity\News $news
      *
      * @return SocialRepost
      */
@@ -205,31 +147,12 @@ class SocialRepost
     }
 
     /**
-     * Get post
+     * Get news
      *
      * @return \Zenomania\CoreBundle\Entity\News
      */
     public function getNews()
     {
         return $this->news;
-    }
-
-    /**
-     * @return PersonPoints
-     */
-    public function getPersonPoints()
-    {
-        return $this->personPoints;
-    }
-
-    /**
-     * @param PersonPoints $personPoints
-     * @return SocialRepost
-     */
-    public function setPersonPoints(PersonPoints $personPoints)
-    {
-        $this->personPoints = $personPoints;
-
-        return $this;
     }
 }
