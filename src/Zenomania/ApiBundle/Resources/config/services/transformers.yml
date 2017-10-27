@@ -46,7 +46,7 @@ services:
         class: Zenomania\ApiBundle\Service\Transformer\Event\EventForecastTransformer
         arguments:
             - '@utils.host_based_url'
-            - '@repository.event_forecast_repository'
+            - '@event.service'
             - '@security.token_storage'
             - '@api.data.transformer.event.lineup_forecast'
             - '@api.data.transformer.event.lineup_mvp_forecast'

@@ -9,6 +9,7 @@
 namespace Zenomania\ApiBundle\Service\Transformer\Event;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Zenomania\ApiBundle\Service\Events;
 use Zenomania\ApiBundle\Service\Transformer\TransformerAbstract;
 use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Entity\User;
@@ -23,10 +24,6 @@ class EventForecastTransformer extends TransformerAbstract
      */
     private $url;
     /**
-     * @var EventForecastRepository
-     */
-    private $eventForecastRepository;
-    /**
      * @var TokenStorage
      */
     private $tokenStorage;
@@ -38,32 +35,37 @@ class EventForecastTransformer extends TransformerAbstract
      * @var LineUpMvpForecastTransformer
      */
     private $lineUpMvpForecastTransformer;
+    /**
+     * @var Events
+     */
+    private $eventService;
 
     public function __construct(
         HostBasedUrl $url,
-        EventForecastRepository $eventForecastRepository,
+        Events $eventService,
         TokenStorage $tokenStorage,
         LineUpForecastTransformer $lineUpTransformer,
         LineUpMvpForecastTransformer $lineUpMvpForecastTransformer
     )
     {
         $this->url = $url;
-        $this->eventForecastRepository = $eventForecastRepository;
         $this->tokenStorage = $tokenStorage;
         $this->lineUpTransformer = $lineUpTransformer;
         $this->lineUpMvpForecastTransformer = $lineUpMvpForecastTransformer;
+        $this->eventService = $eventService;
     }
 
     public function transform(Event $event)
     {
-        $forecast = $this->getEventForecastRepository()->getEventForecast($event, $this->getUser());
+        $forecast = $this->getEventService()->getEventForecastRepository()->getEventForecast($event, $this->getUser());
         if (null !== $forecast) {
             return [
                 'score' => [
                     'home' => $forecast->getScoreHome(),
                     'guest' => $forecast->getScoreGuest()
                 ],
-                'roundScore' => $this->getRoundScore($forecast->getScoreInRounds())
+                'roundScore' => $this->getRoundScore($forecast->getScoreInRounds()),
+                'points' => $this->getEventService()->getPointsForPredictions($event, $this->getUser())
             ];
         }
         return null;
@@ -125,14 +127,6 @@ class EventForecastTransformer extends TransformerAbstract
     }
 
     /**
-     * @return EventForecastRepository
-     */
-    public function getEventForecastRepository(): EventForecastRepository
-    {
-        return $this->eventForecastRepository;
-    }
-
-    /**
      * @return LineUpForecastTransformer
      */
     public function getLineUpTransformer(): LineUpForecastTransformer
@@ -146,5 +140,13 @@ class EventForecastTransformer extends TransformerAbstract
     public function getLineUpMvpForecastTransformer(): LineUpMvpForecastTransformer
     {
         return $this->lineUpMvpForecastTransformer;
+    }
+
+    /**
+     * @return Events
+     */
+    public function getEventService(): Events
+    {
+        return $this->eventService;
     }
 }

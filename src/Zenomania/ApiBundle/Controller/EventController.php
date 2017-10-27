@@ -431,7 +431,7 @@ class EventController extends RestController
      *              "middle_name": <string>,
      *              "photo": <string>
      *          },
-     *          "lineUp": [
+     *          "lineup": [
      *              {
      *                  "first_name": <string>,
      *                  "id": <integer>,
@@ -439,7 +439,14 @@ class EventController extends RestController
      *                  "middle_name": <string>,
      *                  "photo": <string>
      *              }
-     *          ]
+     *          ],
+     *          "forecast": {
+     *              "lineup": [...],
+     *              "mvp": {...}
+     *              "roundScore": [...],
+     *              "score": {...},
+     *              "points": <integer>
+     *          }
      *          "time":<time request>
      *      }
      *
@@ -460,7 +467,7 @@ class EventController extends RestController
      *    }
      * )
      *
-     * @QueryParam(name="limit", description="Количество запрашиваемых мероприятий")
+     * @QueryParam(name="limit", description="Количество запрашиваемых мероприятий", default="15")
      *
      * @param Request $request
      *
@@ -468,7 +475,7 @@ class EventController extends RestController
      */
     public function getPredictionsHistoryAction(Request $request)
     {
-        $limit = $request->query->get('count', 15);
+        $limit = $request->query->get('count');
         if ($limit > 100) {
             $limit = 100;
         }
@@ -479,23 +486,6 @@ class EventController extends RestController
         $transformer = $this->get('api.data.transformer.prediction.history');
         $data = $this->getResourceCollection($events, $transformer);
         $view = $this->view($data);
-        return $this->handleView($view);
-
-        $data = [];
-        /** @var Event $event */
-        foreach ($events as $event) {
-            // Получаем количество очков за прогнозы
-            $service = $this->get('event.service');
-            $points = $service->getPointsForPredictions($event, $user);
-
-            $dataForecast = array_merge($dataForecastScore, ['lineup' => $dataLineupForecast], ['mvp' => $dataForecastMvp], ['points' => $points]);
-
-            $data[] = array_merge($dataEvent, ['lineup' => $dataLineup], ['forecast' => $dataForecast]);
-        }
-
-
-        $view = $this->view($data);
-
         return $this->handleView($view);
     }
 }
