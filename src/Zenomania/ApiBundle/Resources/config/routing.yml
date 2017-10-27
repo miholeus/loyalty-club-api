@@ -33,3 +33,6 @@ api_ratings:
 api_players:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\PlayerController"
+api_badge:
+    type: rest
+    resource: "@ZenomaniaApiBundle/Controller/Badge.php"
