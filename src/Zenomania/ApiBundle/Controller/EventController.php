@@ -279,6 +279,10 @@ class EventController extends RestController
             throw $this->createFormValidationException($form);
         }
 
+        if ($event->getDate()->getTimestamp() - time() <= 3600) {// 1 hour
+            throw new HttpException(400, "Время вышло для совершения прогноза");
+        }
+
         $service = $this->get('event_forecast.service');
 
         if ($service->hasActiveForecast($event, $this->getUser())) {
@@ -366,6 +370,10 @@ class EventController extends RestController
 
         if (!$form->isValid()) {
             throw $this->createFormValidationException($form);
+        }
+
+        if ($event->getDate()->getTimestamp() - time() <= 3600) {// 1 hour
+            throw new HttpException(400, "Время вышло для совершения прогноза");
         }
 
         $service = $this->get('event_forecast.service');
