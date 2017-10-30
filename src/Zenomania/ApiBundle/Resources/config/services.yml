@@ -89,3 +89,6 @@ services:
     points.ticket_registration:
         class: Zenomania\ApiBundle\Service\BonusPoints\TicketRegistration
         arguments: ['@repository.points_type', '@repository.person_points_repository']
+    api.news:
+        class: Zenomania\ApiBundle\Service\NewsService
+        arguments: ['@repository.news']
