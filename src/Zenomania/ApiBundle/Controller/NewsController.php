@@ -38,7 +38,7 @@ class NewsController extends RestController
      *              "photo": <string>,
      *              "video": <string>,
      *              "dt": <string>,
-     *              "link": <string>,
+     *              "vk_share_link": <string>,
      *              ]
      *          },
      *          "time":<time request>

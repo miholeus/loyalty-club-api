@@ -24,6 +24,10 @@ class NewsService
         $this->repository = $repository;
     }
 
+    /**
+     * @param NewsFilter $filter
+     * @return \Zenomania\CoreBundle\Entity\News[]
+     */
     public function getNews(NewsFilter $filter)
     {
        return $this->getRepository()->getNews($filter);

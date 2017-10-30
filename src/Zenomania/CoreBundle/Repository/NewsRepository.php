@@ -89,29 +89,24 @@ class NewsRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * @param NewsFilter $filter
+     * @return News[]
+     */
     public function getNews(NewsFilter $filter)
     {
         $em = $this->getEntityManager();
-        $qb = $em->getConnection()->createQueryBuilder();
-        $select = $qb->select([
-            'id',
-            'text',
-            'tags',
-            'photo',
-            'video',
-            'dt',
-            'vk_id',
-        ])
-            ->from($this->getClassMetadata()->getTableName(), 'n')
+        $qb = $em->createQueryBuilder();
+        $select = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
             ->setMaxResults($filter->getOffset())
             ->setFirstResult($filter->getOffset())
-            ->orderBy('n.vk_id', 'DESC');
+            ->orderBy('n.dt', 'DESC');
 
         $select->setMaxResults($filter->getLimit());
         $select->setFirstResult($filter->getOffset());
 
-
-        $result = $select->execute()->fetchAll();
+        $result = $select->getQuery()->getResult();
         return $result;
     }
 }

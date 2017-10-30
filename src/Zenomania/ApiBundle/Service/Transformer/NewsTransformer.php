@@ -9,6 +9,7 @@
 namespace Zenomania\ApiBundle\Service\Transformer;
 
 
+use Zenomania\CoreBundle\Entity\News;
 use Zenomania\CoreBundle\Service\Utils\HostBasedUrl;
 
 class NewsTransformer extends TransformerAbstract
@@ -32,16 +33,16 @@ class NewsTransformer extends TransformerAbstract
 
     }
 
-    public function transform(array $item)
+    public function transform(News $news)
     {
         $data = [
-            'id' => $item['id'],
-            'text' => $item['text'],
-            'tags' => $item['tags'],
-            'photo' => $item['photo'],
-            'video' => $item['video'],
-            'dt' => $item['dt'],
-            'link' => $this->getLink($item['vk_id']),
+            'id' => $news->getId(),
+            'text' => $news->getText(),
+            'tags' => $news->getTags(),
+            'photo' => $news->getPhoto(),
+            'video' => $news->getVideo(),
+            'date' => $news->getDt()->getTimestamp(),
+            'vk_share_link' => $news->getVkId() ? $this->getLink($news->getVkId()) : null,
         ];
 
         return $data;
