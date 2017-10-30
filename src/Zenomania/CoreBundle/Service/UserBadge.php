@@ -47,7 +47,6 @@ class UserBadge
         $userBadge->setUser($user);
         $userBadge->setPoints($badge->getPoints());
         $userBadge->setBadgeId($badge);
-        $userBadge->setCreatedOn(new \DateTime());
 
         $this->getUserBadgeRepository()->save($userBadge);
     }
@@ -63,7 +62,6 @@ class UserBadge
         $userBadge = $this->getProfileCompletedBadge($user);
 
         if(!$userBadge){
-            $userBadge->setCreatedOn(new \DateTime());
             $this->getUserBadgeRepository()->save($userBadge);
         }
 
@@ -116,5 +114,4 @@ class UserBadge
     {
         return $this->badgeRepository;
     }
-
 }

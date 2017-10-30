@@ -13,7 +13,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Zenomania\ApiBundle\Request\Filter\BadgeFilter;
 
-class Badge extends RestController
+class BadgeController extends RestController
 {
     /**
      * ### Failed Response ###
@@ -31,15 +31,17 @@ class Badge extends RestController
      * ### Success Response ###
      *      {
      *          "data":{
-     *              "type_id":<string>,
-     *              "type_title": <string>,
-     *              "badge_title": <string>,
-     *              "badge_code": <string>,
+     *              "type": {
+     *                  "id": <integer>
+     *                  "title": <string>
+     *                  "sort": <integer>
+     *              }
+     *              "title": <string>,
+     *              "code": <string>,
      *              "points": <integer>,
      *              "max_points": <integer>,
      *              "photo": <string>,
-     *              "type_sort": <integer>,
-     *              "badge_sort": <integer>,
+     *              "sort": <integer>,
      *          },
      *          "time":<time request>
      *      }
