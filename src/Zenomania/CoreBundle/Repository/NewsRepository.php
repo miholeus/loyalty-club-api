@@ -61,11 +61,12 @@ class NewsRepository extends \Doctrine\ORM\EntityRepository
         $select = $qb->select([
             'id',
             'text',
-            'dt',
+            'tags',
             'photo',
             'video',
-            ])
-            ->from($this->getClassMetadata()->getTableName(),'n')
+            'dt',
+        ])
+            ->from($this->getClassMetadata()->getTableName(), 'n')
             ->setMaxResults($filter->getOffset())
             ->setFirstResult($filter->getOffset())
             ->orderBy('n.vk_id', 'DESC');

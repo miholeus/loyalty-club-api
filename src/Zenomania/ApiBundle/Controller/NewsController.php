@@ -34,9 +34,10 @@ class NewsController extends RestController
      *          "data":{
      *              "id":<integer>,
      *              "text": <string>,
-     *              "dt": <string>,
+     *              "tags": <array>,
      *              "photo": <string>,
      *              "video": <string>,
+     *              "dt": <string>,
      *              ]
      *          },
      *          "time":<time request>

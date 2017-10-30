@@ -28,9 +28,10 @@ class NewsTransformer extends TransformerAbstract
         $data = [
             'id' => $item['id'],
             'text' => $item['text'],
-            'dt' => $item['dt'],
+            'tags' => $item['tags'],
             'photo' => $item['photo'],
             'video' => $item['video'],
+            'dt' => $item['dt'],
         ];
         return $data;
     }
