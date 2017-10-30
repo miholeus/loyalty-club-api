@@ -92,3 +92,6 @@ services:
     api.badge:
         class: Zenomania\ApiBundle\Service\Badge
         arguments: ['@repository.user_badge_repository']
+    api.news:
+        class: Zenomania\ApiBundle\Service\NewsService
+        arguments: ['@repository.news']

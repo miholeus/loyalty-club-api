@@ -36,3 +36,6 @@ api_players:
 api_badge:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\BadgeController"
+api_news:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\NewsController"

@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Zenomania\ApiBundle\Request\Filter\NewsFilter;
 use Zenomania\CoreBundle\Entity\News;
 
 /**
@@ -86,5 +87,26 @@ class NewsRepository extends \Doctrine\ORM\EntityRepository
     {
         $this->_em->persist($news);
         $this->_em->flush();
+    }
+
+    /**
+     * @param NewsFilter $filter
+     * @return News[]
+     */
+    public function getNews(NewsFilter $filter)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $select = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
+            ->setMaxResults($filter->getOffset())
+            ->setFirstResult($filter->getOffset())
+            ->orderBy('n.dt', 'DESC');
+
+        $select->setMaxResults($filter->getLimit());
+        $select->setFirstResult($filter->getOffset());
+
+        $result = $select->getQuery()->getResult();
+        return $result;
     }
 }
