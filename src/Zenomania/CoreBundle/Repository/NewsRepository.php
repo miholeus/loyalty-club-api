@@ -65,6 +65,7 @@ class NewsRepository extends \Doctrine\ORM\EntityRepository
             'photo',
             'video',
             'dt',
+            'vk_id',
         ])
             ->from($this->getClassMetadata()->getTableName(), 'n')
             ->setMaxResults($filter->getOffset())

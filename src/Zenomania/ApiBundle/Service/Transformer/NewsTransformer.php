@@ -13,14 +13,23 @@ use Zenomania\CoreBundle\Service\Utils\HostBasedUrl;
 
 class NewsTransformer extends TransformerAbstract
 {
+    const VK_BASE_POST_URL = 'https://vk.com/volleyzenit?w=wall';
+
     /**
      * @var HostBasedUrl
      */
     private $url;
 
-    public function __construct(HostBasedUrl $url)
+    /**
+     * @var int
+     */
+    private $vkGroupId;
+
+    public function __construct(HostBasedUrl $url, int $vkGroupId)
     {
+        $this->vkGroupId = $vkGroupId;
         $this->url = $url;
+
     }
 
     public function transform(array $item)
@@ -32,7 +41,22 @@ class NewsTransformer extends TransformerAbstract
             'photo' => $item['photo'],
             'video' => $item['video'],
             'dt' => $item['dt'],
+            'link' => $this->getLink($item['vk_id']),
         ];
+
         return $data;
+    }
+
+    public function getLink(int $vkPostId)
+    {
+        return self::VK_BASE_POST_URL. $this->getVkGroupId(). '_' . $vkPostId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVkGroupId(): int
+    {
+        return $this->vkGroupId;
     }
 }
