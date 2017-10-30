@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Zenomania\ApiBundle\Form\UserProfileType;
 use Zenomania\ApiBundle\Form\Model\UserProfile;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
+use Zenomania\CoreBundle\Entity\SocialAccount;
 use Zenomania\CoreBundle\Service\Upload\FilePathStrategy;
 use FOS\RestBundle\Controller\Annotations\Route;
 
@@ -271,6 +272,79 @@ class ProfileController extends RestController
 
         $data = $this->getResourceItem($items, $transformer);
         $view = $this->view($data);
+        return $this->handleView($view);
+    }
+
+    /**
+     * ### Failed Response ###
+     *
+     *     {
+     *       "success": false
+     *       "exception": {
+     *         "code": <code>,
+     *         "message": <message>
+     *       }
+     *     }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "id":<post id>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Профиль",
+     *  resource=true,
+     *  description="Создание репоста новости",
+     *  statusCodes={
+     *          204="Успех",
+     *          400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @RequestParam(name="news", description="id новости для репоста в ВК", nullable=false)
+     *
+     * @param ParamFetcher $paramFetcher
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postRepostAction(ParamFetcher $paramFetcher)
+    {
+        $newsId = $paramFetcher->get('news');
+        $newsRepository = $this->get('repository.news_repository');
+        $news = $newsRepository->find($newsId);
+        $groupId = $this->getParameter('vk_group_id');
+
+        if (empty($news)) {
+            throw new HttpException(400, 'Данная новость не найдена');
+        }
+
+        $user = $this->getUser();
+        $socialAccountRepository = $this->get('repository.social_account_repository');
+        /** @var SocialAccount $socialAccount */
+        $socialAccount = $socialAccountRepository->findAccountVkByUser($user);
+
+        if (empty($socialAccount)) {
+            throw new HttpException(400, 'Нет привязки к соц.сети');
+        }
+
+        $serviceVk = $this->get('api.client.vk');
+        $response = $serviceVk->repost($news, $socialAccount->getAccessToken(), $groupId);
+
+        $data = [
+            'id' => $response
+        ];
+
+        $view = $this->view($data);
+
         return $this->handleView($view);
     }
 }

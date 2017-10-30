@@ -114,5 +114,4 @@ class UserBadge
     {
         return $this->badgeRepository;
     }
-
 }
