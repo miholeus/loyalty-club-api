@@ -39,15 +39,15 @@ class NewRepostCommand extends ContainerAwareCommand
         $posts = $serviceNews->getAllNewNews();
 
         foreach ($posts as $post) {
-            echo "Обрабатываем сообщение №" . $post->getVkId() . PHP_EOL;
+            $output->writeln("Обрабатываем сообщение №" . $post->getVkId());
 
             if ($serviceNews->checkTimePost($post)) {
-                echo "Перевели новость из новых в подконтролем " . PHP_EOL;
+                $output->writeln("Перевели новость из новых в подконтролем ");
             }
 
             $points = $serviceNews->getPoints($post);
             if (0 == $points) {
-                echo "Пост не содерит хэштега #XXXZEN" . PHP_EOL;
+                $output->writeln("<warn>Пост не содерит хэштега #XXXZEN</warn>");
                 continue;
             }
 
@@ -55,19 +55,19 @@ class NewRepostCommand extends ContainerAwareCommand
             $reposts = $serviceVk->getReposts($post, $groupId);
             foreach ($reposts as $repost) {
                 if ($this->correctIntervalForRepost($repost)) {
-                    echo "Репост сделан позднее нужной даты" . PHP_EOL;
+                    $output->writeln("<error>Репост сделан позднее нужной даты</error>");
                     continue;
                 }
 
                 if ($socialRepostRepository->existsRepost($post, $repost->from_id)) {
-                    echo "Репост поста уже был учтён" . PHP_EOL;
+                    $output->writeln("<warn>Репост поста уже был учтён</warn>");
                     continue;
                 }
 
                 $user = $this->getUserByVkId($repost->from_id);
 
                 if (empty($user)) {
-                    echo "В Zenomania нет участника с id Вконтакте = " . $repost->from_id . PHP_EOL;
+                    $output->writeln("<error>В Zenomania нет участника с id Вконтакте = " . $repost->from_id . "</error>");
                     continue;
                 }
 
@@ -81,7 +81,7 @@ class NewRepostCommand extends ContainerAwareCommand
 
                 $socialRepost = SocialRepost::fromArray($params);
                 $socialRepostRepository->save($socialRepost);
-                echo "Засчитали репост участника с id Вконтакте = " . $repost->from_id . PHP_EOL;
+                $output->writeln("<info>Засчитали репост участника с id Вконтакте = " . $repost->from_id . "</info>");
             }
         }
 

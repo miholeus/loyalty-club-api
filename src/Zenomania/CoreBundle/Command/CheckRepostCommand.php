@@ -37,7 +37,7 @@ class CheckRepostCommand extends ContainerAwareCommand
         foreach ($posts as $post) {
 
             if ($serviceNews->checkTimeControlledPost($post)) {
-                echo "Перевели новость из подконтролем в обработанные " . PHP_EOL;
+                $output->writeln("Перевели новость из подконтролем в обработанные");
             }
 
             /** Получить id всех тех, кто репостил новости и получил очки за это */
