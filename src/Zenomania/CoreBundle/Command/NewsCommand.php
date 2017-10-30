@@ -58,9 +58,9 @@ class NewsCommand extends ContainerAwareCommand
 
             if (!empty($row->is_pinned) && $row->is_pinned) {
                 $pinned = $news;
-            } else {
-                $posts[$news->getVkId()] = $news;
             }
+
+            $posts[$news->getVkId()] = $news;
             $lastId = $news->getVkId();
         }
         ksort($posts);

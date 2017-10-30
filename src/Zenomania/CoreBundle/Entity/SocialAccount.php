@@ -7,6 +7,9 @@ namespace Zenomania\CoreBundle\Entity;
  */
 class SocialAccount
 {
+    const NETWORK_VK = 'vk';
+    const NETWORK_TWITTER = 'twitter';
+
     /**
      * @var integer
      */

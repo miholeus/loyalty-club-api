@@ -12,6 +12,24 @@ use Zenomania\CoreBundle\Entity\News;
  */
 class NewsRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * Возвращает новые записи из ВК
+     *
+     * @return array
+     */
+    public function findAllNewNews()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
+            ->where('n.status = :status')
+            ->setParameter('status', News::STATUS_NEW)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     /**
      * @param int $vkId
      * @param int $limit
@@ -26,6 +44,23 @@ class NewsRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('vkId', $vkId)
             ->orderBy('n.vkId')
             ->setMaxResults($limit)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * Возвращает записи из ВК, находящиеся под контролем
+     *
+     * @return array
+     */
+    public function findAllControlledNews()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
+            ->where('n.status = :status')
+            ->setParameter('status', News::STATUS_CONTROLLED)
             ->getQuery();
 
         return $query->getResult();

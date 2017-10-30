@@ -61,6 +61,7 @@ class PersonPoints
      * @var \Zenomania\CoreBundle\Entity\User
      */
     private $user;
+
     /**
      * @param array $data
      * @return PersonPoints
