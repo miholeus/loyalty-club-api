@@ -59,3 +59,6 @@ services:
     api.data.transformer.event.lineup_mvp_forecast:
         class: Zenomania\ApiBundle\Service\Transformer\Event\LineUpMvpForecastTransformer
         parent: api.data.transformer.event.lineup_forecast
+    api.data.transformer.news:
+        class: Zenomania\ApiBundle\Service\Transformer\NewsTransformer
+        arguments: ['@utils.host_based_url']
