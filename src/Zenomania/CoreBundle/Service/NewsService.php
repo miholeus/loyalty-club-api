@@ -109,10 +109,13 @@ class NewsService
      * @param News $news
      * @return int
      */
-    public function getPointsFromText(News $news)
+    public function getPoints(News $news)
     {
-        if (preg_match('/#(\d+)ZEN/', $news->getText(), $matches)) {
-            return $matches[1];
+        $points = 0;
+        foreach ($news->getTags() as $tag) {
+            if (preg_match('/#(\d+)ZEN/', $tag, $matches)) {
+                $points += $matches[1];
+            }
         }
 
         return 0;

@@ -45,7 +45,7 @@ class NewRepostCommand extends ContainerAwareCommand
                 echo "Перевели новость из новых в подконтролем " . PHP_EOL;
             }
 
-            $points = $serviceNews->getPointsFromText($post);
+            $points = $serviceNews->getPoints($post);
             if (0 == $points) {
                 echo "Пост не содерит хэштега #XXXZEN" . PHP_EOL;
                 continue;

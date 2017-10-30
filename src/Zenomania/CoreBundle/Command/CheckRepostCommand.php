@@ -50,7 +50,8 @@ class CheckRepostCommand extends ContainerAwareCommand
             if (empty($deleteRepost)) {
                 continue;
             }
-            $points = $serviceNews->getPointsFromText($post);
+
+            $points = $serviceNews->getPoints($post);
             $this->clearPointsForDeleteRepost($deleteRepost, $points);
             $serviceNews->removeReposts($deleteRepost, $post);
         }
