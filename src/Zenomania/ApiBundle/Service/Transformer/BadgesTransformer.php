@@ -26,15 +26,16 @@ class BadgesTransformer extends TransformerAbstract
     public function transform(array $item)
     {
         $data = [
-            'type_id' => $item['type_id'],
-            'type_title' => $item['type_title'],
-            'badge_title' => $item['badge_title'],
-            'badge_code' => $item['badge_code'],
+            'type' => [
+                'id' => $item['type_id'],
+                'title' => $item['type_title'],
+                'sort' => $item['type_sort'],
+            ],
+            'code' => $item['badge_code'],
             'points' => $item['points'],
             'max_points' => $item['max_points'],
             'photo' => $item['photo'],
-            'type_sort' => $item['type_sort'],
-            'badge_sort' => $item['badge_sort'],
+            'sort' => $item['badge_sort'],
         ];
         return $data;
     }

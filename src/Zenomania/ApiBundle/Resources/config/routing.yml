@@ -35,4 +35,4 @@ api_players:
     resource: "Zenomania\\ApiBundle\\Controller\\PlayerController"
 api_badge:
     type: rest
-    resource: "@ZenomaniaApiBundle/Controller/Badge.php"
+    resource: "Zenomania\\ApiBundle\\Controller\\BadgeController"
