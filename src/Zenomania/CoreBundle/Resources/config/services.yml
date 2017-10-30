@@ -99,3 +99,6 @@ services:
     news.service:
         class: Zenomania\CoreBundle\Service\News
         arguments: ['@repository.news']
+    subscription.service:
+        class: Zenomania\CoreBundle\Service\SubscriptionService
+        arguments: ['@doctrine.orm.entity_manager']
