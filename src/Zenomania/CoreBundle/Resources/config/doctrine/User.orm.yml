@@ -187,6 +187,12 @@ Zenomania\CoreBundle\Entity\User:
             inversedBy: null
             cascade: ["persist"]
             orphanRemoval: false
+        tokens:
+            targetEntity: Zenomania\CoreBundle\Entity\ApiToken
+            mappedBy: user
+            inversedBy: null
+            cascade: ["persist"]
+            orphanRemoval: false
     oneToOne:
         person:
           targetEntity: Zenomania\CoreBundle\Entity\Person

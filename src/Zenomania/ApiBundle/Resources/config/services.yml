@@ -95,3 +95,8 @@ services:
     api.news:
         class: Zenomania\ApiBundle\Service\NewsService
         arguments: ['@repository.news']
+    api.afr_token_service:
+        class: Zenomania\ApiBundle\Service\Afr\TokenService
+    api.afr_token_authenticator:
+        class: Zenomania\ApiBundle\Service\Afr\ApiTokenAuthenticator
+        arguments: ['%afr_service_host%']

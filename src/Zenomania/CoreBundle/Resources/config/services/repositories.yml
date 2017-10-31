@@ -134,3 +134,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\News
+    repository.api_token_repository:
+        class: Zenomania\CoreBundle\Repository\ApiTokenRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\ApiToken
