@@ -4,14 +4,11 @@
  * @author     miholeus <me@miholeus.com> {@link http://miholeus.com}
  */
 
-
 namespace Zenomania\ApiBundle\Service\Afr;
 
+use Zenomania\ApiBundle\Service\Exception;
 
-class ApiTokenAuthenticator
+class AuthenticateFailedException extends Exception
 {
-    public function authenticate(string $token)
-    {
 
-    }
 }
