@@ -38,9 +38,11 @@ class UploadSubscriptionsCommand extends ContainerAwareCommand
         $data = $parser->getData($fileName);
 
         $service = $this->getContainer()->get('subscription.service');
-        $service->addFromFile($data);
+        $result = $service->addFromFile($data);
 
-
+        $output->writeln("<info>Добавили абонементов:</info>" . $result['new']);
+        $output->writeln("<info>Дублей:</info>" . $result['duplicate']);
+        $output->writeln("<info>Ошибок:</info>" . $result['error']);
         $output->writeln("<info>The end uploading subscriptions</info>");
     }
 
