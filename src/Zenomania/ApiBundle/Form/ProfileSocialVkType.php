@@ -17,7 +17,7 @@ class ProfileSocialVkType extends AbstractType
     {
         $builder->add('accessToken', TextType::class, ['required' => true]);
         $builder->add('userId', IntegerType::class, ['required' => true]);
-        $builder->add('email', TextType::class, ['required' => true]);
+        $builder->add('email', TextType::class, ['required' => false]);
         $builder->add('expiresIn', IntegerType::class, ['required' => true]);
     }
 

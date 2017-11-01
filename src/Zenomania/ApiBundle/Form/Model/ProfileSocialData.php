@@ -19,7 +19,6 @@ class ProfileSocialData
     private $userId;
 
     /**
-     * @Assert\NotBlank()
      * @var string
      */
     private $email;
