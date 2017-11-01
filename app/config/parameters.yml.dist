@@ -54,3 +54,6 @@ parameters:
 
     # Registration url
     registration_url: zenomania.ru/join
+
+    # AFR service
+    afr_service_host: localhost:8080
