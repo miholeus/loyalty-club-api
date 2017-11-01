@@ -37,7 +37,7 @@ class RatingsTransformer extends TransformerAbstract
     {
         $user = User::fromArray([
             'id' => $item['user_id'],
-            'avatar' => $item['avatar'],
+            'avatarSmall' => $item['avatar'],
             'firstname' => $item['firstname'],
             'lastname' => $item['lastname'],
             'middlename' => $item['middlename']
