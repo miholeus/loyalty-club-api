@@ -49,9 +49,14 @@ class Builder
         $menu->addChild('Promo coupon', self::makeResourceRoutes('promocoupon'));
         $menu->addChild('Points', self::makeResourceRoutes('pointstype'));
 
+
         $badges = $menu->addChild('Badges');
         $badges->addChild('Badges', self::makeResourceRoutes('badge'));
         $badges->addChild('Badge Types', self::makeResourceRoutes('badge_type'));
+
+        $product = $menu->addChild('Product');
+        $product->addChild('Products', self::makeResourceRoutes('product'));
+        $product->addChild('Product Categories', self::makeResourceRoutes('productcategory'));
 
         $this->fillBranchRoutes($menu->getChildren());
 

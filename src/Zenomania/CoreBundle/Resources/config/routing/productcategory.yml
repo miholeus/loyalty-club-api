@@ -1,0 +1,24 @@
+productcategory_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:ProductCategory:index" }
+    methods:  GET
+
+productcategory_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:ProductCategory:show" }
+    methods:  GET
+
+productcategory_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:ProductCategory:new" }
+    methods:  [GET, POST]
+
+productcategory_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:ProductCategory:edit" }
+    methods:  [GET, POST]
+
+productcategory_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZenomaniaCoreBundle:ProductCategory:delete" }
+    methods:  DELETE
