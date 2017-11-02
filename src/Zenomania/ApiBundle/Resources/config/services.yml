@@ -97,10 +97,9 @@ services:
         arguments: ['@repository.news']
     api.afr_token_service:
         class: Zenomania\ApiBundle\Service\Afr\TokenService
-        arguments: ['@repository.api_token_repository']
+        arguments: ['@user.service']
     api.afr_token_authenticator:
         class: Zenomania\ApiBundle\Service\Afr\ApiTokenAuthenticator
-        arguments: ['@api.afr_token_service']
-    api.afr_client:
-        class: Zenomania\ApiBundle\Service\Afr\ApiClient
-        arguments: ['%afr_service_host%']
+        arguments: ['@api.afr_token_service', '@api.afr_client']
+    api.afr_integration:
+        class: Zenomania\ApiBundle\Service\Afr\IntegrationService

@@ -57,3 +57,7 @@ parameters:
 
     # AFR service
     afr_service_host: http://afr.selloutsport.com
+    afr_service_username: zenit_superadmin
+    afr_service_password: password
+    afr_service_zenit_club_id: 9
+

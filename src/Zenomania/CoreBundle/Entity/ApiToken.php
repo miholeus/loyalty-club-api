@@ -36,7 +36,10 @@ class ApiToken
      */
     private $user;
 
-
+    public function __construct(string $token)
+    {
+        $this->token = $token;
+    }
     /**
      * Get id.
      *
@@ -141,5 +144,15 @@ class ApiToken
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Make token valid for number of seconds
+     * @param int $seconds
+     */
+    public function makeValidFor(int $seconds)
+    {
+        $this->active = true;
+        $this->validTill = (new \DateTime())->add(new \DateInterval(sprintf("PT%dS", $seconds)));
     }
 }

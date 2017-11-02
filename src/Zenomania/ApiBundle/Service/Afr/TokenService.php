@@ -7,26 +7,35 @@
 namespace Zenomania\ApiBundle\Service\Afr;
 
 use Zenomania\CoreBundle\Entity\User;
-use Zenomania\CoreBundle\Repository\ApiTokenRepository;
+use Zenomania\CoreBundle\Service\User as UserService;
 
 class TokenService
 {
     /**
-     * @var ApiTokenRepository
+     * @var UserService
      */
-    private $tokenRepository;
+    private $userService;
 
-    public function __construct(ApiTokenRepository $tokenRepository)
+    public function __construct(UserService $userService)
     {
-        $this->tokenRepository = $tokenRepository;
+        $this->userService = $userService;
     }
 
     /**
+     * Adds token to repository
+     *
      * @param User $user
-     * @return mixed|null
      */
-    public function getToken(User $user)
+    public function addUserToken(User $user)
     {
-        return $user->getValidToken();
+        $this->getUserService()->save($user);
+    }
+
+    /**
+     * @return UserService
+     */
+    public function getUserService(): UserService
+    {
+        return $this->userService;
     }
 }
