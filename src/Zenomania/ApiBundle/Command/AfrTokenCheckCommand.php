@@ -38,7 +38,7 @@ class AfrTokenCheckCommand extends ContainerAwareCommand
             $token = $client->authenticate($username, $password);
             $output->writeln("<info>Received token: " . $token . "</info>");
         } catch (\Exception $e) {
-            $output->writeln("<error>Error: " . $e->getMessage() . "</error>");
+            $output->writeln("<error>" . $e->getMessage() . "</error>");
         }
     }
 }
