@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Category</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ productCategory.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Title</th>
+                            <td>{{ productCategory.title }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <ul class="pull-right">
+                        <a class="btn btn-default" href="{{ path('productcategory_index') }}">Back to the list</a>
+                        <a class="btn btn-primary" href="{{ path('productcategory_edit', { 'id': productCategory.id }) }}">Edit</a>
+                    </ul>
+                    {{ form_start(delete_form) }}
+                    <input id="productcategory_delete_button" class="btn btn-danger pull-left" type="submit" value="Delete">
+                    {{ form_end(delete_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ confirm('#productcategory_delete_button') }}
+
+{% endblock %}
+
+
