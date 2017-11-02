@@ -1,0 +1,47 @@
+Zenomania\CoreBundle\Entity\Product:
+    type: entity
+    table: null
+    repositoryClass: Zenomania\CoreBundle\Repository\ProductRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        title:
+            type: string
+            length: 255
+        description:
+            type: text
+            nullable: true
+        photo:
+            type: string
+            length: 255
+            nullable: true
+        price:
+            type: decimal
+            precision: 18
+            scale: 2
+        quantity:
+            type: integer
+        position:
+            type: integer
+        published:
+            type: boolean
+    manyToOne:
+        categoryId:
+            targetEntity: Zenomania\CoreBundle\Entity\ProductCategory
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            fetch: LAZY
+            joinColumns:
+                category_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {
+        preFlush: [validatePublished]
+      }

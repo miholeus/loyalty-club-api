@@ -1,0 +1,15 @@
+Zenomania\CoreBundle\Entity\ProductCategory:
+    type: entity
+    table: product_category
+    repositoryClass: Zenomania\CoreBundle\Repository\ProductCategoryRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        title:
+            type: string
+            length: 255
+    lifecycleCallbacks: {}
