@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20171101152638 extends AbstractMigration
+class Version20171102075805 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -19,7 +19,7 @@ class Version20171101152638 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE TABLE product_category (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE product (id SERIAL NOT NULL, category_id INT NOT NULL, title VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, photo VARCHAR(255) DEFAULT NULL, price NUMERIC(18, 2) NOT NULL, quantity INT NOT NULL, position INT NOT NULL, published BOOLEAN NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE product (id SERIAL NOT NULL, category_id INT NOT NULL, title VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, photo VARCHAR(255) DEFAULT NULL, price NUMERIC(18, 2) NOT NULL, quantity INT DEFAULT 0 NOT NULL, position INT DEFAULT 0 NOT NULL, published BOOLEAN DEFAULT \'true\' NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_D34A04AD12469DE2 ON product (category_id)');
         $this->addSql('ALTER TABLE product ADD CONSTRAINT FK_D34A04AD12469DE2 FOREIGN KEY (category_id) REFERENCES product_category (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }

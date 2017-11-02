@@ -19,16 +19,28 @@ Zenomania\CoreBundle\Entity\Product:
             type: string
             length: 255
             nullable: true
+            options:
+                fixed: false
+                default: null
         price:
             type: decimal
             precision: 18
             scale: 2
         quantity:
             type: integer
+            options:
+                fixed: false
+                default: 0
         position:
             type: integer
+            options:
+                fixed: false
+                default: 0
         published:
             type: boolean
+            options:
+                fixed: false
+                default: true
     manyToOne:
         categoryId:
             targetEntity: Zenomania\CoreBundle\Entity\ProductCategory

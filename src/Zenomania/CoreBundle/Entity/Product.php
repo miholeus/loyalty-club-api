@@ -10,7 +10,7 @@ use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
  */
 class Product implements IdentifiableInterface
 {
-    
+
     /**
      * @var int
      */
@@ -39,17 +39,17 @@ class Product implements IdentifiableInterface
     /**
      * @var int
      */
-    private $quantity;
+    private $quantity = 0;
 
     /**
      * @var int
      */
-    private $position;
+    private $position = 0;
 
     /**
      * @var bool
      */
-    private $published;
+    private $published = true;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\ProductCategory
@@ -260,7 +260,7 @@ class Product implements IdentifiableInterface
     }
 
     /**
-     * @ORM\PrePersist
+     * @ORM\PreFlush
      */
     public function validatePublished()
     {
