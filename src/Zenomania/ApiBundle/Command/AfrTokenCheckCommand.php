@@ -33,6 +33,12 @@ class AfrTokenCheckCommand extends ContainerAwareCommand
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
 
-
+        $client = $this->getContainer()->get('api.afr_client');
+        try {
+            $token = $client->authenticate($username, $password);
+            $output->writeln("<info>Received token: " . $token . "</info>");
+        } catch (\Exception $e) {
+            $output->writeln("<error>Error: " . $e->getMessage() . "</error>");
+        }
     }
 }

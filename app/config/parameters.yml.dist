@@ -2,7 +2,7 @@
 # Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
 # https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
-    database_host: database
+    database_host: zen_database
     database_port: ~
     database_name: '%database.name%'
     database_user: '%database.user%'
@@ -26,7 +26,7 @@ parameters:
     # Project name used to store sessions with prefix
     project_name: zenomania
     # Redis server host
-    redis_server: redis
+    redis_server: zen_redis
     # time to live for authenticated user's key
     auth_key_ttl: 3600 # 1 hour
     profile_upload_photo_dir: uploads/profiles
@@ -56,4 +56,4 @@ parameters:
     registration_url: zenomania.ru/join
 
     # AFR service
-    afr_service_host: localhost:8080
+    afr_service_host: http://afr.selloutsport.com
