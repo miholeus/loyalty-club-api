@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Category
  */
@@ -14,6 +16,7 @@ class ProductCategory
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $title;
 

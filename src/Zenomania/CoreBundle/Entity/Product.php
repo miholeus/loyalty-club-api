@@ -4,6 +4,7 @@ namespace Zenomania\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -18,6 +19,7 @@ class Product implements IdentifiableInterface
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -33,6 +35,7 @@ class Product implements IdentifiableInterface
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $price;
 
