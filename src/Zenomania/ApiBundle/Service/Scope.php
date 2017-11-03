@@ -59,6 +59,7 @@ class Scope extends \League\Fractal\Scope
 
             }
             unset($item);
+            $transformedData = $transformedData ?? [];
 
             $transformedData = $this->manager->getSerializer()->mergeIncludes($transformedData, $includedData);
         }
