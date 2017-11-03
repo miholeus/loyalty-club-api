@@ -205,11 +205,11 @@ class PersonPointsRepository extends EntityRepository
         $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
 
         $params = [
-                'season' => $season,
-                'person' => $person,
-                'user'   => $user,
-                'points' => $points,
-                'type' => $type,
+            'season' => $season,
+            'person' => $person,
+            'user' => $user,
+            'points' => $points,
+            'type' => $type,
             'state' => 'none',
             'dt' => new \DateTime()
         ];
