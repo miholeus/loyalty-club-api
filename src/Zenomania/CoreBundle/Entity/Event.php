@@ -549,7 +549,9 @@ class Event
     public function addLineUp(LineUp $lineUp)
     {
         $this->lineUp[] = $lineUp;
-        $lineUp->setEvent($this);
+        if (null !== $this->getId()) {
+            $lineUp->setEvent($this);
+        }
     }
 
     /**

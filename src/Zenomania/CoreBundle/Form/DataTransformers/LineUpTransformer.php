@@ -27,7 +27,6 @@ class LineUpTransformer implements DataTransformerInterface
             if ($lineUps->count() == 0) {
                 for ($i = 1; $i <= 6; $i++) {
                     $lineup = new LineUp();
-                    $lineup->setEvent($event);
                     $event->addLineUp($lineup);
                 }
             } else {
