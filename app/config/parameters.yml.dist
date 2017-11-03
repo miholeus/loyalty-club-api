@@ -33,6 +33,7 @@ parameters:
     player_upload_photo_dir: uploads/players
     badge_upload_photo_dir: uploads/badges
     upload_promo_coupon_dir: uploads/coupons
+    product_upload_photo_dir: uploads/products
     upload_dir: '%kernel.root_dir%/../web'
 
     # Sms settings
