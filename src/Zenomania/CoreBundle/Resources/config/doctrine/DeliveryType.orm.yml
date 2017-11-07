@@ -1,0 +1,15 @@
+Zenomania\CoreBundle\Entity\DeliveryType:
+    type: entity
+    table: delivery_type
+    repositoryClass: Zenomania\CoreBundle\Repository\DeliveryTypeRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        title:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }
