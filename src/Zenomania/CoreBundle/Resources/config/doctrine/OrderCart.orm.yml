@@ -1,0 +1,53 @@
+Zenomania\CoreBundle\Entity\OrderCart:
+    type: entity
+    table: order_cart
+    repositoryClass: Zenomania\CoreBundle\Repository\OrderCartRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        quantity:
+            type: integer
+        price:
+            type: decimal
+            precision: 10
+            scale: '2'
+        totalPrice:
+            type: decimal
+            precision: 10
+            scale: '2'
+            column: total_price
+        createdAt:
+            type: datetime
+            column: created_at
+            options:
+                fixed: false
+                default: 'now()'
+    oneToOne:
+        orderId:
+            targetEntity: Zenomania\CoreBundle\Entity\Order
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                order_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    manyToOne:
+        productId:
+            targetEntity: Zenomania\CoreBundle\Entity\Product
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                product_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
