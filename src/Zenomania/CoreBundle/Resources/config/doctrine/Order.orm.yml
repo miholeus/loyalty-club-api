@@ -1,0 +1,59 @@
+Zenomania\CoreBundle\Entity\Order:
+    type: entity
+    table: orders
+    repositoryClass: Zenomania\CoreBundle\Repository\OrderRepository
+    indexes:
+        order__date:
+            columns:
+                - date
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        date:
+            type: datetime
+            column: date
+        price:
+            type: decimal
+            precision: 10
+            scale: 2
+        note:
+            type: text
+            nullable: true
+        createdAt:
+            type: datetime
+            column: created_at
+            nullable: true
+        updatedAt:
+            type: datetime
+            nullable: true
+            column: updated_at
+    manyToOne:
+        statusId:
+            targetEntity: Zenomania\CoreBundle\Entity\OrderStatus
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            fetch: LAZY
+            joinColumns:
+                status_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        userId:
+            targetEntity: Zenomania\CoreBundle\Entity\User
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            fetch: LAZY
+            joinColumns:
+                user_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
