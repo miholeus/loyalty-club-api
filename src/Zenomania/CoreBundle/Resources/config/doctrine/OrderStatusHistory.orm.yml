@@ -1,0 +1,48 @@
+Zenomania\CoreBundle\Entity\OrderStatusHistory:
+    type: entity
+    table: order_status_history
+    repositoryClass: Zenomania\CoreBundle\Repository\OrderStatusHistoryRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        fromOrderStatusId:
+            type: integer
+            column: from_order_status_id
+        toOrderStatusId:
+            type: integer
+            column: to_order_status_id
+        note:
+            type: string
+            length: '512'
+            nullable: true
+        createdAt:
+            type: datetime
+            column: created_at
+    manyToOne:
+        createdBy:
+            targetEntity: Zenomania\CoreBundle\Entity\User
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                created_by:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        orderId:
+            targetEntity: Zenomania\CoreBundle\Entity\Order
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                order_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
