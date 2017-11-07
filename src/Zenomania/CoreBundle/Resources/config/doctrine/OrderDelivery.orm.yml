@@ -1,0 +1,51 @@
+Zenomania\CoreBundle\Entity\OrderDelivery:
+    type: entity
+    table: order_delivery
+    repositoryClass: Zenomania\CoreBundle\Repository\OrderDeliveryRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        clientName:
+            type: string
+            length: '512'
+            column: client_name
+        address:
+            type: string
+            length: '512'
+            nullable: true
+        phone:
+            type: string
+            length: '20'
+            nullable: true
+        note:
+            type: text
+            nullable: true
+    manyToOne:
+        deliveryTypeId:
+            targetEntity: Zenomania\CoreBundle\Entity\DeliveryType
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                delivery_type_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    oneToOne:
+        orderId:
+            targetEntity: Zenomania\CoreBundle\Entity\Order
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                order_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
