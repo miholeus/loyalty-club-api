@@ -1,0 +1,24 @@
+order_status_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:OrderStatus:index" }
+    methods:  GET
+
+order_status_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:OrderStatus:show" }
+    methods:  GET
+
+order_status_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:OrderStatus:new" }
+    methods:  [GET, POST]
+
+order_status_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:OrderStatus:edit" }
+    methods:  [GET, POST]
+
+order_status_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZenomaniaCoreBundle:OrderStatus:delete" }
+    methods:  DELETE
