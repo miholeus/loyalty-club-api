@@ -103,3 +103,7 @@ services:
         arguments: ['@api.afr_token_service', '@api.afr_client']
     api.afr_integration:
         class: Zenomania\ApiBundle\Service\Afr\IntegrationService
+        arguments: ['@api.afr_token', '@api.afr_client']
+    api.afr_token:
+        class: Zenomania\ApiBundle\Service\Afr\ApiToken
+        arguments: ['%afr_service_username%', '%afr_service_password%']

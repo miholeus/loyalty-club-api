@@ -37,11 +37,16 @@ class TakeMatchesCommand extends ContainerAwareCommand
 
         try {
             $userService = $this->getContainer()->get('user.service');
+            $eventService = $this->getContainer()->get('event.service');
             $user = $userService->findByLogin(self::BOT_USER);
 
             $service = $this->getContainer()->get('api.afr_integration');
-            $token = new ApiToken('test');
-            $service->fetchMatches($token, $clubId);
+            $authenticator = $this->getContainer()->get('api.afr_token_authenticator');
+            $token = $authenticator->authenticate($user, $service->getToken());
+            $output->writeln(sprintf("Authenticated with token %s", $token->getToken()));
+
+            $events = $service->fetchMatches($token, $clubId, $page);
+            // @Todo save events
 
             $output->writeln("<info>Saved events</info>");
         } catch (\Exception $e) {
