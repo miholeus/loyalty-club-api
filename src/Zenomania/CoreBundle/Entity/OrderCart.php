@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use \Zenomania\CoreBundle\Form\Model\Order as OrderModel;
 /**
  * OrderCart
  */
@@ -196,5 +197,18 @@ class OrderCart
     public function getProductId()
     {
         return $this->productId;
+    }
+
+    /**
+     * @param OrderModel $orderModel
+     * @return OrderCart
+     */
+    public static function fromOrderModel(OrderModel $orderModel){
+        $self = new self();
+        $self->setQuantity($orderModel->getQuantity());
+        $self->setPrice($orderModel->getPrice());
+        $self->setTotalPrice($orderModel->getTotalPrice());
+        $self->setProductId($orderModel->getProductId());
+        return $self;
     }
 }

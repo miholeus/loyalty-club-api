@@ -49,6 +49,9 @@ zenomania_core_promocoupon:
 zenomania_core_pointstype:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/pointstype.yml"
     prefix:   /pointstype
+zenomania_core_order:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/order.yml"
+    prefix:   /order
 zenomania_core_orderstatus:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/orderstatus.yml"
     prefix:   /orderstatus

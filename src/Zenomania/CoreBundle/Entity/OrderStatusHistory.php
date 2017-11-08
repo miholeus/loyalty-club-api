@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Zenomania\CoreBundle\Form\Model\Order as OrderModel;
 /**
  * OrderStatusHistory
  */
@@ -195,5 +196,10 @@ class OrderStatusHistory
     public function getCreatedBy()
     {
         return $this->createdBy;
+    }
+
+    public static function fromOrderModel(OrderModel $orderModel){
+        $self = new self();
+        $self->setNote();
     }
 }

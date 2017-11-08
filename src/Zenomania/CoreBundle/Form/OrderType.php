@@ -23,29 +23,30 @@ class OrderType extends AbstractType
             'class' => 'Zenomania\CoreBundle\Entity\OrderStatus',
             'choice_label' => 'title',
         ]);
+        $builder->add('noteStatus', TextType::class, ['required' => false]);
+        $builder->add('date', DateTimeType::class);
         $builder->add('userId', EntityType::class, [
             'class' => 'Zenomania\CoreBundle\Entity\User',
             'choice_label' => function ($value) {
                 return $value->getFirstname() . ' ' . $value->getLastname() . ' ' . $value->getMiddlename();
             },
         ]);
-        $builder->add('deliveryTypeId', EntityType::class, [
-            'class' => 'Zenomania\CoreBundle\Entity\DeliveryType',
-            'choice_label' => 'title',
-        ]);
-        $builder->add('deliveryTypeId', EntityType::class, [
-            'class' => 'Zenomania\CoreBundle\Entity\DeliveryType',
-            'choice_label' => 'title',
-        ]);
         $builder->add('productId', EntityType::class, [
             'class' => 'Zenomania\CoreBundle\Entity\Product',
             'choice_label' => 'title',
         ]);
-        $builder->add('quantity', IntegerType::class);
         $builder->add('price', MoneyType::class);
+        $builder->add('quantity', IntegerType::class);
         $builder->add('totalPrice', MoneyType::class);
         $builder->add('note', TextType::class, ['required' => false]);
-        $builder->add('date', DateTimeType::class);
+        $builder->add('deliveryTypeId', EntityType::class, [
+            'class' => 'Zenomania\CoreBundle\Entity\DeliveryType',
+            'choice_label' => 'title',
+        ]);
+        $builder->add('clientName', TextType::class);
+        $builder->add('phone', TextType::class);
+        $builder->add('address', TextType::class);
+        $builder->add('noteDelivery', TextType::class, ['required' => false]);
     }
 
     /**

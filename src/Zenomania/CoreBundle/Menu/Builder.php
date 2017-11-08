@@ -54,6 +54,10 @@ class Builder
         $badges->addChild('Badges', self::makeResourceRoutes('badge'));
         $badges->addChild('Badge Types', self::makeResourceRoutes('badge_type'));
 
+        $orders = $menu->addChild('Orders');
+        $orders->addChild('Orders', self::makeResourceRoutes('order'));
+        $orders->addChild('Orders status', self::makeResourceRoutes('order_status'));
+
         $product = $menu->addChild('Product');
         $product->addChild('Products', self::makeResourceRoutes('product'));
         $product->addChild('Product Categories', self::makeResourceRoutes('productcategory'));

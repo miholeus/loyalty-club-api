@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Zenomania\CoreBundle\Form\Model\Order as OrderModel;
 /**
  * OrderDelivery
  */
@@ -196,5 +197,15 @@ class OrderDelivery
     public function getDeliveryTypeId()
     {
         return $this->deliveryTypeId;
+    }
+
+    public static function fromOrderModel(OrderModel $orderModel){
+        $self = new self();
+        $self->setClientName($orderModel->getClientName());
+        $self->setAddress($orderModel->getAddress());
+        $self->setPhone($orderModel->getPhone());
+        $self->setDeliveryTypeId($orderModel->getDeliveryTypeId());
+        $self->setNote($orderModel->getNote());
+        return $self;
     }
 }

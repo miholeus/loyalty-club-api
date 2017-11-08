@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Zenomania\CoreBundle\Form\Model\Order as OrderModel;
 /**
  * Orders
  */
@@ -224,5 +225,15 @@ class Order
     public function getUserId()
     {
         return $this->userId;
+    }
+
+    public static function fromOrderModel(OrderModel $orderModel){
+        $self = new self();
+        $self->setDate($orderModel->getDate());
+        $self->setPrice($orderModel->getPrice());
+        $self->setNote($orderModel->getNote());
+        $self->setStatusId($orderModel->getStatusId());
+        $self->setUserId($orderModel->getUserId());
+        return $self;
     }
 }
