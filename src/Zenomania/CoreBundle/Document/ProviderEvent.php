@@ -59,6 +59,7 @@ class ProviderEvent
     {
         $this->created_on = new \DateTime();
         $this->updated_on = new \DateTime();
+        $this->status = self::STATUS_NEW;
     }
 
     public static function fromArray(array $data): ProviderEvent

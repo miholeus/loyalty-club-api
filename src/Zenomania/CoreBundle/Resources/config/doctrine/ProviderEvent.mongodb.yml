@@ -26,4 +26,4 @@ Zenomania\CoreBundle\Document\ProviderEvent:
         updated_on:
             type: date
         status:
-            type: int
+            type: string
