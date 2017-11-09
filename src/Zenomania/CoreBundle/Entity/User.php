@@ -170,6 +170,8 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
         }
 
         $this->updatedOn = new \DateTime();
+        $this->accounts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tokens = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -369,6 +371,11 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
      * @var \Doctrine\Common\Collections\Collection
      */
     private $accounts;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $tokens;
     /**
      * Get id
      *
@@ -985,6 +992,7 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
     public function addAccount(\Zenomania\CoreBundle\Entity\SocialAccount $account)
     {
         $this->accounts[] = $account;
+        $account->setUser($this);
 
         return $this;
     }
@@ -1007,5 +1015,58 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
     public function getAccounts()
     {
         return $this->accounts;
+    }
+
+    /**
+     * Add token.
+     *
+     * @param \Zenomania\CoreBundle\Entity\ApiToken $token
+     *
+     * @return User
+     */
+    public function addToken(\Zenomania\CoreBundle\Entity\ApiToken $token)
+    {
+        $this->tokens[] = $token;
+        $token->setUser($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove token.
+     *
+     * @param \Zenomania\CoreBundle\Entity\ApiToken $token
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeToken(\Zenomania\CoreBundle\Entity\ApiToken $token)
+    {
+        return $this->tokens->removeElement($token);
+    }
+
+    /**
+     * Get tokens.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
+    /**
+     * Gets valid token for user
+     *
+     * @return mixed|null
+     */
+    public function getValidToken()
+    {
+        $tokens = $this->getTokens()->filter(function(ApiToken $token){
+            return $token->getActive() && $token->getValidTill()->getTimestamp() >= time();
+        });
+        if (!empty($tokens)) {
+            return $tokens->first();
+        }
+        return null;
     }
 }

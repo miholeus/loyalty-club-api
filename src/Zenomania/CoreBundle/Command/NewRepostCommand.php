@@ -47,7 +47,7 @@ class NewRepostCommand extends ContainerAwareCommand
 
             $points = $serviceNews->getPoints($post);
             if (0 == $points) {
-                $output->writeln("<warn>Пост не содерит хэштега #XXXZEN</warn>");
+                $output->writeln("<warning>Пост не содерит хэштега #XXXZEN</warning>");
                 continue;
             }
 
@@ -60,7 +60,7 @@ class NewRepostCommand extends ContainerAwareCommand
                 }
 
                 if ($socialRepostRepository->existsRepost($post, $repost->from_id)) {
-                    $output->writeln("<warn>Репост поста уже был учтён</warn>");
+                    $output->writeln("<warning>Репост поста уже был учтён</warning>");
                     continue;
                 }
 

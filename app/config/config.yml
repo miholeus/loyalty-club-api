@@ -251,3 +251,14 @@ sms_service:
             originator: "%sms_sms16_originator%"
             login: "%sms_sms16_login%"
             password: "%sms_sms16_password%"
+
+doctrine_mongodb:
+    connections:
+        default:
+            server: "mongodb://%mongodb_host%:%mongodb_port%"
+            options: {}
+    default_database: "zenomania_%kernel.environment%"
+    document_managers:
+        default:
+            auto_mapping: true
+    auto_generate_hydrator_classes: true

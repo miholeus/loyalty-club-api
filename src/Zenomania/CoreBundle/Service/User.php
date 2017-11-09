@@ -138,6 +138,17 @@ class User extends UserAwareService
         return $this->getRepository()->find($userId);
     }
 
+    /**
+     * Finds user by login
+     *
+     * @param string $login
+     * @return null|EntityUser
+     */
+    public function findByLogin(string $login)
+    {
+        return $this->getRepository()->findOneBy(['login' => $login]);
+    }
+
     private function getRepository()
     {
         return $this->getEntityManager()->getRepository(EntityUser::class);

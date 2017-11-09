@@ -261,4 +261,3 @@ class Badge implements IdentifiableInterface
         return $this->active;
     }
 }
-
