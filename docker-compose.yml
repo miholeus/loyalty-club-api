@@ -17,6 +17,7 @@ services:
         tty: true
         depends_on:
             - zen_database
+            - zen_mongodb
             - zen_redis
         volumes:
             - ./:/app
@@ -52,10 +53,22 @@ services:
             - "6381:6379"
         networks:
             - app_network
+    zen_mongodb:
+        image: mongo:3.5
+        command: mongod --smallfiles --oplogSize 128 --bind_ip_all
+        volumes:
+            - mongo_db_data:/data/db
+            - mongo_db_dump:/dump
+        ports:
+            - "27028:27017"
+        networks:
+            - app_network
 
 volumes:
     postgres_db_data:
     redis_db_data:
+    mongo_db_data:
+    mongo_db_dump:
 
 networks:
     app_network:

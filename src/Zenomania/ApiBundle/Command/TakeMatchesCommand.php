@@ -20,7 +20,7 @@ class TakeMatchesCommand extends ContainerAwareCommand
     {
         $this->setName('afr:events:get')
             ->setDescription('Get events from afr service')
-            ->addArgument('page', InputArgument::OPTIONAL, 'Page to start from');
+            ->addArgument('page', InputArgument::OPTIONAL, 'Page to start from', 1);
     }
 
     /**
@@ -37,18 +37,28 @@ class TakeMatchesCommand extends ContainerAwareCommand
 
         try {
             $userService = $this->getContainer()->get('user.service');
-            $eventService = $this->getContainer()->get('event.service');
             $user = $userService->findByLogin(self::BOT_USER);
+            $handler = $this->getContainer()->get('api.afr_matches_handler');
 
             $service = $this->getContainer()->get('api.afr_integration');
             $authenticator = $this->getContainer()->get('api.afr_token_authenticator');
             $token = $authenticator->authenticate($user, $service->getToken());
-            $output->writeln(sprintf("Authenticated with token %s", $token->getToken()));
+            $output->writeln(sprintf("<info>Authenticated with token %s</info>", $token->getToken()));
 
-            $events = $service->fetchMatches($token, $clubId, $page);
-            // @Todo save events
+            $total = 0;
+            while (true) {
+                $events = $service->fetchMatches($token, $clubId, $page);
+                if (empty($events)) {
+                    break;
+                }
+                $output->writeln(sprintf("Got %d events from page %d", count($events), $page));
+                $handler->handle($events);
+                $output->writeln(sprintf("Saved %d events from page %d", count($events), $page));
+                $page++;
+                $total += count($events);
+            }
 
-            $output->writeln("<info>Saved events</info>");
+            $output->writeln(sprintf("<info>Saved %d events</info>", $total));
         } catch (\Exception $e) {
             $output->writeln("<error>" . $e->getMessage() . "</error>");
         }

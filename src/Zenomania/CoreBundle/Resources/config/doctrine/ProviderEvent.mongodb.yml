@@ -1,0 +1,29 @@
+Zenomania\CoreBundle\Document\ProviderEvent:
+    collection: provider_events
+    repositoryClass: Zenomania\CoreBundle\Repository\Document\ProviderEventRepository
+    indexes:
+        last_event:
+            keys:
+                date: 1
+        event_id:
+            keys:
+                event_id: 1
+    fields:
+        id:
+            id: true
+        name:
+            type: string
+        club_owner:
+            type: raw
+        event_id:
+            type: int
+        date_start:
+            type: date
+        date_end:
+            type: date
+        created_on:
+            type: date
+        updated_on:
+            type: date
+        status:
+            type: int

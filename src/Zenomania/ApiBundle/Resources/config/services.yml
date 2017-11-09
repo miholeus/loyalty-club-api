@@ -107,3 +107,6 @@ services:
     api.afr_token:
         class: Zenomania\ApiBundle\Service\Afr\ApiToken
         arguments: ['%afr_service_username%', '%afr_service_password%']
+    api.afr_matches_handler:
+        class: Zenomania\ApiBundle\Service\Afr\Handler\MatchesHandler
+        arguments: ['@monolog.logger', '@repository.provider_events_repository']

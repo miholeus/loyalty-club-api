@@ -61,3 +61,6 @@ parameters:
     afr_service_password: password
     afr_service_zenit_club_id: 9
 
+    # MongoDB settings
+    mongodb_host: 127.0.0.1
+    mongodb_port: 27017

@@ -139,3 +139,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\ApiToken
+    repository.provider_events_repository:
+        class: Zenomania\CoreBundle\Repository\Document\ProviderEventRepository
+        factory: ['@doctrine_mongodb.odm.default_document_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Document\ProviderEvent
