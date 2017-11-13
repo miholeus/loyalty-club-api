@@ -32,7 +32,7 @@ class OrderCart
     /**
      * @var \DateTime
      */
-    private $createdAt = 'now()';
+    private $createdAt;
 
     /**
      * @var \Zenomania\CoreBundle\Entity\Order
@@ -45,6 +45,10 @@ class OrderCart
     private $productId;
 
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
     /**
      * Get id.
      *

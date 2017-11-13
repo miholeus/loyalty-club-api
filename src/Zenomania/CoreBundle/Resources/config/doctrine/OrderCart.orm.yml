@@ -22,9 +22,6 @@ Zenomania\CoreBundle\Entity\OrderCart:
         createdAt:
             type: datetime
             column: created_at
-            options:
-                fixed: false
-                default: 'now()'
     manyToOne:
         productId:
             targetEntity: Zenomania\CoreBundle\Entity\Product
