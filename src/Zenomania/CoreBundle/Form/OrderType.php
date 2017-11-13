@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Zenomania\CoreBundle\Form\DataTransformers\CreatedAtTransformer;
 
 class OrderType extends AbstractType
 {
@@ -71,6 +70,4 @@ class OrderType extends AbstractType
             'data_class' => 'Zenomania\CoreBundle\Form\Model\Order'
         ));
     }
-
-
 }

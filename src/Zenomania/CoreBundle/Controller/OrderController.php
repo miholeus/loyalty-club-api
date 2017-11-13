@@ -10,16 +10,11 @@ namespace Zenomania\CoreBundle\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Validator\Constraints\DateTime;
-use Zend\Validator\Date;
 use Zenomania\CoreBundle\Entity\Order;
 use Symfony\Component\HttpFoundation\Request;
 use Zenomania\CoreBundle\Entity\OrderCart;
 use Zenomania\CoreBundle\Entity\OrderDelivery;
-use Zenomania\CoreBundle\Entity\OrderStatus;
 use Zenomania\CoreBundle\Entity\OrderStatusHistory;
-use Zenomania\CoreBundle\Form\DeliveryType;
-use Zenomania\CoreBundle\Repository\OrderRepository;
 use Zenomania\CoreBundle\Form\Model\Order as ModelOrder;
 
 class OrderController extends Controller
@@ -35,43 +30,6 @@ class OrderController extends Controller
         $orders = $em->getRepository('ZenomaniaCoreBundle:Order')->findAll();
         return $this->render('ZenomaniaCoreBundle:order:index.html.twig', array(
             'orders' => $orders,
-        ));
-    }
-
-    /**
-     * Creates a new order entity.
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function newAction(Request $request)
-    {
-        $order = new Order();
-        $delivery = new OrderDelivery();
-        $cart = new OrderCart();
-        $statusHistory = new OrderStatusHistory();
-        $formOrder = $this->createForm('Zenomania\CoreBundle\Form\OrderType', $order);
-        $formDelivery = $this->createForm('Zenomania\CoreBundle\Form\DeliveryType', $delivery);
-        $formCart = $this->createForm('Zenomania\CoreBundle\Form\OrderCartType', $cart);
-        $formStatusHistory = $this->createForm('Zenomania\CoreBundle\Form\OrderStatusHistoryType', $statusHistory);
-
-        $formOrder->handleRequest($request);
-        $formDelivery->handleRequest($request);
-        $formCart->handleRequest($request);
-        $formStatusHistory->handleRequest($request);
-
-        if ($formOrder->isSubmitted() && $formOrder->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($order);
-            $em->flush();
-
-            return $this->redirectToRoute('order_show', array('id' => $order->getId()));
-        }
-
-        return $this->render('ZenomaniaCoreBundle:order:new.html.twig', array(
-            'formOrder' => $formOrder->createView(),
-            'formDelivery' => $formDelivery->createView(),
-            'formCart' => $formCart->createView(),
-            'formStatusHistory' => $formStatusHistory->createView(),
         ));
     }
 
@@ -198,7 +156,6 @@ class OrderController extends Controller
         $modelOrder->setPhone($orderDelivery->getPhone());
         $modelOrder->setAddress($orderDelivery->getAddress());
         $modelOrder->setNoteDelivery($orderDelivery->getNote());
-
         return $this->createForm('Zenomania\CoreBundle\Form\OrderType', $modelOrder);
     }
 }
