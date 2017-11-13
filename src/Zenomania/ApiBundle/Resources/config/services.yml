@@ -89,3 +89,24 @@ services:
     points.ticket_registration:
         class: Zenomania\ApiBundle\Service\BonusPoints\TicketRegistration
         arguments: ['@repository.points_type', '@repository.person_points_repository']
+    api.badge:
+        class: Zenomania\ApiBundle\Service\Badge
+        arguments: ['@repository.user_badge_repository']
+    api.news:
+        class: Zenomania\ApiBundle\Service\NewsService
+        arguments: ['@repository.news']
+    api.afr_token_service:
+        class: Zenomania\ApiBundle\Service\Afr\TokenService
+        arguments: ['@user.service']
+    api.afr_token_authenticator:
+        class: Zenomania\ApiBundle\Service\Afr\ApiTokenAuthenticator
+        arguments: ['@api.afr_token_service', '@api.afr_client']
+    api.afr_integration:
+        class: Zenomania\ApiBundle\Service\Afr\IntegrationService
+        arguments: ['@api.afr_token', '@api.afr_client']
+    api.afr_token:
+        class: Zenomania\ApiBundle\Service\Afr\ApiToken
+        arguments: ['%afr_service_username%', '%afr_service_password%']
+    api.afr_matches_handler:
+        class: Zenomania\ApiBundle\Service\Afr\Handler\MatchesHandler
+        arguments: ['@monolog.logger', '@repository.provider_events_repository']

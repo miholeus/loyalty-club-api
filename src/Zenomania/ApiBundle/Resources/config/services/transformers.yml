@@ -34,6 +34,9 @@ services:
     api.data.transformer.players:
         class: Zenomania\ApiBundle\Service\Transformer\PlayerTransformer
         arguments: ['@utils.host_based_url']
+    api.data.transformer.badges:
+        class: Zenomania\ApiBundle\Service\Transformer\BadgesTransformer
+        arguments: ['@utils.host_based_url']
     api.data.transformer.prediction.history:
         class: Zenomania\ApiBundle\Service\Transformer\Event\PredictionHistoryTransformer
         arguments:
@@ -59,3 +62,6 @@ services:
     api.data.transformer.event.lineup_mvp_forecast:
         class: Zenomania\ApiBundle\Service\Transformer\Event\LineUpMvpForecastTransformer
         parent: api.data.transformer.event.lineup_forecast
+    api.data.transformer.news:
+        class: Zenomania\ApiBundle\Service\Transformer\NewsTransformer
+        arguments: ['@utils.host_based_url', %vk_group_id%]

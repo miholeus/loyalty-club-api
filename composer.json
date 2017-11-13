@@ -21,11 +21,14 @@
     },
     "require": {
         "php": ">=7.0",
+        "alcaeus/mongo-php-adapter": "^1.1",
         "craue/formflow-bundle": "~3.0@dev",
         "doctrine/dbal": "^2.6",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/instantiator": "^1.1",
+        "doctrine/mongodb-odm": "^1.2",
+        "doctrine/mongodb-odm-bundle": "^3.4",
         "doctrine/orm": "dev-master",
         "friendsofsymfony/rest-bundle": "^2.2",
         "gregwar/captcha-bundle": "^2.0",
@@ -63,6 +66,9 @@
             "name" : "doctrine/doctrine-fixtures-bundle"
         }
     ],
+    "provide": {
+        "ext-mongo": "1.6.14"
+    },
     "scripts": {
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",

@@ -1,0 +1,36 @@
+Zenomania\CoreBundle\Entity\ApiToken:
+    type: entity
+    table: api_token
+    repositoryClass: Zenomania\CoreBundle\Repository\ApiTokenRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        token:
+            type: string
+            length: 255
+            nullable: false
+        validTill:
+            type: datetime
+            column: valid_till
+        active:
+            type: boolean
+            options:
+                default: true
+    manyToOne:
+        user:
+            targetEntity: Zenomania\CoreBundle\Entity\User
+            cascade: {  }
+            mappedBy: null
+            inversedBy: tokens
+            fetch: LAZY
+            joinColumns:
+                user_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

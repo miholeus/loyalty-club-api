@@ -76,7 +76,7 @@ class InviteController extends RestController
         // Отправляем приглашение
         $url = $this->getParameter('registration_url');
         $code = $bonus->getCodeForUser($user);
-        $result = $invite->send($emailTo, $code, $url);
+        $result = $invite->send($emailTo, $code, sprintf("%s://%s", $request->getScheme(), $url));
 
         if (!$result) {
             throw new HttpException(400, "Приглашение по адресу {$emailTo} отправить не удалось!");

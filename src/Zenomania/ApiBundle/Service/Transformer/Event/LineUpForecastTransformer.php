@@ -45,7 +45,10 @@ class LineUpForecastTransformer extends TransformerAbstract
     {
         $user = $this->getUser();
         $playerForecast = $this->getRepository()->findBy(['event' => $event, 'user' => $user, 'isMvp' => false]);
-        return $this->collection($playerForecast, new LineUpPlayerForecastTransformer($this->url));
+        if (!empty($playerForecast)) {
+            return $this->collection($playerForecast, new LineUpPlayerForecastTransformer($this->url));
+        }
+        return null;
     }
 
     /**

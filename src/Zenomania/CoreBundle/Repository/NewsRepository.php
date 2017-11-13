@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Zenomania\ApiBundle\Request\Filter\NewsFilter;
 use Zenomania\CoreBundle\Entity\News;
 
 /**
@@ -12,6 +13,24 @@ use Zenomania\CoreBundle\Entity\News;
  */
 class NewsRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * Возвращает новые записи из ВК
+     *
+     * @return array
+     */
+    public function findAllNewNews()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
+            ->where('n.status = :status')
+            ->setParameter('status', News::STATUS_NEW)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     /**
      * @param int $vkId
      * @param int $limit
@@ -26,6 +45,23 @@ class NewsRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('vkId', $vkId)
             ->orderBy('n.vkId')
             ->setMaxResults($limit)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * Возвращает записи из ВК, находящиеся под контролем
+     *
+     * @return array
+     */
+    public function findAllControlledNews()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
+            ->where('n.status = :status')
+            ->setParameter('status', News::STATUS_CONTROLLED)
             ->getQuery();
 
         return $query->getResult();
@@ -51,5 +87,26 @@ class NewsRepository extends \Doctrine\ORM\EntityRepository
     {
         $this->_em->persist($news);
         $this->_em->flush();
+    }
+
+    /**
+     * @param NewsFilter $filter
+     * @return News[]
+     */
+    public function getNews(NewsFilter $filter)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $select = $qb->select('n')
+            ->from('ZenomaniaCoreBundle:News', 'n')
+            ->setMaxResults($filter->getOffset())
+            ->setFirstResult($filter->getOffset())
+            ->orderBy('n.dt', 'DESC');
+
+        $select->setMaxResults($filter->getLimit());
+        $select->setFirstResult($filter->getOffset());
+
+        $result = $select->getQuery()->getResult();
+        return $result;
     }
 }

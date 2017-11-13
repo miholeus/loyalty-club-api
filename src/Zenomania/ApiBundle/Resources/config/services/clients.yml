@@ -4,3 +4,6 @@ services:
     api.profile_social_vk:
       class: Zenomania\ApiBundle\Service\Social\Vkontakte
       arguments: ['@api.client.vk']
+    api.afr_client:
+        class: Zenomania\ApiBundle\Service\Afr\ApiClient
+        arguments: ['%afr_service_host%']

@@ -15,7 +15,6 @@ Zenomania\CoreBundle\Entity\UserBadge:
             type: integer
         createdOn:
             type: datetime
-            nullable: true
             column: dt
             comment: 'дата создания'
     manyToOne:

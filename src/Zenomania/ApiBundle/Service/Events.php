@@ -7,6 +7,7 @@
 namespace Zenomania\ApiBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\NoResultException;
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\ApiBundle\Service\Exception\PointsCanNotBeGrantedException;
 use Zenomania\ApiBundle\Service\Prediction\{
@@ -335,10 +336,14 @@ class Events
         // Получить массив id игроков стартового состава
         $idPlayers = $this->getPlayersLineUp($event);
 
-        // Получить массив с данными: пользователь -> количество предсказанных игроков
-        $predictedPlayers = $this->getEventPlayerForecastRepository()->getAmountOfPredictedPlayersForUser($event, $idPlayers, $user);
+        try {
+            // Получить массив с данными: пользователь -> количество предсказанных игроков
+            $predictedPlayers = $this->getEventPlayerForecastRepository()->getAmountOfPredictedPlayersForUser($event, $idPlayers, $user);
 
-        $points += (PersonPointsService::POINTS_FOR_PREDICTION_ONE_PLAYER * $predictedPlayers);
+            $points += (PersonPointsService::POINTS_FOR_PREDICTION_ONE_PLAYER * $predictedPlayers);
+        } catch (NoResultException $e) {
+            // no points
+        }
 
         // Получить массив пользователей, которые угадали результативного игрока
         $predictedMvp = $this->getEventPlayerForecastRepository()->getPredictedMvpByUser($event, $user);

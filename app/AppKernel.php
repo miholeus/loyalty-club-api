@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
             new Craue\FormFlowBundle\CraueFormFlowBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Snc\RedisBundle\SncRedisBundle(),
             new Zenomania\ApiBundle\ZenomaniaApiBundle(),
             new FOS\RestBundle\FOSRestBundle(),

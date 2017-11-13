@@ -119,8 +119,28 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\UserBadge
+    repository.news_repository:
+        class: Zenomania\CoreBundle\Repository\NewsRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\News
+    repository.social_repost_repository:
+        class: Zenomania\CoreBundle\Repository\SocialRepostRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\SocialRepost
     repository.news:
         class: Zenomania\CoreBundle\Repository\NewsRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\News
+    repository.api_token_repository:
+        class: Zenomania\CoreBundle\Repository\ApiTokenRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\ApiToken
+    repository.provider_events_repository:
+        class: Zenomania\CoreBundle\Repository\Document\ProviderEventRepository
+        factory: ['@doctrine_mongodb.odm.default_document_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Document\ProviderEvent
