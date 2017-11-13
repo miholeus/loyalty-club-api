@@ -34,7 +34,7 @@ class BadgesTransformer extends TransformerAbstract
             'code' => $item['badge_code'],
             'points' => $item['points'],
             'max_points' => $item['max_points'],
-            'photo' => $item['photo'],
+            'photo' =>  $item['points'] < $item['max_points'] ? $item['photo'] : $item['photo_badge'],
             'sort' => $item['badge_sort'],
         ];
         return $data;
