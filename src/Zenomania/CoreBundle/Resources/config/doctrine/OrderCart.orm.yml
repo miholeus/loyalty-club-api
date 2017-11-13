@@ -26,18 +26,6 @@ Zenomania\CoreBundle\Entity\OrderCart:
             options:
                 fixed: false
                 default: 'now()'
-    oneToOne:
-        orderId:
-            targetEntity: Zenomania\CoreBundle\Entity\Order
-            cascade: {  }
-            mappedBy: null
-            fetch: LAZY
-            joinColumns:
-                order_id:
-                    nullable: false
-                    referencedColumnName: id
-                    onDelete: CASCADE
-            orphanRemoval: false
     manyToOne:
         productId:
             targetEntity: Zenomania\CoreBundle\Entity\Product
@@ -46,6 +34,17 @@ Zenomania\CoreBundle\Entity\OrderCart:
             fetch: LAZY
             joinColumns:
                 product_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        orderId:
+            targetEntity: Zenomania\CoreBundle\Entity\Order
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                order_id:
                     nullable: false
                     referencedColumnName: id
                     onDelete: CASCADE

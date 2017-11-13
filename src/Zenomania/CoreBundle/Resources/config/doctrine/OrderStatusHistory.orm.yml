@@ -9,12 +9,6 @@ Zenomania\CoreBundle\Entity\OrderStatusHistory:
             generator:
                 strategy: IDENTITY
     fields:
-        fromOrderStatusId:
-            type: integer
-            column: from_order_status_id
-        toOrderStatusId:
-            type: integer
-            column: to_order_status_id
         note:
             type: string
             length: '512'
@@ -23,6 +17,28 @@ Zenomania\CoreBundle\Entity\OrderStatusHistory:
             type: datetime
             column: created_at
     manyToOne:
+        fromOrderStatusId:
+            targetEntity: Zenomania\CoreBundle\Entity\OrderStatus
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                from_order_status_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        toOrderStatusId:
+            targetEntity: Zenomania\CoreBundle\Entity\OrderStatus
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                to_order_status_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
         createdBy:
             targetEntity: Zenomania\CoreBundle\Entity\User
             cascade: {  }
