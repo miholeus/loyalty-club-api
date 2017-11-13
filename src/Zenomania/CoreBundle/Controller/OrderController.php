@@ -126,7 +126,6 @@ class OrderController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            //var_dump($modelOrder);exit;
             $modelOrder->getOrderData($order, $orderStatusHistory, $orderDelivery);
 
             $em->persist($order);

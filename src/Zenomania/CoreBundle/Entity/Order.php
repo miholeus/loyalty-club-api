@@ -14,11 +14,6 @@ class Order
     private $id;
 
     /**
-     * @var \DateTime
-     */
-    private $date;
-
-    /**
      * @var string
      */
     private $price;
@@ -61,29 +56,6 @@ class Order
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set date.
-     *
-     * @param \DateTime $date
-     *
-     * @return Order
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-        return $this;
-    }
-
-    /**
-     * Get date.
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
     }
 
     /**
@@ -231,7 +203,7 @@ class Order
     }
 
     public function fromOrderModel(OrderModel $orderModel){
-        $this->setDate($orderModel->getCreatedAt());
+        $this->setCreatedAt($orderModel->getCreatedAt());
         $this->setPrice($orderModel->getPrice());
         $this->setNote($orderModel->getNote());
         $this->setStatusId($orderModel->getStatusId());

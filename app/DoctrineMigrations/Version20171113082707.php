@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20171110135552 extends AbstractMigration
+class Version20171113082707 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -30,10 +30,10 @@ class Version20171110135552 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_471AD77EDE12AB56 ON order_status_history (created_by)');
         $this->addSql('CREATE INDEX IDX_471AD77E8D9F6D38 ON order_status_history (order_id)');
         $this->addSql('CREATE TABLE order_status (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, code VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE orders (id SERIAL NOT NULL, status_id INT NOT NULL, user_id INT NOT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, price NUMERIC(10, 2) NOT NULL, note TEXT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE orders (id SERIAL NOT NULL, status_id INT NOT NULL, user_id INT NOT NULL, price NUMERIC(10, 2) NOT NULL, note TEXT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_E52FFDEE6BF700BD ON orders (status_id)');
         $this->addSql('CREATE INDEX IDX_E52FFDEEA76ED395 ON orders (user_id)');
-        $this->addSql('CREATE INDEX order__date ON orders (date)');
+        $this->addSql('CREATE INDEX order__date ON orders (created_at)');
         $this->addSql('CREATE TABLE delivery_type (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('ALTER TABLE order_cart ADD CONSTRAINT FK_4652B2A04584665A FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE order_cart ADD CONSTRAINT FK_4652B2A08D9F6D38 FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');

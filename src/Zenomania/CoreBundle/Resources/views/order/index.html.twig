@@ -9,7 +9,6 @@
             <th>Id</th>
             <th>Status</th>
             <th>User</th>
-            <th>Date</th>
             <th>Price</th>
             <th>Note</th>
             <th>Created</th>
@@ -22,7 +21,6 @@
                 <td><a href="{{ path('order_show', { 'id': order.id }) }}">{{ order.id }}</a></td>
                 <td>{{ order.statusId.title }}</td>
                 <td>{{ order.userId.__toString() }} </td>
-                <td>{{ order.date.format('Y-m-d') }}</td>
                 <td>{{ order.price }}</td>
                 <td>{{ order.note }}</td>
                 <td>{{ order.createdAt.format('Y-m-d') }}</td>

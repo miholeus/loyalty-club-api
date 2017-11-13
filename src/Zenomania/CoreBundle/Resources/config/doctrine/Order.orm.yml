@@ -5,7 +5,7 @@ Zenomania\CoreBundle\Entity\Order:
     indexes:
         order__date:
             columns:
-                - date
+                - created_at
     id:
         id:
             type: integer
@@ -13,9 +13,6 @@ Zenomania\CoreBundle\Entity\Order:
             generator:
                 strategy: IDENTITY
     fields:
-        date:
-            type: datetime
-            column: date
         price:
             type: decimal
             precision: 10
