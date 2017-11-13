@@ -56,6 +56,7 @@ class UserBadgeRepository extends \Doctrine\ORM\EntityRepository
             'ub.points',
             'b.max_points',
             'b.photo',
+            'b.photo_badge',
             'bt.sort AS type_sort',
             'b.sort AS badge_sort',
         ])->from('badge', 'b')

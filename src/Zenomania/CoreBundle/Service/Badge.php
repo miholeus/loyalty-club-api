@@ -29,25 +29,30 @@ class Badge extends UserAwareService
         /**
          * Загружаем фото
          */
-        $uploadedFile = $badge->getPhoto();
+        $uploadedFiles = array();
+        $uploadedFiles['Photo'] = $badge->getPhoto();
+        $uploadedFiles['PhotoComplete'] = $badge->getPhotoComplete();
 
-        if ($uploadedFile instanceof UploadedFile) {
-            $badge->setPhoto(null);
-            $strategy = new FilePathStrategy();
-            $strategy->setEntity($badge);
-            $uploadService = $this->getUploadService();
-            $uploadService->setUploadStrategy($strategy);
-            $uploadedOriginalPathArray = $uploadService->upload($uploadedFile);
+        foreach ($uploadedFiles as $property => $uploadedFile) {
+            $setPhoto = 'set' . $property;
+            if ($uploadedFile instanceof UploadedFile) {
+                $badge->$setPhoto(null);
+                $strategy = new FilePathStrategy();
+                $strategy->setEntity($badge);
+                $uploadService = $this->getUploadService();
+                $uploadService->setUploadStrategy($strategy);
+                $uploadedOriginalPathArray = $uploadService->upload($uploadedFile);
 
-            // сохраняем фото в БД
-            $imageService = $this->getImageService();
-            /** @var Image $originalImage */
-            $originalImage = $imageService->createImageFromFile($uploadedFile);
-            $originalImage->setPath($uploadedOriginalPathArray['path']);
-            $originalImage->setSize($uploadedFile->getClientSize());
-            $imageService->save($originalImage);
+                // сохраняем фото в БД
+                $imageService = $this->getImageService();
+                /** @var Image $originalImage */
+                $originalImage = $imageService->createImageFromFile($uploadedFile);
+                $originalImage->setPath($uploadedOriginalPathArray['path']);
+                $originalImage->setSize($uploadedFile->getClientSize());
+                $imageService->save($originalImage);
 
-            $badge->setPhoto($uploadedOriginalPathArray['path']);
+                $badge->$setPhoto($uploadedOriginalPathArray['path']);
+            }
         }
 
         $em = $this->getEntityManager();

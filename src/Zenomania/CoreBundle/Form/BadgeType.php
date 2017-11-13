@@ -34,7 +34,8 @@ class BadgeType extends AbstractType
                 'choice_label' => 'title',
                 'label' => 'Вид бейджа'
             ])
-            ->add('photo', FileType::class, ['required' => false, 'data_class' => null, 'label' => 'Фото'])
+            ->add('photo', FileType::class, ['required' => false, 'data_class' => null, 'label' => 'Стандартное фото'])
+            ->add('photoBadge', FileType::class, ['required' => false, 'data_class' => null, 'label' => 'Фото бейджа'])
             ->add('sort', IntegerType::class, ['label' => 'Сортировка'])
             ->add('points', IntegerType::class, ['label' => 'Зены'])
             ->add('maxPoints', IntegerType::class, ['label' => 'Максимум зенов'])

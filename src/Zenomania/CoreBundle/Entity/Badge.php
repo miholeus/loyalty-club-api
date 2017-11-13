@@ -33,6 +33,12 @@ class Badge implements IdentifiableInterface
      */
     private $photo;
 
+
+    /**
+     * @var string
+     */
+    private $photoBadge;
+
     /**
      * @var BadgeType
      */
@@ -259,5 +265,21 @@ class Badge implements IdentifiableInterface
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhotoBadge()
+    {
+        return $this->photoBadge;
+    }
+
+    /**
+     * @param string $photoBadge
+     */
+    public function setPhotoBadge($photoBadge)
+    {
+        $this->photoBadge = $photoBadge;
     }
 }

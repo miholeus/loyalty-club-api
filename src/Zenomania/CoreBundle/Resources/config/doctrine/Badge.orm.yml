@@ -20,6 +20,10 @@ Zenomania\CoreBundle\Entity\Badge:
             type: string
             length: 255
             nullable: true
+        photoBadge:
+            type: string
+            length: 255
+            nullable: true
         sort:
             type: integer
             options:
