@@ -193,7 +193,11 @@ class UserProfile
         $this->getUser()->setFirstname($this->getFirstName());
         $this->getUser()->setLastname($this->getLastName());
         $this->getUser()->setMiddlename($this->getMiddleName());
-        $this->getUser()->setBirthDate(new \DateTime($this->getBirthDate()));
+        if($this->getBirthDate()){
+            $this->getUser()->setBirthDate(new \DateTime($this->getBirthDate()));
+        }else{
+            $this->getUser()->setBirthDate(null);
+        }
         $this->getUser()->setEmail($this->getEmail());
     }
 }
