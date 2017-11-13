@@ -6,23 +6,92 @@
             <div class="box box-primary">
                 {{ form_start(edit_form) }}
                 <div class="box-header with-border">
-                    <h3 class="box-title">Редактирование города</h3>
+                    <h3 class="box-title">Создание заказа</h3>
                 </div>
                 <div class="box-body">
-                    {{ form_widget(edit_form) }}
+                    {{ form_row(edit_form.userId) }}
+                    {{ form_row(edit_form.statusId) }}
+                    {{ form_row(edit_form.note) }}
+                    {{ form_row(edit_form.price) }}
+                    {{ form_row(edit_form.createdAt) }}
+                    {{ form_row(edit_form.updatedAt) }}
                 </div>
                 <div class="box-footer">
                     <ul class="pull-right">
-                        <a class="btn btn-default" href="{{ path('order_index') }}">Отмена</a>
-                        <input type="submit" class="btn btn-primary" value="Сохранить"/>
-                        {{ form_end(edit_form) }}
+                        <input type="submit" class="btn btn-primary pull-right" value="Сохранить"/>
                     </ul>
-                    {{ form_start(delete_form) }}
-                    <input id="order_delete_button" class="btn btn-danger pull-left btn-delete" type="submit" value="Delete">
-                    {{ form_end(delete_form) }}
+                    <a class="btn btn-default" href="{{ path('order_index') }}">Отмена</a>
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">История статуса заказа</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>FromOrderStatus</th>
+                            <th>ToOrderStatus</th>
+                            <th>CreatedAt</th>
+                            <th>CreatedBy</th>
+                            <th>Note</th>
+                        </tr>
+                        {% for status in data['orderStatusHistory'] %}
+                            <tr>
+                                <td>{{ status.fromOrderStatusId.title }}</td>
+                                <td>{{ status.toOrderStatusId.title }}</td>
+                                <td>{{ status.createdAt.format('Y-m-d H:m:ss') }}</td>
+                                <td>{{ status.createdBy }}</td>
+                                <td>{{ status.note }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Карточка заказа</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>Title</th>
+                            <th>Quantity</th>
+                        </tr>
+                        {% for orderCart in data['orderCart'] %}
+                            <tr>
+                                <td>{{ orderCart.productId.title }}</td>
+                                <td>{{ orderCart.quantity }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Доставка заказа</h3>
+                </div>
+                <div class="box-body">
+                    <div class="col-sm-10">{{ form_row(edit_form.clientName) }}</div>
+                    <div class="col-sm-10">{{ form_row(edit_form.address) }}</div>
+                    <div class="col-sm-10">{{ form_row(edit_form.phone) }}</div>
+                    <div class="col-sm-10">{{ form_row(edit_form.deliveryTypeId) }}</div>
+                    <div class="col-sm-10">{{ form_row(edit_form.noteDelivery) }}</div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(edit_form) }}
     </div>
-    {{ confirm('#order_delete_button') }}
 {% endblock %}

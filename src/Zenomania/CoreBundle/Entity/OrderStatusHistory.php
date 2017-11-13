@@ -14,24 +14,9 @@ class OrderStatusHistory
     private $id;
 
     /**
-     * @var int
-     */
-    private $fromOrderStatusId;
-
-    /**
-     * @var int
-     */
-    private $toOrderStatusId;
-
-    /**
      * @var string|null
      */
     private $note;
-
-    /**
-     * @var int
-     */
-    private $orderId;
 
     /**
      * @var \DateTime
@@ -39,9 +24,29 @@ class OrderStatusHistory
     private $createdAt;
 
     /**
+     * @var \Zenomania\CoreBundle\Entity\OrderStatus
+     */
+    private $fromOrderStatusId;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\OrderStatus
+     */
+    private $toOrderStatusId;
+
+    /**
      * @var \Zenomania\CoreBundle\Entity\User
      */
     private $createdBy;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\Order
+     */
+    private $orderId;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTime());
+    }
 
 
     /**
@@ -52,54 +57,6 @@ class OrderStatusHistory
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set fromOrderStatusId.
-     *
-     * @param int $fromOrderStatusId
-     *
-     * @return OrderStatusHistory
-     */
-    public function setFromOrderStatusId($fromOrderStatusId)
-    {
-        $this->fromOrderStatusId = $fromOrderStatusId;
-
-        return $this;
-    }
-
-    /**
-     * Get fromOrderStatusId.
-     *
-     * @return int
-     */
-    public function getFromOrderStatusId()
-    {
-        return $this->fromOrderStatusId;
-    }
-
-    /**
-     * Set toOrderStatusId.
-     *
-     * @param int $toOrderStatusId
-     *
-     * @return OrderStatusHistory
-     */
-    public function setToOrderStatusId($toOrderStatusId)
-    {
-        $this->toOrderStatusId = $toOrderStatusId;
-
-        return $this;
-    }
-
-    /**
-     * Get toOrderStatusId.
-     *
-     * @return int
-     */
-    public function getToOrderStatusId()
-    {
-        return $this->toOrderStatusId;
     }
 
     /**
@@ -127,30 +84,6 @@ class OrderStatusHistory
     }
 
     /**
-     * Set orderId.
-     *
-     * @param int $orderId
-     *
-     * @return OrderStatusHistory
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
-
-        return $this;
-    }
-
-    /**
-     * Get orderId.
-     *
-     * @return int
-     */
-    public function getOrderId()
-    {
-        return $this->orderId;
-    }
-
-    /**
      * Set createdAt.
      *
      * @param \DateTime $createdAt
@@ -175,6 +108,54 @@ class OrderStatusHistory
     }
 
     /**
+     * Set fromOrderStatusId.
+     *
+     * @param \Zenomania\CoreBundle\Entity\OrderStatus $fromOrderStatusId
+     *
+     * @return OrderStatusHistory
+     */
+    public function setFromOrderStatusId(\Zenomania\CoreBundle\Entity\OrderStatus $fromOrderStatusId)
+    {
+        $this->fromOrderStatusId = $fromOrderStatusId;
+
+        return $this;
+    }
+
+    /**
+     * Get fromOrderStatusId.
+     *
+     * @return \Zenomania\CoreBundle\Entity\OrderStatus
+     */
+    public function getFromOrderStatusId()
+    {
+        return $this->fromOrderStatusId;
+    }
+
+    /**
+     * Set toOrderStatusId.
+     *
+     * @param \Zenomania\CoreBundle\Entity\OrderStatus $toOrderStatusId
+     *
+     * @return OrderStatusHistory
+     */
+    public function setToOrderStatusId(\Zenomania\CoreBundle\Entity\OrderStatus $toOrderStatusId)
+    {
+        $this->toOrderStatusId = $toOrderStatusId;
+
+        return $this;
+    }
+
+    /**
+     * Get toOrderStatusId.
+     *
+     * @return \Zenomania\CoreBundle\Entity\OrderStatus
+     */
+    public function getToOrderStatusId()
+    {
+        return $this->toOrderStatusId;
+    }
+
+    /**
      * Set createdBy.
      *
      * @param \Zenomania\CoreBundle\Entity\User $createdBy
@@ -196,6 +177,30 @@ class OrderStatusHistory
     public function getCreatedBy()
     {
         return $this->createdBy;
+    }
+
+    /**
+     * Set orderId.
+     *
+     * @param \Zenomania\CoreBundle\Entity\Order $orderId
+     *
+     * @return OrderStatusHistory
+     */
+    public function setOrderId(\Zenomania\CoreBundle\Entity\Order $orderId)
+    {
+        $this->orderId = $orderId;
+
+        return $this;
+    }
+
+    /**
+     * Get orderId.
+     *
+     * @return \Zenomania\CoreBundle\Entity\Order
+     */
+    public function getOrderId()
+    {
+        return $this->orderId;
     }
 
     public static function fromOrderModel(OrderModel $orderModel){

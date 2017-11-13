@@ -17,6 +17,10 @@ class DeliveryType
      */
     private $title;
 
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 
     /**
      * Get id.

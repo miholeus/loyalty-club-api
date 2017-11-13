@@ -3,48 +3,39 @@
 {% block body %}
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="box">
+            <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Order</h3>
+                    <h3 class="box-title">Заказ</h3>
                 </div>
                 <div class="box-body">
                     <table class="table table-bordered table-responsive">
                         <tbody>
+
+                        </tr>
                         <tr>
-                            <th>Id</th>
-                            <td>{{ order.id }}</td>
+                        <tr>
+                            <th>User</th>
+                            <td>{{ order.userId }}</td>
                         </tr>
                         <tr>
                             <th>Status</th>
                             <td>{{ order.statusId.title }}</td>
                         </tr>
                         <tr>
-                            <th>User</th>
-                            <td>{{ order.userId.firstname }} {{ order.userId.lastname }} {{ order.userId.middlename }}</td>
-                        </tr>
-                        <tr>
-                            <th>Date</th>
-                            <td>{{ order.date.format('Y-m-d') }}</td>
+                            <th>Note</th>
+                            <td>{{ order.note }}</td>
                         </tr>
                         <tr>
                             <th>Price</th>
                             <td>{{ order.price }}</td>
                         </tr>
                         <tr>
-                            <th>Note</th>
-                            <td>{{ order.note }}</td>
+                            <th>CreatedAt</th>
+                            <td>{{ order.createdAt.format('Y-m-d H:m:s') }}</td>
                         </tr>
                         <tr>
-                            <th>Created at</th>
-                            <td>{{ order.createdAt.format('Y-m-d') }}</td>
-                        </tr>
-                        <tr>
-                            <th>Updated at</th>
-                            {% if order.updatedAt %}
-                                <td>{{ order.updatedAt.format('Y-m-d') }}</td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
+                            <th>UpdatedAt</th>
+                            <td>{{ order.updatedAt.format('Y-m-d H:m:s') }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -55,11 +46,97 @@
                         <a class="btn btn-primary" href="{{ path('order_edit', { 'id': order.id }) }}">Edit</a>
                     </ul>
                     {{ form_start(delete_form) }}
-                    <input id="order_delete_button" class="btn btn-danger pull-left" type="submit" value="Delete">
+                    <input id="product_delete_button" class="btn btn-danger pull-left" type="submit" value="Delete">
                     {{ form_end(delete_form) }}
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">История статуса заказа</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>FromOrderStatus</th>
+                            <th>ToOrderStatus</th>
+                            <th>CreatedAt</th>
+                            <th>CreatedBy</th>
+                            <th>Note</th>
+                        </tr>
+                        {% for status in data['orderStatusHistory'] %}
+                            <tr>
+                                <td>{{ status.fromOrderStatusId.title }}</td>
+                                <td>{{ status.toOrderStatusId.title }}</td>
+                                <td>{{ status.createdAt.format('Y-m-d H:m:s') }}</td>
+                                <td>{{ status.createdBy }}</td>
+                                <td>{{ status.note }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Карточка заказа</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>Title</th>
+                            <th>Quantity</th>
+                        </tr>
+                        {% for orderCart in data['orderCart'] %}
+                            <tr>
+                                <td>{{ orderCart.productId.title }}</td>
+                                <td>{{ orderCart.quantity }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Доставка заказа</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                        <tr>
+                            <th>ClientName</th>
+                            <td>{{ data['orderDelivery'].clientName }}</td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td>{{ data['orderDelivery'].address }}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td>{{ data['orderDelivery'].phone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Title</th>
+                            <td>{{ data['orderDelivery'].deliveryTypeId }}</td>
+                        </tr>
+                        <tr>
+                            <th>Note</th>
+                            <td>{{ data['orderDelivery'].note }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    {{ confirm('#order_delete_button') }}
 {% endblock %}
