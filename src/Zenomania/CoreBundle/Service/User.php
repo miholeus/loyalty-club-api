@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Service;
 
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
@@ -143,10 +144,15 @@ class User extends UserAwareService
      *
      * @param string $login
      * @return null|EntityUser
+     * @throws EntityNotFoundException
      */
     public function findByLogin(string $login)
     {
-        return $this->getRepository()->findOneBy(['login' => $login]);
+        $user =  $this->getRepository()->findOneBy(['login' => $login]);
+        if (null === $user) {
+            throw new EntityNotFoundException(sprintf("User was not found by login %s", $login));
+        }
+        return $user;
     }
 
     private function getRepository()

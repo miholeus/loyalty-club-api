@@ -8,6 +8,7 @@ namespace Zenomania\ApiBundle\Service\Afr;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use Psr\Http\Message\ResponseInterface;
 use Zenomania\ApiBundle\Service\Afr\Filter\EventFilter;
 
 class ApiClient
@@ -88,11 +89,29 @@ class ApiClient
             throw new ApiException(500, $e->getMessage(), $e);
         }
 
+        $data = $this->getResponse($response, $token);
+
+        return $data['data'];
+    }
+
+    /**
+     * Gets response
+     *
+     * @param ResponseInterface $response
+     * @param \Zenomania\CoreBundle\Entity\ApiToken|null $token
+     * @return array
+     */
+    protected function getResponse(ResponseInterface $response, \Zenomania\CoreBundle\Entity\ApiToken $token = null)
+    {
         $data = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+
         if (!empty($data['status']) && $data['status'] != 200) {
+            if ($data['status'] == 401) {
+                throw new InvalidTokenException($token, $data['message']);
+            }
             throw ApiException::createException($data['status'], $data['message']);
         }
 
-        return $data['data'];
+        return $data;
     }
 }

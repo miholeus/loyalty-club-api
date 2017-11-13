@@ -26,11 +26,36 @@ class TokenService
      *
      * @param User $user
      */
-    public function addUserToken(User $user)
+    public function addUserToken(User $user, \Zenomania\CoreBundle\Entity\ApiToken $token)
     {
+        $token->makeValidFor(3600);
+        $user->addToken($token);
+
         $this->getUserService()->save($user);
     }
 
+    /**
+     * @param User $user
+     * @return \Zenomania\CoreBundle\Entity\ApiToken|null
+     */
+    public function getUserToken(User $user)
+    {
+        $token = $user->getValidToken();
+        return $token;
+    }
+
+
+    /**
+     * Removes user token
+     *
+     * @param \Zenomania\CoreBundle\Entity\User $user
+     * @param string $token
+     */
+    public function removeToken(\Zenomania\CoreBundle\Entity\User $user, string $token)
+    {
+        $user->removeTokenByName($token);
+        $this->getUserService()->save($user);
+    }
     /**
      * @return UserService
      */

@@ -1057,7 +1057,7 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
     /**
      * Gets valid token for user
      *
-     * @return mixed|null
+     * @return ApiToken|null
      */
     public function getValidToken()
     {
@@ -1068,5 +1068,24 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
             return $tokens->first();
         }
         return null;
+    }
+
+    /**
+     * Removes user token
+     *
+     * @param string $token
+     */
+    public function removeTokenByName(string $token)
+    {
+        $tokens = $this->tokens->filter(function(ApiToken $apiToken) use ($token){
+            if ($apiToken->getToken() == $token) {
+                return true;
+            }
+            return false;
+        });
+        if (!empty($tokens)) {
+            $found = $tokens->first();
+            $this->removeToken($found);
+        }
     }
 }

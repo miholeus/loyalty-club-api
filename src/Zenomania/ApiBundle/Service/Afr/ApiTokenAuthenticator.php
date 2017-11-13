@@ -27,6 +27,16 @@ class ApiTokenAuthenticator
     }
 
     /**
+     * Gets user's valid token
+     *
+     * @param User $user
+     * @return ApiToken|null
+     */
+    public function getCurrentToken(User $user)
+    {
+        return $this->getTokenService()->getUserToken($user);
+    }
+    /**
      * Authenticates user
      *
      * @param User $user
@@ -38,9 +48,7 @@ class ApiTokenAuthenticator
         $tokenReturned = $this->getApiClient()->authenticate($tokenInterface->getUsername(), $tokenInterface->getCredentials());
 
         $token = new ApiToken($tokenReturned);
-        $token->makeValidFor(3600);
-        $user->addToken($token);
-        $this->getTokenService()->addUserToken($user);
+        $this->getTokenService()->addUserToken($user, $token);
 
         return $token;
     }
