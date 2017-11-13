@@ -41,7 +41,6 @@ class Builder
         $geo->addChild('Districts', self::makeResourceRoutes('district'));
 
         $menu->addChild('Clubs', self::makeResourceRoutes('club'));
-        $menu->addChild('Actors', self::makeResourceRoutes('actor'));
         $menu->addChild('Sport', self::makeResourceRoutes('sport'));
         $menu->addChild('Education', self::makeResourceRoutes('education'));
         $menu->addChild('Matches & Results', self::makeResourceRoutes('event'));

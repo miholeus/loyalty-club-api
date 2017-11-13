@@ -69,11 +69,6 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\UserReferralActivation
-    repository.actor_repository:
-        class: Zenomania\CoreBundle\Repository\ActorRepository
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - Zenomania\CoreBundle\Entity\Actor
     repository.city_repository:
         class: Zenomania\CoreBundle\Repository\CityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
