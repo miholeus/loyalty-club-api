@@ -60,7 +60,7 @@ class InviteByEmail
             ->setBody($this->getTwig()->render('ZenomaniaApiBundle:Emails:invite.html.twig', [
                 'registration_url' => $url,
                 'ref_code' => $code
-            ]));
+            ]), 'text/html');
 
         return $this->getMailer()->send($message);
     }
