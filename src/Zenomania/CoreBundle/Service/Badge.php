@@ -31,7 +31,7 @@ class Badge extends UserAwareService
          */
         $uploadedFiles = array();
         $uploadedFiles['Photo'] = $badge->getPhoto();
-        $uploadedFiles['PhotoComplete'] = $badge->getPhotoComplete();
+        $uploadedFiles['PhotoBadge'] = $badge->getPhotoBadge();
 
         foreach ($uploadedFiles as $property => $uploadedFile) {
             $setPhoto = 'set' . $property;

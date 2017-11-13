@@ -90,7 +90,7 @@ class BadgeController extends Controller
 
             try {
                 $service->save($badge);
-                return $this->redirectToRoute('badge_edit', array('id' => $badge->getId()));
+                return $this->redirectToRoute('badge_show', array('id' => $badge->getId()));
             } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
                 $form->addError(new FormError($e->getMessage()));
             }
