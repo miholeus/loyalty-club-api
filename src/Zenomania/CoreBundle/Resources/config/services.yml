@@ -102,6 +102,12 @@ services:
     news.service:
         class: Zenomania\CoreBundle\Service\News
         arguments: ['@repository.news']
+    product.service:
+        class: Zenomania\CoreBundle\Service\ProductService
+        parent: core.user_aware_service
+        calls:
+            - ['setUploadService', ['@file.upload_product_photo']]
+            - ['setImageService', ['@images.service']]
     subscription.service:
         class: Zenomania\CoreBundle\Service\SubscriptionService
         arguments: ['@doctrine.orm.entity_manager']
