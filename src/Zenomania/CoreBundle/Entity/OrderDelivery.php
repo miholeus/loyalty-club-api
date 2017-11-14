@@ -44,7 +44,6 @@ class OrderDelivery
      */
     private $deliveryTypeId;
 
-
     /**
      * Get id.
      *
@@ -199,13 +198,11 @@ class OrderDelivery
         return $this->deliveryTypeId;
     }
 
-    public static function fromOrderModel(OrderModel $orderModel){
-        $self = new self();
-        $self->setClientName($orderModel->getClientName());
-        $self->setAddress($orderModel->getAddress());
-        $self->setPhone($orderModel->getPhone());
-        $self->setDeliveryTypeId($orderModel->getDeliveryTypeId());
-        $self->setNote($orderModel->getNote());
-        return $self;
+    public function fromOrderModel(OrderModel $orderModel){
+        $this->setClientName($orderModel->getClientName());
+        $this->setAddress($orderModel->getAddress());
+        $this->setPhone($orderModel->getPhone());
+        $this->setDeliveryTypeId($orderModel->getDeliveryTypeId());
+        $this->setNote($orderModel->getNote());
     }
 }

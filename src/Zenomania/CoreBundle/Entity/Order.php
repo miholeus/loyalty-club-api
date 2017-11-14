@@ -48,6 +48,10 @@ class Order
      */
     private $userId;
 
+    public function __construct()
+    {
+        $this->setUpdatedAt(new \DateTime());
+    }
 
     /**
      * Get id.
@@ -69,7 +73,6 @@ class Order
     public function setDate($date)
     {
         $this->date = $date;
-
         return $this;
     }
 
@@ -227,13 +230,11 @@ class Order
         return $this->userId;
     }
 
-    public static function fromOrderModel(OrderModel $orderModel){
-        $self = new self();
-        $self->setDate($orderModel->getDate());
-        $self->setPrice($orderModel->getPrice());
-        $self->setNote($orderModel->getNote());
-        $self->setStatusId($orderModel->getStatusId());
-        $self->setUserId($orderModel->getUserId());
-        return $self;
+    public function fromOrderModel(OrderModel $orderModel){
+        $this->setDate($orderModel->getCreatedAt());
+        $this->setPrice($orderModel->getPrice());
+        $this->setNote($orderModel->getNote());
+        $this->setStatusId($orderModel->getStatusId());
+        $this->setUserId($orderModel->getUserId());
     }
 }

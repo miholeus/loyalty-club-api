@@ -10,12 +10,20 @@ namespace Zenomania\CoreBundle\Form\Model;
 
 
 use Zenomania\CoreBundle\Entity\DeliveryType;
+use Zenomania\CoreBundle\Entity\OrderDelivery;
 use Zenomania\CoreBundle\Entity\OrderStatus;
+use Zenomania\CoreBundle\Entity\OrderStatusHistory;
 use Zenomania\CoreBundle\Entity\Product;
 use Zenomania\CoreBundle\Entity\User;
+use \Zenomania\CoreBundle\Entity\Order as EntityOrder;
 
 class Order
 {
+    /**
+     * @var integer
+     */
+    private $id;
+
     /**
      * @var OrderStatus
      */
@@ -59,7 +67,12 @@ class Order
     /**
      * @var \DateTime
      */
-    private $date;
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedAt;
 
     /**
      * @var string
@@ -85,6 +98,11 @@ class Order
      * @var integer
      */
     private $quantity;
+
+    public function __construct()
+    {
+        $this->setUpdatedAt(new \DateTime());
+    }
 
     /**
      * @return OrderStatus
@@ -169,17 +187,17 @@ class Order
     /**
      * @return \DateTime
      */
-    public function getDate()
+    public function getCreatedAt()
     {
-        return $this->date;
+        return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $date
+     * @param \DateTime $createdAt
      */
-    public function setDate($date)
+    public function setCreatedAt($createdAt)
     {
-        $this->date = $date;
+        $this->createdAt = $createdAt;
     }
 
     /**
@@ -305,8 +323,59 @@ class Order
     /**
      * @param string $noteStatus
      */
-    public function setNoteStatus( $noteStatus)
+    public function setNoteStatus($noteStatus)
     {
         $this->noteStatus = $noteStatus;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    public function getOrderData(
+        EntityOrder &$order,
+        OrderStatusHistory &$orderStatusHistory,
+        OrderDelivery &$orderDelivery
+    ) {
+        $order->setStatusId($this->getStatusId());
+        $order->setNote($this->getNote());
+
+        $orderStatusHistory->setNote($this->getNote());
+        $orderStatusHistory->setToOrderStatusId($this->getStatusId());
+
+        $orderDelivery->setOrderId($order);
+        $orderDelivery->setClientName($this->getClientName());
+        $orderDelivery->setAddress($this->getAddress());
+        $orderDelivery->setPhone($this->getPhone());
+        $orderDelivery->setNote($this->getNoteDelivery());
+        $orderDelivery->setDeliveryTypeId($this->getDeliveryTypeId());
     }
 }

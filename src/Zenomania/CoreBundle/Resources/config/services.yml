@@ -108,6 +108,10 @@ services:
         calls:
             - ['setUploadService', ['@file.upload_product_photo']]
             - ['setImageService', ['@images.service']]
+    order.service:
+        class: Zenomania\CoreBundle\Service\OrderService
+        arguments: ['@repository.order_status_history',
+         '@repository.order_cart', '@repository.order_delivery']
     subscription.service:
         class: Zenomania\CoreBundle\Service\SubscriptionService
         arguments: ['@doctrine.orm.entity_manager']

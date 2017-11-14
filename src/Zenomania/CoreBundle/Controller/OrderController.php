@@ -10,13 +10,17 @@ namespace Zenomania\CoreBundle\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Zend\Validator\Date;
 use Zenomania\CoreBundle\Entity\Order;
 use Symfony\Component\HttpFoundation\Request;
 use Zenomania\CoreBundle\Entity\OrderCart;
 use Zenomania\CoreBundle\Entity\OrderDelivery;
+use Zenomania\CoreBundle\Entity\OrderStatus;
 use Zenomania\CoreBundle\Entity\OrderStatusHistory;
+use Zenomania\CoreBundle\Form\DeliveryType;
 use Zenomania\CoreBundle\Repository\OrderRepository;
+use Zenomania\CoreBundle\Form\Model\Order as ModelOrder;
 
 class OrderController extends Controller
 {
@@ -41,20 +45,33 @@ class OrderController extends Controller
      */
     public function newAction(Request $request)
     {
-        $orderDelivery = new OrderDelivery();
-        $form = $this->createForm('Zenomania\CoreBundle\Form\DeliveryType', $orderDelivery);
-        $form->handleRequest($request);
+        $order = new Order();
+        $delivery = new OrderDelivery();
+        $cart = new OrderCart();
+        $statusHistory = new OrderStatusHistory();
+        $formOrder = $this->createForm('Zenomania\CoreBundle\Form\OrderType', $order);
+        $formDelivery = $this->createForm('Zenomania\CoreBundle\Form\DeliveryType', $delivery);
+        $formCart = $this->createForm('Zenomania\CoreBundle\Form\OrderCartType', $cart);
+        $formStatusHistory = $this->createForm('Zenomania\CoreBundle\Form\OrderStatusHistoryType', $statusHistory);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $formOrder->handleRequest($request);
+        $formDelivery->handleRequest($request);
+        $formCart->handleRequest($request);
+        $formStatusHistory->handleRequest($request);
+
+        if ($formOrder->isSubmitted() && $formOrder->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($orderDelivery);
+            $em->persist($order);
             $em->flush();
 
-            return $this->redirectToRoute('order_show', array('id' => $orderDelivery->getId()));
+            return $this->redirectToRoute('order_show', array('id' => $order->getId()));
         }
 
         return $this->render('ZenomaniaCoreBundle:order:new.html.twig', array(
-            'formDelivery' => $form->createView(),
+            'formOrder' => $formOrder->createView(),
+            'formDelivery' => $formDelivery->createView(),
+            'formCart' => $formCart->createView(),
+            'formStatusHistory' => $formStatusHistory->createView(),
         ));
     }
 
@@ -67,12 +84,14 @@ class OrderController extends Controller
     {
         $deleteForm = $this->createDeleteForm($order);
 
-        $em = $this->getDoctrine()->getManager();
+        $service = $this->get('order.service');
 
-        $order = $em->getRepository('ZenomaniaCoreBundle:Order')->getOrder($order);
+        $data = $service->getOrderData($order);
+        $data['orderDelivery'] = $data['orderDelivery'] ?? new OrderDelivery();
 
         return $this->render('ZenomaniaCoreBundle:order:show.html.twig', array(
             'order' => $order,
+            'data' => $data,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -85,19 +104,42 @@ class OrderController extends Controller
      */
     public function editAction(Request $request, Order $order)
     {
-        $order->setUpdatedAt(new Date());
         $deleteForm = $this->createDeleteForm($order);
-        $editForm = $this->createForm('Zenomania\CoreBundle\Form\OrderType', $order);
+
+        $service = $this->get('order.service');
+
+        $data = $service->getOrderData($order);
+
+        /** @var OrderDelivery $orderDelivery */
+        $orderDelivery = $data['orderDelivery'];
+        $orderDelivery = $orderDelivery ?? new OrderDelivery();
+
+        $modelOrder = new ModelOrder();
+        $orderStatusHistory = new OrderStatusHistory();
+        $orderStatusHistory->setCreatedBy($this->getUser());
+
+        /** @var \Zenomania\CoreBundle\Form\Model\Order $editForm */
+        $editForm = $this->createEditForm($modelOrder, $order, $orderStatusHistory, $orderDelivery);
+
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+            $em = $this->getDoctrine()->getManager();
+            //var_dump($modelOrder);exit;
+            $modelOrder->getOrderData($order, $orderStatusHistory, $orderDelivery);
+
+            $em->persist($order);
+            $em->persist($orderStatusHistory);
+            $em->persist($orderDelivery);
+            $em->flush();
 
             return $this->redirectToRoute('order_edit', array('id' => $order->getId()));
         }
 
         return $this->render('ZenomaniaCoreBundle:order:edit.html.twig', array(
             'order' => $order,
+            'data' => $data,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -136,5 +178,28 @@ class OrderController extends Controller
             ->setAction($this->generateUrl('order_delete', array('id' => $order->getId())))
             ->setMethod('DELETE')
             ->getForm();
+    }
+
+    public function createEditForm(
+        ModelOrder &$modelOrder,
+        Order $order,
+        OrderStatusHistory &$orderStatusHistory,
+        OrderDelivery $orderDelivery
+    ) {
+        $modelOrder->setStatusId($order->getStatusId());
+
+        $modelOrder->setUserId($order->getUserId());
+        $modelOrder->setCreatedAt($order->getCreatedAt());
+        $modelOrder->setUpdatedAt($order->getUpdatedAt());
+
+        $orderStatusHistory->setOrderId($order);
+        $orderStatusHistory->setFromOrderStatusId($order->getStatusId());
+
+        $modelOrder->setClientName($orderDelivery->getClientName());
+        $modelOrder->setPhone($orderDelivery->getPhone());
+        $modelOrder->setAddress($orderDelivery->getAddress());
+        $modelOrder->setNoteDelivery($orderDelivery->getNote());
+
+        return $this->createForm('Zenomania\CoreBundle\Form\OrderType', $modelOrder);
     }
 }
