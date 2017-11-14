@@ -139,21 +139,6 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Order
-    repository.order_status_history:
-        class: Zenomania\CoreBundle\Repository\OrderStatusHistoryRepository
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - Zenomania\CoreBundle\Entity\OrderStatusHistory
-    repository.order_delivery:
-        class: Zenomania\CoreBundle\Repository\OrderDeliveryRepository
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - Zenomania\CoreBundle\Entity\OrderDelivery
-    repository.order_cart:
-        class: Zenomania\CoreBundle\Repository\OrderCartRepository
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - Zenomania\CoreBundle\Entity\OrderCart
     repository.api_token_repository:
         class: Zenomania\CoreBundle\Repository\ApiTokenRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]

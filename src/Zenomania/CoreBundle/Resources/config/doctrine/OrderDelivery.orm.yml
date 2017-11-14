@@ -1,7 +1,6 @@
 Zenomania\CoreBundle\Entity\OrderDelivery:
     type: entity
     table: order_delivery
-    repositoryClass: Zenomania\CoreBundle\Repository\OrderDeliveryRepository
     id:
         id:
             type: integer

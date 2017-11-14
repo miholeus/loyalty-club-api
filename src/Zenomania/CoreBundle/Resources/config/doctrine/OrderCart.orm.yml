@@ -1,7 +1,6 @@
 Zenomania\CoreBundle\Entity\OrderCart:
     type: entity
     table: order_cart
-    repositoryClass: Zenomania\CoreBundle\Repository\OrderCartRepository
     id:
         id:
             type: integer

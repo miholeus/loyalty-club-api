@@ -1,7 +1,6 @@
 Zenomania\CoreBundle\Entity\OrderStatusHistory:
     type: entity
     table: order_status_history
-    repositoryClass: Zenomania\CoreBundle\Repository\OrderStatusHistoryRepository
     id:
         id:
             type: integer
