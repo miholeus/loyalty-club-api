@@ -362,14 +362,10 @@ class Order
 
     public function getOrderData(
         EntityOrder &$order,
-        OrderStatusHistory &$orderStatusHistory,
         OrderDelivery &$orderDelivery
     ) {
         $order->setStatusId($this->getStatusId());
         $order->setNote($this->getNote());
-
-        $orderStatusHistory->setNote($this->getNote());
-        $orderStatusHistory->setToOrderStatusId($this->getStatusId());
 
         $orderDelivery->setOrderId($order);
         $orderDelivery->setClientName($this->getClientName());

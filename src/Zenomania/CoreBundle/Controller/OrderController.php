@@ -84,10 +84,9 @@ class OrderController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            $modelOrder->getOrderData($order, $orderStatusHistory, $orderDelivery);
+            $modelOrder->getOrderData($order, $orderDelivery);
 
             $em->persist($order);
-            $em->persist($orderStatusHistory);
             $em->persist($orderDelivery);
             $em->flush();
 
@@ -148,6 +147,7 @@ class OrderController extends Controller
         $modelOrder->setUserId($order->getUserId());
         $modelOrder->setCreatedAt($order->getCreatedAt());
         $modelOrder->setUpdatedAt($order->getUpdatedAt());
+        $modelOrder->setPrice($order->getPrice());
 
         $orderStatusHistory->setOrderId($order);
         $orderStatusHistory->setFromOrderStatusId($order->getStatusId());

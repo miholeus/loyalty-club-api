@@ -9,10 +9,12 @@
 namespace Zenomania\CoreBundle\Entity\Listener;
 
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zenomania\CoreBundle\Entity\Exception\ValidatorException;
 use Zenomania\CoreBundle\Entity\OrderStatus;
+use Zenomania\CoreBundle\Entity\OrderStatusHistory;
 use Zenomania\CoreBundle\Entity\Traits\ValidatorTrait;
 use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Exception;
@@ -54,9 +56,13 @@ class OrderListener
     {
         $uow = $event->getEntityManager()->getUnitOfWork();
         $entityChangeSet = $uow->getEntityChangeSet($order);
+        /** @var EntityManager $em */
+        $em = $event->getObjectManager();
 
         //Отменяем заказ
         $this->orderCancelled($order, $entityChangeSet);
+        //Пишем в историю статуса
+        $this->createOrderStatusHistory($order, $entityChangeSet, $em);
     }
 
     /**
@@ -73,5 +79,29 @@ class OrderListener
                 $service->orderCancelled($order);
             }
         }
+    }
+
+    /**
+     * @param Order $order
+     * @param array $entityChangeSet
+     * @param EntityManager $em
+     */
+    public function createOrderStatusHistory(Order $order, array $entityChangeSet, EntityManager $em){
+        $orderStatusHistory = new OrderStatusHistory();
+
+        $orderStatusHistory->setOrderId($order);
+        $orderStatusHistory->setCreatedBy($this->getUser());
+        $orderStatusHistory->setFromOrderStatusId($order->getStatusId());
+        $orderStatusHistory->setToOrderStatusId($order->getStatusId());
+        $orderStatusHistory->setNote($order->getNote());
+
+        if (isset($entityChangeSet['statusId'][0])) {
+            /** @var OrderStatus $statusOld */
+            $statusOld = $entityChangeSet['statusId'][0];
+            $orderStatusHistory->setFromOrderStatusId($statusOld);
+        }
+
+        $em->persist($orderStatusHistory);
+        $em->flush();
     }
 }
