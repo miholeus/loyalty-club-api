@@ -7,6 +7,8 @@ namespace Zenomania\CoreBundle\Entity;
  */
 class OrderStatus
 {
+    const CANCELLED = 'cancelled';
+
     /**
      * @var int
      */
