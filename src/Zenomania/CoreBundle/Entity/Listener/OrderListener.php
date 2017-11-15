@@ -11,6 +11,7 @@ namespace Zenomania\CoreBundle\Entity\Listener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zenomania\CoreBundle\Entity\Exception\ValidatorException;
 use Zenomania\CoreBundle\Entity\OrderStatus;
 use Zenomania\CoreBundle\Entity\Traits\ValidatorTrait;
 use Zenomania\CoreBundle\Entity\Order;
@@ -25,6 +26,24 @@ class OrderListener
         $this->container = $container;
     }
 
+    /**
+     * @param Order $order
+     * @param LifecycleEventArgs $event
+     * @throws Exception
+     */
+    public function preUpdate(Order $order, LifecycleEventArgs $event)
+    {
+        $uow = $event->getEntityManager()->getUnitOfWork();
+        $entityChangeSet = $uow->getEntityChangeSet($order);
+
+        if (isset($entityChangeSet['statusId'][0])) {
+            /** @var OrderStatus $status */
+            $status = $entityChangeSet['statusId'][0];
+            if ($status->getCode() == OrderStatus::CANCELLED) {
+                throw new ValidatorException('Заказ уже отменен, нельзя менять его статус');
+            }
+        }
+    }
 
     /**
      * @param Order $order
