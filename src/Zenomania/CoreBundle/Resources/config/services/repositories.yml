@@ -144,3 +144,8 @@ services:
         factory: ['@doctrine_mongodb.odm.default_document_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Document\ProviderEvent
+    repository.product:
+        class: Zenomania\CoreBundle\Repository\ProductRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\Product

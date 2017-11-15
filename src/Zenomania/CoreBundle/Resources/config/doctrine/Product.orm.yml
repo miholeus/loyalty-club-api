@@ -1,6 +1,6 @@
 Zenomania\CoreBundle\Entity\Product:
     type: entity
-    table: null
+    table: product
     repositoryClass: Zenomania\CoreBundle\Repository\ProductRepository
     id:
         id:
