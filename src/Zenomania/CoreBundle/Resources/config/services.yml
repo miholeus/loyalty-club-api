@@ -107,7 +107,7 @@ services:
             - ['setImageService', ['@images.service']]
     order.service:
         class: Zenomania\CoreBundle\Service\OrderService
-        arguments: ['@repository.order']
+        arguments: ['@repository.order', '@repository.person_points_repository', '@repository.product']
     subscription.service:
         class: Zenomania\CoreBundle\Service\SubscriptionService
         arguments: ['@doctrine.orm.entity_manager']
