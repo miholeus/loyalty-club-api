@@ -21,6 +21,7 @@ class PersonPoints
     const TYPE_FORECAST_WINNER_MATCH_ROUND_SCORE = 'forecast_winner_match_round_score';
     const TYPE_FORECAST_WINNER_ONE_PLAYER = 'forecast_winner_one_player';
     const TYPE_FORECAST_WINNER_MVP = 'forecast_winner_mvp';
+    const TYPE_CANCELLED_ORDER = 'cancelled_order';
 
     /**
      * @var integer
@@ -95,7 +96,7 @@ class PersonPoints
      */
     public function setPoints($points)
     {
-        $this->points = $points;
+        $this->points = floor($points);
 
         return $this;
     }
