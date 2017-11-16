@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zenomania\CoreBundle\Entity\Exception\ValidatorException;
 use Zenomania\CoreBundle\Entity\OrderStatus;
 use Zenomania\CoreBundle\Entity\OrderStatusHistory;
+use Zenomania\CoreBundle\Entity\Traits\UserAwareTrait;
 use Zenomania\CoreBundle\Entity\Traits\ValidatorTrait;
 use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Exception;
@@ -22,6 +23,7 @@ use Zenomania\CoreBundle\Exception;
 class OrderListener
 {
     use ValidatorTrait;
+    use UserAwareTrait;
 
     public function __construct(ContainerInterface $container)
     {
