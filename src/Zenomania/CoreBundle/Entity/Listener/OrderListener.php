@@ -90,22 +90,23 @@ class OrderListener
      * @param array $entityChangeSet
      * @param EntityManager $em
      */
-    public function createOrderStatusHistory(Order $order, array $entityChangeSet, EntityManager $em){
-        $orderStatusHistory = new OrderStatusHistory();
-
-        $orderStatusHistory->setOrderId($order);
-        $orderStatusHistory->setCreatedBy($this->getUser());
-        $orderStatusHistory->setFromOrderStatusId($order->getStatusId());
-        $orderStatusHistory->setToOrderStatusId($order->getStatusId());
-        $orderStatusHistory->setNote($order->getNote());
-
+    public function createOrderStatusHistory(Order $order, array $entityChangeSet, EntityManager $em)
+    {
         if (isset($entityChangeSet['statusId'][0])) {
             /** @var OrderStatus $statusOld */
             $statusOld = $entityChangeSet['statusId'][0];
-            $orderStatusHistory->setFromOrderStatusId($statusOld);
-        }
+            if ($statusOld->getCode() != $order->getStatusId()->getCode()) {
+                $orderStatusHistory = new OrderStatusHistory();
 
-        $em->persist($orderStatusHistory);
-        $em->flush();
+                $orderStatusHistory->setOrderId($order);
+                $orderStatusHistory->setCreatedBy($this->getUser());
+                $orderStatusHistory->setFromOrderStatusId($statusOld);
+                $orderStatusHistory->setToOrderStatusId($order->getStatusId());
+                $orderStatusHistory->setNote($order->getNote());
+
+                $em->persist($orderStatusHistory);
+                $em->flush();
+            }
+        }
     }
 }
