@@ -256,7 +256,7 @@ class PersonPointsRepository extends EntityRepository
             'season' => $season,
             'person' => $person,
             'user' => $order->getUserId(),
-            'points' => $order->getPrice(),
+            'points' => floor($order->getPrice()),
             'type' => PersonPoints::TYPE_CANCELLED_ORDER,
             'state' => 'none',
             'dt' => new \DateTime()

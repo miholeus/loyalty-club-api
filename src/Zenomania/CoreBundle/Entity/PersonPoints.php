@@ -96,7 +96,7 @@ class PersonPoints
      */
     public function setPoints($points)
     {
-        $this->points = floor($points);
+        $this->points = $points;
 
         return $this;
     }
