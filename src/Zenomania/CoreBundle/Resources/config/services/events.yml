@@ -25,3 +25,8 @@ services:
         arguments: ['@points.ticket_registration']
         tags:
             - {name: "kernel.event_listener", event: "ticket.registration", method: "onRegistrationEvent"}
+    event.listener.order:
+        class: Zenomania\CoreBundle\Event\Listener\OrderListener
+        arguments: ['@repository.product','@repository.person_points_repository']
+        tags:
+            - {name: "kernel.event_listener", event: "order.status.cancelled", method: "onOrderWasCancelledEvent"}

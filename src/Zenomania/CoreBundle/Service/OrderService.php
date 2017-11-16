@@ -11,7 +11,6 @@ namespace Zenomania\CoreBundle\Service;
 
 use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Repository\OrderRepository;
-use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\ProductRepository;
 
 class OrderService
@@ -22,22 +21,15 @@ class OrderService
     private $orderRepository;
 
     /**
-     * @var PersonPointsRepository
-     */
-    private $personPointsRepository;
-
-    /**
      * @var ProductRepository
      */
     private $productRepository;
 
     public function __construct(
         OrderRepository $orderRepository,
-        PersonPointsRepository $personPointsRepository,
         ProductRepository $productRepository
     ) {
         $this->orderRepository = $orderRepository;
-        $this->personPointsRepository = $personPointsRepository;
         $this->productRepository = $productRepository;
     }
 
@@ -49,7 +41,6 @@ class OrderService
     public function orderCancelled(Order $order)
     {
         $this->getProductRepository()->returnProduct($order);
-        $this->getPersonPointsRepository()->givePointsForCancelledOrder($order);
     }
 
     /**
@@ -58,14 +49,6 @@ class OrderService
     public function getOrderRepository()
     {
         return $this->orderRepository;
-    }
-
-    /**
-     * @return PersonPointsRepository
-     */
-    public function getPersonPointsRepository()
-    {
-        return $this->personPointsRepository;
     }
 
     /**

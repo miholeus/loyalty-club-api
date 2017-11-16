@@ -18,16 +18,26 @@ use Zenomania\CoreBundle\Entity\OrderStatusHistory;
 use Zenomania\CoreBundle\Entity\Traits\UserAwareTrait;
 use Zenomania\CoreBundle\Entity\Traits\ValidatorTrait;
 use Zenomania\CoreBundle\Entity\Order;
+use Zenomania\CoreBundle\Event\NotificationInterface;
+use Zenomania\CoreBundle\Event\Order\OrderWasCancelledEvent;
 use Zenomania\CoreBundle\Exception;
+use Zenomania\CoreBundle\Service\Traits\EventsAwareTrait;
 
 class OrderListener
 {
     use ValidatorTrait;
     use UserAwareTrait;
+    use EventsAwareTrait;
+
+    /**
+     * @var NotificationInterface
+     */
+    protected $notificationManager;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->notificationManager = $container->get('event.notification_manager');
     }
 
     /**
@@ -44,7 +54,7 @@ class OrderListener
             /** @var OrderStatus $status */
             $status = $entityChangeSet['statusId'][0];
             if ($status->getCode() == OrderStatus::CANCELLED) {
-                throw new ValidatorException('Заказ уже отменен, нельзя менять его статус');
+                //throw new ValidatorException('Заказ уже отменен, нельзя менять его статус');
             }
         }
     }
@@ -61,8 +71,6 @@ class OrderListener
         /** @var EntityManager $em */
         $em = $event->getObjectManager();
 
-        //Отменяем заказ
-        $this->orderCancelled($order, $entityChangeSet);
         //Проверяем статус заказа
         $this->checkOrderStatus($order, $entityChangeSet);
         //Пишем в историю статуса
@@ -73,7 +81,6 @@ class OrderListener
      * @param Order $order
      * @param array $entityChangeSet
      */
-    public function orderCancelled(Order $order,array $entityChangeSet){
     public function checkOrderStatus(Order $order, array $entityChangeSet)
     {
         if (isset($entityChangeSet['statusId'][0])) {
@@ -81,8 +88,10 @@ class OrderListener
             $statusOld = $entityChangeSet['statusId'][0];
             $status = $order->getStatusId();
             if ($status->getCode() == OrderStatus::CANCELLED && $statusOld->getCode() !== OrderStatus::CANCELLED) {
-                $service = $this->container->get('order.service');
-                $service->orderCancelled($order);
+                $event = new OrderWasCancelledEvent();
+                $event->setArgument('order', $order);
+                $this->attachEvent($event);
+                $this->updateEvents();
             }
         }
     }
