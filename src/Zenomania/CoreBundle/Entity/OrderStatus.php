@@ -7,6 +7,10 @@ namespace Zenomania\CoreBundle\Entity;
  */
 class OrderStatus
 {
+    const NEW = 'new';
+    const IN_PROGRESS = 'in_progress';
+    const DELIVERED = 'delivered';
+    const DONE = 'done';
     const CANCELLED = 'cancelled';
 
     /**
