@@ -25,36 +25,6 @@ class Club
     /**
      * @var string
      */
-    private $vkGroup = '';
-
-    /**
-     * @var string
-     */
-    private $fbGroup = '';
-
-    /**
-     * @var string
-     */
-    private $twitterGroup = '';
-
-    /**
-     * @var string
-     */
-    private $instagramGroup = '';
-
-    /**
-     * @var string
-     */
-    private $youtubeGroup = '';
-
-    /**
-     * @var string
-     */
-    private $ytUploadPlaylist = '';
-
-    /**
-     * @var string
-     */
     private $logoImg;
 
     /**
@@ -70,6 +40,12 @@ class Club
      * @var boolean
      */
     private $lineUpAvailable = false;
+
+    /**
+     * @var int|null
+     */
+    private $externalId;
+
     /**
      * Constructor
      */
@@ -134,150 +110,6 @@ class Club
     public function getSite()
     {
         return $this->site;
-    }
-
-    /**
-     * Set vkGroup
-     *
-     * @param string $vkGroup
-     *
-     * @return Club
-     */
-    public function setVkGroup($vkGroup)
-    {
-        $this->vkGroup = $vkGroup;
-
-        return $this;
-    }
-
-    /**
-     * Get vkGroup
-     *
-     * @return string
-     */
-    public function getVkGroup()
-    {
-        return $this->vkGroup;
-    }
-
-    /**
-     * Set fbGroup
-     *
-     * @param string $fbGroup
-     *
-     * @return Club
-     */
-    public function setFbGroup($fbGroup)
-    {
-        $this->fbGroup = $fbGroup;
-
-        return $this;
-    }
-
-    /**
-     * Get fbGroup
-     *
-     * @return string
-     */
-    public function getFbGroup()
-    {
-        return $this->fbGroup;
-    }
-
-    /**
-     * Set twitterGroup
-     *
-     * @param string $twitterGroup
-     *
-     * @return Club
-     */
-    public function setTwitterGroup($twitterGroup)
-    {
-        $this->twitterGroup = $twitterGroup;
-
-        return $this;
-    }
-
-    /**
-     * Get twitterGroup
-     *
-     * @return string
-     */
-    public function getTwitterGroup()
-    {
-        return $this->twitterGroup;
-    }
-
-    /**
-     * Set instagramGroup
-     *
-     * @param string $instagramGroup
-     *
-     * @return Club
-     */
-    public function setInstagramGroup($instagramGroup)
-    {
-        $this->instagramGroup = $instagramGroup;
-
-        return $this;
-    }
-
-    /**
-     * Get instagramGroup
-     *
-     * @return string
-     */
-    public function getInstagramGroup()
-    {
-        return $this->instagramGroup;
-    }
-
-    /**
-     * Set youtubeGroup
-     *
-     * @param string $youtubeGroup
-     *
-     * @return Club
-     */
-    public function setYoutubeGroup($youtubeGroup)
-    {
-        $this->youtubeGroup = $youtubeGroup;
-
-        return $this;
-    }
-
-    /**
-     * Get youtubeGroup
-     *
-     * @return string
-     */
-    public function getYoutubeGroup()
-    {
-        return $this->youtubeGroup;
-    }
-
-    /**
-     * Set ytUploadPlaylist
-     *
-     * @param string $ytUploadPlaylist
-     *
-     * @return Club
-     */
-    public function setYtUploadPlaylist($ytUploadPlaylist)
-    {
-        $this->ytUploadPlaylist = $ytUploadPlaylist;
-
-        return $this;
-    }
-
-    /**
-     * Get ytUploadPlaylist
-     *
-     * @return string
-     */
-    public function getYtUploadPlaylist()
-    {
-        return $this->ytUploadPlaylist;
     }
 
     /**
@@ -389,5 +221,29 @@ class Club
     public function getPlayers()
     {
         return $this->players;
+    }
+
+    /**
+     * Set externalId.
+     *
+     * @param int|null $externalId
+     *
+     * @return Club
+     */
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * Get externalId.
+     *
+     * @return int|null
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
     }
 }

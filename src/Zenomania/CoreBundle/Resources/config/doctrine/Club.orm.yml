@@ -28,48 +28,10 @@ Zenomania\CoreBundle\Entity\Club:
             length: 256
             options:
                 fixed: false
-        vkGroup:
-            type: string
+        externalId:
+            type: integer
             nullable: true
-            length: 20
-            options:
-                fixed: false
-            column: vk_group
-        fbGroup:
-            type: string
-            nullable: true
-            length: 20
-            options:
-                fixed: false
-            column: fb_group
-        twitterGroup:
-            type: string
-            nullable: true
-            length: 20
-            options:
-                fixed: false
-            column: twitter_group
-        instagramGroup:
-            type: string
-            nullable: true
-            length: 20
-            options:
-                fixed: false
-            column: instagram_group
-        youtubeGroup:
-            type: string
-            nullable: true
-            length: 256
-            options:
-                fixed: false
-            column: youtube_group
-        ytUploadPlaylist:
-            type: string
-            nullable: true
-            length: 256
-            options:
-                fixed: false
-            column: yt_upload_playlist
+            column: external_id
         logoImg:
             type: string
             nullable: true
