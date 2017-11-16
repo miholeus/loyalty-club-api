@@ -6,19 +6,23 @@
 
 namespace Zenomania\ApiBundle\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zenomania\ApiBundle\Service\Afr\InvalidTokenException;
 
-class TakeMatchesCommand extends AuthenticateAwareCommand
+class TakeClubsCommand extends AuthenticateAwareCommand
 {
+    /**
+     * Volleyball sport identifier on remote system
+     */
+    const SPORT_ID = 7;
+
     protected function configure()
     {
-        $this->setName('afr:events:get')
-            ->setDescription('Get events from afr service')
-            ->addArgument('page', InputArgument::OPTIONAL, 'Page to start from', 1);
+        $this->setName('afr:clubs:get')
+            ->setDescription('Get clubs from afr service');
     }
+
 
     /**
      * Generate api keys
@@ -29,31 +33,20 @@ class TakeMatchesCommand extends AuthenticateAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $page = $input->getArgument('page');
-        $clubId = $this->getClubId();
-
         try {
             $user = $this->getUser();
-            $handler = $this->getContainer()->get('api.afr_matches_handler');
+            $handler = $this->getContainer()->get('api.afr_clubs_handler');
 
             $service = $this->getIntegrationService();
 
             $token = $this->authenticateUser($user, $output);
 
-            $total = 0;
-            while (true) {
-                $events = $service->fetchMatches($token, $clubId, $page);
-                if (empty($events)) {
-                    break;
-                }
-                $output->writeln(sprintf("Got %d events from page %d", count($events), $page));
-                $handler->handle($events);
-                $output->writeln(sprintf("Saved %d events from page %d", count($events), $page));
-                $page++;
-                $total += count($events);
-            }
+            $data = $service->fetchClubs($token, self::SPORT_ID);
 
-            $output->writeln(sprintf("<info>Saved %d events</info>", $total));
+            $output->writeln(sprintf("Got %d clubs", count($data)));
+            $handler->handle($data);
+
+            $output->writeln(sprintf("<info>Saved %d clubs</info>", count($data)));
         } catch (InvalidTokenException $e) {
             $this->removeToken($user, $e->getToken()->getToken());
             $output->writeln("<error>" . $e->getMessage() . "</error>");
