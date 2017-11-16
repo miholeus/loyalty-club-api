@@ -61,6 +61,8 @@ class OrderListener
 
         //Отменяем заказ
         $this->orderCancelled($order, $entityChangeSet);
+        //Проверяем статус заказа
+        $this->checkOrderStatus($order, $entityChangeSet);
         //Пишем в историю статуса
         $this->createOrderStatusHistory($order, $entityChangeSet, $em);
     }
@@ -70,6 +72,8 @@ class OrderListener
      * @param array $entityChangeSet
      */
     public function orderCancelled(Order $order,array $entityChangeSet){
+    public function checkOrderStatus(Order $order, array $entityChangeSet)
+    {
         if (isset($entityChangeSet['statusId'][0])) {
             /** @var OrderStatus $statusOld */
             $statusOld = $entityChangeSet['statusId'][0];
