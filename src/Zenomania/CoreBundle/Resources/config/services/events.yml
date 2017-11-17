@@ -25,3 +25,7 @@ services:
         arguments: ['@points.ticket_registration']
         tags:
             - {name: "kernel.event_listener", event: "ticket.registration", method: "onRegistrationEvent"}
+    event.listener.club:
+        class: Zenomania\CoreBundle\Event\Listener\ClubListener
+        tags:
+            - {name: "kernel.event_listener", event: "club.received", method: "onClubReceivedEvent"}

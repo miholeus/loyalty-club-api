@@ -112,4 +112,4 @@ services:
         arguments: ['@repository.provider_events_repository']
     api.afr_clubs_handler:
         class: Zenomania\ApiBundle\Service\Afr\Handler\ClubsHandler
-        arguments: ['@monolog.logger']
+        arguments: ['@monolog.logger', '@repository.club_repository', '@event.notification_manager']
