@@ -375,10 +375,6 @@ class EventController extends RestController
 
         $service = $this->get('event_forecast.service');
 
-        if ($service->hasActivePlayerForecast($event, $this->getUser())) {
-            throw new HttpException(400, "Вы уже сделали прогноз");
-        }
-
         /** @var \Zenomania\ApiBundle\Form\EventPlayerPredictionType $data */
         $data = $form->getData();
         $forecasts = $data->getForecasts();
@@ -497,6 +493,174 @@ class EventController extends RestController
         $transformer = $this->get('api.data.transformer.prediction.history');
         $data = $this->getResourceCollection($events, $transformer);
         $view = $this->view($data);
+        return $this->handleView($view);
+    }
+
+    /**
+     *
+     * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 400,
+     *                  "message": "Bad Request"
+     *              },
+     *              "errors": null
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "id":<forecast id>
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Прогнозы",
+     *  resource=true,
+     *  description="Редактирование прогноза счета в партиях",
+     *  statusCodes={
+     *         204="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    },
+     *  input={
+     *     "class"="\Zenomania\ApiBundle\Form\EventScorePredictionType",
+     *     "name"=""
+     *     }
+     * )
+     *
+     * @Route(requirements={"event": "\d+"})
+     *
+     * @param Event $event
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function putEventPredictionAction(Event $event = null, Request $request)
+    {
+        if (null === $event) {
+            throw new HttpException(400, "Мероприятие не найдено");
+        }
+
+        $form = $this->createForm(EventScorePredictionType::class);
+        $this->processForm($request, $form);
+
+        if (!$form->isValid()) {
+            throw $this->createFormValidationException($form);
+        }
+
+        if ($event->getDate()->getTimestamp() - time() <= 3600) {// 1 hour
+            throw new HttpException(400, "Время вышло для совершения прогноза");
+        }
+
+        $service = $this->get('event_forecast.service');
+
+        $forecast = $service->getEventForecastForUpdate($event, $this->getUser());
+        if (null === $forecast) {
+            throw new HttpException(400, "Прогноз для редактирования не найден");
+        }
+
+        $service->updateForecast($form->getData(), $forecast);
+        $service->save($forecast);
+
+        $data = [
+            'id' => $forecast->getId()
+        ];
+
+        $view = $this->view($data, 200);
+        return $this->handleView($view);
+    }
+    /**
+     *
+     * ### Failed Response ###
+     *      {
+     *          {
+     *              "success": false,
+     *              "exception": {
+     *                  "code": 400,
+     *                  "message": "Bad Request"
+     *              },
+     *              "errors": {
+     *                  "event_player_prediction": {
+     *                      "children": {
+     *                          "players": {
+     *                              "errors": [
+     *                                  "This value is not valid."
+     *                              ]
+     *                          }
+     *                      }
+     *              }
+     *          }
+     *      }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":null
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Прогнозы",
+     *  resource=true,
+     *  description="Редактирование прогноза игроков в матче",
+     *  statusCodes={
+     *         204="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    }
+     * )
+     *
+     * @Route(requirements={"event": "\d+"})
+     * @RequestParam(name="players", description="Список игроков (указывается через запятую идентификаторы)")
+     * @RequestParam(name="mvp", description="Ид самого важного игрока")
+     *
+     * @param Event $event
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function putEventPlayerAction(Event $event = null, Request $request)
+    {
+        if (null === $event) {
+            throw new HttpException(400, "Мероприятие не найдено");
+        }
+
+        $request->request->set('event', $event->getId());
+        $request->attributes->remove('event');
+
+        $form = $this->createForm(EventPlayerPredictionType::class);
+        $this->processForm($request, $form);
+
+        if (!$form->isValid()) {
+            throw $this->createFormValidationException($form);
+        }
+
+        if ($event->getDate()->getTimestamp() - time() <= 3600) {// 1 hour
+            throw new HttpException(400, "Время вышло для совершения прогноза");
+        }
+
+        $service = $this->get('event_forecast.service');
+
+        /** @var \Zenomania\ApiBundle\Form\EventPlayerPredictionType $data */
+        $data = $form->getData();
+        $forecasts = $data->getForecasts();
+
+        $service->updatePlayerForecasts($forecasts);
+
+        $view = $this->view(null, 204);
         return $this->handleView($view);
     }
 }

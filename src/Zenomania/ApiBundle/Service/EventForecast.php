@@ -7,6 +7,7 @@
 namespace Zenomania\ApiBundle\Service;
 
 use Zenomania\ApiBundle\Form\Model\EventScorePrediction;
+use Zenomania\CoreBundle\Entity\EventPlayerForecast;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Repository\EventForecastRepository;
@@ -112,5 +113,53 @@ class EventForecast
     public function getPlayerForecastRepository(): EventPlayerForecastRepository
     {
         return $this->playerForecastRepository;
+    }
+
+    /**
+     * Получить прогноз для заданного мероприятия и пользователя
+     *
+     * @param Event $event
+     * @param User $user
+     * @return null|\Zenomania\CoreBundle\Entity\EventForecast
+     */
+    public function getEventForecastForUpdate(Event $event, User $user)
+    {
+        return $this->getEventForecastRepository()->getEventForecast($event, $user);
+    }
+
+    /**
+     * @param EventScorePrediction $eventScorePrediction
+     * @param \Zenomania\CoreBundle\Entity\EventForecast $forecast
+     * @return \Zenomania\CoreBundle\Entity\EventForecast
+     */
+    public function updateForecast(EventScorePrediction $eventScorePrediction, \Zenomania\CoreBundle\Entity\EventForecast $forecast)
+    {
+        $forecast->setScoreHome($eventScorePrediction->getScoreHome())
+            ->setScoreGuest($eventScorePrediction->getScoreGuest())
+            ->setScoreInRounds($eventScorePrediction->getScoreInRounds());
+
+        return $forecast;
+    }
+
+    /**
+     * Updates user's forecast for event player
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $forecasts
+     */
+    public function updatePlayerForecasts(\Doctrine\Common\Collections\ArrayCollection $forecasts)
+    {
+        $this->getPlayerForecastRepository()->saveForecasts($forecasts);
+
+        /**
+         * @var EventPlayerForecast $forecast
+         */
+        foreach ($forecasts as $forecast) {
+            $eventPlayerForecast = $this->getPlayerForecastRepository()->getEventPlayerForecast($forecast->getEvent(), $forecast->getUser());
+            if (!empty($eventPlayerForecast)) {
+                $eventPlayerForecast->setPlayer($forecast->getPlayer());
+                $eventPlayerForecast->setIsMvp($forecast->getIsMvp());
+                $this->getPlayerForecastRepository()->save($eventPlayerForecast);
+            }
+        }
     }
 }
