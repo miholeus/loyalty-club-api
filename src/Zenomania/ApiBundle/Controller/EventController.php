@@ -286,10 +286,6 @@ class EventController extends RestController
 
         $service = $this->get('event_forecast.service');
 
-        if ($service->hasActiveForecast($event, $this->getUser())) {
-            throw new HttpException(400, "Вы уже сделали прогноз");
-        }
-
         $forecast = $service->getEventForecastByModel($form->getData());
         $forecast->setEvent($event);
         $forecast->setUser($this->getUser());
@@ -490,6 +486,13 @@ class EventController extends RestController
 
         $eventRepository = $this->get('repository.event_repository');
         $events = $eventRepository->findLastScoreSavedEvents($limit);
+
+        $dt = new \DateTimeImmutable();
+        $event = $eventRepository->findNextEvent($dt);
+
+        if (null !== $event) {
+            array_push($events, $event);
+        }
 
         $transformer = $this->get('api.data.transformer.prediction.history');
         $data = $this->getResourceCollection($events, $transformer);
