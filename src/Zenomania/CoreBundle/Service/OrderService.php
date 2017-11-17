@@ -11,6 +11,7 @@ namespace Zenomania\CoreBundle\Service;
 
 use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Repository\OrderRepository;
+use Zenomania\CoreBundle\Repository\ProductRepository;
 
 class OrderService
 {
@@ -19,14 +20,27 @@ class OrderService
      */
     private $orderRepository;
 
-    public function __construct(OrderRepository $orderRepository)
-    {
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    public function __construct(
+        OrderRepository $orderRepository,
+        ProductRepository $productRepository
+    ) {
         $this->orderRepository = $orderRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function getOrderData(Order $order)
     {
         return $this->getOrderRepository()->getOrderData($order);
+    }
+
+    public function orderCancelled(Order $order)
+    {
+        $this->getProductRepository()->returnProduct($order);
     }
 
     /**
@@ -35,5 +49,13 @@ class OrderService
     public function getOrderRepository()
     {
         return $this->orderRepository;
+    }
+
+    /**
+     * @return ProductRepository
+     */
+    public function getProductRepository()
+    {
+        return $this->productRepository;
     }
 }

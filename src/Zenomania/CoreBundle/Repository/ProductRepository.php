@@ -2,6 +2,8 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Zenomania\CoreBundle\Entity\Order;
+
 /**
  * ProductRepository
  *
@@ -10,4 +12,27 @@ namespace Zenomania\CoreBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function returnProduct(Order $order)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->getConnection()->createQueryBuilder();
+        $select = $qb->select([
+            'c.product_id AS product_id',
+            'SUM(c.quantity) + p.quantity AS quantity',
+        ])->from('order_cart', 'c')
+            ->innerJoin('c', 'product', 'p', 'c.product_id = p.id')
+            ->where('c.order_id = :order_id')
+            ->groupBy(['c.product_id', 'p.quantity'])
+            ->setParameter('order_id', $order->getId());
+        $products = $select->execute()->fetchAll();
+
+        foreach ($products as $product) {
+            $qb = $em->getConnection()->createQueryBuilder();;
+            $qb->update('product', 'p')
+                ->set('quantity', $product['quantity'])
+                ->where('p.id = :productId')
+                ->setParameter('productId', $product['product_id'])
+                ->execute();
+        }
+    }
 }

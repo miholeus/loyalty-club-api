@@ -18,19 +18,26 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
 
-        $selectOrderStatusHistory = $qb->select('s')
+        $qbOrderStatusHistory = clone $qb;
+
+        $selectOrderStatusHistory = $qbOrderStatusHistory->select('s')
             ->from('ZenomaniaCoreBundle:OrderStatusHistory', 's')
             ->where('s.orderId = :order_id')
+            ->orderBy('s.createdAt')
             ->setParameter('order_id', $order->getId());
         $resultOrderStatusHistory = $selectOrderStatusHistory->getQuery()->getResult();
 
-        $selectOrderCart = $qb->select('c')
+        $qbOrderCart = clone $qb;
+
+        $selectOrderCart = $qbOrderCart->select('c')
             ->from('ZenomaniaCoreBundle:OrderCart', 'c')
             ->where('c.orderId = :order_id')
             ->setParameter('order_id', $order->getId());
         $resultOrderCart = $selectOrderCart->getQuery()->getResult();
 
-        $selectOrderDelivery = $qb->select('d')
+        $qbOrderDelivery = clone $qb;
+
+        $selectOrderDelivery = $qbOrderDelivery->select('d')
             ->from('ZenomaniaCoreBundle:OrderDelivery', 'd')
             ->where('d.orderId = :order_id')
             ->setParameter('order_id', $order->getId());

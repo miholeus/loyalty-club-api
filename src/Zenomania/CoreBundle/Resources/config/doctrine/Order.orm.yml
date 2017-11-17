@@ -2,6 +2,8 @@ Zenomania\CoreBundle\Entity\Order:
     type: entity
     table: orders
     repositoryClass: Zenomania\CoreBundle\Repository\OrderRepository
+    entityListeners:
+        Zenomania\CoreBundle\Entity\Listener\OrderListener: ~
     indexes:
         order__date:
             columns:

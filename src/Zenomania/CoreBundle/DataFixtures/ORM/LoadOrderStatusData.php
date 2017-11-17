@@ -24,27 +24,27 @@ class LoadOrderStatusData extends AbstractFixture
 
         $orderStatusNew = clone $orderStatus;
         $orderStatusNew->setTitle('Новый');
-        $orderStatusNew->setCode('new');
+        $orderStatusNew->setCode(OrderStatus::NEW);
         $manager->persist($orderStatusNew);
 
         $orderStatusInProgress = clone $orderStatus;
         $orderStatusInProgress->setTitle('Принят в работу');
-        $orderStatusInProgress->setCode('in_progress');
+        $orderStatusInProgress->setCode(OrderStatus::IN_PROGRESS);
         $manager->persist($orderStatusInProgress);
 
         $orderStatusDelivered = clone $orderStatus;
         $orderStatusDelivered->setTitle('Отправлен');
-        $orderStatusDelivered->setCode('delivered');
+        $orderStatusDelivered->setCode(OrderStatus::DELIVERED);
         $manager->persist($orderStatusDelivered);
 
         $orderStatusDone = clone $orderStatus;
         $orderStatusDone->setTitle('Завершен');
-        $orderStatusDone->setCode('done');
+        $orderStatusDone->setCode(OrderStatus::DONE);
         $manager->persist($orderStatusDone);
 
         $orderStatusCancelled = clone $orderStatus;
         $orderStatusCancelled->setTitle('Отменен');
-        $orderStatusCancelled->setCode('cancelled');
+        $orderStatusCancelled->setCode(OrderStatus::CANCELLED);
         $manager->persist($orderStatusCancelled);
 
         $manager->flush();
