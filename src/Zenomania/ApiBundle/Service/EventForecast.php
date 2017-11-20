@@ -148,18 +148,20 @@ class EventForecast
      */
     public function updatePlayerForecasts(\Doctrine\Common\Collections\ArrayCollection $forecasts)
     {
-        $this->getPlayerForecastRepository()->saveForecasts($forecasts);
+        $this->deletePlayerForecasts($forecasts);
+        $this->savePlayerForecasts($forecasts);
+    }
 
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $forecasts
+     */
+    public function deletePlayerForecasts(\Doctrine\Common\Collections\ArrayCollection $forecasts)
+    {
         /**
          * @var EventPlayerForecast $forecast
          */
         foreach ($forecasts as $forecast) {
-            $eventPlayerForecast = $this->getPlayerForecastRepository()->getEventPlayerForecast($forecast->getEvent(), $forecast->getUser());
-            if (!empty($eventPlayerForecast)) {
-                $eventPlayerForecast->setPlayer($forecast->getPlayer());
-                $eventPlayerForecast->setIsMvp($forecast->getIsMvp());
-                $this->getPlayerForecastRepository()->save($eventPlayerForecast);
-            }
+            $this->getPlayerForecastRepository()->deleteEventPlayerForecast($forecast->getEvent(), $forecast->getUser());
         }
     }
 }

@@ -286,6 +286,10 @@ class EventController extends RestController
 
         $service = $this->get('event_forecast.service');
 
+        if ($service->hasActiveForecast($event, $this->getUser())) {
+            throw new HttpException(400, "Вы уже сделали прогноз");
+        }
+
         $forecast = $service->getEventForecastByModel($form->getData());
         $forecast->setEvent($event);
         $forecast->setUser($this->getUser());
@@ -374,6 +378,10 @@ class EventController extends RestController
         }
 
         $service = $this->get('event_forecast.service');
+
+        if ($service->hasActivePlayerForecast($event, $this->getUser())) {
+            throw new HttpException(400, "Вы уже сделали прогноз");
+        }
 
         /** @var \Zenomania\ApiBundle\Form\EventPlayerPredictionType $data */
         $data = $form->getData();
