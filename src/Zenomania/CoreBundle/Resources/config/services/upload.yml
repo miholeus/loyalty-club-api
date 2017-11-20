@@ -21,3 +21,6 @@ services:
     file.upload_product_photo:
         class: Zenomania\CoreBundle\Service\Upload\UploadProductPhoto
         parent: file.upload_photo_abstract
+    file.upload_club_photo:
+        class: Zenomania\CoreBundle\Service\Upload\UploadClubPhoto
+        parent: file.upload_photo_abstract
