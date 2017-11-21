@@ -12,7 +12,6 @@ namespace Zenomania\CoreBundle\Entity\Listener;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zenomania\CoreBundle\Entity\Exception\ValidatorException;
 use Zenomania\CoreBundle\Entity\OrderStatus;
 use Zenomania\CoreBundle\Entity\OrderStatusHistory;
 use Zenomania\CoreBundle\Entity\Traits\UserAwareTrait;
@@ -38,6 +37,19 @@ class OrderListener
     {
         $this->container = $container;
         $this->notificationManager = $container->get('event.notification_manager');
+    }
+
+    /**
+     * @param Order $order
+     * @param LifecycleEventArgs $event
+     */
+    public function prePersist(Order $order, LifecycleEventArgs $event){
+        if($order->getStatusId() == null){
+            $orderStatusRepository = $this->container->get('repository.order_status');
+            /** @var OrderStatus $status */
+            $status = $orderStatusRepository->findOneBy(['code' => OrderStatus::NEW]);
+            $order->setStatusId($status);
+        }
     }
 
     /**
