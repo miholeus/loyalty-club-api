@@ -38,7 +38,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user'   => $person->getUser(),
             'points' => $points,
             'type' => PersonPoints::TYPE_INVITE,
             'state' => 'none',
