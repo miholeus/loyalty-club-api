@@ -186,7 +186,7 @@ class ProfileController extends RestController
         }
 
         $imageService = $this->get('images.service');
-        $originalImage = $imageService->createImageFromFile($imageBig);
+        $originalImage = $imageService->createImageFromUploadedFile($imageBig);
 
         /**
          * Загружаем фото

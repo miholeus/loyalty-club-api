@@ -63,12 +63,28 @@ services:
             - "27028:27017"
         networks:
             - app_network
+    zen_rabbitmq:
+        image: rabbitmq:3.6-management-alpine
+        environment:
+            RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+            RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
+        ports:
+            - "5674:5672"
+            - "15674:15672"
+        volumes:
+            - rabbitmq_db:/var/lib/rabbitmq/mnesia
+            - "./support/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+        networks:
+          - app_network
 
 volumes:
     postgres_db_data:
     redis_db_data:
     mongo_db_data:
     mongo_db_dump:
+    rabbitmq_db:
 
 networks:
     app_network:

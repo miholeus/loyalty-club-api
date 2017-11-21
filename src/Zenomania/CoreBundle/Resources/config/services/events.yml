@@ -25,6 +25,11 @@ services:
         arguments: ['@points.ticket_registration']
         tags:
             - {name: "kernel.event_listener", event: "ticket.registration", method: "onRegistrationEvent"}
+    event.listener.club:
+        class: Zenomania\CoreBundle\Event\Listener\ClubListener
+        arguments: ['@old_sound_rabbit_mq.photo_uploader_producer']
+        tags:
+            - {name: "kernel.event_listener", event: "club.received", method: "onClubReceivedEvent"}
     event.listener.order:
         class: Zenomania\CoreBundle\Event\Listener\OrderListener
         arguments: ['@repository.product','@repository.person_points_repository']

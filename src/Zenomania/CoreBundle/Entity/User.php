@@ -1064,7 +1064,7 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
         $tokens = $this->getTokens()->filter(function(ApiToken $token){
             return $token->getActive() && $token->getValidTill()->getTimestamp() >= time();
         });
-        if (!empty($tokens)) {
+        if ($tokens->count() > 0) {
             return $tokens->first();
         }
         return null;
@@ -1083,7 +1083,7 @@ class User implements UserInterface, \Serializable, AdvancedUserInterface, Ident
             }
             return false;
         });
-        if (!empty($tokens)) {
+        if ($tokens->count() > 0) {
             $found = $tokens->first();
             $this->removeToken($found);
         }

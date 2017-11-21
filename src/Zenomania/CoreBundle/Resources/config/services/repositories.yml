@@ -24,6 +24,11 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Season
+    repository.club_repository:
+        class: Zenomania\CoreBundle\Repository\ClubRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\Club
     repository.subscription_repository:
         class: Zenomania\CoreBundle\Repository\SubscriptionRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]

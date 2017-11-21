@@ -262,3 +262,48 @@ doctrine_mongodb:
         default:
             auto_mapping: true
     auto_generate_hydrator_classes: true
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:     'zen_rabbitmq'
+            port:     5672
+            user:     'guest'
+            password: 'guest'
+            vhost:    '/'
+            lazy:     true
+            connection_timeout: 3
+            read_write_timeout: 3
+
+            # requires php-amqplib v2.4.1+ and PHP5.4+
+            keepalive: false
+
+            # requires php-amqplib v2.4.1+
+            heartbeat: 0
+
+            #requires php_sockets.dll
+            #use_socket: true # default false
+    producers:
+        photo_uploader:
+            connection:    default
+            auto_setup_fabric: true
+            exchange_options:
+                name: 'photo.exchange'
+                type: topic
+            #service_alias:  'event_dispatcher_producer'
+            enable_logger: true
+    consumers:
+        photo_uploader:
+            connection:     default
+            exchange_options:
+                name: 'photo.exchange'
+                type: topic
+            queue_options:
+                name: 'club_photo'
+                durable: true
+                auto_delete: false
+                routing_keys:
+                    - 'photos.clubs.#'
+            callback: rabbitmq.photo_uploader
+            enable_logger: true
+
