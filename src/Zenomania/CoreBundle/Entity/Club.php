@@ -2,10 +2,12 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
+
 /**
  * Club
  */
-class Club
+class Club implements IdentifiableInterface
 {
     /**
      * @var integer

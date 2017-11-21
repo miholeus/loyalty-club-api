@@ -30,3 +30,8 @@ services:
         arguments: ['@old_sound_rabbit_mq.photo_uploader_producer']
         tags:
             - {name: "kernel.event_listener", event: "club.received", method: "onClubReceivedEvent"}
+    event.listener.order:
+        class: Zenomania\CoreBundle\Event\Listener\OrderListener
+        arguments: ['@repository.product','@repository.person_points_repository']
+        tags:
+            - {name: "kernel.event_listener", event: "order.status.cancelled", method: "onOrderWasCancelledEvent"}

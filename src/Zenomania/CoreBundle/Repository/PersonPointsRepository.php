@@ -10,6 +10,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
+use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
@@ -242,6 +243,26 @@ class PersonPointsRepository extends EntityRepository
         ];
 
         $personPoints = PersonPoints::fromArray($params);
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
+    }
+
+    public function givePointsForCancelledOrder(Order $order)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($order->getUserId());
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+        $params = [
+            'season' => $season,
+            'person' => $person,
+            'user' => $order->getUserId(),
+            'points' => floor($order->getPrice()),
+            'type' => PersonPoints::TYPE_CANCELLED_ORDER,
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+        $personPoints = PersonPoints::fromArray($params);
+
         $this->_em->persist($personPoints);
 
         $this->_em->flush();

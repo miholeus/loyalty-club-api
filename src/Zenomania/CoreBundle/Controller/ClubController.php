@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Controller;
 
+use Symfony\Component\Form\FormError;
 use Zenomania\CoreBundle\Entity\Club;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,11 +48,14 @@ class ClubController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($club);
-            $em->flush();
+            $service = $this->get('club.service');
 
-            return $this->redirectToRoute('club_show', array('id' => $club->getId()));
+            try {
+                $service->save($club);
+                return $this->redirectToRoute('club_show', array('id' => $club->getId()));
+            } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+                $form->addError(new FormError($e->getMessage()));
+            }
         }
 
         return $this->render('ZenomaniaCoreBundle:club:new.html.twig', array(
@@ -85,9 +89,13 @@ class ClubController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('club_edit', array('id' => $club->getId()));
+            $service = $this->get('club.service');
+            try {
+                $service->save($club);
+                return $this->redirectToRoute('club_show', array('id' => $club->getId()));
+            } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+                $editForm->addError(new FormError($e->getMessage()));
+            }
         }
 
         return $this->render('ZenomaniaCoreBundle:club:edit.html.twig', array(

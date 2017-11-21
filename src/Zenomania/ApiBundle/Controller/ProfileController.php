@@ -231,7 +231,8 @@ class ProfileController extends RestController
      *              "purchases":<integer>,
      *              "predictions":<integer>
      *              "reposts":<integer>,
-     *              "invites":<integer>
+     *              "invites":<integer>,
+     *              "promocoupons":<integer>
      *          },
      *          "time":<time request>
      *      }
