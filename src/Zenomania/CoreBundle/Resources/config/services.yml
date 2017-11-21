@@ -116,3 +116,9 @@ services:
         arguments: ['@service_container']
         tags:
             - { name: doctrine.orm.entity_listener }
+    club.service:
+        class: Zenomania\CoreBundle\Service\Club
+        parent: core.user_aware_service
+        calls:
+            - ['setUploadService', ['@file.upload_club_photo']]
+            - ['setImageService', ['@images.service']]
