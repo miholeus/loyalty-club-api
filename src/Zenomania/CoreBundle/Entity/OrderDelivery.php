@@ -3,6 +3,7 @@
 namespace Zenomania\CoreBundle\Entity;
 
 use Zenomania\CoreBundle\Form\Model\Order as OrderModel;
+use Zenomania\ApiBundle\Form\Model\OrderDelivery as OrderDeliveryModel;
 /**
  * OrderDelivery
  */
@@ -204,5 +205,15 @@ class OrderDelivery
         $this->setPhone($orderModel->getPhone());
         $this->setDeliveryTypeId($orderModel->getDeliveryTypeId());
         $this->setNote($orderModel->getNote());
+    }
+
+    public static function fromOrderDeliveryModel(OrderDeliveryModel $orderDeliveryModel, Order $order){
+        $self = new self();
+        $self->setClientName($orderDeliveryModel->getClientName());
+        $self->setPhone($orderDeliveryModel->getPhone());
+        $self->setAddress($orderDeliveryModel->getAddress());
+        $self->setNote($orderDeliveryModel->getNote());
+        $self->setOrderId($order);
+        return $self;
     }
 }
