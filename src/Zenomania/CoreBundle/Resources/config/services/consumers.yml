@@ -4,4 +4,4 @@ services:
         arguments: ['@rabbitmq.photo_upload_processor']
     rabbitmq.photo_upload_processor:
         class: Zenomania\CoreBundle\Event\Processor\PhotoUploadProcessor
-        arguments: []
+        arguments: ['@club.service']

@@ -8,7 +8,7 @@
 namespace Zenomania\CoreBundle\Service\Upload;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 use Zenomania\CoreBundle\Service\Exception\UploadFileException;
 
 class UploadFile implements UploadInterface
@@ -41,12 +41,12 @@ class UploadFile implements UploadInterface
     /**
      * Upload files
      *
-     * @param UploadedFile $file
+     * @param File $file
      * @param array $options
      * @return array list of uploaded files
      * @throws UploadFileException
      */
-    public function upload(UploadedFile $file, $options = array())
+    public function upload(File $file, $options = array())
     {
         if (empty($options['name'])) {
             // Generate a unique name for the file before saving it

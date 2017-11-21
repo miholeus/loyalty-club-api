@@ -8,6 +8,9 @@
 namespace Zenomania\CoreBundle\Event\Processor;
 
 use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Zenomania\CoreBundle\Service\Club;
 
 class PhotoUploadProcessor implements ProcessorInterface
 {
@@ -15,9 +18,15 @@ class PhotoUploadProcessor implements ProcessorInterface
      * @var Client
      */
     protected $client;
-    public function __construct()
+    /**
+     * @var Club
+     */
+    private $service;
+
+    public function __construct(Club $service)
     {
         $this->client = new Client();
+        $this->service = $service;
     }
 
     /**
@@ -38,6 +47,25 @@ class PhotoUploadProcessor implements ProcessorInterface
 
         $content = $response->getBody()->getContents();
 
+        $tmpPath = tempnam(sys_get_temp_dir(), 'upload');
+        $tmp = fopen($tmpPath, 'w');
+        fwrite($tmp, $content);
+
+        $stream = stream_get_meta_data($tmp);
+
+        $file = new File($stream['uri']);
+
         // @save content
+        $club = $this->getService()->findById($data['id']);
+        $club->setLogoImg($file);
+        $this->getService()->save($club);
+    }
+
+    /**
+     * @return Club
+     */
+    public function getService(): Club
+    {
+        return $this->service;
     }
 }

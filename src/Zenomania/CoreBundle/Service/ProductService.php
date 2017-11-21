@@ -41,7 +41,7 @@ class ProductService extends UserAwareService
             // сохраняем фото в БД
             $imageService = $this->getImageService();
             /** @var Image $originalImage */
-            $originalImage = $imageService->createImageFromFile($uploadedFile);
+            $originalImage = $imageService->createImageFromUploadedFile($uploadedFile);
             $originalImage->setPath($uploadedOriginalPathArray['path']);
             $originalImage->setSize($uploadedFile->getClientSize());
             $imageService->save($originalImage);

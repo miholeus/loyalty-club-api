@@ -147,7 +147,7 @@ class UserController extends Controller
                 /** @var Images $imageService */
                 $imageService = $this->get('images.service');
                 /** @var Image $originalImage */
-                $originalImage = $imageService->createImageFromFile($uploadedFile);
+                $originalImage = $imageService->createImageFromUploadedFile($uploadedFile);
                 $originalImage->setPath($uploadedOriginalPathArray['path']);
                 $originalImage->setSize($uploadedFile->getClientSize());
                 $imageService->save($originalImage);
