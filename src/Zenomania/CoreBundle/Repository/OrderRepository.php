@@ -50,4 +50,9 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         ];
         return $result;
     }
+
+    public function findAll()
+    {
+        return $this->findBy(array(), array('id' => 'ASC'));
+    }
 }
