@@ -1,0 +1,7 @@
+services:
+    rabbitmq.photo_uploader:
+        class: Zenomania\CoreBundle\Event\Consumer\PhotoUploadConsumer
+        arguments: ['@rabbitmq.photo_upload_processor']
+    rabbitmq.photo_upload_processor:
+        class: Zenomania\CoreBundle\Event\Processor\PhotoUploadProcessor
+        arguments: []

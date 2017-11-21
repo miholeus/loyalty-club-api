@@ -5,6 +5,7 @@ imports:
    - { resource: "services/forms.yml" }
    - { resource: "services/menu.yml" }
    - { resource: "services/upload.yml" }
+   - { resource: "services/consumers.yml" }
 
 services:
     core.encoder.json:
