@@ -7,7 +7,7 @@
 
 namespace Zenomania\CoreBundle\Service\Upload;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 use Zenomania\CoreBundle\Service\Exception\UploadFileException;
 
 /**
@@ -41,12 +41,12 @@ abstract class UploadPhoto implements UploadInterface
     /**
      * Upload user profile images
      *
-     * @param UploadedFile $file
+     * @param File $file
      * @param array $options
      * @return array ["path" => [path], "full_path" => [full_path]]
      * @throws UploadFileException
      */
-    public function upload(UploadedFile $file, $options = array())
+    public function upload(File $file, $options = array())
     {
         if (!isset($options['path'])) {
             $options['path'] = $this->getUploadPath();

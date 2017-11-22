@@ -7,16 +7,16 @@
 
 namespace Zenomania\CoreBundle\Service\Upload;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 interface UploadInterface
 {
     /**
      * Upload file
      *
-     * @param UploadedFile $file
+     * @param File $file
      * @param array $options
      * @return mixed
      */
-    public function upload(UploadedFile $file, $options = array());
+    public function upload(File $file, $options = array());
 }

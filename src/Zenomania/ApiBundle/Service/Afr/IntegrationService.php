@@ -6,6 +6,7 @@
 
 namespace Zenomania\ApiBundle\Service\Afr;
 
+use Zenomania\ApiBundle\Service\Afr\Filter\ClubFilter;
 use Zenomania\ApiBundle\Service\Afr\Filter\EventFilter;
 use Zenomania\CoreBundle\Entity\ApiToken;
 
@@ -34,7 +35,7 @@ class IntegrationService
         return $this->token;
     }
     /**
-     * Fetches matches from service and saves it to storage
+     * Fetches matches from service
      *
      * @param ApiToken $token
      * @param $clubId
@@ -49,7 +50,20 @@ class IntegrationService
     }
 
     /**
-     * Fetches tickets from services and saves it to storage
+     * Fetches clubs from service
+     *
+     * @param ApiToken $token
+     * @param $sportId
+     * @return array
+     */
+    public function fetchClubs(ApiToken $token, $sportId)
+    {
+        $filter = new ClubFilter(['sportId' => $sportId]);
+        $data = $this->getClient()->getClubs($token, $filter);
+        return $data;
+    }
+    /**
+     * Fetches tickets from services
      *
      * @param ApiToken $token
      * @param $eventId

@@ -79,6 +79,6 @@ Zenomania\CoreBundle\Entity\Image:
                 created_by:
                     referencedColumnName: id
                     onDelete: CASCADE
-                    nullable: false
+                    nullable: true
             orphanRemoval: false
     lifecycleCallbacks: {  }

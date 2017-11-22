@@ -7,24 +7,18 @@
 namespace Zenomania\ApiBundle\Service\Afr\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Monolog\Logger;
 use Zenomania\CoreBundle\Document\ProviderEvent;
 use Zenomania\CoreBundle\Repository\Document\ProviderEventRepository;
 
 class MatchesHandler
 {
     /**
-     * @var Logger
-     */
-    private $logger;
-    /**
      * @var ProviderEventRepository
      */
     private $repository;
 
-    public function __construct(Logger $logger, ProviderEventRepository $repository)
+    public function __construct(ProviderEventRepository $repository)
     {
-        $this->logger = $logger;
         $this->repository = $repository;
     }
 
@@ -42,14 +36,6 @@ class MatchesHandler
         }
 
         $this->getRepository()->addIfNotExist($collection);
-    }
-
-    /**
-     * @return Logger
-     */
-    public function getLogger(): Logger
-    {
-        return $this->logger;
     }
 
     /**
