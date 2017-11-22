@@ -75,12 +75,24 @@ class OrderService
     {
         $orderPrice = 0;
         $orderCarts = array();
+        $tmp = array();
 
+        //Группируем все товары
         /** @var OrderCart $item */
+        foreach ($data as $item){
+            if(!array_key_exists($item->getProductId(), $tmp)){
+                $tmp[$item->getProductId()] = $item;
+            }else{
+                /** @var OrderCart $product */
+                $product = $tmp[$item->getProductId()];
+                $product->setQuantity($product->getQuantity()+$item->getQuantity());
+            }
+        }
+        $data = $tmp;
+
         foreach ($data as $item) {
             /** @var Product $product */
             $product = $this->getEm()->find('ZenomaniaCoreBundle:Product', $item->getProductId());
-            $product->setQuantity($item->getQuantity());
 
             $orderCart = new OrderCart();
             $orderCart->setCreatedAt(new \DateTime());
