@@ -32,13 +32,11 @@ class PersonPointsRepository extends EntityRepository
      */
     public function givePointsForInvite(UserReferralCode $referralCode, User $user, $points)
     {
-        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($referralCode->getUser());
         $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
 
         $params = [
             'season' => $season,
-            'person' => $person,
-            'user'   => $person->getUser(),
+            'user'   => $referralCode->getUser(),
             'points' => $points,
             'type' => PersonPoints::TYPE_INVITE,
             'state' => 'none',
