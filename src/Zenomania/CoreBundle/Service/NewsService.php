@@ -118,7 +118,7 @@ class NewsService
             }
         }
 
-        return 0;
+        return $points;
     }
 
     /**
