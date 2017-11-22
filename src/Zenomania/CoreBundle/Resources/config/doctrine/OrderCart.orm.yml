@@ -1,6 +1,8 @@
 Zenomania\CoreBundle\Entity\OrderCart:
     type: entity
     table: order_cart
+    entityListeners:
+        Zenomania\CoreBundle\Entity\Listener\OrderCartListener: ~
     id:
         id:
             type: integer

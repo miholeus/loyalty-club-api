@@ -122,3 +122,8 @@ services:
         calls:
             - ['setUploadService', ['@file.upload_club_photo']]
             - ['setImageService', ['@images.service']]
+    order_cart.listener:
+        class: Zenomania\CoreBundle\Entity\Listener\OrderCartListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.orm.entity_listener }
