@@ -10,6 +10,7 @@ namespace Zenomania\ApiBundle\Service;
 
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Zenomania\ApiBundle\Form\Model\Order as OrderModel;
 use Zenomania\ApiBundle\Form\Model\OrderDelivery as OrderDeliveryModel;
 use Zenomania\CoreBundle\Entity\Order;
@@ -93,6 +94,14 @@ class OrderService
         foreach ($data as $item) {
             /** @var Product $product */
             $product = $this->getEm()->find('ZenomaniaCoreBundle:Product', $item->getProductId());
+
+            if ($product == null) {
+                throw new HttpException(404, "Товар не найден");
+            }
+
+            if ($product->getQuantity() < $item->getQuantity()) {
+                throw new HttpException(400, "Товар закончился");
+            }
 
             $orderCart = new OrderCart();
             $orderCart->setCreatedAt(new \DateTime());
