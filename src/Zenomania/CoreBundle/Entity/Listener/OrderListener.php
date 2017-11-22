@@ -20,6 +20,7 @@ use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Event\NotificationInterface;
 use Zenomania\CoreBundle\Event\Order\OrderWasCancelledEvent;
 use Zenomania\CoreBundle\Exception;
+use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Service\Traits\EventsAwareTrait;
 
 class OrderListener
@@ -50,6 +51,11 @@ class OrderListener
             $status = $orderStatusRepository->findOneBy(['code' => OrderStatus::NEW]);
             $order->setStatusId($status);
         }
+
+        //Списываем поинты за заказ
+        /** @var PersonPointsRepository $personPointsRepository */
+        $personPointsRepository = $this->container->get('repository.person_points_repository');
+        $personPointsRepository->takePointsForCreateOrder($order);
     }
 
     /**
