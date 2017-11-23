@@ -9,7 +9,6 @@
 namespace Zenomania\ApiBundle\Service;
 
 
-use Doctrine\ORM\EntityManager;
 use Zenomania\ApiBundle\Form\Model\Order as OrderModel;
 use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Entity\OrderCart;

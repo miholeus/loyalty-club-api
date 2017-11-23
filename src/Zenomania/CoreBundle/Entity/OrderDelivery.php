@@ -4,12 +4,13 @@ namespace Zenomania\CoreBundle\Entity;
 
 use Zenomania\CoreBundle\Form\Model\Order as OrderModel;
 use Zenomania\ApiBundle\Form\Model\OrderDelivery as OrderDeliveryModel;
+
 /**
  * OrderDelivery
  */
 class OrderDelivery
 {
-  
+
     /**
      * @var int
      */
@@ -199,7 +200,8 @@ class OrderDelivery
         return $this->deliveryTypeId;
     }
 
-    public function fromOrderModel(OrderModel $orderModel){
+    public function fromOrderModel(OrderModel $orderModel)
+    {
         $this->setClientName($orderModel->getClientName());
         $this->setAddress($orderModel->getAddress());
         $this->setPhone($orderModel->getPhone());
@@ -207,7 +209,8 @@ class OrderDelivery
         $this->setNote($orderModel->getNote());
     }
 
-    public static function fromOrderDeliveryModel(OrderDeliveryModel $orderDeliveryModel, Order $order){
+    public static function fromOrderDeliveryModel(OrderDeliveryModel $orderDeliveryModel, Order $order)
+    {
         $self = new self();
         $self->setClientName($orderDeliveryModel->getClientName());
         $self->setPhone($orderDeliveryModel->getPhone());

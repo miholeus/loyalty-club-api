@@ -44,8 +44,9 @@ class OrderListener
      * @param Order $order
      * @param LifecycleEventArgs $event
      */
-    public function prePersist(Order $order, LifecycleEventArgs $event){
-        if($order->getStatusId() == null){
+    public function prePersist(Order $order, LifecycleEventArgs $event)
+    {
+        if ($order->getStatusId() == null) {
             $orderStatusRepository = $this->container->get('repository.order_status');
             /** @var OrderStatus $status */
             $status = $orderStatusRepository->findOneBy(['code' => OrderStatus::NEW]);

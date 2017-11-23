@@ -69,6 +69,7 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
     public function createOrder(Order $order, array $orderCarts, OrderDelivery $orderDelivery, int $deliveryTypeId)
     {
         $em = $this->getEntityManager();
+        $em->beginTransaction();
         try {
             $em->persist($order);
             $em->flush();
@@ -88,5 +89,6 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         } catch (Exception $e) {
             $em->rollback();
         }
+        $em->commit();
     }
 }
