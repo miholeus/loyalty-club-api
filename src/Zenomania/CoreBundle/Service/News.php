@@ -9,6 +9,7 @@
 namespace Zenomania\CoreBundle\Service;
 
 
+use Zenomania\ApiBundle\Request\Filter\NewsFilter;
 use Zenomania\CoreBundle\Repository\NewsRepository;
 use Zenomania\CoreBundle\Entity\News as NewsEntity;
 
@@ -24,6 +25,15 @@ class News
     public function __construct(NewsRepository $newsRepository)
     {
         $this->newsRepository = $newsRepository;
+    }
+
+    /**
+     * @param NewsFilter $filter
+     * @return \Zenomania\CoreBundle\Entity\News[]
+     */
+    public function getNews(NewsFilter $filter)
+    {
+        return $this->newsRepository->getNews($filter);
     }
 
     public function updateNews(int $lastVkId, array $data)

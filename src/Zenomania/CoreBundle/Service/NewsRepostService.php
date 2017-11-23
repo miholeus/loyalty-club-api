@@ -15,7 +15,10 @@ use Zenomania\CoreBundle\Entity\SocialRepost;
 use Zenomania\CoreBundle\Repository\NewsRepository;
 use Zenomania\CoreBundle\Repository\SocialRepostRepository;
 
-class NewsService
+/**
+ * Check news reposts
+ */
+class NewsRepostService
 {
 
     /** @var EntityManager */
@@ -45,7 +48,7 @@ class NewsService
     /**
      * @return News[]
      */
-    public function getAllContlolledNews()
+    public function getAllControlledNews()
     {
         return $this->getNewsRepository()->findAllControlledNews();
     }

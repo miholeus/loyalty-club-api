@@ -92,9 +92,6 @@ services:
     api.badge:
         class: Zenomania\ApiBundle\Service\Badge
         arguments: ['@repository.user_badge_repository']
-    api.news:
-        class: Zenomania\ApiBundle\Service\NewsService
-        arguments: ['@repository.news']
     api.afr_token_service:
         class: Zenomania\ApiBundle\Service\Afr\TokenService
         arguments: ['@user.service']
