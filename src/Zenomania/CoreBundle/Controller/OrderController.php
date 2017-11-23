@@ -12,7 +12,6 @@ namespace Zenomania\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Zenomania\CoreBundle\Entity\Order;
 use Symfony\Component\HttpFoundation\Request;
-use Zenomania\CoreBundle\Entity\OrderCart;
 use Zenomania\CoreBundle\Entity\OrderDelivery;
 use Zenomania\CoreBundle\Entity\OrderStatusHistory;
 use Zenomania\CoreBundle\Form\Model\Order as ModelOrder;

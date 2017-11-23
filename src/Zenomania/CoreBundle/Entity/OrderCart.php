@@ -20,12 +20,12 @@ class OrderCart
     private $quantity;
 
     /**
-     * @var string
+     * @var float
      */
     private $price;
 
     /**
-     * @var string
+     * @var float
      */
     private $totalPrice;
 
@@ -86,7 +86,7 @@ class OrderCart
     /**
      * Set price.
      *
-     * @param string $price
+     * @param float $price
      *
      * @return OrderCart
      */
@@ -100,7 +100,7 @@ class OrderCart
     /**
      * Get price.
      *
-     * @return string
+     * @return float
      */
     public function getPrice()
     {
@@ -110,7 +110,7 @@ class OrderCart
     /**
      * Set totalPrice.
      *
-     * @param string $totalPrice
+     * @param float $totalPrice
      *
      * @return OrderCart
      */
@@ -122,9 +122,9 @@ class OrderCart
     }
 
     /**
-     * Get totalPrice.
+     * Get float.
      *
-     * @return string
+     * @return float
      */
     public function getTotalPrice()
     {

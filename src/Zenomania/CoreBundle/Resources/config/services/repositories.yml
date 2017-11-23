@@ -159,3 +159,13 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Product
+    repository.order_status:
+        class: Zenomania\CoreBundle\Repository\OrderStatusRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\OrderStatus
+    repository.order_cart:
+        class: Zenomania\CoreBundle\Repository\OrderCartRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\OrderCart

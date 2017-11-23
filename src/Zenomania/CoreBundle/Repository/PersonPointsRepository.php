@@ -38,7 +38,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_INVITE,
             'state' => 'none',
@@ -68,7 +68,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_LINKED_VK,
             'state' => 'none',
@@ -95,7 +95,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_SUBSCRIPTION_REGISTER,
             'state' => 'none',
@@ -122,7 +122,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_SUBSCRIPTION_ATTENDANCE,
             'state' => 'none',
@@ -149,7 +149,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_TICKET_REGISTER,
             'state' => 'none',
@@ -178,7 +178,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_REPOST,
             'state' => $state,
@@ -235,7 +235,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_PROMO_COUPON,
             'state' => 'none',
@@ -268,13 +268,33 @@ class PersonPointsRepository extends EntityRepository
         $this->_em->flush();
     }
 
+    public function takePointsForCreateOrder(Order $order)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($order->getUserId());
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+        $params = [
+            'season' => $season,
+            'person' => $person,
+            'user' => $order->getUserId(),
+            'points' => -1 * floor($order->getPrice()),
+            'type' => PersonPoints::TYPE_CREATE_ORDER,
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+        $personPoints = PersonPoints::fromArray($params);
+
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
+    }
+
     /**
      * Total user points
      *
      * @param User $user
      * @return int
      */
-    public function getTotalPoints(User $user) : int
+    public function getTotalPoints(User $user): int
     {
         $qb = $this->_em->createQueryBuilder();
         $select = $qb->select(['points' => 'SUM(p.points)'])

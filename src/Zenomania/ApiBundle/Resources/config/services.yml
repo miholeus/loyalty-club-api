@@ -116,3 +116,6 @@ services:
     api.afr_clubs_handler:
         class: Zenomania\ApiBundle\Service\Afr\Handler\ClubsHandler
         arguments: ['@monolog.logger', '@repository.club_repository', '@event.notification_manager']
+    api.order_cart.service:
+        class: Zenomania\ApiBundle\Service\OrderCartService
+        arguments: ['@doctrine.orm.entity_manager']
