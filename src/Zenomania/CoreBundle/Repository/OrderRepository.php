@@ -65,14 +65,14 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
      * @param array $orderCarts
      * @param OrderDelivery $orderDelivery
      * @param int $deliveryTypeId
+     * @return bool|Order
      */
     public function createOrder(Order $order, array $orderCarts, OrderDelivery $orderDelivery, int $deliveryTypeId)
     {
         $em = $this->getEntityManager();
-        $em->beginTransaction();
         try {
+            $em->beginTransaction();
             $em->persist($order);
-            $em->flush();
 
             $em->getRepository('ZenomaniaCoreBundle:OrderCart')->createOrderCarts($orderCarts, $order);
             /** @var DeliveryType $deliveryType */
@@ -86,9 +86,11 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
             $em->persist($orderDelivery);
 
             $em->flush();
+            $em->commit();
         } catch (Exception $e) {
             $em->rollback();
+            return false;
         }
-        $em->commit();
+        return $order;
     }
 }
