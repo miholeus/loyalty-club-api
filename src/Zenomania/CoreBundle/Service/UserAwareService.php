@@ -66,6 +66,9 @@ class UserAwareService
     public function getUser()
     {
         if (null === $this->user) {
+            if (null === $this->tokenStorage->getToken()) {
+                return null;
+            }
             $this->user = $this->tokenStorage->getToken()->getUser();
         }
         return $this->user;

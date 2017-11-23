@@ -22,6 +22,7 @@ class PersonPoints
     const TYPE_FORECAST_WINNER_ONE_PLAYER = 'forecast_winner_one_player';
     const TYPE_FORECAST_WINNER_MVP = 'forecast_winner_mvp';
     const TYPE_CANCELLED_ORDER = 'cancelled_order';
+    const TYPE_CREATE_ORDER = 'create_order';
 
     /**
      * @var integer

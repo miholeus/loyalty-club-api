@@ -34,6 +34,7 @@ parameters:
     badge_upload_photo_dir: uploads/badges
     upload_promo_coupon_dir: uploads/coupons
     product_upload_photo_dir: uploads/products
+    club_upload_photo_dir: uploads/clubs
     upload_dir: '%kernel.root_dir%/../web'
 
     # Sms settings
@@ -65,3 +66,6 @@ parameters:
     # MongoDB settings
     mongodb_host: 127.0.0.1
     mongodb_port: 27017
+
+    # RabbitMQ settings
+    photo_upload_routing_key: 'photos.clubs.%d'

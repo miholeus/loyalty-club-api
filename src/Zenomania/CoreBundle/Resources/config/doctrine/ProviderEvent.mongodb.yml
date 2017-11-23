@@ -4,7 +4,7 @@ Zenomania\CoreBundle\Document\ProviderEvent:
     indexes:
         last_event:
             keys:
-                date: 1
+                date_start: 1
         event_id:
             keys:
                 event_id: 1

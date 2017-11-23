@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Zenomania\CoreBundle\Form\Model\Order as OrderModel;
 /**
  * Orders
@@ -46,6 +47,7 @@ class Order
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime());
+        $this->setCreatedAt(new \DateTime());
     }
 
     /**
@@ -208,5 +210,13 @@ class Order
         $this->setNote($orderModel->getNote());
         $this->setStatusId($orderModel->getStatusId());
         $this->setUserId($orderModel->getUserId());
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function preUpdate()
+    {
+        $this->setUpdatedAt(new \DateTime());
     }
 }

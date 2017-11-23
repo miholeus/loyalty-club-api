@@ -39,3 +39,6 @@ api_badge:
 api_news:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\NewsController"
+api_orders:
+    type: rest
+    resource: "@ZenomaniaApiBundle/Controller/OrdersController.php"

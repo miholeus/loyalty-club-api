@@ -55,4 +55,6 @@ Zenomania\CoreBundle\Entity\Order:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
-    lifecycleCallbacks: {  }
+    lifecycleCallbacks: {
+        preUpdate: [preUpdate]
+      }

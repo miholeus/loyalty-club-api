@@ -1,6 +1,7 @@
 Zenomania\CoreBundle\Entity\OrderStatus:
     type: entity
     table: null
+    repositoryClass: Zenomania\CoreBundle\Repository\OrderStatusRepository
     id:
         id:
             type: integer

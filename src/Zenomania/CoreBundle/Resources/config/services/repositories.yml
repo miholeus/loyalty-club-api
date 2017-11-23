@@ -24,6 +24,11 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Season
+    repository.club_repository:
+        class: Zenomania\CoreBundle\Repository\ClubRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\Club
     repository.subscription_repository:
         class: Zenomania\CoreBundle\Repository\SubscriptionRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
@@ -144,8 +149,23 @@ services:
         factory: ['@doctrine_mongodb.odm.default_document_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Document\ProviderEvent
+    repository.provider_tickets_repository:
+        class: Zenomania\CoreBundle\Repository\Document\ProviderTicketRepository
+        factory: ['@doctrine_mongodb.odm.default_document_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Document\ProviderTicket
     repository.product:
         class: Zenomania\CoreBundle\Repository\ProductRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Product
+    repository.order_status:
+        class: Zenomania\CoreBundle\Repository\OrderStatusRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\OrderStatus
+    repository.order_cart:
+        class: Zenomania\CoreBundle\Repository\OrderCartRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\OrderCart

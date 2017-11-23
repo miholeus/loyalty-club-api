@@ -32,7 +32,7 @@ class CheckRepostCommand extends ContainerAwareCommand
         $groupId = $this->getContainer()->getParameter('vk_group_id');
 
         /** Получаем все новости, которые находятся под контролем */
-        $posts = $serviceNews->getAllContlolledNews();
+        $posts = $serviceNews->getAllControlledNews();
         foreach ($posts as $post) {
 
             if ($serviceNews->checkTimeControlledPost($post)) {

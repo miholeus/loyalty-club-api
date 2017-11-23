@@ -92,9 +92,6 @@ services:
     api.badge:
         class: Zenomania\ApiBundle\Service\Badge
         arguments: ['@repository.user_badge_repository']
-    api.news:
-        class: Zenomania\ApiBundle\Service\NewsService
-        arguments: ['@repository.news']
     api.afr_token_service:
         class: Zenomania\ApiBundle\Service\Afr\TokenService
         arguments: ['@user.service']
@@ -109,4 +106,13 @@ services:
         arguments: ['%afr_service_username%', '%afr_service_password%']
     api.afr_matches_handler:
         class: Zenomania\ApiBundle\Service\Afr\Handler\MatchesHandler
-        arguments: ['@monolog.logger', '@repository.provider_events_repository']
+        arguments: ['@repository.provider_events_repository']
+    api.afr_tickets_handler:
+        class: Zenomania\ApiBundle\Service\Afr\Handler\TicketsHandler
+        arguments: ['@repository.provider_tickets_repository']
+    api.afr_clubs_handler:
+        class: Zenomania\ApiBundle\Service\Afr\Handler\ClubsHandler
+        arguments: ['@monolog.logger', '@repository.club_repository', '@event.notification_manager']
+    api.order_cart.service:
+        class: Zenomania\ApiBundle\Service\OrderCartService
+        arguments: ['@doctrine.orm.entity_manager']

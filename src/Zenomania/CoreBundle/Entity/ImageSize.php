@@ -43,6 +43,18 @@ class ImageSize
     private $image;
 
 
+    public function __construct(array $data = array())
+    {
+        $keys = ['name', 'width', 'height'];// valid keys to set
+
+        foreach ($data as $key => $value) {
+            if (in_array($key, $keys)) {
+                $this->{$key} = $value;
+            }
+        }
+
+        $this->createdOn = new \DateTime();
+    }
     /**
      * Get id
      *
