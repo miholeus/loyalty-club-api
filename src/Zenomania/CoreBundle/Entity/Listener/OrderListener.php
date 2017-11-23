@@ -72,7 +72,7 @@ class OrderListener
             /** @var OrderStatus $status */
             $status = $entityChangeSet['statusId'][0];
             if ($status->getCode() == OrderStatus::CANCELLED) {
-                //throw new ValidatorException('Заказ уже отменен, нельзя менять его статус');
+                throw new ValidatorException('Заказ уже отменен, нельзя менять его статус');
             }
         }
     }
