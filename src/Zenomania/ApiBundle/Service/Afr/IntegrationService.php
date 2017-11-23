@@ -8,6 +8,7 @@ namespace Zenomania\ApiBundle\Service\Afr;
 
 use Zenomania\ApiBundle\Service\Afr\Filter\ClubFilter;
 use Zenomania\ApiBundle\Service\Afr\Filter\EventFilter;
+use Zenomania\ApiBundle\Service\Afr\Filter\TicketFilter;
 use Zenomania\CoreBundle\Entity\ApiToken;
 
 class IntegrationService
@@ -72,7 +73,9 @@ class IntegrationService
      */
     public function fetchTickets(ApiToken $token, $eventId, $page = 1)
     {
-        return [];
+        $filter = new TicketFilter(['eventId' => $eventId, 'page' => $page]);
+        $data = $this->getClient()->getTickets($token, $filter);
+        return $data;
     }
 
     /**
