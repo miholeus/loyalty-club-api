@@ -30,19 +30,15 @@ class OrdersController extends RestController
      *
      * ### Success Response ###
      *      {
-     *          "data":{
-     *              "link":<registration url>
-     *          },
-     *          "time":<time request>
      *      }
      *
      * @ApiDoc(
      *  section="Заказы",
      *  resource=true,
-     *  description="Отправить приглашение другу",
+     *  description="Создать новый заказ",
      *  statusCodes={
-     *         200="При успешной отправки приглашения",
-     *         400="Приглашение не удалось отправить"
+     *         200="При успешном создании заказа",
+     *         400="Ошибка создания заказа"
      *     },
      *  headers={
      *      {
