@@ -22,6 +22,7 @@ use Zenomania\CoreBundle\Event\Order\OrderWasCancelledEvent;
 use Zenomania\CoreBundle\Exception;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Service\Traits\EventsAwareTrait;
+use Zenomania\CoreBundle\Entity\Exception\ValidatorException;
 
 class OrderListener
 {

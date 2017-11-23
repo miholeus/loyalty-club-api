@@ -73,6 +73,7 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         try {
             $em->beginTransaction();
             $em->persist($order);
+            $em->flush();
 
             $em->getRepository('ZenomaniaCoreBundle:OrderCart')->createOrderCarts($orderCarts, $order);
             /** @var DeliveryType $deliveryType */

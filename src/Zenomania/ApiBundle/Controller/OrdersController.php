@@ -59,7 +59,7 @@ class OrdersController extends RestController
      */
     public function postOrdersAction(Request $request)
     {
-        $service = $this->get('api.order.service');
+        $service = $this->get('order.service');
         $form = $this->createForm(OrderType::class);
         $this->processForm($request, $form);
 
