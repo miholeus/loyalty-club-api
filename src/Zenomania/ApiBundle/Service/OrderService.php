@@ -10,24 +10,31 @@ namespace Zenomania\ApiBundle\Service;
 
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Zenomania\ApiBundle\Form\Model\Order as OrderModel;
-use Zenomania\ApiBundle\Form\Model\OrderDelivery as OrderDeliveryModel;
 use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Entity\OrderCart;
 use Zenomania\CoreBundle\Entity\OrderDelivery;
-use Zenomania\CoreBundle\Entity\Product;
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Repository\OrderRepository;
 
 class OrderService
 {
+    /**
+     * @var OrderRepository
+     */
+    private $orderRepository;
 
-    /** @var EntityManager */
-    private $em;
+    /**
+     * @var OrderCartService
+     */
+    private $orderCartService;
 
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        OrderRepository $orderRepository,
+        OrderCartService $orderCartService
+    ) {
+        $this->orderRepository = $orderRepository;
+        $this->orderCartService = $orderCartService;
     }
 
     /**
@@ -37,108 +44,40 @@ class OrderService
      */
     public function createOrder(OrderModel $data, User $user)
     {
+        $orderCarts = $this->getOrderCartService()->parseOrderCarts($data);
+        $orderPrice = 0;
+        foreach ($orderCarts as $cart){
+            /** @var OrderCart $cart */
+            $orderPrice += $cart->getTotalPrice();
+        }
         $order = new Order();
 
         $order->setNote($data->getNote());
         $order->setUserId($user);
-        $orderCarts = $this->parseOrderCarts($data->getOrderCart(), $order);
+        $order->setPrice($orderPrice);
 
-        $this->getEm()->persist($order);
-        $this->getEm()->flush();
+        $deliveryTypeId = $data->getOrderDelivery()->getDeliveryTypeId();
 
-        $this->createOrderCarts($orderCarts, $order);
-        $this->createOrderDelivery($data->getOrderDelivery(), $order);
+        $orderDelivery = OrderDelivery::fromOrderDeliveryModel($data->getOrderDelivery(), $order);
+
+        $this->getOrderRepository()->createOrder($order, $orderCarts, $orderDelivery, $deliveryTypeId);
+
         return $order;
     }
 
     /**
-     * @param array $data
-     * @param Order $order
+     * @return OrderRepository
      */
-    public function createOrderCarts(array $data, Order $order)
+    public function getOrderRepository()
     {
-        /** @var OrderCart $item */
-        foreach ($data as $item) {
-            $item->setOrderId($order);
-            $this->getEm()->persist($item);
-        }
-        $this->getEm()->flush();
+        return $this->orderRepository;
     }
 
     /**
-     * @param array $data
-     * @param Order $order
-     * @return array
-     * @internal param $orderPrice
-     * @internal param $orderCarts
+     * @return OrderCartService
      */
-    public function parseOrderCarts(array $data, Order &$order)
+    public function getOrderCartService()
     {
-        $orderPrice = 0;
-        $orderCarts = array();
-        $tmp = array();
-
-        //Группируем все товары
-        /** @var OrderCart $item */
-        foreach ($data as $item){
-            if(!array_key_exists($item->getProductId(), $tmp)){
-                $tmp[$item->getProductId()] = $item;
-            }else{
-                /** @var OrderCart $product */
-                $product = $tmp[$item->getProductId()];
-                $product->setQuantity($product->getQuantity()+$item->getQuantity());
-            }
-        }
-        $data = $tmp;
-
-        foreach ($data as $item) {
-            /** @var Product $product */
-            $product = $this->getEm()->find('ZenomaniaCoreBundle:Product', $item->getProductId());
-
-            if ($product == null) {
-                throw new HttpException(404, "Товар не найден");
-            }
-
-            if ($product->getQuantity() < $item->getQuantity()) {
-                throw new HttpException(400, "Товар закончился");
-            }
-
-            $orderCart = new OrderCart();
-            $orderCart->setCreatedAt(new \DateTime());
-            $orderCart->setProductId($product);
-            $orderCart->setPrice($product->getPrice());
-            $orderCart->setQuantity($item->getQuantity());
-            $orderCart->setTotalPrice($orderCart->getPrice() * $orderCart->getQuantity());
-            $orderPrice += $orderCart->getTotalPrice();
-            $orderCarts[] = $orderCart;
-        }
-        $order->setPrice($orderPrice);
-
-        return $orderCarts;
-    }
-
-    /**
-     * @param OrderDeliveryModel $orderDeliveryModel
-     * @param Order $order
-     */
-    public function createOrderDelivery(OrderDeliveryModel $orderDeliveryModel, Order $order)
-    {
-        $orderDelivery = OrderDelivery::fromOrderDeliveryModel($orderDeliveryModel, $order);
-
-        $deliveryType = $this->getEm()->find('ZenomaniaCoreBundle:DeliveryType',
-            $orderDeliveryModel->getDeliveryTypeId());
-
-        $orderDelivery->setDeliveryTypeId($deliveryType);
-
-        $this->getEm()->persist($orderDelivery);
-        $this->getEm()->flush();
-    }
-
-    /**
-     * @return EntityManager
-     */
-    public function getEm()
-    {
-        return $this->em;
+        return $this->orderCartService;
     }
 }

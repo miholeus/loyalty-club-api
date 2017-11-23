@@ -2,7 +2,11 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Zenomania\ApiBundle\Service\Exception;
+use Zenomania\CoreBundle\Entity\DeliveryType;
 use Zenomania\CoreBundle\Entity\Order;
+use Zenomania\CoreBundle\Entity\OrderDelivery;
 
 /**
  * OrderRepository
@@ -54,5 +58,35 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
     public function findAll()
     {
         return $this->findBy(array(), array('id' => 'ASC'));
+    }
+
+    /**
+     * @param Order $order
+     * @param array $orderCarts
+     * @param OrderDelivery $orderDelivery
+     * @param int $deliveryTypeId
+     */
+    public function createOrder(Order $order, array $orderCarts, OrderDelivery $orderDelivery, int $deliveryTypeId)
+    {
+        $em = $this->getEntityManager();
+        try {
+            $em->persist($order);
+            $em->flush();
+
+            $em->getRepository('ZenomaniaCoreBundle:OrderCart')->createOrderCarts($orderCarts, $order);
+            /** @var DeliveryType $deliveryType */
+            $deliveryType = $em->find('ZenomaniaCoreBundle:DeliveryType', $deliveryTypeId);
+            if ($deliveryType == null) {
+                throw new HttpException(404, 'Не найден способ доставки');
+            }
+            $orderDelivery->setDeliveryTypeId($deliveryType);
+            $orderDelivery->setOrderId($order);
+
+            $em->persist($orderDelivery);
+
+            $em->flush();
+        } catch (Exception $e) {
+            $em->rollback();
+        }
     }
 }
