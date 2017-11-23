@@ -11,6 +11,7 @@ use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
 use Zenomania\ApiBundle\Service\Afr\Filter\ClubFilter;
 use Zenomania\ApiBundle\Service\Afr\Filter\EventFilter;
+use Zenomania\ApiBundle\Service\Afr\Filter\TicketFilter;
 
 class ApiClient
 {
@@ -95,6 +96,32 @@ class ApiClient
         return $data['data'];
     }
 
+    /**
+     * Get tickets from service
+     *
+     * @param \Zenomania\CoreBundle\Entity\ApiToken $token
+     * @param TicketFilter $filter
+     * @return mixed
+     */
+    public function getTickets(\Zenomania\CoreBundle\Entity\ApiToken $token, TicketFilter $filter)
+    {
+        try {
+            $request = array_merge($filter->getRequest(), [
+                self::ACCESS_TOKEN_KEY => $token->getToken()
+            ]);
+
+            $response = $this->client->get(
+                strtr(Endpoint::TICKETS_URL, [':id' => $filter->getEventId()]),
+                ['query' => $request, 'http_errors' => false]
+            );
+        } catch (ClientException $e) {
+            throw new ApiException(500, $e->getMessage(), $e);
+        }
+
+        $data = $this->getResponse($response, $token);
+
+        return $data['data'];
+    }
     /**
      * Get clubs from service
      *

@@ -37,9 +37,15 @@ class PhotoUploadConsumer
     {
         $body = $message->getBody();
 
-        $this->getProcessor()->process($body);
+        try {
+            $this->getProcessor()->process($body);
 
-        return $message->delivery_info['consumer_tag'];
+            return $message->delivery_info['consumer_tag'];
+        } catch (\Exception $e) {
+            // @todo log error
+            // discard message
+            return true;
+        }
     }
 
     /**
