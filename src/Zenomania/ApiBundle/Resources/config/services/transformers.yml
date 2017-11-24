@@ -65,3 +65,6 @@ services:
     api.data.transformer.news:
         class: Zenomania\ApiBundle\Service\Transformer\NewsTransformer
         arguments: ['@utils.host_based_url', %vk_group_id%]
+    api.data.transformer.order:
+        class: Zenomania\ApiBundle\Service\Transformer\OrderTransformer
+        arguments: ['@utils.host_based_url']
