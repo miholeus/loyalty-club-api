@@ -150,4 +150,67 @@ class OrdersController extends RestController
         return $this->handleView($view);
     }
 
+
+    /**
+     * ### Failed Response ###
+     *
+     *     {
+     *       "success": false
+     *       "exception": {
+     *         "code": <code>,
+     *         "message": <message>
+     *       }
+     *     }
+     *
+     * ### Success Response ###
+     *      {
+     *          "data":{
+     *              "id":<integer>,
+     *              "items":[{
+     *                  "id":<integer>,
+     *                  "title":<string>,
+     *                  "quantity":<integer>,
+     *               }]
+     *              "dt": <string>,
+     *              "name": <string>,
+     *              "delivery_type": <string>,
+     *              "address": <string>,
+     *              "address": <string>,
+     *              "phone":<integer>,
+     *              ]
+     *          },
+     *          "time":<time request>
+     *      }
+     *
+     * @ApiDoc(
+     *  section="Заказы",
+     *  resource=true,
+     *  description="Вовзращает все заказы пользователя",
+     *  statusCodes={
+     *         200="При успешном запросе",
+     *         400="Ошибка запроса"
+     *     },
+     *  headers={
+     *      {
+     *          "name"="X-AUTHORIZE-TOKEN",
+     *          "description"="access key header",
+     *          "required"=true
+     *      }
+     *    },
+     *  output="array"
+     * )
+     *
+     * @Route("orders")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getOrdersAction()
+    {
+        $items = $this->get('order.service')->getUserOrders($this->getUser());
+        $transformer = $this->get('api.data.transformer.order');
+
+        $data = $this->getResourceCollection($items, $transformer);
+        $view = $this->view($data, 200);
+        return $this->handleView($view);
+    }
 }
