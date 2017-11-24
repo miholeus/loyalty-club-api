@@ -16,6 +16,7 @@ use Zenomania\CoreBundle\Repository\ProductRepository;
 use Zenomania\ApiBundle\Form\Model\Order as OrderModel;
 use Zenomania\CoreBundle\Entity\OrderCart;
 use Zenomania\CoreBundle\Entity\OrderDelivery;
+use Zenomania\CoreBundle\Entity\User;
 
 class OrderService
 {
@@ -64,7 +65,7 @@ class OrderService
     {
         $orderCarts = $this->getOrderCartService()->parseOrderCarts($data);
         $orderPrice = 0;
-        foreach ($orderCarts as $cart){
+        foreach ($orderCarts as $cart) {
             /** @var OrderCart $cart */
             $orderPrice += $cart->getTotalPrice();
         }
@@ -82,6 +83,22 @@ class OrderService
 
         return $order;
     }
+
+
+    public function getUserOrders(User $user)
+    {
+        $data = $this->getOrderRepository()->findBy(['userId' => $user->getId()]);
+        $orders = array();
+        foreach ($data as $item){
+            $orderData = array();
+            /** @var Order $item */
+            $orderData = $this->getOrderData($item);
+            $orderData['order'] = $item;
+            $orders[] = $orderData;
+        }
+        return $orders;
+    }
+
     /**
      * @return OrderRepository
      */
