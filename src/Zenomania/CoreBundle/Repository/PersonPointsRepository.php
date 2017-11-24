@@ -11,6 +11,7 @@ namespace Zenomania\CoreBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
 use Zenomania\CoreBundle\Entity\Order;
+use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
@@ -418,5 +419,39 @@ class PersonPointsRepository extends EntityRepository
 
         $result = $select->execute()->fetchAll();
         return $result;
+    }
+
+    /**
+     * Получить массив person, у которых нет связи с user
+     *
+     * @return array
+     */
+    public function getNullUserId()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select(['IDENTITY(pp.person) AS person'])
+            ->from('ZenomaniaCoreBundle:PersonPoints', 'pp')
+            ->where('pp.user IS NULL')
+            ->groupBy('pp.person')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * Обновляет в таблице person_points колонку user_id для соответствующего person_id
+     *
+     * @param Person $person
+     * @param User $user
+     * @return \Doctrine\DBAL\Driver\Statement|int
+     */
+    public function updateUserByPerson(Person $person, User $user)
+    {
+        $qb = $this->getEntityManager()->getConnection()->createQueryBuilder();;
+        return $qb->update('person_points')
+            ->set('user_id', $user->getId())
+            ->where('person_id = :personId')
+            ->setParameter('personId', $person->getId())
+            ->execute();
     }
 }

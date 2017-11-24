@@ -216,4 +216,25 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
+    /**
+     * Поиск данных user по заданным данным person
+     *
+     * @param Person $person
+     * @return mixed
+     */
+    public function findUserByPerson(Person $person)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('u')
+            ->from('ZenomaniaCoreBundle:User', 'u')
+            ->where('u.phone = :phone')
+            ->orWhere('u.firstname = :firstname AND u.lastname = :lastname')
+            ->setParameter('phone', $person->getMobile())
+            ->setParameter('firstname', $person->getFirstName())
+            ->setParameter('lastname', $person->getLastName())
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }
