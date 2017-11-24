@@ -116,7 +116,7 @@ class NewsRepostService
     {
         $points = 0;
         foreach ($news->getTags() as $tag) {
-            if (preg_match('/#(\d+)ZEN/', $tag, $matches)) {
+            if (preg_match('/(\d+)ZEN/i', $tag, $matches)) {
                 $points += $matches[1];
             }
         }
