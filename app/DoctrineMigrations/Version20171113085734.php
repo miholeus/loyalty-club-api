@@ -29,7 +29,6 @@ class Version20171113085734 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE order_cart ALTER created_at SET DEFAULT \'2017-11-13 08:51:29.394235\'');
     }
 }
