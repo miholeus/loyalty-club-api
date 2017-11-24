@@ -86,15 +86,31 @@ class OrdersController extends RestController
      *
      * ### Success Response ###
      *      {
+     *          "data":{
+     *              "id":<integer>,
+     *              "items":[{
+     *                  "id":<integer>,
+     *                  "title":<string>,
+     *                  "quantity":<integer>,
+     *               }]
+     *              "dt": <string>,
+     *              "name": <string>,
+     *              "delivery_type": <string>,
+     *              "address": <string>,
+     *              "address": <string>,
+     *              "phone":<integer>,
+     *              ]
+     *          },
+     *          "time":<time request>
      *      }
      *
      * @ApiDoc(
      *  section="Заказы",
      *  resource=true,
-     *  description="Создать новый заказ",
+     *  description="Вовзращает заказ",
      *  statusCodes={
-     *         200="При успешном создании заказа",
-     *         400="Ошибка создания заказа"
+     *         200="При успешном запросе",
+     *         400="Ошибка запроса"
      *     },
      *  headers={
      *      {
@@ -103,10 +119,7 @@ class OrdersController extends RestController
      *          "required"=true
      *      }
      *    },
-     *  input={
-     *     "class"="\Zenomania\ApiBundle\Form\OrderType",
-     *     "name"=""
-     *     }
+     *  output="array"
      * )
      *
      * @Route("orders/{id}")
@@ -114,10 +127,10 @@ class OrdersController extends RestController
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getOrdersAction(int $id)
+    public function getOrderAction(int $id)
     {
         $order = $this->get('repository.order')->find($id);
-
+        $transformer = $this->get('api.data.transformer.order');
         if ($order == null) {
             throw new HttpException(404, 'Заказ не найден');
         }
@@ -126,7 +139,15 @@ class OrdersController extends RestController
             throw new HttpException(403, 'Доступ запрещен');
         }
 
-        $view = $this->view($order, 200);
+        /** @var array $items */
+        $items = $this->get('order.service')->getOrderData($order);
+        $items['order'] = $order;
+
+        /** @var array $data */
+        $data = $this->getResourceItem($items, $transformer);
+
+        $view = $this->view($data, 200);
         return $this->handleView($view);
     }
+
 }
