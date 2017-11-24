@@ -74,6 +74,7 @@ class VkontakteClient implements ClientInterface
             'owner_id' => $groupId,
             'post_id' => $post->getVkId(),
             'v' => $this->version,
+            'count' => 1000
         ];
         $response = $this->client->request(
             'GET',
