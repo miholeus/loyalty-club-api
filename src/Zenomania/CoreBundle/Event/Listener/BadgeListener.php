@@ -10,6 +10,7 @@ namespace Zenomania\CoreBundle\Event\Listener;
 
 use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Event\User\ForecastEvent;
 use Zenomania\CoreBundle\Event\User\RegistrationEvent;
 use Zenomania\CoreBundle\Event\User\ProfileEvent;
 use Zenomania\CoreBundle\Repository\PersonRepository;
@@ -86,6 +87,11 @@ class BadgeListener
             $profileCompleted = false;
         }
         return $profileCompleted;
+    }
+
+    public function onForecastEvent(ForecastEvent $event)
+    {
+        $this->getUserBadge()->giveBadgeForForecast($event->getArgument('user'));
     }
 
     /**

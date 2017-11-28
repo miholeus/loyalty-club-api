@@ -35,3 +35,8 @@ services:
         arguments: ['@repository.product','@repository.person_points_repository']
         tags:
             - {name: "kernel.event_listener", event: "order.status.cancelled", method: "onOrderWasCancelledEvent"}
+    event.listener.badge.forecast:
+        class: Zenomania\CoreBundle\Event\Listener\BadgeListener
+        arguments: ['@user_badge.service', '@repository.person_repository']
+        tags:
+            - {name: "kernel.event_listener", event: "user.forecast.badge", method: "onForecastEvent"}

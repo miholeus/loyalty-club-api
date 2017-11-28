@@ -41,6 +41,7 @@ class PersonPointsListener
     public function prePersist(PersonPoints $personPoints, LifecycleEventArgs $event)
     {
         if ($personPoints->getType() === PersonPoints::TYPE_FORECAST_WINNER_MATCH_RESULT) {
+            $event = new ForecastEvent();
             $event->setArgument('user', $personPoints->getUser());
             $this->attachEvent($event);
             $this->updateEvents();
