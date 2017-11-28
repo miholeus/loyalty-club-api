@@ -62,7 +62,6 @@ class UserBadgeRepository extends \Doctrine\ORM\EntityRepository
             'b.photo_badge',
             'bt.sort AS type_sort',
             'b.sort AS badge_sort',
-            'bt.code AS type_code',
         ])->from('badge', 'b')
             ->innerJoin('b', 'badge_type', 'bt', 'bt.id = b.type_id')
             ->leftJoin('b', sprintf("(%s)", $subQuery), 'ub', 'b.code = ub.code')
