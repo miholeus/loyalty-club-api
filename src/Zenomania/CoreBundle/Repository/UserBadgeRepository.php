@@ -3,6 +3,8 @@
 namespace Zenomania\CoreBundle\Repository;
 
 use Zenomania\ApiBundle\Request\Filter\BadgeFilter;
+use Zenomania\CoreBundle\Entity\Badge;
+use Zenomania\CoreBundle\Entity\BadgeType;
 use Zenomania\CoreBundle\Entity\UserBadge;
 
 /**
@@ -36,12 +38,13 @@ class UserBadgeRepository extends \Doctrine\ORM\EntityRepository
         $em = $this->getEntityManager();
         $subQuery = $em->getConnection()->createQueryBuilder()
             ->select([
-                'SUM (points) AS points',
+                'SUM (ub.points) AS points',
                 'user_id',
-                'badge_id',
+                'code',
             ])->from('user_badge', 'ub')
+            ->innerJoin('ub', 'badge', 'b', 'ub.badge_id = b.id')
             ->where('ub.user_id = :user_id')
-            ->groupBy(['user_id', 'badge_id']);
+            ->groupBy(['user_id', 'code']);
         if ($filter->period) {
             $subQuery
                 ->andWhere('dt > :dt');
@@ -59,12 +62,13 @@ class UserBadgeRepository extends \Doctrine\ORM\EntityRepository
             'b.photo_badge',
             'bt.sort AS type_sort',
             'b.sort AS badge_sort',
+            'bt.code AS type_code',
         ])->from('badge', 'b')
             ->innerJoin('b', 'badge_type', 'bt', 'bt.id = b.type_id')
-            ->leftJoin('b', sprintf("(%s)", $subQuery), 'ub', 'b.id = ub.badge_id')
+            ->leftJoin('b', sprintf("(%s)", $subQuery), 'ub', 'b.code = ub.code')
             ->where('b.active = true')
-            ->orderBy('bt.sort')
             ->orderBy('b.sort')
+            ->orderBy('bt.sort')
             ->setParameter('user_id', $filter->user->getId());
 
         if ($filter->period) {
