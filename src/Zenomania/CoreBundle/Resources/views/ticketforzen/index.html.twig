@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ticketforzens list</h1>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Barcode</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ticketForZen in ticketForZens%}
+            <tr>
+                <td><a href="{{ path('ticketforzen_show', { 'id': ticketForZen.id }) }}">{{ ticketForZen.id }}</a></td>
+                <td>{{ ticketForZen.name }}</td>
+                <td>{{ ticketForZen.barcode }}</td>
+                <td>{{ ticketForZen.price }}</td>
+                <td>{{ ticketForZen.status }}</td>
+                <td>
+                    <a href="{{ path('ticketforzen_show', { 'id': ticketForZen.id }) }}" class="btn btn-default">show</a>
+                    <a href="{{ path('ticketforzen_edit', { 'id': ticketForZen.id }) }}" class="btn btn-default">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <nav class="text-center">
+        {% include '@ZenomaniaCore/shared/paginator.html.twig' with {paginator: paginator} %}
+    </nav>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('ticketforzen_new') }}">Create a new ticketForZen</a>
+        </li>
+    </ul>
+{% endblock %}
