@@ -88,6 +88,22 @@ class UserBadge
     /**
      * @param User $user
      */
+    public function giveBadgeForRepost(User $user)
+    {
+        $userBadge = new UserBadgeEntity();
+
+        /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => \Zenomania\CoreBundle\Entity\Badge::TYPE_MAKE_REPOST]);
+        $userBadge->setUser($user);
+        $userBadge->setPoints($badge->getPoints());
+        $userBadge->setBadgeId($badge);
+
+        $this->getUserBadgeRepository()->save($userBadge);
+    }
+
+    /**
+     * @param User $user
+     */
     public function revokeBadgeIfProfileNotCompleted(User $user)
     {
         $userBadge = $this->getProfileCompletedBadge($user);
