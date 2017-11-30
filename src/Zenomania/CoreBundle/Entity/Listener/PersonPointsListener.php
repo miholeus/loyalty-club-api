@@ -14,6 +14,7 @@ use Zenomania\CoreBundle\Entity\Traits\UserAwareTrait;
 use Zenomania\CoreBundle\Entity\Traits\ValidatorTrait;
 use Zenomania\CoreBundle\Event\NotificationInterface;
 use Zenomania\CoreBundle\Event\User\ForecastEvent;
+use Zenomania\CoreBundle\Event\User\RepostEvent;
 use Zenomania\CoreBundle\Service\Traits\EventsAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -40,11 +41,19 @@ class PersonPointsListener
      */
     public function prePersist(PersonPoints $personPoints, LifecycleEventArgs $event)
     {
-        if ($personPoints->getType() === PersonPoints::TYPE_FORECAST_WINNER_MATCH_RESULT) {
-            $event = new ForecastEvent();
-            $event->setArgument('user', $personPoints->getUser());
-            $this->attachEvent($event);
-            $this->updateEvents();
+        switch ($personPoints->getType()) {
+            case PersonPoints::TYPE_FORECAST_WINNER_MATCH_RESULT:
+                $event = new ForecastEvent();
+                $event->setArgument('user', $personPoints->getUser());
+                $this->attachEvent($event);
+                $this->updateEvents();
+                break;
+            case PersonPoints::TYPE_REPOST:
+                $event = new RepostEvent();
+                $event->setArgument('user', $personPoints->getUser());
+                $this->attachEvent($event);
+                $this->updateEvents();
+                break;
         }
     }
 }
