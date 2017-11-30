@@ -50,7 +50,7 @@ class PersonPointsListener
                 break;
             case PersonPoints::TYPE_REPOST:
                 $event = new RepostEvent();
-                $event->setArgument('user', $personPoints->getUser());
+                $event->setArgument('personPoints', $personPoints);
                 $this->attachEvent($event);
                 $this->updateEvents();
                 break;

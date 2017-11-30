@@ -86,15 +86,19 @@ class UserBadge
     }
 
     /**
-     * @param User $user
+     * @param PersonPoints $personPoints
      */
-    public function giveBadgeForRepost(User $user)
+    public function giveBadgeForRepost(PersonPoints $personPoints)
     {
         $userBadge = new UserBadgeEntity();
 
         /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
         $badge = $this->getBadgeRepository()->findOneBy(['code' => \Zenomania\CoreBundle\Entity\Badge::TYPE_MAKE_REPOST]);
-        $userBadge->setUser($user);
+        $userBadge->setUser($personPoints->getUser());
+        if($personPoints->getPoints() < 0){
+            $badge->setPoints($badge->getPoints() * -1);
+        }
+
         $userBadge->setPoints($badge->getPoints());
         $userBadge->setBadgeId($badge);
 
