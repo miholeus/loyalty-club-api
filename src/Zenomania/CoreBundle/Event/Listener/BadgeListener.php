@@ -13,6 +13,7 @@ use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Event\User\ForecastEvent;
 use Zenomania\CoreBundle\Event\User\RegistrationEvent;
 use Zenomania\CoreBundle\Event\User\ProfileEvent;
+use Zenomania\CoreBundle\Event\User\RepostEvent;
 use Zenomania\CoreBundle\Repository\PersonRepository;
 use Zenomania\CoreBundle\Service\UserBadge;
 
@@ -92,6 +93,11 @@ class BadgeListener
     public function onForecastEvent(ForecastEvent $event)
     {
         $this->getUserBadge()->giveBadgeForForecast($event->getArgument('user'));
+    }
+
+    public function onRepostEvent(RepostEvent $event)
+    {
+        $this->getUserBadge()->giveBadgeForRepost($event->getArgument('user'));
     }
 
     /**

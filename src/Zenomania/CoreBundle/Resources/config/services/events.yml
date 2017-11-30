@@ -40,3 +40,8 @@ services:
         arguments: ['@user_badge.service', '@repository.person_repository']
         tags:
             - {name: "kernel.event_listener", event: "user.forecast.badge", method: "onForecastEvent"}
+    event.listener.badge.repost:
+        class: Zenomania\CoreBundle\Event\Listener\BadgeListener
+        arguments: ['@user_badge.service', '@repository.person_repository']
+        tags:
+            - {name: "kernel.event_listener", event: "user.repost.badge", method: "onRepostEvent"}
