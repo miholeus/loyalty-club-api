@@ -14,6 +14,7 @@ class Badge implements IdentifiableInterface
     const TYPE_VISITED_FIRST_MATCH = 'first match';
     const TYPE_PROFILE_COMPLETED = 'profile done';
     const TYPE_FORECAST_WINNER_MATCH_RESULT = 'forecast winner match result';
+    const TYPE_MAKE_REPOST = 'make repost';
 
     /**
      * @var int
