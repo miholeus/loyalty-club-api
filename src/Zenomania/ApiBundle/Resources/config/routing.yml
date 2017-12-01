@@ -41,4 +41,4 @@ api_news:
     resource: "Zenomania\\ApiBundle\\Controller\\NewsController"
 api_orders:
     type: rest
-    resource: "@ZenomaniaApiBundle/Controller/OrdersController.php"
+    resource: "Zenomania\\ApiBundle\\Controller\\OrdersController"
