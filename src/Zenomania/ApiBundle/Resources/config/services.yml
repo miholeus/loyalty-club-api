@@ -116,3 +116,8 @@ services:
     api.order_cart.service:
         class: Zenomania\ApiBundle\Service\OrderCartService
         arguments: ['@doctrine.orm.entity_manager']
+    security.access.order_voter:
+        class: Zenomania\ApiBundle\Security\OrderVoter
+        public: false
+        tags:
+            - { name: 'security.voter' }
