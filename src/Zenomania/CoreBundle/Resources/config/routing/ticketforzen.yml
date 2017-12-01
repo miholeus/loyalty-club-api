@@ -1,0 +1,24 @@
+ticketforzen_index:
+    path:     /
+    defaults: { _controller: "ZenomaniaCoreBundle:TicketForZen:index" }
+    methods:  GET
+
+ticketforzen_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZenomaniaCoreBundle:TicketForZen:show" }
+    methods:  GET
+
+ticketforzen_new:
+    path:     /new
+    defaults: { _controller: "ZenomaniaCoreBundle:TicketForZen:new" }
+    methods:  [GET, POST]
+
+ticketforzen_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZenomaniaCoreBundle:TicketForZen:edit" }
+    methods:  [GET, POST]
+
+ticketforzen_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZenomaniaCoreBundle:TicketForZen:delete" }
+    methods:  DELETE

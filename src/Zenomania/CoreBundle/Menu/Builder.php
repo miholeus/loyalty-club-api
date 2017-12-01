@@ -61,6 +61,8 @@ class Builder
         $product->addChild('Products', self::makeResourceRoutes('product'));
         $product->addChild('Product Categories', self::makeResourceRoutes('productcategory'));
 
+        $menu->addChild('TicketForZen', self::makeResourceRoutes('ticketforzen'));
+
         $this->fillBranchRoutes($menu->getChildren());
 
         return $menu;
