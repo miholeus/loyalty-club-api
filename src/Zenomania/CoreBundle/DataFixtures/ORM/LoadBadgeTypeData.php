@@ -53,6 +53,7 @@ class LoadBadgeTypeData extends AbstractFixture
 
         $this->addReference('badge-type-user', $badgeTypeUser);
         $this->addReference('badge-type-match', $badgeTypeMatch);
+        $this->addReference('badge-type-prediction', $badgeTypePrediction);
         $this->addReference('badge-type-repost', $badgeTypeRepost);
         $this->addReference('badge-type-zen', $badgeTypeZen);
         $this->addReference('badge-type-zenomania', $badgeTypeZenomania);

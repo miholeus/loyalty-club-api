@@ -18,12 +18,6 @@ class ClubType extends AbstractType
         $builder
             ->add('name')
             ->add('site')
-            ->add('vkGroup')
-            ->add('fbGroup')
-            ->add('twitterGroup')
-            ->add('instagramGroup')
-            ->add('youtubeGroup')
-            ->add('ytUploadPlaylist')
             ->add('sport', EntityType::class, [
                 'class' => 'Zenomania\CoreBundle\Entity\Sport',
                 'choice_label' => 'name',

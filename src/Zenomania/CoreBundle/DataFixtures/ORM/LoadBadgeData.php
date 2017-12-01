@@ -50,6 +50,16 @@ class LoadBadgeData extends AbstractFixture
         $badgeMatch->setTypeId($this->getReference('badge-type-match'));
         $manager->persist($badgeMatch);
 
+        $badgePredication = clone $badge;
+        $badgePredication->setTitle('Угадал общий счёт матча');
+        $badgePredication->setSort(1);
+        $badgePredication->setCode('forecast winner match result');
+        $badgePredication->setPoints(1);
+        $badgePredication->setMaxPoints(1);
+        $badgePredication->setActive(true);
+        $badgePredication->setTypeId($this->getReference('badge-type-prediction'));
+        $manager->persist($badgePredication);
+
         $manager->flush($badgeHello );
     }
 

@@ -31,6 +31,7 @@ class BadgesTransformer extends TransformerAbstract
                 'title' => $item['type_title'],
                 'sort' => $item['type_sort'],
             ],
+            'title' => $item['badge_title'],
             'code' => $item['badge_code'],
             'points' => $item['points'],
             'max_points' => $item['max_points'],

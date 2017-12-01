@@ -15,7 +15,6 @@ Zenomania\CoreBundle\Entity\Badge:
         code:
             type: string
             length: 255
-            unique: true
         photo:
             type: string
             length: 255
