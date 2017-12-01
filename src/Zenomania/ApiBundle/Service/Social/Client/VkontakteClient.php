@@ -70,22 +70,37 @@ class VkontakteClient implements ClientInterface
      */
     public function getReposts(News $post, int $groupId)
     {
-        $queryData = [
-            'owner_id' => $groupId,
-            'post_id' => $post->getVkId(),
-            'v' => $this->version,
-            'count' => 1000
-        ];
-        $response = $this->client->request(
-            'GET',
-            'wall.getReposts',
-            ['query' => $queryData]
-        );
-        $reposts = \GuzzleHttp\json_decode($response->getBody()->getContents());
-        if (isset($reposts->response)) {
-            return $reposts->response->items;
-        }
-        throw new ClientException($reposts->error->error_code, $reposts->error->error_msg);
+        $reposts = array();
+        $offset = 0;
+        do {
+            $queryData = [
+                'owner_id' => $groupId,
+                'post_id' => $post->getVkId(),
+                'v' => $this->version,
+                'offset' => $offset,
+                'count' => 1
+            ];
+            $response = $this->client->request(
+                'GET',
+                'wall.getReposts',
+                ['query' => $queryData]
+            );
+            sleep(1);
+            $repost = \GuzzleHttp\json_decode($response->getBody()->getContents());
+
+            if(isset($repost->error)){
+                throw new ClientException($repost->error->error_code, $repost->error->error_msg);
+            }
+
+            $item = array_shift($repost->response->items);
+            if($item){
+                if(!array_key_exists($item->from_id, $reposts)){
+                    $reposts[$item->from_id] = $item;
+                }
+            }
+            $offset++;
+        } while ($item);
+        return $reposts;
     }
 
     /**
