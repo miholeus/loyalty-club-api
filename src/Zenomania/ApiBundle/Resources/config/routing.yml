@@ -42,3 +42,6 @@ api_news:
 api_orders:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\OrdersController"
+api_product:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\ProductController"

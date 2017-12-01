@@ -121,3 +121,6 @@ services:
         public: false
         tags:
             - { name: 'security.voter' }
+    api.product.service:
+        class: Zenomania\ApiBundle\Service\Product
+        arguments: ['@repository.product']

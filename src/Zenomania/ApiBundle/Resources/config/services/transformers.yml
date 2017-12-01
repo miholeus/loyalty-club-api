@@ -68,3 +68,6 @@ services:
     api.data.transformer.order:
         class: Zenomania\ApiBundle\Service\Transformer\OrderTransformer
         arguments: ['@utils.host_based_url']
+    api.data.transformer.product:
+        class: Zenomania\ApiBundle\Service\Transformer\ProductTransformer
+        arguments: ['@utils.host_based_url']
