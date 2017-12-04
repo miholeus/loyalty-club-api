@@ -58,6 +58,9 @@ zenomania_core_product:
 zenomania_core_productcategory:
     resource: "@ZenomaniaCoreBundle/Resources/config/routing/productcategory.yml"
     prefix:   /productcategory
+zenomania_core_ticketforzen:
+    resource: "@ZenomaniaCoreBundle/Resources/config/routing/ticketforzen.yml"
+    prefix:   /ticketforzen
 login:
     path: /login
     defaults: {_controller: ZenomaniaCoreBundle:Security:login}

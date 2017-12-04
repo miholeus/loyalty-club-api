@@ -5,6 +5,7 @@ imports:
    - { resource: "services/forms.yml" }
    - { resource: "services/menu.yml" }
    - { resource: "services/upload.yml" }
+   - { resource: "services/consumers.yml" }
 
 services:
     core.encoder.json:
@@ -94,7 +95,7 @@ services:
         class: Zenomania\CoreBundle\Service\UserBadge
         arguments: ['@repository.user_badge_repository','@repository.badge_repository']
     news_repost.service:
-        class: Zenomania\CoreBundle\Service\NewsService
+        class: Zenomania\CoreBundle\Service\NewsRepostService
         arguments: ['@doctrine.orm.entity_manager']
     news.service:
         class: Zenomania\CoreBundle\Service\News
@@ -107,12 +108,23 @@ services:
             - ['setImageService', ['@images.service']]
     order.service:
         class: Zenomania\CoreBundle\Service\OrderService
-        arguments: ['@repository.order', '@repository.product']
+        arguments: ['@repository.order', '@repository.product', '@api.order_cart.service']
     subscription.service:
         class: Zenomania\CoreBundle\Service\SubscriptionService
         arguments: ['@doctrine.orm.entity_manager']
     order.listener:
         class: Zenomania\CoreBundle\Entity\Listener\OrderListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+    club.service:
+        class: Zenomania\CoreBundle\Service\Club
+        parent: core.user_aware_service
+        calls:
+            - ['setUploadService', ['@file.upload_club_photo']]
+            - ['setImageService', ['@images.service']]
+    person_points.listener:
+        class: Zenomania\CoreBundle\Entity\Listener\PersonPointsListener
         arguments: ['@service_container']
         tags:
             - { name: doctrine.orm.entity_listener }

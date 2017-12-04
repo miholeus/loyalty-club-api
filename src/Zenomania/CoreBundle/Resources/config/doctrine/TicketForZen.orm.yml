@@ -1,0 +1,53 @@
+Zenomania\CoreBundle\Entity\TicketForZen:
+    type: entity
+    table: ticket_for_zen
+    indexes:
+        FK_ticket_for_zen_event:
+            columns:
+                - event_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+        barcode:
+            type: string
+            nullable: false
+            length: 256
+            options:
+                fixed: false
+        price:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+        status:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+    manyToOne:
+        event:
+            targetEntity: Zenomania\CoreBundle\Entity\Event
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: ticketForZen
+            joinColumns:
+                event_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

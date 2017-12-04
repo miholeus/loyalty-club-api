@@ -70,7 +70,7 @@ class NewsController extends RestController
     public function getNewsAction(ParamFetcher $paramFetcher)
     {
         $transformer = $this->get('api.data.transformer.news');
-        $service = $this->get('api.news');
+        $service = $this->get('news.service');
 
         $params = $this->getParams($paramFetcher, 'news');
 

@@ -8,10 +8,12 @@
 
 namespace Zenomania\CoreBundle\Service;
 
+use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Repository\UserBadgeRepository;
 use Zenomania\CoreBundle\Repository\BadgeRepository;
 use Zenomania\CoreBundle\Entity\UserBadge as UserBadgeEntity;
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Entity\Badge;
 
 class UserBadge
 {
@@ -42,7 +44,7 @@ class UserBadge
         $userBadge = new UserBadgeEntity();
 
         /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
-        $badge = $this->getBadgeRepository()->findOneBy(['code' => \Zenomania\CoreBundle\Entity\Badge::TYPE_REGISTRATION]);
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => Badge::TYPE_REGISTRATION]);
 
         $userBadge->setUser($user);
         $userBadge->setPoints($badge->getPoints());
@@ -61,7 +63,7 @@ class UserBadge
     {
         $userBadge = $this->getProfileCompletedBadge($user);
 
-        if(!$userBadge){
+        if (!$userBadge) {
             $this->getUserBadgeRepository()->save($userBadge);
         }
 
@@ -71,11 +73,47 @@ class UserBadge
     /**
      * @param User $user
      */
+    public function giveBadgeForForecast(User $user)
+    {
+        $userBadge = new UserBadgeEntity();
+
+        /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => Badge::TYPE_FORECAST_WINNER_MATCH_RESULT]);
+        $userBadge->setUser($user);
+        $userBadge->setPoints($badge->getPoints());
+        $userBadge->setBadgeId($badge);
+
+        $this->getUserBadgeRepository()->save($userBadge);
+    }
+
+    /**
+     * @param PersonPoints $personPoints
+     */
+    public function giveBadgeForRepost(PersonPoints $personPoints)
+    {
+        $userBadge = new UserBadgeEntity();
+
+        /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => Badge::TYPE_MAKE_REPOST]);
+        $userBadge->setUser($personPoints->getUser());
+        if($personPoints->getPoints() < 0){
+            $badge->setPoints($badge->getPoints() * -1);
+        }
+
+        $userBadge->setPoints($badge->getPoints());
+        $userBadge->setBadgeId($badge);
+
+        $this->getUserBadgeRepository()->save($userBadge);
+    }
+    
+    /**
+     * @param User $user
+     */
     public function revokeBadgeIfProfileNotCompleted(User $user)
     {
         $userBadge = $this->getProfileCompletedBadge($user);
 
-        if($userBadge){
+        if ($userBadge) {
             $this->getUserBadgeRepository()->remove($userBadge);
         }
     }
@@ -84,12 +122,12 @@ class UserBadge
      * Get's user's profile completed badge
      *
      * @param User $user
-     * @return null|\Zenomania\CoreBundle\Entity\UserBadge
+     * @return null|object|UserBadgeEntity
      */
     public function getProfileCompletedBadge(User $user)
     {
         /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
-        $badge = $this->getBadgeRepository()->findOneBy(['code' => \Zenomania\CoreBundle\Entity\Badge::TYPE_PROFILE_COMPLETED]);
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => Badge::TYPE_PROFILE_COMPLETED]);
 
         return $this->getUserBadgeRepository()->findOneBy(
             [
@@ -98,6 +136,24 @@ class UserBadge
             ]
         );
     }
+
+    /**
+     * @param PersonPoints $personPoints
+     * @return null|object|UserBadgeEntity
+     */
+    public function getForecastBadge(PersonPoints $personPoints)
+    {
+        /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => $personPoints->getType()]);
+
+        return $this->getUserBadgeRepository()->findOneBy(
+            [
+                'badgeId' => $badge,
+                'user' => $personPoints->getUser()
+            ]
+        );
+    }
+
 
     /**
      * @return UserBadgeRepository

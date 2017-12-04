@@ -15,7 +15,10 @@ use Zenomania\CoreBundle\Entity\SocialRepost;
 use Zenomania\CoreBundle\Repository\NewsRepository;
 use Zenomania\CoreBundle\Repository\SocialRepostRepository;
 
-class NewsService
+/**
+ * Check news reposts
+ */
+class NewsRepostService
 {
 
     /** @var EntityManager */
@@ -45,7 +48,7 @@ class NewsService
     /**
      * @return News[]
      */
-    public function getAllContlolledNews()
+    public function getAllControlledNews()
     {
         return $this->getNewsRepository()->findAllControlledNews();
     }
@@ -113,12 +116,12 @@ class NewsService
     {
         $points = 0;
         foreach ($news->getTags() as $tag) {
-            if (preg_match('/#(\d+)ZEN/', $tag, $matches)) {
+            if (preg_match('/(\d+)ZEN/i', $tag, $matches)) {
                 $points += $matches[1];
             }
         }
 
-        return 0;
+        return $points;
     }
 
     /**

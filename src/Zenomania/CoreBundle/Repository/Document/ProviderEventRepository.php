@@ -38,4 +38,24 @@ class ProviderEventRepository extends DocumentRepository
 
         return $result !== 0;
     }
+
+
+    /**
+     * Fetches ids
+     *
+     * @return array
+     */
+    public function fetchIds()
+    {
+        $dm = $this->getDocumentManager();
+
+        $select = $dm->createQueryBuilder('ZenomaniaCoreBundle:ProviderEvent')
+            ->select(['event_id']);
+        $data = [];
+        $events = $select->getQuery()->toArray();
+        foreach ($events as $event) {
+            $data[] = $event->getEventId();
+        }
+        return $data;
+    }
 }

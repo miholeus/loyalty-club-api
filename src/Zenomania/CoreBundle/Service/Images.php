@@ -19,7 +19,7 @@ class Images extends UserAwareService
     public function save(Image $image)
     {
         $em = $this->getEntityManager();
-        if (null === $image->getId()) {
+        if (null === $image->getId() && null !== $this->getUser()) {
             $image->setCreatedBy($this->getUser());
         }
         $em->persist($image);
@@ -32,7 +32,7 @@ class Images extends UserAwareService
      * @param UploadedFile $file
      * @return Image
      */
-    public function createImageFromFile(UploadedFile $file)
+    public function createImageFromUploadedFile(UploadedFile $file)
     {
         $image = new Image();
         $image->setName($file->getClientOriginalName());
@@ -44,13 +44,25 @@ class Images extends UserAwareService
     }
 
     /**
+     * Creates image
+     *
+     * @return Image
+     */
+    public function createImage()
+    {
+        $image = new Image();
+        $image->setPublished(true);
+        $image->setQueued(false);
+        return $image;
+    }
+    /**
      * Creates image size from uploaded file
      *
      * @param UploadedFile $file
      * @param array $options
      * @return ImageSize
      */
-    public function createImageSizeFromFile(UploadedFile $file, array $options)
+    public function createImageSizeFromUploadedFile(UploadedFile $file, array $options)
     {
         $image = new ImageSize($options);
 

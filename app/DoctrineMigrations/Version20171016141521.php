@@ -22,7 +22,6 @@ class Version20171016141521 extends AbstractMigration
         $this->addSql('DROP INDEX post_id_user_outerid');
         $this->addSql('DROP INDEX IDX_C37F24194B89032C');
         $this->addSql('ALTER TABLE social_repost RENAME COLUMN post_id TO news_id');
-        $this->addSql('ALTER TABLE social_repost ADD CONSTRAINT FK_C37F2419B5A459A0 FOREIGN KEY (news_id) REFERENCES news (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('CREATE UNIQUE INDEX post_id_user_outerid ON social_repost (news_id, user_outerid)');
         $this->addSql('CREATE INDEX IDX_C37F24194B89032C ON social_repost (news_id)');
     }
@@ -35,7 +34,6 @@ class Version20171016141521 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE social_repost DROP CONSTRAINT FK_C37F2419B5A459A0');
         $this->addSql('DROP INDEX idx_c37f24194b89032c');
         $this->addSql('DROP INDEX post_id_user_outerid');
         $this->addSql('ALTER TABLE social_repost RENAME COLUMN news_id TO post_id');

@@ -186,7 +186,7 @@ class ProfileController extends RestController
         }
 
         $imageService = $this->get('images.service');
-        $originalImage = $imageService->createImageFromFile($imageBig);
+        $originalImage = $imageService->createImageFromUploadedFile($imageBig);
 
         /**
          * Загружаем фото
@@ -231,7 +231,8 @@ class ProfileController extends RestController
      *              "purchases":<integer>,
      *              "predictions":<integer>
      *              "reposts":<integer>,
-     *              "invites":<integer>
+     *              "invites":<integer>,
+     *              "promocoupons":<integer>
      *          },
      *          "time":<time request>
      *      }

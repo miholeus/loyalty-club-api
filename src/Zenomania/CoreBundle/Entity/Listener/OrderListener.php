@@ -12,7 +12,6 @@ namespace Zenomania\CoreBundle\Entity\Listener;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zenomania\CoreBundle\Entity\Exception\ValidatorException;
 use Zenomania\CoreBundle\Entity\OrderStatus;
 use Zenomania\CoreBundle\Entity\OrderStatusHistory;
 use Zenomania\CoreBundle\Entity\Traits\UserAwareTrait;
@@ -21,7 +20,9 @@ use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Event\NotificationInterface;
 use Zenomania\CoreBundle\Event\Order\OrderWasCancelledEvent;
 use Zenomania\CoreBundle\Exception;
+use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Service\Traits\EventsAwareTrait;
+use Zenomania\CoreBundle\Entity\Exception\ValidatorException;
 
 class OrderListener
 {
@@ -43,6 +44,25 @@ class OrderListener
     /**
      * @param Order $order
      * @param LifecycleEventArgs $event
+     */
+    public function prePersist(Order $order, LifecycleEventArgs $event)
+    {
+        if ($order->getStatusId() == null) {
+            $orderStatusRepository = $this->container->get('repository.order_status');
+            /** @var OrderStatus $status */
+            $status = $orderStatusRepository->findOneBy(['code' => OrderStatus::NEW]);
+            $order->setStatusId($status);
+        }
+
+        //Списываем поинты за заказ
+        /** @var PersonPointsRepository $personPointsRepository */
+        $personPointsRepository = $this->container->get('repository.person_points_repository');
+        $personPointsRepository->takePointsForCreateOrder($order);
+    }
+
+    /**
+     * @param Order $order
+     * @param LifecycleEventArgs $event
      * @throws Exception
      */
     public function preUpdate(Order $order, LifecycleEventArgs $event)
@@ -54,7 +74,7 @@ class OrderListener
             /** @var OrderStatus $status */
             $status = $entityChangeSet['statusId'][0];
             if ($status->getCode() == OrderStatus::CANCELLED) {
-                //throw new ValidatorException('Заказ уже отменен, нельзя менять его статус');
+                throw new ValidatorException('Заказ уже отменен, нельзя менять его статус');
             }
         }
     }

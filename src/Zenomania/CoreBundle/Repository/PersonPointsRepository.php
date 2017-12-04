@@ -11,6 +11,7 @@ namespace Zenomania\CoreBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
 use Zenomania\CoreBundle\Entity\Order;
+use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
@@ -32,13 +33,11 @@ class PersonPointsRepository extends EntityRepository
      */
     public function givePointsForInvite(UserReferralCode $referralCode, User $user, $points)
     {
-        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($referralCode->getUser());
         $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
 
         $params = [
             'season' => $season,
-            'person' => $person,
-            'user'   => $user,
+            'user'   => $referralCode->getUser(),
             'points' => $points,
             'type' => PersonPoints::TYPE_INVITE,
             'state' => 'none',
@@ -68,7 +67,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_LINKED_VK,
             'state' => 'none',
@@ -95,7 +94,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_SUBSCRIPTION_REGISTER,
             'state' => 'none',
@@ -122,7 +121,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_SUBSCRIPTION_ATTENDANCE,
             'state' => 'none',
@@ -149,7 +148,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_TICKET_REGISTER,
             'state' => 'none',
@@ -178,7 +177,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_REPOST,
             'state' => $state,
@@ -235,7 +234,7 @@ class PersonPointsRepository extends EntityRepository
         $params = [
             'season' => $season,
             'person' => $person,
-            'user'   => $user,
+            'user' => $user,
             'points' => $points,
             'type' => PersonPoints::TYPE_PROMO_COUPON,
             'state' => 'none',
@@ -268,13 +267,33 @@ class PersonPointsRepository extends EntityRepository
         $this->_em->flush();
     }
 
+    public function takePointsForCreateOrder(Order $order)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($order->getUserId());
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+        $params = [
+            'season' => $season,
+            'person' => $person,
+            'user' => $order->getUserId(),
+            'points' => -1 * floor($order->getPrice()),
+            'type' => PersonPoints::TYPE_CREATE_ORDER,
+            'state' => 'none',
+            'dt' => new \DateTime()
+        ];
+        $personPoints = PersonPoints::fromArray($params);
+
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
+    }
+
     /**
      * Total user points
      *
      * @param User $user
      * @return int
      */
-    public function getTotalPoints(User $user) : int
+    public function getTotalPoints(User $user): int
     {
         $qb = $this->_em->createQueryBuilder();
         $select = $qb->select(['points' => 'SUM(p.points)'])
@@ -400,5 +419,39 @@ class PersonPointsRepository extends EntityRepository
 
         $result = $select->execute()->fetchAll();
         return $result;
+    }
+
+    /**
+     * Получить массив person, у которых нет связи с user
+     *
+     * @return array
+     */
+    public function getNullUserId()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select(['IDENTITY(pp.person) AS person'])
+            ->from('ZenomaniaCoreBundle:PersonPoints', 'pp')
+            ->where('pp.user IS NULL')
+            ->groupBy('pp.person')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * Обновляет в таблице person_points колонку user_id для соответствующего person_id
+     *
+     * @param Person $person
+     * @param User $user
+     * @return \Doctrine\DBAL\Driver\Statement|int
+     */
+    public function updateUserByPerson(Person $person, User $user)
+    {
+        $qb = $this->getEntityManager()->getConnection()->createQueryBuilder();;
+        return $qb->update('person_points')
+            ->set('user_id', $user->getId())
+            ->where('person_id = :personId')
+            ->setParameter('personId', $person->getId())
+            ->execute();
     }
 }

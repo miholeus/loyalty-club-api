@@ -27,7 +27,8 @@ class UserProfileStatsTransformer extends TransformerAbstract
             'purchases' => $data[PersonPoints::TYPE_PURCHASE] ?? 0,
             'predictions' => $data[PersonPoints::TYPE_FORECAST_WINNER] ?? 0,
             'reposts' => $data[PersonPoints::TYPE_REPOST] ?? 0,
-            'invites' => $data[PersonPoints::TYPE_INVITE] ?? 0
+            'invites' => $data[PersonPoints::TYPE_INVITE] ?? 0,
+            'promocoupons' => $data[PersonPoints::TYPE_PROMO_COUPON] ?? 0
         ];
     }
 }
