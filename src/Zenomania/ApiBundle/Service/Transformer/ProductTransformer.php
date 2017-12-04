@@ -33,8 +33,8 @@ class ProductTransformer extends TransformerAbstract
     public function transform(array $products)
     {
         $items = array();
-        $productCategory = array();
         foreach ($products as $product) {
+            $productCategory = array();
             /** @var Product $product */
             if (!array_key_exists($product->getCategoryId()->getId(), $items)) {
                 $productCategory['id'] = $product->getCategoryId()->getId();
@@ -48,7 +48,7 @@ class ProductTransformer extends TransformerAbstract
 
                 ];
                 $items[$product->getCategoryId()->getId()] = $productCategory;
-            }else{
+            } else {
                 $items[$product->getCategoryId()->getId()]['products'][] =
                     [
                         'id' => $product->getId(),
