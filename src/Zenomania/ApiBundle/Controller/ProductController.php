@@ -9,9 +9,7 @@
 namespace Zenomania\ApiBundle\Controller;
 
 
-use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 class ProductController extends RestController
 {
@@ -30,26 +28,24 @@ class ProductController extends RestController
      *
      * ### Success Response ###
      *      {
-     *          "data":{
-     *              "type": {
-     *                  "id": <integer>
-     *                  "title": <string>
-     *                  "sort": <integer>
-     *              }
-     *              "title": <string>,
-     *              "code": <string>,
-     *              "points": <integer>,
-     *              "max_points": <integer>,
-     *              "photo": <string>,
-     *              "sort": <integer>,
-     *          },
+     *          "data":[{
+     *              "id":<integer>,
+     *              "title":<string>,
+     *              "products":[{
+     *                  "id":<integer>,
+     *                  "title":<string>,
+     *                  "description":<integer>,
+     *                  "photo":<integer>,
+     *                  "price":<integer>,
+     *               }]
+     *          }],
      *          "time":<time request>
      *      }
      *
      * @ApiDoc(
-     *  section="Бейджи",
+     *  section="Товары",
      *  resource=true,
-     *  description="Бейджи пользователй",
+     *  description="Товары за зены",
      *  statusCodes={
      *         200="При успешном запросе",
      *         400="Ошибка запроса"
@@ -63,11 +59,10 @@ class ProductController extends RestController
      *    },
      *  output="array"
      * )
-     * @QueryParam(name="period", requirements="^(month|season)$", allowBlank=true, nullable=true, description="Сделать выборку за месяц(month)|сезон(season)|все()")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getProductAction(ParamFetcher $paramFetcher)
+    public function getProductAction()
     {
         $transformer = $this->get('api.data.transformer.product');
         $service = $this->get('api.product.service');
