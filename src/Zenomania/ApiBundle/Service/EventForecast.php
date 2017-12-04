@@ -7,6 +7,7 @@
 namespace Zenomania\ApiBundle\Service;
 
 use Zenomania\ApiBundle\Form\Model\EventScorePrediction;
+use Zenomania\CoreBundle\Entity\EventPlayerForecast;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\Event;
 use Zenomania\CoreBundle\Repository\EventForecastRepository;
@@ -112,5 +113,55 @@ class EventForecast
     public function getPlayerForecastRepository(): EventPlayerForecastRepository
     {
         return $this->playerForecastRepository;
+    }
+
+    /**
+     * Получить прогноз для заданного мероприятия и пользователя
+     *
+     * @param Event $event
+     * @param User $user
+     * @return null|\Zenomania\CoreBundle\Entity\EventForecast
+     */
+    public function getEventForecastForUpdate(Event $event, User $user)
+    {
+        return $this->getEventForecastRepository()->getEventForecast($event, $user);
+    }
+
+    /**
+     * @param EventScorePrediction $eventScorePrediction
+     * @param \Zenomania\CoreBundle\Entity\EventForecast $forecast
+     * @return \Zenomania\CoreBundle\Entity\EventForecast
+     */
+    public function updateForecast(EventScorePrediction $eventScorePrediction, \Zenomania\CoreBundle\Entity\EventForecast $forecast)
+    {
+        $forecast->setScoreHome($eventScorePrediction->getScoreHome())
+            ->setScoreGuest($eventScorePrediction->getScoreGuest())
+            ->setScoreInRounds($eventScorePrediction->getScoreInRounds());
+
+        return $forecast;
+    }
+
+    /**
+     * Updates user's forecast for event player
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $forecasts
+     */
+    public function updatePlayerForecasts(\Doctrine\Common\Collections\ArrayCollection $forecasts)
+    {
+        $this->deletePlayerForecasts($forecasts);
+        $this->savePlayerForecasts($forecasts);
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $forecasts
+     */
+    public function deletePlayerForecasts(\Doctrine\Common\Collections\ArrayCollection $forecasts)
+    {
+        /**
+         * @var EventPlayerForecast $forecast
+         */
+        foreach ($forecasts as $forecast) {
+            $this->getPlayerForecastRepository()->deleteEventPlayerForecast($forecast->getEvent(), $forecast->getUser());
+        }
     }
 }

@@ -171,4 +171,23 @@ class EventPlayerForecastRepository extends EntityRepository
         }
         $em->flush();
     }
+
+    /**
+     * @param Event $event
+     * @param User $user
+     * @return mixed
+     */
+    public function deleteEventPlayerForecast(Event $event, User $user)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $isDeleted = $qb->delete('ZenomaniaCoreBundle:EventPlayerForecast', 'f')
+            ->where('f.event = :event')
+            ->andWhere('f.user = :user')
+            ->setParameter('event', $event)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
+
+        return $isDeleted;
+    }
 }
