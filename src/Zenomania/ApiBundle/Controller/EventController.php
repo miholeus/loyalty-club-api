@@ -579,11 +579,7 @@ class EventController extends RestController
         $service->updateForecast($form->getData(), $forecast);
         $service->save($forecast);
 
-        $data = [
-            'id' => $forecast->getId()
-        ];
-
-        $view = $this->view($data, 200);
+        $view = $this->view(null, 204);
         return $this->handleView($view);
     }
     /**
