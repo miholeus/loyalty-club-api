@@ -24,3 +24,6 @@ services:
     file.upload_club_photo:
         class: Zenomania\CoreBundle\Service\Upload\UploadClubPhoto
         parent: file.upload_photo_abstract
+    file.upload_promo_ticket:
+        class: Zenomania\CoreBundle\Service\Upload\UploadPromoTicket
+        parent: file.upload

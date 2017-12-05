@@ -9,8 +9,15 @@
 namespace Zenomania\CoreBundle\Entity;
 
 
-class TicketForZen
+use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class TicketForZen implements IdentifiableInterface
 {
+    const TYPE_USED = 'ticket_used';
+    const TYPE_NOT_USED = 'ticket_not_used';
+    const TYPE_PURCHASED = 'ticket_purchased';
+
     /**
      * @var integer
      */
@@ -27,6 +34,13 @@ class TicketForZen
     private $name;
 
     /**
+     * @Assert\File(mimeTypes={ "image/jpg", "image/jpeg", "image/png", "application/pdf" }, groups={"upload"})
+     * @Assert\Image(
+     *    mimeTypesMessage = "Неверный формат документа",
+     *    maxSize = "5M",
+     *    maxSizeMessage = "Документ слишком большого размера",
+     *    groups={"upload"}
+     * )
      * @var string
      */
     private $barcode;

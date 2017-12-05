@@ -74,6 +74,12 @@ services:
         calls:
             - ['setUploadService', ['@file.upload_player_photo']]
             - ['setImageService', ['@images.service']]
+    ticketforzen.service:
+        class: Zenomania\CoreBundle\Service\TicketForZen
+        parent: core.user_aware_service
+        calls:
+            - ['setUploadService', ['@file.upload_promo_ticket']]
+            - ['setImageService', ['@images.service']]
     event.service:
         class: Zenomania\ApiBundle\Service\Events
         arguments: ['@doctrine.orm.entity_manager']
