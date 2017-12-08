@@ -67,6 +67,10 @@ class Badge implements IdentifiableInterface
      */
     private $active;
 
+    /**
+     * @var \DateTime
+     */
+    private $date;
 
     /**
      * Get id
@@ -284,5 +288,29 @@ class Badge implements IdentifiableInterface
     public function setPhotoBadge($photoBadge)
     {
         $this->photoBadge = $photoBadge;
+    }
+
+    /**
+     * Set date.
+     *
+     * @param \DateTime $date
+     *
+     * @return Badge
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date.
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

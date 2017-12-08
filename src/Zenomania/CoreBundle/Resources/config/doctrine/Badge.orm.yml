@@ -40,6 +40,9 @@ Zenomania\CoreBundle\Entity\Badge:
             type: boolean
             options:
                 default: true
+        date:
+            type: datetime
+            nullable: true
     manyToOne:
         typeId:
             targetEntity: Zenomania\CoreBundle\Entity\BadgeType
