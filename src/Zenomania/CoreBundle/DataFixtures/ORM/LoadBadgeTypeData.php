@@ -49,7 +49,12 @@ class LoadBadgeTypeData extends AbstractFixture
         $badgeTypeZenomania->setSort(6);
         $manager->persist($badgeTypeZenomania);
 
-        $manager->flush($badgeTypeUser);
+        $badgeTypeTopRating = clone $badgeType;
+        $badgeTypeTopRating->setTitle('Лидер рейтинга');
+        $badgeTypeTopRating->setSort(7);
+        $manager->persist($badgeTypeTopRating);
+
+        $manager->flush();
 
         $this->addReference('badge-type-user', $badgeTypeUser);
         $this->addReference('badge-type-match', $badgeTypeMatch);
@@ -57,6 +62,7 @@ class LoadBadgeTypeData extends AbstractFixture
         $this->addReference('badge-type-repost', $badgeTypeRepost);
         $this->addReference('badge-type-zen', $badgeTypeZen);
         $this->addReference('badge-type-zenomania', $badgeTypeZenomania);
+        $this->addReference('badge-type-top_rating', $badgeTypeTopRating);
     }
 
     /**
