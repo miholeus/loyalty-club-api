@@ -24,6 +24,10 @@ class PersonPoints
     const TYPE_CANCELLED_ORDER = 'cancelled_order';
     const TYPE_CREATE_ORDER = 'create_order';
 
+    const OPERATION_TYPE_DEBIT = 'debit';
+    const OPERATION_TYPE_CREDIT = 'credit';
+    const OPERATION_TYPE_RETURN = 'return';
+
     /**
      * @var integer
      */
@@ -254,5 +258,34 @@ class PersonPoints
     public function getUser()
     {
         return $this->user;
+    }
+    /**
+     * @var string
+     */
+    private $operation_type;
+
+
+    /**
+     * Set operationType.
+     *
+     * @param string $operationType
+     *
+     * @return PersonPoints
+     */
+    public function setOperationType($operationType)
+    {
+        $this->operation_type = $operationType;
+
+        return $this;
+    }
+
+    /**
+     * Get operationType.
+     *
+     * @return string
+     */
+    public function getOperationType()
+    {
+        return $this->operation_type;
     }
 }
