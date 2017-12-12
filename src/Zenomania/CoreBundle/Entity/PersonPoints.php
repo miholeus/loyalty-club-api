@@ -72,11 +72,16 @@ class PersonPoints
      * @param array $data
      * @return PersonPoints
      */
-    public static function fromArray(array $data) : PersonPoints
+    public static function fromArray(array $data): PersonPoints
     {
         $self = new self();
         foreach ($data as $key => $value) {
-            $self->{"set".ucfirst($key)}($value);
+            $items = explode('_', $key);
+            $key = '';
+            foreach ($items as $item){
+                $key.= ucfirst($item);
+            }
+            $self->{"set" . $key}($value);
         }
         return $self;
     }
