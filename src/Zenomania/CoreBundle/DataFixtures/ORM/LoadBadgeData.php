@@ -16,6 +16,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 class LoadBadgeData extends AbstractFixture
     implements OrderedFixtureInterface
 {
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $badge = new Badge();
@@ -69,6 +72,31 @@ class LoadBadgeData extends AbstractFixture
         $badgeRepost->setActive(true);
         $badgeRepost->setTypeId($this->getReference('badge-type-repost'));
         $manager->persist($badgeRepost);
+
+        $date = new \DateTime('2017-12-01');
+        $date = $date->format('Y-m-d');
+
+        $badgeTopRatingOfMonth = clone $badge;
+        $badgeTopRatingOfMonth->setTitle('Лидер рейтинга за месяц');
+        $badgeTopRatingOfMonth->setSort(1);
+        $badgeTopRatingOfMonth->setCode(Badge::TYPE_TOP_RATINGS_OF_MONTH);
+        $badgeTopRatingOfMonth->setPoints(1);
+        $badgeTopRatingOfMonth->setMaxPoints(1);
+        $badgeTopRatingOfMonth->setActive(true);
+        $badgeTopRatingOfMonth->setDate($date);
+        $badgeTopRatingOfMonth->setTypeId($this->getReference('badge-type-top_rating'));
+        $manager->persist($badgeTopRatingOfMonth);
+
+        $badgeTopRatingOfSeason = clone $badge;
+        $badgeTopRatingOfSeason->setTitle('Лидер рейтинга за сезон');
+        $badgeTopRatingOfSeason->setSort(2);
+        $badgeTopRatingOfSeason->setCode(Badge::TYPE_TOP_RATINGS_OF_SEASON);
+        $badgeTopRatingOfSeason->setPoints(1);
+        $badgeTopRatingOfSeason->setMaxPoints(1);
+        $badgeTopRatingOfSeason->setActive(true);
+        $badgeTopRatingOfSeason->setDate($date);
+        $badgeTopRatingOfSeason->setTypeId($this->getReference('badge-type-top_rating'));
+        $manager->persist($badgeTopRatingOfSeason);
 
         $manager->flush();
     }

@@ -15,6 +15,8 @@ class Badge implements IdentifiableInterface
     const TYPE_PROFILE_COMPLETED = 'profile done';
     const TYPE_FORECAST_WINNER_MATCH_RESULT = 'forecast winner match result';
     const TYPE_MAKE_REPOST = 'make repost';
+    const TYPE_TOP_RATINGS_OF_MONTH = 'top ratings of month';
+    const TYPE_TOP_RATINGS_OF_SEASON = 'top ratings of season';
 
     /**
      * @var int
@@ -67,6 +69,10 @@ class Badge implements IdentifiableInterface
      */
     private $active;
 
+    /**
+     * @var \DateTime
+     */
+    private $date;
 
     /**
      * Get id
@@ -284,5 +290,29 @@ class Badge implements IdentifiableInterface
     public function setPhotoBadge($photoBadge)
     {
         $this->photoBadge = $photoBadge;
+    }
+
+    /**
+     * Set date.
+     *
+     * @param \DateTime $date
+     *
+     * @return Badge
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date.
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

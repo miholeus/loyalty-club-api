@@ -2,9 +2,11 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Zenomania\ApiBundle\Request\Filter\BadgeFilter;
 use Zenomania\CoreBundle\Entity\Badge;
 use Zenomania\CoreBundle\Entity\BadgeType;
+use Zenomania\ApiBundle\Service\Utils\PeriodConverter;
 use Zenomania\CoreBundle\Entity\UserBadge;
 
 /**
@@ -76,5 +78,37 @@ class UserBadgeRepository extends \Doctrine\ORM\EntityRepository
         }
         $result = $select->execute()->fetchAll();
         return $result;
+    }
+
+    /**
+     * @param PeriodConverter $period
+     * @return mixed
+     */
+    public function getTopUser(PeriodConverter $period, $count = 1)
+    {
+        $em = $this->getEntityManager();
+
+        $qb = $em->getConnection()->createQueryBuilder();
+
+        $select = $qb->select(['sum(p.points) as sum_points', 'p.user_id'])
+            ->from('person_points', 'p')
+            ->where('p.dt BETWEEN :dt_st AND :dt_ed')
+            ->setParameter('dt_st', $period->getStartDate()->format('Y-m-d'))
+            ->setParameter('dt_ed', $period->getFinishDate()->format('Y-m-d'))
+            ->groupBy('p.user_id')
+            ->orderBy('sum_points', 'DESC')
+            ->setMaxResults($count)
+            ->execute();
+        $result = $select->fetch();
+        if($result != null){
+            $user = $em->getRepository('ZenomaniaCoreBundle:User')->find($result['user_id']);
+            if($user){
+                return $user;
+            }else{
+                throw new HttpException('404', 'Пользователь не найден');
+            }
+        }else{
+            throw new HttpException('404', 'Ни у одного пользователя, нету поинтов');
+        }
     }
 }
