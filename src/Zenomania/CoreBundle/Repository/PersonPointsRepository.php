@@ -408,6 +408,7 @@ class PersonPointsRepository extends EntityRepository
             ->innerJoin('p', 'users', 'u', 'p.user_id = u.id')
             ->where('points > 0')
             ->andWhere('user_id IS NOT NULL')
+            ->andWhere('operation_type = :operation_type')
             ->groupBy('user_id');
         if ($filter->period) {
             $subQuery
@@ -429,7 +430,7 @@ class PersonPointsRepository extends EntityRepository
         if ($filter->period) {
             $select->setParameter('dt', $filter->period);
         }
-
+        $select->setParameter('operation_type', PersonPoints::OPERATION_TYPE_DEBIT);
         $select->setMaxResults($filter->getLimit());
         $select->setFirstResult($filter->getOffset());
 
