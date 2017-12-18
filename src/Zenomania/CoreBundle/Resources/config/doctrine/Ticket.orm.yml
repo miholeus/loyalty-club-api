@@ -15,6 +15,9 @@ Zenomania\CoreBundle\Entity\Ticket:
         ticket__person_id:
             columns:
                 - person_id
+        ticket__external_id:
+            columns:
+                - external_id
     uniqueConstraints:
         ticket__stand_sector_row_seat:
             columns:
@@ -95,6 +98,10 @@ Zenomania\CoreBundle\Entity\Ticket:
             options:
                 fixed: false
                 default: idle
+        externalId:
+            type: integer
+            nullable: true
+            column: external_id
     manyToOne:
         event:
             targetEntity: Event

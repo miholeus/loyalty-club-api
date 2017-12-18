@@ -53,6 +53,30 @@ class TicketRepository extends EntityRepository
     }
 
     /**
+     * Inserts new ticket
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function addIfNotExists(array $data)
+    {
+        if (null !== $this->findTicketByBarcode($data['barcode'])) {
+            return false;
+        }
+        $conn = $this->getEntityManager()->getConnection();
+        $conn->insert($this->getEntityManager()->getClassMetadata()->getTableName(), [
+            'event_id' => $data['event_local_id'],
+            'external_id' => $data['ticket_id'],
+            'number' => $data['barcode'],
+            'seat' => $data['seat'],
+            'sector' => $data['sector'],
+            'row' => $data['row'],
+            'price' => $data['price']
+        ]);
+        return true;
+
+    }
+    /**
      * Возвращает данные по регистрации билета по его номеру
      *
      * @param string $barcode Номер билета
