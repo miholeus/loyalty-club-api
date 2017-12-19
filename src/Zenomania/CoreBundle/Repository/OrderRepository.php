@@ -7,6 +7,7 @@ use Zenomania\ApiBundle\Service\Exception;
 use Zenomania\CoreBundle\Entity\DeliveryType;
 use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Entity\OrderDelivery;
+use Zenomania\CoreBundle\Entity\User;
 
 /**
  * OrderRepository
@@ -93,5 +94,21 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
             return false;
         }
         return $order;
+    }
+
+    public function getPrizes(User $user)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $query = $qb->select('p')
+            ->from('ZenomaniaCoreBundle:Order', 'o')
+            ->innerJoin('ZenomaniaCoreBundle:OrderCart', 'c', 'WITH', 'o.id = c.orderId')
+            ->innerJoin('ZenomaniaCoreBundle:Product', 'p', 'WITH', 'c.productId = p.id')
+            ->where('o.userId = :userId')
+            ->setParameter('userId', $user->getId())
+            ->orderBy('o.createdAt', 'desc')
+            ->getQuery();
+        $result = $query->getResult();
+        return $result;
     }
 }
