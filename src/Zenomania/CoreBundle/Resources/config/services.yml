@@ -128,3 +128,6 @@ services:
         arguments: ['@service_container']
         tags:
             - { name: doctrine.orm.entity_listener }
+    transfer_actor.service:
+        class: Zenomania\CoreBundle\Service\TransferActorService
+        arguments: ['@doctrine.orm.entity_manager']
