@@ -49,6 +49,12 @@ Zenomania\CoreBundle\Entity\PersonPoints:
         dt:
             type: datetime
             nullable: false
+        operation_type:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
     manyToOne:
         season:
             targetEntity: Zenomania\CoreBundle\Entity\Season

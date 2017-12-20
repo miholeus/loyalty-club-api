@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Zenomania\CoreBundle\Form\Type\Calendar;
 
 class BadgeType extends AbstractType
 {
@@ -39,7 +40,13 @@ class BadgeType extends AbstractType
             ->add('sort', IntegerType::class, ['label' => 'Сортировка'])
             ->add('points', IntegerType::class, ['label' => 'Зены'])
             ->add('maxPoints', IntegerType::class, ['label' => 'Максимум зенов'])
+            ->add('date', Calendar::class, [
+                'type' => Calendar::DATE_TIME,
+                'format' => 'dd.MM.yyyy HH:mm:ss',
+                'description' => 'Дата начала мероприятия',
+            ])
             ->add('active', CheckboxType::class, ['label' => 'Активен', 'required' => false]);
+
     }
 
     /**

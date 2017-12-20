@@ -9,6 +9,7 @@
 namespace Zenomania\CoreBundle\Service;
 
 use Zenomania\CoreBundle\Entity\PersonPoints;
+use Zenomania\ApiBundle\Service\Utils\PeriodConverter;
 use Zenomania\CoreBundle\Repository\UserBadgeRepository;
 use Zenomania\CoreBundle\Repository\BadgeRepository;
 use Zenomania\CoreBundle\Entity\UserBadge as UserBadgeEntity;
@@ -96,7 +97,7 @@ class UserBadge
         /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
         $badge = $this->getBadgeRepository()->findOneBy(['code' => Badge::TYPE_MAKE_REPOST]);
         $userBadge->setUser($personPoints->getUser());
-        if($personPoints->getPoints() < 0){
+        if ($personPoints->getPoints() < 0) {
             $badge->setPoints($badge->getPoints() * -1);
         }
 
@@ -105,7 +106,27 @@ class UserBadge
 
         $this->getUserBadgeRepository()->save($userBadge);
     }
-    
+
+    /**
+     * @param User $user
+     * @param string $code
+     * @param PeriodConverter $periodConverter
+     * @internal param string $period
+     */
+    public function giveBadgeForRatings(User $user, string $code, PeriodConverter $periodConverter)
+    {
+        $userBadge = new UserBadgeEntity();
+
+        /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
+        $badge = $this->getBadgeRepository()->findBadge($code, $periodConverter);
+
+        $userBadge->setUser($user);
+        $userBadge->setPoints($badge->getPoints());
+        $userBadge->setBadgeId($badge);
+
+        $this->getUserBadgeRepository()->save($userBadge);
+    }
+
     /**
      * @param User $user
      */
@@ -135,6 +156,11 @@ class UserBadge
                 'user' => $user
             ]
         );
+    }
+
+    public function getTopUser(PeriodConverter $period)
+    {
+        return $this->getUserBadgeRepository()->getTopUser($period);
     }
 
     /**

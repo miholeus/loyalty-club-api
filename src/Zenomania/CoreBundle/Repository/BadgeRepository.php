@@ -2,6 +2,9 @@
 
 namespace Zenomania\CoreBundle\Repository;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Zenomania\ApiBundle\Service\Utils\PeriodConverter;
+
 /**
  * BadgeRepository
  *
@@ -10,5 +13,30 @@ namespace Zenomania\CoreBundle\Repository;
  */
 class BadgeRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * @param PeriodConverter $period
+     * @return mixed
+     */
+    public function findBadge(string $code, PeriodConverter $period = null)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $select = $qb->select('b')
+            ->from('ZenomaniaCoreBundle:Badge', 'b')
+            ->where('b.code = :code')
+            ->setParameter('code', $code);
+        if ($period) {
+            $select->andWhere('b.date BETWEEN :dt_st AND :dt_ed')
+                ->setParameter('dt_st', $period->getStartDate()->format('Y-m-d'))
+                ->setParameter('dt_ed', $period->getFinishDate()->format('Y-m-d'));
+        }
+        $result = $select->getQuery()->getOneOrNullResult();
+        if ($result == null) {
+            throw new HttpException('404', 'Бейдж не найден');
+        }
+        return $result;
+    }
 
 }

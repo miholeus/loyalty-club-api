@@ -13,6 +13,7 @@ use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
 use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\PersonPoints;
+use Zenomania\CoreBundle\Entity\PersonPointsOperationType;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Entity\UserReferralCode;
 
@@ -41,7 +42,8 @@ class PersonPointsRepository extends EntityRepository
             'points' => $points,
             'type' => PersonPoints::TYPE_INVITE,
             'state' => 'none',
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
         ];
 
         $personPoints = PersonPoints::fromArray($params);
@@ -71,7 +73,8 @@ class PersonPointsRepository extends EntityRepository
             'points' => $points,
             'type' => PersonPoints::TYPE_LINKED_VK,
             'state' => 'none',
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
         ];
 
         $personPoints = PersonPoints::fromArray($params);
@@ -98,7 +101,8 @@ class PersonPointsRepository extends EntityRepository
             'points' => $points,
             'type' => PersonPoints::TYPE_SUBSCRIPTION_REGISTER,
             'state' => 'none',
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
         ];
 
         $personPoints = PersonPoints::fromArray($params);
@@ -125,7 +129,8 @@ class PersonPointsRepository extends EntityRepository
             'points' => $points,
             'type' => PersonPoints::TYPE_SUBSCRIPTION_ATTENDANCE,
             'state' => 'none',
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
         ];
 
         $personPoints = PersonPoints::fromArray($params);
@@ -152,7 +157,9 @@ class PersonPointsRepository extends EntityRepository
             'points' => $points,
             'type' => PersonPoints::TYPE_TICKET_REGISTER,
             'state' => 'none',
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
+
         ];
 
         $personPoints = PersonPoints::fromArray($params);
@@ -181,7 +188,8 @@ class PersonPointsRepository extends EntityRepository
             'points' => $points,
             'type' => PersonPoints::TYPE_REPOST,
             'state' => $state,
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
         ];
 
         $personPoints = PersonPoints::fromArray($params);
@@ -211,7 +219,10 @@ class PersonPointsRepository extends EntityRepository
             'points' => $points,
             'type' => $type,
             'state' => 'none',
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            
+
+            'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
         ];
 
         $personPoints = PersonPoints::fromArray($params);
@@ -238,7 +249,8 @@ class PersonPointsRepository extends EntityRepository
             'points' => $points,
             'type' => PersonPoints::TYPE_PROMO_COUPON,
             'state' => 'none',
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
         ];
 
         $personPoints = PersonPoints::fromArray($params);
@@ -258,7 +270,8 @@ class PersonPointsRepository extends EntityRepository
             'points' => floor($order->getPrice()),
             'type' => PersonPoints::TYPE_CANCELLED_ORDER,
             'state' => 'none',
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_RETURN
         ];
         $personPoints = PersonPoints::fromArray($params);
 
@@ -278,7 +291,8 @@ class PersonPointsRepository extends EntityRepository
             'points' => -1 * floor($order->getPrice()),
             'type' => PersonPoints::TYPE_CREATE_ORDER,
             'state' => 'none',
-            'dt' => new \DateTime()
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_CREDIT
         ];
         $personPoints = PersonPoints::fromArray($params);
 
@@ -356,6 +370,7 @@ class PersonPointsRepository extends EntityRepository
             ])
             ->from($this->getClassMetadata()->getTableName())
             ->where('user_id IS NOT NULL')
+            ->andWhere('operation_type = :operation_type')
             ->groupBy('user_id');
 
         $qb = clone $em->getConnection()->createQueryBuilder();
@@ -366,7 +381,8 @@ class PersonPointsRepository extends EntityRepository
             'points'
         ])->from(sprintf("(%s) as s", $subQuery))
             ->where('user_id = :user')
-            ->setParameter('user', $user->getId());
+            ->setParameter('user', $user->getId())
+            ->setParameter('operation_type', PersonPoints::OPERATION_TYPE_DEBIT);
         $result = $select->execute()->fetchAll();
         if (!empty($result)) {
             return intval($result[0]['position']);
@@ -392,6 +408,7 @@ class PersonPointsRepository extends EntityRepository
             ->innerJoin('p', 'users', 'u', 'p.user_id = u.id')
             ->where('points > 0')
             ->andWhere('user_id IS NOT NULL')
+            ->andWhere('operation_type = :operation_type')
             ->groupBy('user_id');
         if ($filter->period) {
             $subQuery
@@ -413,7 +430,7 @@ class PersonPointsRepository extends EntityRepository
         if ($filter->period) {
             $select->setParameter('dt', $filter->period);
         }
-
+        $select->setParameter('operation_type', PersonPoints::OPERATION_TYPE_DEBIT);
         $select->setMaxResults($filter->getLimit());
         $select->setFirstResult($filter->getOffset());
 
