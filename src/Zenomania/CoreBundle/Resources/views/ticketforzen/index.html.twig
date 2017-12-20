@@ -11,7 +11,7 @@
             <th>Barcode</th>
             <th>Price</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th>User</th>
         </tr>
         </thead>
         <tbody>
@@ -22,6 +22,7 @@
                 <td>{{ ticketForZen.barcode }}</td>
                 <td>{{ ticketForZen.price }}</td>
                 <td>{{ ticketForZen.status }}</td>
+                <td>{{ ticketForZen.user }}</td>
                 <td>
                     <a href="{{ path('ticketforzen_show', { 'id': ticketForZen.id }) }}" class="btn btn-default">show</a>
                     <a href="{{ path('ticketforzen_edit', { 'id': ticketForZen.id }) }}" class="btn btn-default">edit</a>
@@ -31,9 +32,6 @@
         </tbody>
     </table>
 
-    <nav class="text-center">
-        {% include '@ZenomaniaCore/shared/paginator.html.twig' with {paginator: paginator} %}
-    </nav>
 
     <ul class="list-group">
         <li class="list-group-item">

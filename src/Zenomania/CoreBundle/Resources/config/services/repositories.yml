@@ -174,3 +174,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Entity\Actor
+    repository.ticket_for_zen:
+        class: Zenomania\CoreBundle\Repository\TicketForZenRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Entity\TicketForZen

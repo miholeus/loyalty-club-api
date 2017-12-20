@@ -23,6 +23,8 @@ use Zenomania\CoreBundle\Exception;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Service\Traits\EventsAwareTrait;
 use Zenomania\CoreBundle\Entity\Exception\ValidatorException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 class OrderListener
 {
@@ -44,6 +46,7 @@ class OrderListener
     /**
      * @param Order $order
      * @param LifecycleEventArgs $event
+     * @throws Exception
      */
     public function prePersist(Order $order, LifecycleEventArgs $event)
     {
@@ -57,6 +60,10 @@ class OrderListener
         //Списываем поинты за заказ
         /** @var PersonPointsRepository $personPointsRepository */
         $personPointsRepository = $this->container->get('repository.person_points_repository');
+        $points = $personPointsRepository->getTotalPoints($order->getUserId());
+        if ($order->getPrice() > $points) {
+            throw new HttpException(400,'Недостаточно средств');
+        }
         $personPointsRepository->takePointsForCreateOrder($order);
     }
 

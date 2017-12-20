@@ -100,15 +100,16 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
-        $query = $qb->select('p')
+        $query = $qb->select(['p.title', 'p.photo', 't.barcode as attachment'])
             ->from('ZenomaniaCoreBundle:Order', 'o')
             ->innerJoin('ZenomaniaCoreBundle:OrderCart', 'c', 'WITH', 'o.id = c.orderId')
             ->innerJoin('ZenomaniaCoreBundle:Product', 'p', 'WITH', 'c.productId = p.id')
+            ->leftJoin('ZenomaniaCoreBundle:TicketForZen', 't', 'WITH', 't.order = o.id')
             ->where('o.userId = :userId')
             ->setParameter('userId', $user->getId())
             ->orderBy('o.createdAt', 'desc')
             ->getQuery();
-        $result = $query->getResult();
+        $result = $query->getArrayResult();
         return $result;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Zenomania\CoreBundle\Controller;
 
+use Symfony\Component\Form\FormError;
 use Zenomania\CoreBundle\Entity\TicketForZen;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,11 +39,14 @@ class TicketForZenController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($ticketForZen);
-            $em->flush();
+            $service = $this->get('ticketforzen.service');
 
-            return $this->redirectToRoute('ticketforzen_show', array('id' => $ticketForZen->getId()));
+            try {
+                $service->save($ticketForZen);
+                return $this->redirectToRoute('ticketforzen_show', array('id' => $ticketForZen->getId()));
+            } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+                $form->addError(new FormError($e->getMessage()));
+            }
         }
 
         return $this->render('ZenomaniaCoreBundle:ticketforzen:new.html.twig', array(
@@ -76,9 +80,14 @@ class TicketForZenController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $service = $this->get('ticketforzen.service');
 
-            return $this->redirectToRoute('ticketforzen_edit', array('id' => $ticketForZen->getId()));
+            try {
+                $service->save($ticketForZen);
+                return $this->redirectToRoute('ticketforzen_edit', array('id' => $ticketForZen->getId()));
+            } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+                $editForm->addError(new FormError($e->getMessage()));
+            }
         }
 
         return $this->render('ZenomaniaCoreBundle:ticketforzen:edit.html.twig', array(

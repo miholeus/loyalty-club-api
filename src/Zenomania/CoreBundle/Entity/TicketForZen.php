@@ -9,8 +9,15 @@
 namespace Zenomania\CoreBundle\Entity;
 
 
-class TicketForZen
+use Zenomania\CoreBundle\Service\Upload\IdentifiableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class TicketForZen implements IdentifiableInterface
 {
+    const TYPE_USED = 'ticket_used';
+    const TYPE_NOT_USED = 'ticket_not_used';
+    const TYPE_PURCHASED = 'ticket_purchased';
+
     /**
      * @var integer
      */
@@ -27,6 +34,13 @@ class TicketForZen
     private $name;
 
     /**
+     * @Assert\File(mimeTypes={ "image/jpg", "image/jpeg", "image/png", "application/pdf" }, groups={"upload"})
+     * @Assert\Image(
+     *    mimeTypesMessage = "Неверный формат документа",
+     *    maxSize = "5M",
+     *    maxSizeMessage = "Документ слишком большого размера",
+     *    groups={"upload"}
+     * )
      * @var string
      */
     private $barcode;
@@ -40,6 +54,16 @@ class TicketForZen
      * @var integer
      */
     private $price;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $user;
+
+    /**
+     * @var \Zenomania\CoreBundle\Entity\Order
+     */
+    private $order;
 
     /**
      * @return int
@@ -163,5 +187,53 @@ class TicketForZen
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param \Zenomania\CoreBundle\Entity\User|null $user
+     *
+     * @return TicketForZen
+     */
+    public function setUser(\Zenomania\CoreBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return \Zenomania\CoreBundle\Entity\User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set order.
+     *
+     * @param \Zenomania\CoreBundle\Entity\Order|null $order
+     *
+     * @return TicketForZen
+     */
+    public function setOrder(\Zenomania\CoreBundle\Entity\Order $order = null)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order.
+     *
+     * @return \Zenomania\CoreBundle\Entity\Order|null
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

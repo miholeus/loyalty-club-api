@@ -106,4 +106,18 @@ class UploadFile implements UploadInterface
     {
         $this->uploadPath = $uploadPath;
     }
+
+    public function getUploadDirectory()
+    {
+        return $this->getContainer()->getParameter('upload_promo_ticket_dir');
+    }
+
+    /**
+     * @param FilePathStrategyInterface $strategyInterface
+     */
+    public function setUploadStrategy(FilePathStrategyInterface $strategyInterface)
+    {
+        $this->uploadPath = $strategyInterface->getFilePath();
+        $this->uploadPath = strtr($this->uploadPath, [':path' => trim($this->getUploadDirectory(), '/')]);
+    }
 }

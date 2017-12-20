@@ -28,13 +28,9 @@ class PrizeController extends RestController
      * ### Success Response ###
      *      {
      *          "data":[{
-     *              "id": <integer>
      *              "title": <string>,
      *              "photo": <string>,
-     *              "category": {
-     *                  "id": <integer>,
-     *                  "title": <string>,
-     *              }
+     *              "attachment": <string>,
      *          }],
      *          "time":<time request>
      *      }
