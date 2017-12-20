@@ -62,13 +62,7 @@ class UserBadge
      */
     public function giveBadgeIfProfileCompleted(User $user)
     {
-        $userBadge = $this->getProfileCompletedBadge($user);
-
-        if (!$userBadge) {
-            $this->getUserBadgeRepository()->save($userBadge);
-        }
-
-        return $userBadge;
+        return $this->getProfileCompletedBadge($user);
     }
 
     /**
@@ -150,12 +144,22 @@ class UserBadge
         /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
         $badge = $this->getBadgeRepository()->findOneBy(['code' => Badge::TYPE_PROFILE_COMPLETED]);
 
-        return $this->getUserBadgeRepository()->findOneBy(
+        $userBadge = $this->getUserBadgeRepository()->findOneBy(
             [
                 'badgeId' => $badge,
                 'user' => $user
             ]
         );
+
+        if(!$userBadge){
+            $userBadge = new \Zenomania\CoreBundle\Entity\UserBadge();
+            $userBadge->setBadgeId($badge);
+            $userBadge->setPoints($badge->getPoints());
+            $userBadge->setUser($user);
+            $this->getUserBadgeRepository()->save($userBadge);
+        }
+
+        return $userBadge;
     }
 
     public function getTopUser(PeriodConverter $period)
