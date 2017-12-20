@@ -4,6 +4,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Zenomania\ApiBundle\Service\Utils\PeriodConverter;
+use Zenomania\CoreBundle\Entity\Badge;
 
 /**
  * BadgeRepository
@@ -37,6 +38,30 @@ class BadgeRepository extends \Doctrine\ORM\EntityRepository
             throw new HttpException('404', 'Бейдж не найден');
         }
         return $result;
+    }
+
+    public function getUsersNeedBadgeRegistrations()
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->getConnection()->createQueryBuilder();
+        /** @var Badge $badge */
+        $badge = $this->getEntityManager()->getRepository('ZenomaniaCoreBundle:Badge')->findOneBy(['code' => Badge::TYPE_REGISTRATION]);
+        if ($badge) {
+            $subQuery = clone $qb;
+            $subQuery->select('*')
+                ->from('user_badge', 'b')
+                ->where('b.badge_id = :badge_id');
+
+            $query = $qb->select('u.id')
+                ->from('users', 'u')
+                ->leftJoin('u', sprintf("(%s)", $subQuery), 'ub', 'u.id = ub.user_id')
+                ->andWhere('ub.user_id IS NULL')
+                ->setParameter('badge_id', $badge->getId())
+                ->execute();
+            $result = $query->fetchAll();
+            return $result;
+        }
+        return null;
     }
 
 }
