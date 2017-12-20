@@ -112,6 +112,10 @@ class Event
     private $lineUp;
 
     /**
+     * @var int|null
+     */
+    private $externalId;
+    /**
      * Constructor
      */
     public function __construct()
@@ -573,5 +577,29 @@ class Event
         $this->lineUp = $lineUp;
 
         return $this;
+    }
+
+    /**
+     * Set externalId.
+     *
+     * @param int|null $externalId
+     *
+     * @return Event
+     */
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * Get externalId.
+     *
+     * @return int|null
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
     }
 }

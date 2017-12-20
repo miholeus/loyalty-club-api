@@ -24,6 +24,9 @@ Zenomania\CoreBundle\Entity\Event:
         event__date:
             columns:
                 - date
+        event__external_id:
+            columns:
+                - external_id
     id:
         id:
             type: integer
@@ -86,6 +89,10 @@ Zenomania\CoreBundle\Entity\Event:
             options:
                 fixed: false
             column: score_in_round
+        externalId:
+            type: integer
+            nullable: true
+            column: external_id
     oneToMany:
         lineUp:
             targetEntity: Zenomania\CoreBundle\Entity\LineUp

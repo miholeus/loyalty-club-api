@@ -64,7 +64,7 @@ class TicketRepository extends EntityRepository
             return false;
         }
         $conn = $this->getEntityManager()->getConnection();
-        $conn->insert($this->getEntityManager()->getClassMetadata()->getTableName(), [
+        $conn->insert($this->getEntityManager()->getClassMetadata('ZenomaniaCoreBundle:Ticket')->getTableName(), [
             'event_id' => $data['event_local_id'],
             'external_id' => $data['ticket_id'],
             'number' => $data['barcode'],

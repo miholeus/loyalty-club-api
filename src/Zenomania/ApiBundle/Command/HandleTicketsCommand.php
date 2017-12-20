@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 
-class HandleMatchesCommand extends ContainerAwareCommand
+class HandleTicketsCommand extends ContainerAwareCommand
 {
     protected function configure()
     {

@@ -58,4 +58,22 @@ class ProviderEventRepository extends DocumentRepository
         }
         return $data;
     }
+
+    /**
+     * @param ProviderEvent $event
+     * @param $status
+     * @param array $extra
+     */
+    public function updateStatus(ProviderEvent $event, $status, array $extra = [])
+    {
+        $event->setStatus($status);
+        $event->setUpdatedOn(new \DateTime());
+        if (!empty($extra)) {
+            foreach ($extra as $key => $value) {
+                $event->{"set".ucfirst($key)}($value);
+            }
+        }
+        $this->dm->persist($event);
+        $this->dm->flush();
+    }
 }

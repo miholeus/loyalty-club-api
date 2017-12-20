@@ -11,7 +11,8 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Doctrine\CustomPaginator;
-use Zenomania\CoreBundle\Event\Event;
+use Zenomania\CoreBundle\Document\ProviderEvent;
+use Zenomania\CoreBundle\Entity\Event;
 
 class EventRepository extends EntityRepository
 {
@@ -33,6 +34,114 @@ class EventRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * Finds event by external identifier
+     *
+     * @param $id
+     * @return Event|null
+     */
+    protected function findEventByExternalId($id)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('e')
+            ->from('ZenomaniaCoreBundle:Event', 'e')
+            ->where('e.externalId = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
+    /**
+     * Finds event by name and date
+     *
+     * @param $name
+     * @param \DateTime $date
+     * @return Event|null
+     */
+    protected function findEventByNameAndDate($name, \DateTime $date)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('e')
+            ->from('ZenomaniaCoreBundle:Event', 'e')
+            ->where('e.name = :name')
+            ->andWhere('e.date = :date')
+            ->setParameter('name', $name)
+            ->setParameter('date', $date->format("Y-m-d H:i:s"))
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return mixed
+     */
+    protected function findSeasonId(\DateTime $date)
+    {
+        $repo = $this->getEntityManager()->getRepository('ZenomaniaCoreBundle:Season');
+        $season = $repo->findSeasonByDate($date);
+        if (null !== $season) {
+            return $season->getId();
+        }
+        return null;
+    }
+
+    /**
+     * Inserts new event
+     *
+     * @param ProviderEvent $event
+     * @return int
+     */
+    public function addIfNotExists(ProviderEvent $event)
+    {
+        if (null !== ($current = $this->findEventByExternalId($event->getEventId()))) {
+            return $current->getId();
+        }
+
+        // find by name & date
+        if (null !== ($current = $this->findEventByNameAndDate($event->getName(), $event->getDateStart()))) {
+            // update external id
+            $current->setExternalId($event->getEventId());
+            $this->_em->persist($current);
+            $this->_em->flush();
+            return $current->getId();
+        }
+
+        $conn = $this->getEntityManager()->getConnection();
+        $conn->insert($this->getEntityManager()->getClassMetadata('ZenomaniaCoreBundle:Event')->getTableName(), [
+            'external_id' => $event->getEventId(),
+            'name' => $event->getName(),
+            'date' => $event->getDateStart()->format("Y-m-d H:i:s"),
+            'club_home' => $this->findClub($event->getClubOwner()),
+            'club_guest' => $this->findClub($event->getClubGuest()),
+            'season_id' => $this->findSeasonId($event->getDateStart()),
+            'sport_id' => 7
+        ]);
+        return $conn->lastInsertId('event_id_seq');
+    }
+
+    /**
+     * Find club by its external id
+     *
+     * @param $externalId
+     * @return mixed
+     */
+    protected function findClub($externalId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('e')
+            ->from('ZenomaniaCoreBundle:Club', 'e')
+            ->where('e.externalId = :id')
+            ->setParameter('id', $externalId)
+            ->getQuery();
+
+        $club = $query->getOneOrNullResult();
+        if (null !== $club) {
+            return $club->getId();
+        }
+        return null;
+    }
     /**
      *
      *

@@ -15,7 +15,11 @@ Zenomania\CoreBundle\Document\ProviderEvent:
             type: string
         club_owner:
             type: raw
+        club_guest:
+            type: raw
         event_id:
+            type: int
+        event_local_id:
             type: int
         date_start:
             type: date

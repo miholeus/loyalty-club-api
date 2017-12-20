@@ -106,10 +106,10 @@ services:
         arguments: ['%afr_service_username%', '%afr_service_password%']
     api.afr_matches_handler:
         class: Zenomania\ApiBundle\Service\Afr\Handler\MatchesHandler
-        arguments: ['@repository.provider_events_repository']
+        arguments: ['@repository.provider_events_repository', '@repository.event_repository']
     api.afr_tickets_handler:
         class: Zenomania\ApiBundle\Service\Afr\Handler\TicketsHandler
-        arguments: ['@repository.provider_tickets_repository']
+        arguments: ['@repository.provider_tickets_repository', '@repository.ticket_repository']
     api.afr_clubs_handler:
         class: Zenomania\ApiBundle\Service\Afr\Handler\ClubsHandler
         arguments: ['@monolog.logger', '@repository.club_repository', '@event.notification_manager']
