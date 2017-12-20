@@ -124,3 +124,6 @@ services:
     api.product.service:
         class: Zenomania\ApiBundle\Service\Product
         arguments: ['@repository.product']
+    api.prize:
+        class: Zenomania\ApiBundle\Service\Prize
+        arguments: ['@repository.order']

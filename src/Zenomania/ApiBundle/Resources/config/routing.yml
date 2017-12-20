@@ -45,6 +45,10 @@ api_orders:
 api_product:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\ProductController"
+api_prize:
+    type: rest
+    resource: "Zenomania\\ApiBundle\\Controller\\PrizeController"
+
 api_users:
     type: rest
     resource: "Zenomania\\ApiBundle\\Controller\\UserController"

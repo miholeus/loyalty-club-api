@@ -74,7 +74,6 @@ class LoadBadgeData extends AbstractFixture
         $manager->persist($badgeRepost);
 
         $date = new \DateTime('2017-12-01');
-        $date = $date->format('Y-m-d');
 
         $badgeTopRatingOfMonth = clone $badge;
         $badgeTopRatingOfMonth->setTitle('Лидер рейтинга за месяц');

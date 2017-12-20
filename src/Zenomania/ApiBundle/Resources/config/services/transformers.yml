@@ -74,3 +74,6 @@ services:
     api.data.transformer.product:
         class: Zenomania\ApiBundle\Service\Transformer\ProductTransformer
         arguments: ['@utils.host_based_url']
+    api.data.transformer.prize:
+        class: Zenomania\ApiBundle\Service\Transformer\PrizeTransformer
+        arguments: ['@utils.host_based_url']
