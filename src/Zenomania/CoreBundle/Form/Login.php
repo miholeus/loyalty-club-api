@@ -32,10 +32,6 @@ class Login extends AbstractType
                     'placeholder' => 'Password'
                 ]
             ])
-            ->add('remember_me', CheckboxType::class, [
-                'label' => 'Запомнить меня',
-                'required' => false
-            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Войти',
                 'attr' => [

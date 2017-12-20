@@ -43,7 +43,7 @@ class IntegrationService
      * @param int $page
      * @return array
      */
-    public function fetchMatches(ApiToken $token, $clubId, $page = 1)
+    public function fetchEvents(ApiToken $token, $clubId, $page = 1)
     {
         $filter = new EventFilter(['clubId' => $clubId, 'page' => $page]);
         $data = $this->getClient()->getEvents($token, $filter);

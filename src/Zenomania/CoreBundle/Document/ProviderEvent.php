@@ -25,7 +25,10 @@ class ProviderEvent
      * @var array $club_owner
      */
     protected $club_owner;
-
+    /**
+     * @var array $club_guest
+     */
+    protected $club_guest;
     /**
      * @var \DateTime $date
      */
@@ -54,6 +57,10 @@ class ProviderEvent
      * @var int
      */
     protected $event_id;
+    /**
+     * @var int
+     */
+    protected $event_local_id;
 
     public function __construct()
     {
@@ -67,6 +74,7 @@ class ProviderEvent
         $self = new self();
         $self->event_id = $data['id'];
         $self->club_owner = $data['club_owner'];
+        $self->club_guest = $data['club_guest'];
         $self->date_start = $data['date_start'];
         $self->date_end = $data['date_end'];
         $self->name = $data['title'];
@@ -76,7 +84,7 @@ class ProviderEvent
     /**
      * Get id
      *
-     * @return id $id
+     * @return \MongoId $id
      */
     public function getId()
     {
@@ -267,5 +275,49 @@ class ProviderEvent
     public function getEventId()
     {
         return $this->event_id;
+    }
+
+    /**
+     * Set eventLocalId
+     *
+     * @param int $eventLocalId
+     * @return $this
+     */
+    public function setEventLocalId($eventLocalId)
+    {
+        $this->event_local_id = $eventLocalId;
+        return $this;
+    }
+
+    /**
+     * Get eventLocalId
+     *
+     * @return int $eventLocalId
+     */
+    public function getEventLocalId()
+    {
+        return $this->event_local_id;
+    }
+
+    /**
+     * Set clubGuest
+     *
+     * @param raw $clubGuest
+     * @return $this
+     */
+    public function setClubGuest($clubGuest)
+    {
+        $this->club_guest = $clubGuest;
+        return $this;
+    }
+
+    /**
+     * Get clubGuest
+     *
+     * @return raw $clubGuest
+     */
+    public function getClubGuest()
+    {
+        return $this->club_guest;
     }
 }

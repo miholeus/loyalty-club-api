@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zenomania\ApiBundle\Service\Afr\InvalidTokenException;
 
-class TakeMatchesCommand extends AuthenticateAwareCommand
+class TakeEventsCommand extends AuthenticateAwareCommand
 {
     protected function configure()
     {
@@ -42,12 +42,12 @@ class TakeMatchesCommand extends AuthenticateAwareCommand
 
             $total = 0;
             while (true) {
-                $events = $service->fetchMatches($token, $clubId, $page);
+                $events = $service->fetchEvents($token, $clubId, $page);
                 if (empty($events)) {
                     break;
                 }
                 $output->writeln(sprintf("Got %d events from page %d", count($events), $page));
-                $handler->handle($events);
+                $handler->saveToStorage($events);
                 $output->writeln(sprintf("Saved %d events from page %d", count($events), $page));
                 $page++;
                 $total += count($events);
