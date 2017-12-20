@@ -50,4 +50,15 @@ Zenomania\CoreBundle\Entity\TicketForZen:
                     referencedColumnName: id
                     onDelete: CASCADE
             orphanRemoval: false
+        user:
+            targetEntity: Zenomania\CoreBundle\Entity\User
+            cascade: {  }
+            mappedBy: null
+            fetch: LAZY
+            joinColumns:
+                user_id:
+                    nullable: true
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
     lifecycleCallbacks: {  }
