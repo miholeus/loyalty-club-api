@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Zenomania\ApiBundle\Request\Filter\UserFilter;
 use Zenomania\CoreBundle\Entity\User as EntityUser;
 use Zenomania\CoreBundle\Entity\UserStatus;
 
@@ -214,5 +215,18 @@ class User extends UserAwareService
         $user->setIsBlocked(false);
 
         $this->save($user);
+    }
+
+    /**
+     * Поиск пользователя
+     *
+     * @param $filter UserFilter
+     * @return array
+     */
+    public function search($filter)
+    {
+        $em = $this->getEntityManager();
+        $repo = $em->getRepository(EntityUser::class);
+        return $repo->search($filter);
     }
 }

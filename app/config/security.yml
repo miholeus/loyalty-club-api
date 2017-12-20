@@ -26,7 +26,7 @@ security:
                 authenticator: apitoken_authenticator
             provider: api_token_user_provider
         api_auth:
-            pattern: ^/api/v1/auth
+            pattern: ^(/api/v1/auth|/api/v1/users)
             simple_preauth:
                 authenticator: apikey_authenticator
             provider: api_key_user_provider
