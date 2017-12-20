@@ -61,6 +61,11 @@ class TicketForZen implements IdentifiableInterface
     private $user;
 
     /**
+     * @var \Zenomania\CoreBundle\Entity\Order
+     */
+    private $order;
+
+    /**
      * @return int
      */
     public function getId()
@@ -206,5 +211,29 @@ class TicketForZen implements IdentifiableInterface
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set order.
+     *
+     * @param \Zenomania\CoreBundle\Entity\Order|null $order
+     *
+     * @return TicketForZen
+     */
+    public function setOrder(\Zenomania\CoreBundle\Entity\Order $order = null)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order.
+     *
+     * @return \Zenomania\CoreBundle\Entity\Order|null
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

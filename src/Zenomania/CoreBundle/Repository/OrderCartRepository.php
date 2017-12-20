@@ -44,6 +44,7 @@ class OrderCartRepository extends EntityRepository
                 }
                 $ticket->setStatus(TicketForZen::TYPE_PURCHASED);
                 $ticket->setUser($order->getUserId());
+                $ticket->setOrder($order);
             }
 
             $quantity = $product->getQuantity() - $orderCart->getQuantity();
