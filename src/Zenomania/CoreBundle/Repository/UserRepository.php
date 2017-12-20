@@ -4,6 +4,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Zenomania\ApiBundle\Request\Filter\UserFilter;
 use Zenomania\CoreBundle\Entity\Actor;
 use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\User;
@@ -236,5 +237,32 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * Returns users
+     *
+     * @param UserFilter $filter
+     * @return User[]
+     */
+    public function search(UserFilter $filter)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('u')
+            ->from('ZenomaniaCoreBundle:User', 'u');
+        if (!empty($filter->dateStart)) {
+            $query->andWhere('u.createdOn >= :date_start')
+                ->setParameter('date_start', $filter->dateStart);
+        }
+        if (!empty($filter->dateEnd)) {
+            $query->andWhere('u.createdOn <= :date_end')
+                ->setParameter('date_end', $filter->dateEnd);
+        }
+        $query->setMaxResults($filter->getLimit());
+        $query->setFirstResult($filter->getOffset());
+        $query->orderBy('u.createdOn');
+
+        $result = $query->getQuery()->getResult();
+        return $result;
     }
 }

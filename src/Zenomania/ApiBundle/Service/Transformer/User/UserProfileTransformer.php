@@ -12,11 +12,11 @@ class UserProfileTransformer extends TransformerAbstract
     /**
      * @var HostBasedUrl
      */
-    private $url;
+    protected $url;
     /**
      * @var PersonPointsRepository
      */
-    private $repository;
+    protected $repository;
 
     public function __construct(HostBasedUrl $url, PersonPointsRepository $repository)
     {

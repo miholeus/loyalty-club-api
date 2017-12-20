@@ -23,7 +23,34 @@ class SeasonRepository extends EntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('u')
             ->from('ZenomaniaCoreBundle:Season', 'u')
+            ->where('u.clubOwner = :club')
             ->orderBy('u.dtStart', 'DESC')
+            ->setParameter('club', 9)
+            ->setMaxResults(1)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
+    /**
+     * Finds current season
+     *
+     * @param \DateTime $date
+     * @return mixed
+     */
+    public function findSeasonByDate(\DateTime $date)
+    {
+        $d = $date->format("Y-m-d H:i:s");
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('u')
+            ->from('ZenomaniaCoreBundle:Season', 'u')
+            ->where('u.clubOwner = :club')
+            ->andWhere('u.dtStart <= :startDate')
+            ->andWhere('u.dtEnd > :endDate')
+            ->orderBy('u.dtStart', 'DESC')
+            ->setParameter('club', 9)
+            ->setParameter('startDate', $d)
+            ->setParameter('endDate', $d)
             ->setMaxResults(1)
             ->getQuery();
 

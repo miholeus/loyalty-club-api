@@ -78,7 +78,7 @@ class TakeTicketsCommand extends AuthenticateAwareCommand
                 break;
             }
             $output->writeln(sprintf("[Event %d] Got %d tickets from page %d", $eventId, count($tickets), $page));
-            $handler->handle($tickets, $eventId);
+            $handler->saveToStorage($tickets, $eventId);
             $output->writeln(sprintf("[Event %d] Saved %d tickets from page %d", $eventId, count($tickets), $page));
             $page++;
             $total += count($tickets);

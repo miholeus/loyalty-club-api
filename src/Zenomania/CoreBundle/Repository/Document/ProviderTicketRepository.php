@@ -27,6 +27,17 @@ class ProviderTicketRepository extends DocumentRepository
     }
 
     /**
+     * @param ProviderTicket $ticket
+     * @param $status
+     */
+    public function updateStatus(ProviderTicket $ticket, $status)
+    {
+        $ticket->setStatus($status);
+        $ticket->setUpdatedOn(new \DateTime());
+        $this->dm->persist($ticket);
+        $this->dm->flush();
+    }
+    /**
      * Checks if event id already exists
      *
      * @param int $eventId

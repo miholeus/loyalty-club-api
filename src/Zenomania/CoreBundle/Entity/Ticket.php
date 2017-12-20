@@ -62,7 +62,10 @@ class Ticket
      */
     private $person;
 
-
+    /**
+     * @var int|null
+     */
+    private $externalId;
     /**
      * Get id
      *
@@ -311,5 +314,29 @@ class Ticket
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Set externalId.
+     *
+     * @param int|null $externalId
+     *
+     * @return Ticket
+     */
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * Get externalId.
+     *
+     * @return int|null
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
     }
 }

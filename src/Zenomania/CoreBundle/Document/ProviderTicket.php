@@ -87,6 +87,22 @@ class ProviderTicket
         $this->status = self::STATUS_NEW;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'ticket_id' => $this->ticket_id,
+            'event_id' => $this->event_id,
+            'barcode' => $this->barcode,
+            'date' => $this->date,
+            'client' => $this->client,
+            'price' => $this->price,
+            'row' => $this->row,
+            'seat' => $this->seat,
+            'sector' => $this->sector
+        ];
+    }
+
     public static function fromArray(array $data): ProviderTicket
     {
         $self = new self();
@@ -335,7 +351,7 @@ class ProviderTicket
     /**
      * Set updatedOn
      *
-     * @param date $updatedOn
+     * @param \DateTime $updatedOn
      * @return $this
      */
     public function setUpdatedOn($updatedOn)

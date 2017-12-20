@@ -35,6 +35,21 @@ class TicketRepository extends EntityRepository
     }
 
     /**
+     * @param $id
+     * @return Ticket
+     */
+    public function findByExternalId($id)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('t')
+            ->from('ZenomaniaCoreBundle:Ticket', 't')
+            ->where('t.externalId = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+    /**
      * Возвращает билет по его номеру
      *
      * @param string $barcode
@@ -52,6 +67,52 @@ class TicketRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * Inserts new ticket
+     *
+     * @param array $data
+     * @return int
+     */
+    public function addIfNotExists(array $data)
+    {
+        if (null !== ($current = $this->findByExternalId($data['ticket_id']))) {
+            return $current->getId();
+        }
+
+        if (null !== ($current = $this->findTicketByBarcode($data['barcode']))) {
+            // update external id
+            $current->setExternalId($data['ticket_id']);
+            $this->_em->persist($current);
+            $this->_em->flush();
+            return $current->getId();
+        }
+
+        $conn = $this->getEntityManager()->getConnection();
+        $conn->insert($this->getEntityManager()->getClassMetadata('ZenomaniaCoreBundle:Ticket')->getTableName(), [
+            'event_id' => $this->findEventByExternalId($data['event_id']),
+            'external_id' => $data['ticket_id'],
+            'number' => $data['barcode'],
+            'seat' => $data['seat'],
+            'sector' => $data['sector'],
+            'row' => $data['row'],
+            'price' => $data['price']
+        ]);
+        return $conn->lastInsertId('ticket_id_seq');
+    }
+
+    /**
+     * @param $id
+     * @return int|null
+     */
+    protected function findEventByExternalId($id)
+    {
+        $repo = $this->getEntityManager()->getRepository('ZenomaniaCoreBundle:Event');
+        $event = $repo->findEventByExternalId($id);
+        if (null !== $event) {
+            return $event->getId();
+        }
+        return null;
+    }
     /**
      * Возвращает данные по регистрации билета по его номеру
      *
