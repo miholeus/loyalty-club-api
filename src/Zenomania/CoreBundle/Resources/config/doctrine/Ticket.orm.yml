@@ -19,13 +19,6 @@ Zenomania\CoreBundle\Entity\Ticket:
             columns:
                 - external_id
     uniqueConstraints:
-        ticket__stand_sector_row_seat:
-            columns:
-                - event_id
-                - stand
-                - sector
-                - row
-                - seat
         ticket__event_id_number:
             columns:
                 - event_id

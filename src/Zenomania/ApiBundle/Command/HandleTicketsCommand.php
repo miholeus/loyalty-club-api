@@ -29,6 +29,9 @@ class HandleTicketsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $handler = $this->getContainer()->get('api.afr_tickets_handler');
+        $handler->attachLogger(function($message) use ($output){
+            return $output->writeln($message);
+        });
 
         $limit = 1000;
         $offset = 0;
@@ -41,7 +44,7 @@ class HandleTicketsCommand extends ContainerAwareCommand
                 }
                 $handler->handle($tickets);
                 $cnt += count($tickets);
-                $output->writeln("<info>Saved %d tickets</info>", $cnt);
+                $output->writeln(sprintf("<info>Saved %d tickets</info>", $cnt));
                 $offset = $offset + 1000;
             }
         } catch (\Exception $e) {

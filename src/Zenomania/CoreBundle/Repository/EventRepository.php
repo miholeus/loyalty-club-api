@@ -40,7 +40,7 @@ class EventRepository extends EntityRepository
      * @param $id
      * @return Event|null
      */
-    protected function findEventByExternalId($id)
+    public function findEventByExternalId($id)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('e')

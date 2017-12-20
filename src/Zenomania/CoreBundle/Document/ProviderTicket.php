@@ -92,6 +92,7 @@ class ProviderTicket
         return [
             'id' => $this->id,
             'ticket_id' => $this->ticket_id,
+            'event_id' => $this->event_id,
             'barcode' => $this->barcode,
             'date' => $this->date,
             'client' => $this->client,

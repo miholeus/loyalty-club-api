@@ -22,10 +22,29 @@ class TicketsHandler
      */
     private $ticketRepository;
 
+    /**
+     * @var \Closure
+     */
+    private $logger;
+
     public function __construct(ProviderTicketRepository $repository, TicketRepository $ticketRepository)
     {
         $this->repository = $repository;
         $this->ticketRepository = $ticketRepository;
+    }
+
+
+    public function attachLogger(\Closure $closure)
+    {
+        $this->logger = $closure;
+    }
+
+    protected function log($message)
+    {
+        if (null === $this->logger) {
+            return;
+        }
+        call_user_func($this->logger, $message);
     }
 
     /**
@@ -70,10 +89,13 @@ class TicketsHandler
         foreach ($tickets as $ticket) {
             try {
                 $data = $ticket->toArray();
-                $repo->addIfNotExists($data);
+                $localId = $repo->addIfNotExists($data);
                 $this->getRepository()->updateStatus($ticket, ProviderTicket::STATUS_DONE);
+
+                $this->log(sprintf("<info>Updated ticket %d, local id %d</info>", $ticket->getTicketId(), $localId));
             } catch (\Exception $e) {
                 $this->getRepository()->updateStatus($ticket, ProviderTicket::STATUS_ERROR);
+                $this->log(sprintf("<error>Ticket %d: %s</error>", $ticket->getTicketId(), $e->getMessage()));
             }
         }
     }
