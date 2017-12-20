@@ -56,6 +56,11 @@ class TicketForZen implements IdentifiableInterface
     private $price;
 
     /**
+     * @var \Zenomania\CoreBundle\Entity\User
+     */
+    private $user;
+
+    /**
      * @return int
      */
     public function getId()
@@ -177,5 +182,29 @@ class TicketForZen implements IdentifiableInterface
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param \Zenomania\CoreBundle\Entity\User|null $user
+     *
+     * @return TicketForZen
+     */
+    public function setUser(\Zenomania\CoreBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return \Zenomania\CoreBundle\Entity\User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

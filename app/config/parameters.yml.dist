@@ -35,6 +35,7 @@ parameters:
     upload_promo_coupon_dir: uploads/coupons
     product_upload_photo_dir: uploads/products
     club_upload_photo_dir: uploads/clubs
+    upload_promo_ticket_dir: uploads/promo_ticket
     upload_dir: '%kernel.root_dir%/../web'
 
     # Sms settings
