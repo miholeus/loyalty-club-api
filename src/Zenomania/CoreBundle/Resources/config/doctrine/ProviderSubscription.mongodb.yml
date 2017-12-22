@@ -1,30 +1,24 @@
-Zenomania\CoreBundle\Document\ProviderTicket:
-    collection: provider_tickets
-    repositoryClass: Zenomania\CoreBundle\Repository\Document\ProviderTicketRepository
+Zenomania\CoreBundle\Document\ProviderSubscription:
+    collection: provider_subs
+    repositoryClass: Zenomania\CoreBundle\Repository\Document\ProviderSubscriptionRepository
     indexes:
-        last_tickets:
-            keys:
-                date: 1
         event_id:
             keys:
                 event_id: 1
+        cardcode:
+            keys:
+                cardcode: 1
     fields:
         id:
             id: true
-        barcode:
+        cardcode:
             type: string
-        client:
-            type: raw
         event_id:
             type: int
-        ticket_id:
+        sub_id:
             type: int
-        date:
-            type: date
         dt_enter:
             type: date
-        discount:
-            type: raw
         price:
             type: float
         row:

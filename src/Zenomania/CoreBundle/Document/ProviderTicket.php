@@ -39,7 +39,10 @@ class ProviderTicket
      * @var \DateTime $date
      */
     protected $date;
-
+    /**
+     * @var \DateTime $date
+     */
+    protected $dt_enter;
     /**
      * @var array $discount
      */
@@ -95,6 +98,7 @@ class ProviderTicket
             'event_id' => $this->event_id,
             'barcode' => $this->barcode,
             'date' => $this->date,
+            'dt_enter' => $this->dt_enter,
             'client' => $this->client,
             'price' => $this->price,
             'row' => $this->row,
@@ -110,6 +114,7 @@ class ProviderTicket
         $self->barcode = $data['barcode'];
         $self->client = $data['client'];
         $self->date = $data['date'];
+        $self->dt_enter = $data['dt_enter'];
         $self->discount = !empty($data['discount']['value']) ? $data['discount'] : null;
         $self->price = $data['price'];
         $self->row = $data['row'];
@@ -412,5 +417,27 @@ class ProviderTicket
     public function getTicketId()
     {
         return $this->ticket_id;
+    }
+
+    /**
+     * Set dtEnter
+     *
+     * @param \DateTime $dtEnter
+     * @return $this
+     */
+    public function setDtEnter($dtEnter)
+    {
+        $this->dt_enter = $dtEnter;
+        return $this;
+    }
+
+    /**
+     * Get dtEnter
+     *
+     * @return \DateTime $dtEnter
+     */
+    public function getDtEnter()
+    {
+        return $this->dt_enter;
     }
 }
