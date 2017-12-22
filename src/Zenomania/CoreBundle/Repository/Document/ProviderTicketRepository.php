@@ -19,7 +19,7 @@ class ProviderTicketRepository extends DocumentRepository
     {
         /** @var ProviderTicket $ticket */
         foreach ($collection as $ticket) {
-            if (!$this->exists($ticket->getEventId())) {
+            if (!$this->exists($ticket->getTicketId())) {
                 $this->dm->persist($ticket);
             }
         }
@@ -40,13 +40,13 @@ class ProviderTicketRepository extends DocumentRepository
     /**
      * Checks if event id already exists
      *
-     * @param int $eventId
+     * @param int $ticketId
      * @return bool
      */
-    protected function exists(int $eventId): bool
+    protected function exists(int $ticketId): bool
     {
         $result = $this->getDocumentManager()->createQueryBuilder('ZenomaniaCoreBundle:ProviderTicket')
-            ->field('event_id')->equals($eventId)->count()->getQuery()->execute();
+            ->field('ticket_id')->equals($ticketId)->count()->getQuery()->execute();
 
         return $result !== 0;
     }
