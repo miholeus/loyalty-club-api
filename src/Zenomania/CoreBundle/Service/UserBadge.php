@@ -104,15 +104,36 @@ class UserBadge
     /**
      * @param User $user
      * @param string $code
-     * @param PeriodConverter $periodConverter
+     * @param array $date
      * @internal param string $period
      */
-    public function giveBadgeForRatings(User $user, string $code, PeriodConverter $periodConverter)
+    public function giveBadgeForRatings(User $user, string $code, array $date)
     {
         $userBadge = new UserBadgeEntity();
 
         /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
-        $badge = $this->getBadgeRepository()->findBadge($code, $periodConverter);
+        $badge = $this->getBadgeRepository()->findBadge($code, $date);
+
+        $userBadge->setUser($user);
+        $userBadge->setPoints($badge->getPoints());
+        $userBadge->setBadgeId($badge);
+
+        $this->getUserBadgeRepository()->save($userBadge);
+    }
+
+
+    /**
+     * @param User $user
+     * @param string $code
+     * @param array $date
+     * @internal param string $period
+     */
+    public function giveBadgeForAllAttendanceOfPeriod(User $user, string $code, array $date)
+    {
+        $userBadge = new UserBadgeEntity();
+
+        /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
+        $badge = $this->getBadgeRepository()->findBadge($code, $date);
 
         $userBadge->setUser($user);
         $userBadge->setPoints($badge->getPoints());
@@ -131,6 +152,43 @@ class UserBadge
         if ($userBadge) {
             $this->getUserBadgeRepository()->remove($userBadge);
         }
+    }
+
+
+    /**
+     *
+     * @param User $user
+     */
+    public function giveBadgeForFirstAttendance(User $user)
+    {
+        $userBadge = new UserBadgeEntity();
+
+        /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => Badge::TYPE_FIRST_ATTENDANCE]);
+
+        $userBadge->setUser($user);
+        $userBadge->setPoints($badge->getPoints());
+        $userBadge->setBadgeId($badge);
+
+        $this->getUserBadgeRepository()->save($userBadge);
+    }
+
+    /**
+     *
+     * @param User $user
+     */
+    public function giveBadgeForAttendance(User $user)
+    {
+        $userBadge = new UserBadgeEntity();
+
+        /** @var \Zenomania\CoreBundle\Entity\Badge $badge */
+        $badge = $this->getBadgeRepository()->findOneBy(['code' => Badge::TYPE_ATTENDANCE]);
+
+        $userBadge->setUser($user);
+        $userBadge->setPoints($badge->getPoints());
+        $userBadge->setBadgeId($badge);
+
+        $this->getUserBadgeRepository()->save($userBadge);
     }
 
     /**
@@ -162,9 +220,15 @@ class UserBadge
         return $userBadge;
     }
 
-    public function getTopUser(PeriodConverter $period)
+    public function getTopUser(array $date)
     {
-        return $this->getUserBadgeRepository()->getTopUser($period);
+        return $this->getUserBadgeRepository()->getTopUser($date);
+    }
+
+
+    public function getUsersOfAllAttendanceOfPeriod($period,string $badgeCode)
+    {
+        return $this->getUserBadgeRepository()->getUsersOfAllAttendanceOfPeriod($period, $badgeCode);
     }
 
     /**

@@ -15,11 +15,13 @@ use Zenomania\CoreBundle\Entity\Badge;
 class BadgeRepository extends \Doctrine\ORM\EntityRepository
 {
 
+
     /**
-     * @param PeriodConverter $period
+     * @param string $code
+     * @param array|null $period
      * @return mixed
      */
-    public function findBadge(string $code, PeriodConverter $period = null)
+    public function findBadge(string $code, array $period = null)
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
@@ -30,8 +32,8 @@ class BadgeRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('code', $code);
         if ($period) {
             $select->andWhere('b.date BETWEEN :dt_st AND :dt_ed')
-                ->setParameter('dt_st', $period->getStartDate()->format('Y-m-d'))
-                ->setParameter('dt_ed', $period->getFinishDate()->format('Y-m-d'));
+                ->setParameter('dt_st', $period['st']->format('Y-m-d'))
+                ->setParameter('dt_ed', $period['ed']->format('Y-m-d'));
         }
         $result = $select->getQuery()->getOneOrNullResult();
         if ($result == null) {
