@@ -14,6 +14,7 @@ use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
 use Zenomania\CoreBundle\Entity\EventAttendance;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Event\NotificationManager;
+use Zenomania\CoreBundle\Event\User\AttendanceEvent;
 use Zenomania\CoreBundle\Event\Ticket\RegistrationEvent;
 use Zenomania\CoreBundle\Repository\EventAttendanceRepository;
 use Zenomania\CoreBundle\Repository\TicketRepository;
@@ -96,7 +97,12 @@ class Tickets
         $eventRegistration = new RegistrationEvent($ticket);
         $eventRegistration->setArgument('user', $user);
         $eventRegistration->setArgument('attendance', $attendance);
+
+        $eventAttendance = new AttendanceEvent();
+        $eventAttendance->setArgument('user', $user);
+
         $this->attachEvent($eventRegistration);
+        $this->attachEvent($eventAttendance);
 
         $this->updateEvents();
         return $eventRegistration->hasArgument('points') ? $eventRegistration->getArgument('points') : 0;

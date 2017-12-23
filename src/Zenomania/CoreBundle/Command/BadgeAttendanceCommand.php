@@ -18,15 +18,15 @@ use Zenomania\CoreBundle\Entity\Badge;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Exception;
 
-class BadgeRatingCommand extends ContainerAwareCommand
+class BadgeAttendanceCommand extends ContainerAwareCommand
 {
     const PERIOD_MONTH = 'month';
     const PERIOD_SEASON = 'season';
 
     protected function configure()
     {
-        $this->setName('badge:rating')
-            ->setDescription('Top rating')
+        $this->setName('badge:attendance')
+            ->setDescription('attendance')
             ->addArgument(
                 'period',
                 InputArgument::REQUIRED,
@@ -41,48 +41,26 @@ class BadgeRatingCommand extends ContainerAwareCommand
             throw new Exception('Не верно задан период');
         }
 
-        $output->writeln("<info>Start find top user</info>");
         $service = $this->getContainer()->get('user_badge.service');
         $date = $this->getDate($period);
 
-        $periodConverter = new PeriodConverter($period);
-        /** @var User $user */
-        $user = $service->getTopUser($date);
         $badgeCode = $this->getBadgeCode($period);
-
-        $service->giveBadgeForRatings($user, $badgeCode, $date);
-
-        $output->writeln("<info>Top user of " . $period . " - " . $user->__toString() . "</info>");
+        $users = $service->getUsersOfAllAttendanceOfPeriod($date, $badgeCode);
+        foreach ($users as $user){
+            /** @var User $user */
+            $service->giveBadgeForAllAttendanceOfPeriod($user, $badgeCode, $date);
+            $output->writeln("<info>Give badge " . $badgeCode . " - " . $user->__toString() . "</info>");
+        }
     }
 
     protected function getBadgeCode(string $period)
     {
         switch ($period) {
             case self::PERIOD_MONTH:
-                return Badge::TYPE_TOP_RATINGS_OF_MONTH;
+                return Badge::TYPE_FULL_ATTENDANCE_OF_MONTH;
                 break;
             case self::PERIOD_SEASON:
-                return Badge::TYPE_TOP_RATINGS_OF_SEASON;
-                break;
-            default:
-                throw new Exception("Бейдж не найден", 404);
-        }
-    }
-
-    protected function getDate(string $period){
-        switch ($period) {
-            case self::PERIOD_MONTH:
-                return [
-                    'st' => new \DateTime('first day of previous month'),
-                    'ed' => new \DateTime('last day of previous month'),
-                ];
-                break;
-            case self::PERIOD_SEASON:
-                $periodConverter = new PeriodConverter($period);
-                return [
-                    'st' => $periodConverter->getStartDate(),
-                    'ed' => new \DateTime('last day of previous month'),
-                ];
+                return Badge::TYPE_FULL_ATTENDANCE_OF_SEASON;
                 break;
             default:
                 throw new Exception("Бейдж не найден", 404);

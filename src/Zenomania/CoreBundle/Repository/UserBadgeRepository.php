@@ -81,10 +81,10 @@ class UserBadgeRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param PeriodConverter $period
+     * @param array $period
      * @return mixed
      */
-    public function getTopUser(PeriodConverter $period, $count = 1)
+    public function getTopUser(array $period, $count = 1)
     {
         $em = $this->getEntityManager();
 
@@ -93,22 +93,88 @@ class UserBadgeRepository extends \Doctrine\ORM\EntityRepository
         $select = $qb->select(['sum(p.points) as sum_points', 'p.user_id'])
             ->from('person_points', 'p')
             ->where('p.dt BETWEEN :dt_st AND :dt_ed')
-            ->setParameter('dt_st', $period->getStartDate()->format('Y-m-d'))
-            ->setParameter('dt_ed', $period->getFinishDate()->format('Y-m-d'))
+            ->setParameter('dt_st', $period['st']->format('Y-m-d'))
+            ->setParameter('dt_ed', $period['ed']->format('Y-m-d'))
             ->groupBy('p.user_id')
             ->orderBy('sum_points', 'DESC')
             ->setMaxResults($count)
             ->execute();
         $result = $select->fetch();
-        if($result != null){
+        if ($result != null) {
             $user = $em->getRepository('ZenomaniaCoreBundle:User')->find($result['user_id']);
-            if($user){
+            if ($user) {
                 return $user;
-            }else{
+            } else {
                 throw new HttpException('404', 'Пользователь не найден');
             }
-        }else{
+        } else {
             throw new HttpException('404', 'Ни у одного пользователя, нету поинтов');
+        }
+    }
+
+    protected function getCountEventsOfPeriod(array $period)
+    {
+        $em = $this->getEntityManager();
+
+        $qb = $em->getConnection()->createQueryBuilder();
+
+        $query = $qb->select(['*'])
+            ->from('event', 'e')
+            ->where('e.date BETWEEN :dt_st AND :dt_ed')
+            ->setParameter('dt_st', $period['st']->format('Y-m-d'))
+            ->setParameter('dt_ed', $period['ed']->format('Y-m-d'));
+        $count = $query->execute()->rowCount();
+        return $count;
+    }
+
+    /**
+     * @param array $period
+     * @param string $badgeCode
+     * @return array
+     */
+    public function getUsersOfAllAttendanceOfPeriod(array $period, string $badgeCode)
+    {
+        $this->getCountEventsOfPeriod($period);
+        $em = $this->getEntityManager();
+
+        $badge = $em->getRepository('ZenomaniaCoreBundle:Badge')->findOneBy(['code' => Badge::TYPE_ATTENDANCE]);
+        $badgeOfPeriod = $em->getRepository('ZenomaniaCoreBundle:Badge')
+            ->findBadge($badgeCode, $period);
+
+        $count = $this->getCountEventsOfPeriod($period);
+
+        $qb = $em->getConnection()->createQueryBuilder();
+
+        $select = $qb->select(['ub.user_id'])
+            ->from('user_badge', 'ub')
+            ->where('ub.dt BETWEEN :dt_st AND :dt_ed')
+            ->andWhere('ub.user_id NOT IN (
+            SELECT user_id
+            FROM user_badge
+            WHERE badge_id = :badge_of_month
+            GROUP BY user_id
+            )')
+            ->andWhere('ub.badge_id = :badge_id')
+            ->groupBy('ub.user_id')
+            ->having('count(ub.id) = :count')
+            ->setParameter('dt_st', $period['st']->format('Y-m-d'))
+            ->setParameter('dt_ed', $period['ed']->format('Y-m-d'))
+            ->setParameter('badge_id', $badge->getId())
+            ->setParameter('badge_of_month', $badgeOfPeriod->getId())
+            ->setParameter('count', $count)
+            ->execute();
+        $items = $select->fetchAll();
+        $data = array();
+        if ($items != null) {
+            foreach ($items as $item) {
+                $user = $em->getRepository('ZenomaniaCoreBundle:User')->find($item['user_id']);
+                if ($user) {
+                    $data[] = $user;
+                }
+            }
+            return $data;
+        } else {
+            throw new HttpException('404', 'Ни один пользователь, не посетил все матчи');
         }
     }
 }
