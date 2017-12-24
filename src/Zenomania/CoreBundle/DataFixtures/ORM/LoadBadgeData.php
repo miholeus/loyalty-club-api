@@ -73,7 +73,7 @@ class LoadBadgeData extends AbstractFixture
         $badgeRepost->setTypeId($this->getReference('badge-type-repost'));
         $manager->persist($badgeRepost);
 
-        $date = new \DateTime('2017-12-01');
+        $date = new \DateTime('2017-11-01');
 
         $badgeTopRatingOfMonth = clone $badge;
         $badgeTopRatingOfMonth->setTitle('Лидер рейтинга за месяц');
@@ -96,6 +96,43 @@ class LoadBadgeData extends AbstractFixture
         $badgeTopRatingOfSeason->setDate($date);
         $badgeTopRatingOfSeason->setTypeId($this->getReference('badge-type-top_rating'));
         $manager->persist($badgeTopRatingOfSeason);
+
+        $badgeAttendance = clone $badge;
+        $badgeAttendance->setTitle('Посетил матч в центре волейбола');
+        $badgeAttendance->setSort(2);
+        $badgeAttendance->setCode(Badge::TYPE_ATTENDANCE);
+        $badgeAttendance->setPoints(1);
+        $badgeAttendance->setMaxPoints(1);
+        $badgeAttendance->setActive(true);
+        $badgeAttendance->setDate($date);
+        $badgeAttendance->setTypeId($this->getReference('badge-type-match'));
+        $manager->persist($badgeAttendance);
+
+        $date = new \DateTime('2017-11-01');
+
+        $badgeAllAttendanceOfMonth = clone $badge;
+        $badgeAllAttendanceOfMonth->setTitle('Посетил все матчи в центре волейбола за ноябрь');
+        $badgeAllAttendanceOfMonth->setSort(2);
+        $badgeAllAttendanceOfMonth->setCode(Badge::TYPE_FULL_ATTENDANCE_OF_MONTH);
+        $badgeAllAttendanceOfMonth->setPoints(1);
+        $badgeAllAttendanceOfMonth->setMaxPoints(1);
+        $badgeAllAttendanceOfMonth->setActive(true);
+        $badgeAllAttendanceOfMonth->setDate($date);
+        $badgeAllAttendanceOfMonth->setTypeId($this->getReference('badge-type-match'));
+        $manager->persist($badgeAllAttendanceOfMonth);
+
+        $date = new \DateTime('2017-11-01');
+
+        $badgeAllAttendanceOfSeason = clone $badge;
+        $badgeAllAttendanceOfSeason->setTitle('Посетил все матчи в центре волейбола за сезон');
+        $badgeAllAttendanceOfSeason->setSort(2);
+        $badgeAllAttendanceOfSeason->setCode(Badge::TYPE_FULL_ATTENDANCE_OF_SEASON);
+        $badgeAllAttendanceOfSeason->setPoints(1);
+        $badgeAllAttendanceOfSeason->setMaxPoints(1);
+        $badgeAllAttendanceOfSeason->setActive(true);
+        $badgeAllAttendanceOfSeason->setDate($date);
+        $badgeAllAttendanceOfSeason->setTypeId($this->getReference('badge-type-match'));
+        $manager->persist($badgeAllAttendanceOfSeason);
 
         $manager->flush();
     }

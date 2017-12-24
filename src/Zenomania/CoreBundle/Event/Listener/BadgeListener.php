@@ -11,10 +11,12 @@ namespace Zenomania\CoreBundle\Event\Listener;
 use Zenomania\CoreBundle\Entity\Person;
 use Zenomania\CoreBundle\Entity\PersonPoints;
 use Zenomania\CoreBundle\Entity\User;
+use Zenomania\CoreBundle\Event\User\AttendanceEvent;
 use Zenomania\CoreBundle\Event\User\ForecastEvent;
 use Zenomania\CoreBundle\Event\User\RegistrationEvent;
 use Zenomania\CoreBundle\Event\User\ProfileEvent;
 use Zenomania\CoreBundle\Event\User\RepostEvent;
+use Zenomania\CoreBundle\Repository\EventAttendanceImportRepository;
 use Zenomania\CoreBundle\Repository\PersonRepository;
 use Zenomania\CoreBundle\Service\UserBadge;
 
@@ -30,7 +32,12 @@ class BadgeListener
      */
     private $personRepository;
 
-    public function __construct(UserBadge $userBadge, PersonRepository $personRepository)
+    /**
+     * @var EventAttendanceImportRepository
+     */
+    protected $eventAttendanceImportRepository;
+
+    public function __construct(UserBadge $userBadge, PersonRepository $personRepository, EventAttendanceImportRepository $eventAttendanceImportRepository)
     {
         $this->userBadge = $userBadge;
         $this->personRepository = $personRepository;
@@ -45,6 +52,25 @@ class BadgeListener
     {
         
         $this->getUserBadge()->giveBadgeForRegistrations($registrationEvent->getArgument('user'));
+    }
+
+    /**
+     *
+     * @param AttendanceEvent $attendanceEvent
+     */
+    public function onAttendanceEvent(AttendanceEvent $attendanceEvent)
+    {
+        $user = $attendanceEvent->getArgument('user');
+
+        $attendance = $this->getEventAttendanceImportRepository()->findOneBy(['person' => $user->getPerson()]);
+
+        //Если это первый проход, то выдаем бейдж за первый проход
+        if (!$attendance) {
+            $this->getUserBadge()->giveBadgeForFirstAttendance($user);
+        }
+
+        //Выдаем бейдж за проход
+        $this->getUserBadge()->giveBadgeForAttendance($user);
     }
 
     /**
@@ -122,5 +148,13 @@ class BadgeListener
     public function getPersonRepository(): PersonRepository
     {
         return $this->personRepository;
+    }
+
+    /**
+     * @return EventAttendanceImportRepository
+     */
+    public function getEventAttendanceImportRepository(): EventAttendanceImportRepository
+    {
+        return $this->eventAttendanceImportRepository;
     }
 }

@@ -17,6 +17,11 @@ class Badge implements IdentifiableInterface
     const TYPE_MAKE_REPOST = 'make repost';
     const TYPE_TOP_RATINGS_OF_MONTH = 'top ratings of month';
     const TYPE_TOP_RATINGS_OF_SEASON = 'top ratings of season';
+    const TYPE_FIRST_ATTENDANCE = 'first attendance';
+    const TYPE_ATTENDANCE = 'attendance';
+    const TYPE_FULL_ATTENDANCE_OF_MONTH = 'full attendance of month';
+    const TYPE_FULL_ATTENDANCE_OF_SEASON = 'full attendance of season';
+
 
     /**
      * @var int
