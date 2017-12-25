@@ -9,6 +9,9 @@ Zenomania\CoreBundle\Entity\Subscription:
         FK_subscription_season:
             columns:
                 - season_id
+        subscription__external_id:
+            columns:
+                - external_id
     uniqueConstraints:
         subscription__stand_sector_row_seat:
             columns:
@@ -85,6 +88,10 @@ Zenomania\CoreBundle\Entity\Subscription:
             options:
                 fixed: false
                 default: ''
+        externalId:
+            type: integer
+            nullable: true
+            column: external_id
     manyToOne:
         person:
             targetEntity: Person

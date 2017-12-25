@@ -51,7 +51,37 @@ class SubscriptionRepository extends EntityRepository
 
         return $query->getOneOrNullResult();
     }
+    /**
+     * @param $id
+     * @return Subscription
+     */
+    public function findByExternalId($id)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('s')
+            ->from('ZenomaniaCoreBundle:Subscription', 's')
+            ->where('s.externalId = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
 
+        return $query->getOneOrNullResult();
+    }
+
+    /**
+     * @param $code
+     * @return Subscription|null
+     */
+    public function findByCardCode($code)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('s')
+            ->from('ZenomaniaCoreBundle:Subscription', 's')
+            ->where('s.mifare = :barcode')
+            ->setParameter('barcode', $code)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
     /**
      * Inserts new subscription
      *
@@ -64,9 +94,9 @@ class SubscriptionRepository extends EntityRepository
             return $current->getId();
         }
 
-        if (null !== ($current = $this->findTicketByBarcode($data['cardcode']))) {
+        if (null !== ($current = $this->findByCardCode($data['cardcode']))) {
             // update external id
-            $current->setExternalId($data['ticket_id']);
+            $current->setExternalId($data['sub_id']);
             $this->_em->persist($current);
             $this->_em->flush();
             return $current->getId();
@@ -74,9 +104,11 @@ class SubscriptionRepository extends EntityRepository
 
         $conn = $this->getEntityManager()->getConnection();
         $conn->insert($this->getEntityManager()->getClassMetadata('ZenomaniaCoreBundle:Subscription')->getTableName(), [
-            'event_id' => $this->findEventByExternalId($data['event_id']),
-            'external_id' => $data['ticket_id'],
-            'number' => $data['barcode'],
+            'season_id' => $data['season_id'],
+            'external_id' => $data['sub_id'],
+            'mifare' => $data['cardcode'],
+            'serial' => $data['serial'],
+            'number' => $data['number'],
             'seat' => $data['seat'],
             'sector' => $data['sector'],
             'row' => $data['row'],
