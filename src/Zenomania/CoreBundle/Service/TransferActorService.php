@@ -48,6 +48,16 @@ class TransferActorService
 
     public function transfer(Actor $actor, Person $person)
     {
+        $email = $person->getEmail();
+        if (empty($email)) {
+            $email = null;
+        }
+        if (false === filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $email = null;
+            // update person email
+            $this->personRepository->cleanEmail($person->getId());
+        }
+
         $params = [
             'status' => $this->getUserStatus() ?? null,
             'role' => $this->getUserRole() ?? null,
@@ -55,7 +65,7 @@ class TransferActorService
             'lastname' => $person->getLastName() ?? null,
             'middlename' => $person->getMiddleName() ?? null,
             'login' => $actor->getUsername() ?? null,
-            'email' => $person->getEmail() ?? null,
+            'email' => $email,
             'password' => $actor->getPassword() ?? null,
             'birthDate' => $person->getBdate() ?? null,
             'avatar' => $person->getAvatar() ?? null,
