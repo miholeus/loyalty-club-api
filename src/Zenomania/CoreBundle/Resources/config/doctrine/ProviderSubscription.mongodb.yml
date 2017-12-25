@@ -15,12 +15,18 @@ Zenomania\CoreBundle\Document\ProviderSubscription:
             type: string
         event_id:
             type: int
+        season_id:
+            type: int
         sub_id:
             type: int
         dt_enter:
             type: date
         price:
             type: float
+        number:
+            type: string
+        serial:
+            type: string
         row:
             type: string
         seat:

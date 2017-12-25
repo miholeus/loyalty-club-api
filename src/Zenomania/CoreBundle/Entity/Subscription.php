@@ -73,6 +73,10 @@ class Subscription
     private $personPoint;
 
     /**
+     * @var int|null
+     */
+    private $externalId;
+    /**
      * Constructor
      */
     public function __construct()
@@ -395,5 +399,29 @@ class Subscription
     public function getPersonPoint()
     {
         return $this->personPoint;
+    }
+
+    /**
+     * Set externalId.
+     *
+     * @param int|null $externalId
+     *
+     * @return Subscription
+     */
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    /**
+     * Get externalId.
+     *
+     * @return int|null
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
     }
 }

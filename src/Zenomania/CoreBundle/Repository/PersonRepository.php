@@ -32,6 +32,11 @@ class PersonRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
+    public function cleanEmail($id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $conn->update('person', ['email' => null], ['id' => $id]);
+    }
     /**
      * @param Actor $actor
      * @return Person

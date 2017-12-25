@@ -8,6 +8,7 @@ namespace Zenomania\ApiBundle\Service\Afr;
 
 use Zenomania\ApiBundle\Service\Afr\Filter\ClubFilter;
 use Zenomania\ApiBundle\Service\Afr\Filter\EventFilter;
+use Zenomania\ApiBundle\Service\Afr\Filter\SubscriptionFilter;
 use Zenomania\ApiBundle\Service\Afr\Filter\TicketFilter;
 use Zenomania\CoreBundle\Entity\ApiToken;
 
@@ -64,7 +65,7 @@ class IntegrationService
         return $data;
     }
     /**
-     * Fetches tickets from services
+     * Fetches tickets from service
      *
      * @param ApiToken $token
      * @param $eventId
@@ -75,6 +76,21 @@ class IntegrationService
     {
         $filter = new TicketFilter(['eventId' => $eventId, 'page' => $page]);
         $data = $this->getClient()->getTickets($token, $filter);
+        return $data;
+    }
+
+    /**
+     * Fetches subs from service
+     *
+     * @param ApiToken $token
+     * @param $clubId
+     * @param int $page
+     * @return mixed
+     */
+    public function fetchSubs(ApiToken $token, $clubId, $page = 1)
+    {
+        $filter = new SubscriptionFilter(['clubId' => $clubId, 'page' => $page]);
+        $data = $this->getClient()->getSubs($token, $filter);
         return $data;
     }
 

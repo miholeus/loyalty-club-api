@@ -110,6 +110,9 @@ services:
     api.afr_tickets_handler:
         class: Zenomania\ApiBundle\Service\Afr\Handler\TicketsHandler
         arguments: ['@repository.provider_tickets_repository', '@repository.ticket_repository']
+    api.afr_sub_handler:
+        class: Zenomania\ApiBundle\Service\Afr\Handler\SubscriptionHandler
+        arguments: ['@repository.provider_sub_repository', '@repository.subscription_repository']
     api.afr_clubs_handler:
         class: Zenomania\ApiBundle\Service\Afr\Handler\ClubsHandler
         arguments: ['@monolog.logger', '@repository.club_repository', '@event.notification_manager']

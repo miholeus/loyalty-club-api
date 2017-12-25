@@ -48,19 +48,29 @@ class TransferActorService
 
     public function transfer(Actor $actor, Person $person)
     {
+        $email = $person->getEmail();
+        if (empty($email)) {
+            $email = null;
+        }
+        if (false === filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $email = null;
+            // update person email
+            $this->personRepository->cleanEmail($person->getId());
+        }
+
         $params = [
-            'status' => $this->getUserStatus(),
-            'role' => $this->getUserRole(),
-            'firstname' => $person->getFirstName(),
-            'lastname' => $person->getLastName(),
-            'middlename' => $person->getMiddleName(),
-            'login' => $actor->getUsername(),
-            'email' => !empty($person->getEmail()) ? $person->getEmail() : null,
-            'password' => $actor->getPassword(),
-            'birthDate' => $person->getBdate(),
-            'avatar' => $person->getAvatar(),
-            'phone' => preg_replace('/\D/', '', $person->getMobile()),
-            'mailNotification' => $person->getEmailAllowed(),
+            'status' => $this->getUserStatus() ?? null,
+            'role' => $this->getUserRole() ?? null,
+            'firstname' => $person->getFirstName() ?? null,
+            'lastname' => $person->getLastName() ?? null,
+            'middlename' => $person->getMiddleName() ?? null,
+            'login' => $actor->getUsername() ?? null,
+            'email' => $email,
+            'password' => $actor->getPassword() ?? null,
+            'birthDate' => $person->getBdate() ?? null,
+            'avatar' => $person->getAvatar() ?? null,
+            'phone' => (null !== $person->getMobile()) ? preg_replace('/\D/', '', $person->getMobile()) : null,
+            'mailNotification' => $person->getEmailAllowed() ?? null,
             'mustChangePasswd' => true,
             'isActive' => true,
             'isBlocked' => false,
