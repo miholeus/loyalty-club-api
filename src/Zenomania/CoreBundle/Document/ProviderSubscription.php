@@ -58,6 +58,18 @@ class ProviderSubscription
      * @var string $sector
      */
     protected $sector;
+    /**
+     * @var string
+     */
+    protected $number;
+    /**
+     * @var string
+     */
+    protected $serial;
+    /**
+     * @var int
+     */
+    protected $season_id;
 
     /**
      * @var \DateTime $created_on
@@ -79,6 +91,39 @@ class ProviderSubscription
         $this->created_on = new \DateTime();
         $this->updated_on = new \DateTime();
         $this->status = self::STATUS_NEW;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'sub_id' => $this->sub_id,
+            'cardcode' => $this->cardcode,
+            'dt_enter' => $this->dt_enter,
+            'season_id' => $this->season_id,
+            'number' => $this->number,
+            'serial' => $this->serial,
+            'price' => $this->price,
+            'row' => $this->row,
+            'seat' => $this->seat,
+            'sector' => $this->sector
+        ];
+    }
+
+    public static function fromArray(array $data): ProviderSubscription
+    {
+        $self = new self();
+        $self->sub_id = $data['id'];
+        $self->cardcode = $data['cardcode'];
+        $self->dt_enter = $data['dt_enter'];
+        $self->number = $data['number'];
+        $self->serial = $data['serial'];
+        $self->price = $data['price'];
+        $self->row = $data['row'];
+        $self->seat = $data['seat'];
+        $self->sector = $data['sector'];
+
+        return $self;
     }
     /**
      * Get id
@@ -330,5 +375,71 @@ class ProviderSubscription
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set number
+     *
+     * @param string $number
+     * @return $this
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+        return $this;
+    }
+
+    /**
+     * Get number
+     *
+     * @return string $number
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * Set serial
+     *
+     * @param string $serial
+     * @return $this
+     */
+    public function setSerial($serial)
+    {
+        $this->serial = $serial;
+        return $this;
+    }
+
+    /**
+     * Get serial
+     *
+     * @return string $serial
+     */
+    public function getSerial()
+    {
+        return $this->serial;
+    }
+
+    /**
+     * Set seasonId
+     *
+     * @param int $seasonId
+     * @return $this
+     */
+    public function setSeasonId($seasonId)
+    {
+        $this->season_id = $seasonId;
+        return $this;
+    }
+
+    /**
+     * Get seasonId
+     *
+     * @return int $seasonId
+     */
+    public function getSeasonId()
+    {
+        return $this->season_id;
     }
 }

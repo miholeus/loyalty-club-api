@@ -154,6 +154,11 @@ services:
         factory: ['@doctrine_mongodb.odm.default_document_manager', getRepository]
         arguments:
             - Zenomania\CoreBundle\Document\ProviderTicket
+    repository.provider_sub_repository:
+        class: Zenomania\CoreBundle\Repository\Document\ProviderSubscriptionRepository
+        factory: ['@doctrine_mongodb.odm.default_document_manager', getRepository]
+        arguments:
+            - Zenomania\CoreBundle\Document\ProviderSubscription
     repository.product:
         class: Zenomania\CoreBundle\Repository\ProductRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
