@@ -9,6 +9,7 @@
 namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zenomania\ApiBundle\Form\Model\Payment;
 use Zenomania\ApiBundle\Request\Filter\RatingsFilter;
 use Zenomania\CoreBundle\Entity\Order;
 use Zenomania\CoreBundle\Entity\Person;
@@ -38,7 +39,7 @@ class PersonPointsRepository extends EntityRepository
 
         $params = [
             'season' => $season,
-            'user'   => $referralCode->getUser(),
+            'user' => $referralCode->getUser(),
             'points' => $points,
             'type' => PersonPoints::TYPE_INVITE,
             'state' => 'none',
@@ -220,7 +221,7 @@ class PersonPointsRepository extends EntityRepository
             'type' => $type,
             'state' => 'none',
             'dt' => new \DateTime(),
-            
+
 
             'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
         ];
@@ -470,5 +471,26 @@ class PersonPointsRepository extends EntityRepository
             ->where('person_id = :personId')
             ->setParameter('personId', $person->getId())
             ->execute();
+    }
+
+    public function givePointsForOrderInternetShop(Payment $payment,User $user)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+        $params = [
+            'season' => $season,
+            'person' => $person,
+            'user' => $user,
+            'points' => floor($payment->getAmount()/100*10),
+            'type' => PersonPoints::TYPE_CREATE_ORDER_ON_INTERNET_SHOP,
+            'state' => 'none',
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_DEBIT
+        ];
+        $personPoints = PersonPoints::fromArray($params);
+
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
     }
 }
