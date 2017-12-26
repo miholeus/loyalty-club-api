@@ -62,10 +62,14 @@ class PaymentsController extends RestController
     {
         $this->getUser();
         $service = $this->get('api.payments');
+        $servicePersonPoint = $this->get('api.person_points');
+
         $transformer = $this->get('api.data.transformer.payments.debit');
 
         $item = $service->debit($amount, $this->getUser());
         $data = $this->getResourceItem($item, $transformer);
+
+        $servicePersonPoint->getRepository()->takePointsForOrderInternetShop($amount*(-1), $this->getUser());
 
         $view = $this->view($data, 200);
         return $this->handleView($view);

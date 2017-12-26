@@ -493,4 +493,25 @@ class PersonPointsRepository extends EntityRepository
 
         $this->_em->flush();
     }
+
+    public function takePointsForOrderInternetShop(int $amount,User $user)
+    {
+        $person = $this->_em->getRepository('ZenomaniaCoreBundle:Person')->findPersonByUser($user);
+        $season = $this->_em->getRepository('ZenomaniaCoreBundle:Season')->findCurrentSeason();
+        $params = [
+            'season' => $season,
+            'person' => $person,
+            'user' => $user,
+            'points' => floor($amount),
+            'type' => PersonPoints::TYPE_CREATE_ORDER_ON_INTERNET_SHOP,
+            'state' => 'none',
+            'dt' => new \DateTime(),
+            'operation_type' => PersonPoints::OPERATION_TYPE_CREDIT
+        ];
+        $personPoints = PersonPoints::fromArray($params);
+
+        $this->_em->persist($personPoints);
+
+        $this->_em->flush();
+    }
 }
