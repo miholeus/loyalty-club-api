@@ -171,7 +171,7 @@ class SecurityController extends RestController
         $authService = $this->get('api.auth_service');
 
         if ($authService->validPhone($phone)) {
-            throw new HttpException(400, "Phone is already registered. Try to recover your password.");
+            throw new HttpException(400, "Телефон уже используется. Попытайтесь восстановить пароль.");
         }
 
         $service = $this->get('core.service.registration');
