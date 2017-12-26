@@ -23,6 +23,7 @@ class PersonPoints
     const TYPE_FORECAST_WINNER_MVP = 'forecast_winner_mvp';
     const TYPE_CANCELLED_ORDER = 'cancelled_order';
     const TYPE_CREATE_ORDER = 'create_order';
+    const TYPE_CREATE_ORDER_ON_INTERNET_SHOP = 'create_order_on_internet_shop';
 
     const OPERATION_TYPE_DEBIT = 'debit';
     const OPERATION_TYPE_CREDIT = 'credit';

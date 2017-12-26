@@ -130,3 +130,6 @@ services:
     api.prize:
         class: Zenomania\ApiBundle\Service\Prize
         arguments: ['@repository.order']
+    api.payments:
+        class: Zenomania\ApiBundle\Service\PaymentsService
+        arguments: ['@repository.payments', '@repository.person_points_repository']

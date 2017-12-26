@@ -50,6 +50,7 @@ class BadgeListener
      */
     public function onRegistrationEvent(RegistrationEvent $registrationEvent)
     {
+        
         $this->getUserBadge()->giveBadgeForRegistrations($registrationEvent->getArgument('user'));
     }
 

@@ -77,3 +77,9 @@ services:
     api.data.transformer.prize:
         class: Zenomania\ApiBundle\Service\Transformer\PrizeTransformer
         arguments: ['@utils.host_based_url']
+    api.data.transformer.payments:
+        class: Zenomania\ApiBundle\Service\Transformer\PaymentTransformer
+        arguments: ['@utils.host_based_url']
+    api.data.transformer.payments.debit:
+        class: Zenomania\ApiBundle\Service\Transformer\PaymentDebitTransformer
+        arguments: ['@utils.host_based_url']
