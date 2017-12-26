@@ -112,9 +112,6 @@ class BadgeListener
         if (!$person->getEmail() || !$person->getBdate()) {
             $profileCompleted = false;
         }
-        if (!$person->getDistrict() || !$person->getCity()) {
-            $profileCompleted = false;
-        }
         return $profileCompleted;
     }
 
