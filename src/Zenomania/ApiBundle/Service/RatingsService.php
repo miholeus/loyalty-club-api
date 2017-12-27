@@ -34,7 +34,7 @@ class RatingsService
     {
         $date = null;
         if (null !== $filter->period) {
-            $periodConverter = new PeriodConverter(PeriodConverter::SEASON);
+            $periodConverter = new PeriodConverter($filter->period);
             $date = $periodConverter->getStartDate();
             $filter->period = $date->format("Y-m-d");
         }
