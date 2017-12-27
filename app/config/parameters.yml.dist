@@ -69,4 +69,5 @@ parameters:
     mongodb_port: 27017
 
     # RabbitMQ settings
+    rabbitmq_host: '127.0.0.1'
     photo_upload_routing_key: 'photos.clubs.%d'

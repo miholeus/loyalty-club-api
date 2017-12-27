@@ -266,7 +266,7 @@ doctrine_mongodb:
 old_sound_rabbit_mq:
     connections:
         default:
-            host:     'zen_rabbitmq'
+            host:     '%rabbitmq_host%'
             port:     5672
             user:     'guest'
             password: 'guest'
