@@ -12,18 +12,27 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CityController extends Controller
 {
+    const ITEMS_ON_PAGE = 50;
+
     /**
      * Lists all city entities.
-     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $cities = $em->getRepository('ZenomaniaCoreBundle:City')->findAll();
+        $paginator = $em->getRepository('ZenomaniaCoreBundle:City')->getPaginator();
+
+        $paginator->setPageSize(self::ITEMS_ON_PAGE);
+        $paginator->setCurrentPage($request->get('page', 1));
+        $paginator->setRoute('city_index');
+        $paginator->setRequest($request);
 
         return $this->render('ZenomaniaCoreBundle:city:index.html.twig', array(
-            'cities' => $cities,
+            'cities' => $paginator->getQuery()->getResult(),
+            'paginator' => $paginator,
         ));
     }
 

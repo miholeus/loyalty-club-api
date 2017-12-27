@@ -25,6 +25,10 @@
         </tbody>
     </table>
 
+    <nav class="text-center">
+        {% include '@ZenomaniaCore/shared/paginator.html.twig' with {paginator: paginator} %}
+    </nav>
+
     <ul class="list-group">
         <li class="list-group-item">
             <a href="{{ path('city_new') }}">Create a new city</a>
