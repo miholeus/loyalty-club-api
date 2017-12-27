@@ -41,6 +41,7 @@ class BadgeListener
     {
         $this->userBadge = $userBadge;
         $this->personRepository = $personRepository;
+        $this->eventAttendanceImportRepository = $eventAttendanceImportRepository;
     }
 
     /**
