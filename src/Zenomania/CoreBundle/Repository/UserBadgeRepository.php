@@ -68,14 +68,16 @@ class UserBadgeRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin('b', 'badge_type', 'bt', 'bt.id = b.type_id')
             ->leftJoin('b', sprintf("(%s)", $subQuery), 'ub', 'b.code = ub.code')
             ->where('b.active = true')
+            ->andWhere('b.code != :badge_code')
             ->orderBy('b.sort')
             ->orderBy('bt.sort')
-            ->setParameter('user_id', $filter->user->getId());
-
+            ->setParameter('user_id', $filter->user->getId())
+            ->setParameter('badge_code', Badge::TYPE_ATTENDANCE);
         if ($filter->period) {
             $select
                 ->setParameter('dt', $filter->period);
         }
+//        var_dump($select->getSQL());exit;
         $result = $select->execute()->fetchAll();
         return $result;
     }
