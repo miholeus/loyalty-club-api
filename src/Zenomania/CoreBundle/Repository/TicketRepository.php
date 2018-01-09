@@ -29,6 +29,7 @@ class TicketRepository extends EntityRepository
             ->from('ZenomaniaCoreBundle:EventAttendanceImport', 'u')
             ->where('u.ticketNumber = :barcode')
             ->setParameter('barcode', $barcode)
+            ->setMaxResults(1)
             ->getQuery();
 
         return $query->getOneOrNullResult();

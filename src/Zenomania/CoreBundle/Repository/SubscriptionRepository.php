@@ -55,6 +55,7 @@ class SubscriptionRepository extends EntityRepository
             ->from('ZenomaniaCoreBundle:EventAttendanceImport', 'u')
             ->where('u.subscriptionNumber = :code')
             ->setParameter('code', $sub->getMifare())
+            ->setMaxResults(1)
             ->getQuery();
 
         return $query->getOneOrNullResult();
