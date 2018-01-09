@@ -104,7 +104,7 @@ class Subscriptions
         }
 
         if ($this->isSubscriptionRegistered($subNumber)) {
-            throw new EntityNotFoundException(400, "Абонемент {$subNumber->getCardcode()} уже был зарегистрирован ранее");
+            throw new EntityNotFoundException("Абонемент {$subNumber->getCardcode()} уже был зарегистрирован ранее");
         }
 
         $person = $user->getPerson();
