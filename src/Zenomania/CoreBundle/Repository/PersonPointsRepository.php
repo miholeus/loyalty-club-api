@@ -371,20 +371,28 @@ class PersonPointsRepository extends EntityRepository
             ])
             ->from($this->getClassMetadata()->getTableName())
             ->where('user_id IS NOT NULL')
-            ->andWhere('operation_type = :operation_type')
             ->groupBy('user_id');
+
+        $subQb = clone $em->getConnection()->createQueryBuilder();
+
+        $subSelect = $subQb->select([
+            'RANK() OVER(ORDER BY points desc) AS position',
+            'user_id',
+            'points'
+        ])->from(sprintf("(%s) as s", $subQuery));
 
         $qb = clone $em->getConnection()->createQueryBuilder();
 
         $select = $qb->select([
-            'RANK() OVER(ORDER BY points desc) AS position',
+            'position',
             'user_id',
             'points'
-        ])->from(sprintf("(%s) as s", $subQuery))
-            ->where('user_id = :user')
-            ->setParameter('user', $user->getId())
-            ->setParameter('operation_type', PersonPoints::OPERATION_TYPE_DEBIT);
+        ])
+            ->from(sprintf("(%s) as p", $subSelect))
+            ->where('p.user_id = :user')
+            ->setParameter('user', $user->getId());
         $result = $select->execute()->fetchAll();
+
         if (!empty($result)) {
             return intval($result[0]['position']);
         }
