@@ -34,6 +34,9 @@ class SubscriptionRepository extends EntityRepository
             ->andWhere('u.row = :row')
             ->andWhere('u.seat = :seat')
             ->setParameter('code', $subNumber->getCardcode())
+            ->setParameter('sector', $subNumber->getSector())
+            ->setParameter('row', $subNumber->getRow())
+            ->setParameter('seat', $subNumber->getSeat())
             ->getQuery();
 
         return $query->getOneOrNullResult();
