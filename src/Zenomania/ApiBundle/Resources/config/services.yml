@@ -43,7 +43,7 @@ services:
         arguments: ['@doctrine.orm.entity_manager', '@event.notification_manager']
     api.subscriptions:
         class: Zenomania\ApiBundle\Service\Subscriptions
-        arguments: ['@repository.person_points_repository', '@repository.subscription_repository']
+        arguments: ['@repository.person_points_repository', '@repository.subscription_repository', '@repository.event_attendance_repository']
     api.auth_options:
         class: Zenomania\ApiBundle\Service\AuthenticateOptions
         arguments: [{'auth_key_ttl': "%auth_key_ttl%"}]

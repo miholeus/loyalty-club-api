@@ -11,6 +11,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zenomania\CoreBundle\Entity\EventAttendance;
+use Zenomania\CoreBundle\Entity\EventAttendanceImport;
 use Zenomania\CoreBundle\Entity\Subscription;
 use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
 
@@ -28,8 +29,29 @@ class SubscriptionRepository extends EntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('u')
             ->from('ZenomaniaCoreBundle:Subscription', 'u')
-            ->where('u.number = :cardcode')
-            ->setParameter('cardcode', $subNumber->getCardcode())
+            ->where('u.number = :code')
+            ->andWhere('u.sector = :sector')
+            ->andWhere('u.row = :row')
+            ->andWhere('u.seat = :seat')
+            ->setParameter('code', $subNumber->getCardcode())
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
+    /**
+     * Возвращает данные по посещению по его номеру
+     *
+     * @param Subscription $sub
+     * @return EventAttendanceImport
+     */
+    public function findAttendance(Subscription $sub)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('u')
+            ->from('ZenomaniaCoreBundle:EventAttendanceImport', 'u')
+            ->where('u.subscriptionNumber = :code')
+            ->setParameter('code', $sub->getMifare())
             ->getQuery();
 
         return $query->getOneOrNullResult();
@@ -47,11 +69,11 @@ class SubscriptionRepository extends EntityRepository
         $query = $qb->select('ea')
             ->from('ZenomaniaCoreBundle:EventAttendance', 'ea')
             ->innerJoin('ZenomaniaCoreBundle:Subscription', 'tc', 'WITH', 'tc.id = ea.subscriptionId')
-            ->where('tc.number = :barcode')
+            ->where('tc.number = :code')
             ->andWhere('tc.sector = :sector')
             ->andWhere('tc.row = :row')
             ->andWhere('tc.seat = :seat')
-            ->setParameter('barcode', $subNumber->getCardcode())
+            ->setParameter('code', $subNumber->getCardcode())
             ->setParameter('sector', $subNumber->getSector())
             ->setParameter('row', $subNumber->getRow())
             ->setParameter('seat', $subNumber->getSeat())

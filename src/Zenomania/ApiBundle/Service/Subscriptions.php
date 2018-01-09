@@ -10,9 +10,11 @@ namespace Zenomania\ApiBundle\Service;
 
 
 use Zenomania\ApiBundle\Service\Exception\EntityNotFoundException;
+use Zenomania\CoreBundle\Entity\EventAttendance;
 use Zenomania\CoreBundle\Entity\Subscription;
 use Zenomania\CoreBundle\Entity\User;
 use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
+use Zenomania\CoreBundle\Repository\EventAttendanceRepository;
 use Zenomania\CoreBundle\Repository\PersonPointsRepository;
 use Zenomania\CoreBundle\Repository\SubscriptionRepository;
 
@@ -24,23 +26,29 @@ class Subscriptions
     /** @var SubscriptionRepository */
     private $subscriptionRepository;
 
-    public function __construct(PersonPointsRepository $personPointsRepository, SubscriptionRepository $subscriptionRepository)
+    /**
+     * @var EventAttendanceRepository
+     */
+    private $eventAttendanceRepository;
+
+    public function __construct(PersonPointsRepository $personPointsRepository, SubscriptionRepository $subscriptionRepository, EventAttendanceRepository $eventAttendanceRepository)
     {
         $this->personPointsRepository = $personPointsRepository;
         $this->subscriptionRepository = $subscriptionRepository;
+        $this->eventAttendanceRepository = $eventAttendanceRepository;
     }
 
     /**
      * Проверяет, есть ли абонемент с указанным номером, сектором, рядом и местом
      *
-     * @param SubscriptionNumber $subNumber
+     * @param Subscription $sub
      * @return bool
      */
-    public function isValidCardcode(SubscriptionNumber $subNumber)
+    public function isValidCardcode(Subscription $sub)
     {
-        $subs = $this->getSubscriptionRepository()->findSubsByNumber($subNumber);
+        $attendance = $this->getSubscriptionRepository()->findAttendance($sub);
 
-        if (null === $subs) {
+        if (null === $attendance) {
             return false;
         }
         return true;
@@ -86,25 +94,35 @@ class Subscriptions
      */
     public function subsRegistration(SubscriptionNumber $subNumber, User $user)
     {
-        if (!$this->isValidCardcode($subNumber)) {
+        $subscription = $this->getSubscriptionRepository()->findSubsByNumber($subNumber);
+        if (null === $subscription) {
             throw new EntityNotFoundException("Абонемент {$subNumber->getCardcode()} не найден");
+        }
+
+        if (!$this->isValidCardcode($subscription)) {
+            throw new EntityNotFoundException("По данному абонементу {$subNumber->getCardcode()} посещение мероприятия не зафиксировано.");
         }
 
         if ($this->isSubscriptionRegistered($subNumber)) {
             throw new EntityNotFoundException(400, "Абонемент {$subNumber->getCardcode()} уже был зарегистрирован ранее");
         }
 
-        $subs = $this->getSubscriptionRepository()->findSubsByNumber($subNumber);
-        if (null === $subs) {
-            throw new EntityNotFoundException("Subscription not found by cardcode");
-        }
-
         $person = $user->getPerson();
-        $subs->setPerson($person);
 
-        $this->getSubscriptionRepository()->save($subs);
+        $attendance = $this->getSubscriptionRepository()->findAttendance($subscription);
 
-        return $this->givePointsForRegistration($user, $subs);
+        $params = [
+            'event' => $attendance->getEvent(),
+            'person' => $person,
+            'subscriptionId' => $subscription->getId(),
+            'enterDate' => $attendance->getEnterDt()
+        ];
+
+        $eventAttendance = EventAttendance::fromArray($params);
+
+        $this->getEventAttendanceRepository()->save($eventAttendance);
+
+        return $this->givePointsForRegistration($user, $subscription);
     }
 
     /**
@@ -121,5 +139,13 @@ class Subscriptions
     public function getSubscriptionRepository(): SubscriptionRepository
     {
         return $this->subscriptionRepository;
+    }
+
+    /**
+     * @return EventAttendanceRepository
+     */
+    public function getEventAttendanceRepository(): EventAttendanceRepository
+    {
+        return $this->eventAttendanceRepository;
     }
 }
