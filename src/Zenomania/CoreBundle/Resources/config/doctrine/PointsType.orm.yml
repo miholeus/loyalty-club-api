@@ -19,7 +19,7 @@ Zenomania\CoreBundle\Entity\PointsType:
             fixed: false
             comment: 'тип очков'
         interval:
-            type: smallint
+            type: integer
             nullable: false
             options:
                 unsigned: true
