@@ -54,9 +54,9 @@ class Subscriptions
      */
     public function isSubscriptionRegistered(SubscriptionNumber $subNumber)
     {
-        $subs = $this->getSubscriptionRepository()->findSubsByNumber($subNumber);
+        $attendance = $this->getSubscriptionRepository()->findSubscriptionRegistration($subNumber);
 
-        if (null === $subs || null === $subs->getPerson()) {
+        if (null === $attendance) {
             return false;
         }
         return true;
@@ -86,6 +86,14 @@ class Subscriptions
      */
     public function subsRegistration(SubscriptionNumber $subNumber, User $user)
     {
+        if (!$this->isValidCardcode($subNumber)) {
+            throw new EntityNotFoundException("Абонемент {$subNumber->getCardcode()} не найден");
+        }
+
+        if ($this->isSubscriptionRegistered($subNumber)) {
+            throw new EntityNotFoundException(400, "Абонемент {$subNumber->getCardcode()} уже был зарегистрирован ранее");
+        }
+
         $subs = $this->getSubscriptionRepository()->findSubsByNumber($subNumber);
         if (null === $subs) {
             throw new EntityNotFoundException("Subscription not found by cardcode");

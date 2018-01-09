@@ -10,6 +10,7 @@ namespace Zenomania\CoreBundle\Repository;
 
 
 use Doctrine\ORM\EntityRepository;
+use Zenomania\CoreBundle\Entity\EventAttendance;
 use Zenomania\CoreBundle\Entity\Subscription;
 use Zenomania\CoreBundle\Form\Model\SubscriptionNumber;
 
@@ -29,6 +30,31 @@ class SubscriptionRepository extends EntityRepository
             ->from('ZenomaniaCoreBundle:Subscription', 'u')
             ->where('u.number = :cardcode')
             ->setParameter('cardcode', $subNumber->getCardcode())
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
+    /**
+     * Возвращает данные по регистрации абонемента по его номеру
+     *
+     * @param SubscriptionNumber $subNumber
+     * @return EventAttendance|null
+     */
+    public function findSubscriptionRegistration(SubscriptionNumber $subNumber)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('ea')
+            ->from('ZenomaniaCoreBundle:EventAttendance', 'ea')
+            ->innerJoin('ZenomaniaCoreBundle:Subscription', 'tc', 'WITH', 'tc.id = ea.subscriptionId')
+            ->where('tc.number = :barcode')
+            ->andWhere('tc.sector = :sector')
+            ->andWhere('tc.row = :row')
+            ->andWhere('tc.seat = :seat')
+            ->setParameter('barcode', $subNumber->getCardcode())
+            ->setParameter('sector', $subNumber->getSector())
+            ->setParameter('row', $subNumber->getRow())
+            ->setParameter('seat', $subNumber->getSeat())
             ->getQuery();
 
         return $query->getOneOrNullResult();

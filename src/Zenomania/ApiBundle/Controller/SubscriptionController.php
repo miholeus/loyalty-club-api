@@ -72,14 +72,6 @@ class SubscriptionController extends RestController
         /** @var Subscriptions $subService */
         $subService = $this->get('api.subscriptions');
 
-        if (!$subService->isValidCardcode($subNumber)) {
-            throw new HttpException(400, "Абонемент {$subNumber->getCardcode()} не найден");
-        }
-
-        if ($subService->isSubscriptionRegistered($subNumber)) {
-            throw new HttpException(400, "Абонемент {$subNumber->getCardcode()} уже был зарегистрирован ранее");
-        }
-
         $user = $this->getUser();
 
         // Заносим регистрацию абонемента cardcode в активность для пользователя User
