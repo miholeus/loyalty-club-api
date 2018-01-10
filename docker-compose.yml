@@ -20,7 +20,7 @@ services:
             - zen_mongodb
             - zen_redis
         volumes:
-            - ./:/app
+            - ./:/app:delegated
             - ./support/php/log.conf:/usr/local/etc/php-fpm.d/zz-log.conf
         environment:
             - SYMFONY_ENV=dev
