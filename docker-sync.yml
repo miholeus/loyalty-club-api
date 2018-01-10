@@ -1,0 +1,13 @@
+version: "2"
+options:
+    compose-file-path: 'docker-compose.yml'
+    compose-dev-file-path: 'docker-compose-dev.yml'
+    verbose: true
+syncs:
+    default-sync:
+        sync_strategy: 'native_osx'
+        host_disk_mount_mode: 'cached'
+        src: './'
+    project-sync:
+        src: './'
+        sync_excludes: ['.git', '.gitignore', '.DS_Store', '.idea', 'docker-sync.yml', 'docker-compose.yml', '*.iml']

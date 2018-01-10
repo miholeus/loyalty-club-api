@@ -1,0 +1,101 @@
+version: "3"
+
+services:
+    zen_web:
+        image: miholeus/nginx:latest
+        volumes:
+            - .:/app
+            - ./support/nginx/site.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "8081:80"
+        links:
+            - zen_php
+        networks:
+            - app_network
+    zen_php:
+        image: miholeus/php71:development
+        tty: true
+        depends_on:
+            - zen_database
+            - zen_mongodb
+            - zen_redis
+        volumes:
+            - project-sync:/app:nocopy
+            - ./support/php/log.conf:/usr/local/etc/php-fpm.d/zz-log.conf
+        environment:
+            - SYMFONY_ENV=dev
+            - SYMFONY_DEBUG=1
+            - SYMFONY__DATABASE__USER=${DB_USER}
+            - SYMFONY__DATABASE__NAME=${DB_NAME}
+            - SYMFONY__DATABASE__PASS=${DB_PASS}
+            - SYMFONY__APP__SECRET=${APP_SECRET}
+        working_dir: /app
+        networks:
+            - afr_app_network
+            - app_network
+    zen_database:
+        build: 'support/database'
+        volumes:
+            - postgres_db_data:/var/lib/postgresql/data
+        ports:
+            - "5434:5432"
+        environment:
+            POSTGRES_DB: ${DB_NAME}
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASS}
+        networks:
+            - app_network
+    zen_redis:
+        image: redis:3.2-alpine
+        volumes:
+            - redis_db_data:/var/lib/redis
+        ports:
+            - "6381:6379"
+        networks:
+            - app_network
+    zen_mongodb:
+        image: mongo:3.5
+        command: mongod --smallfiles --oplogSize 128 --bind_ip_all
+        volumes:
+            - mongo_db_data:/data/db
+            - mongo_db_dump:/dump
+        ports:
+            - "27028:27017"
+        networks:
+            - app_network
+    zen_rabbitmq:
+        image: rabbitmq:3.6-management-alpine
+        environment:
+            RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+            RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
+        ports:
+            - "5674:5672"
+            - "15674:15672"
+        volumes:
+            - rabbitmq_db:/var/lib/rabbitmq/mnesia
+            - "./support/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+        networks:
+          - app_network
+
+volumes:
+    postgres_db_data:
+    redis_db_data:
+    mongo_db_data:
+    mongo_db_dump:
+    rabbitmq_db:
+    project-sync:
+        external: true
+
+networks:
+    app_network:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+            -
+              subnet: 172.21.0.0/16
+    afr_app_network:
+        external:
+            name: afr_app_network
